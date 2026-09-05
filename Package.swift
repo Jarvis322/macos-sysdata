@@ -3,11 +3,13 @@ import PackageDescription
 
 let package = Package(
     name: "SysDataMenu",
+    defaultLocalization: "en",
     platforms: [.macOS(.v14)],
     targets: [
         .executableTarget(
             name: "SysDataMenu",
-            path: "Sources/SysDataMenu"
+            path: "Sources/SysDataMenu",
+            resources: [.process("Resources")]
         ),
         .testTarget(
             name: "SysDataMenuTests",

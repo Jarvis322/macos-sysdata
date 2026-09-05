@@ -3,29 +3,30 @@ import Foundation
 /// Groups in the menu, in display order.
 enum StorageCategory: String, CaseIterable, Identifiable, Sendable {
     case snapshots, simulators, runtimes, xcode, packages, tools, logs, temp, docker
-    case trash, backups, shared, android, apps, projects, system, other
+    case vms, trash, backups, shared, android, apps, projects, system, other
 
     var id: String { rawValue }
 
     var title: String {
         switch self {
-        case .snapshots: "Time Machine snapshots"
-        case .simulators: "Simulator devices"
-        case .runtimes: "Simulator runtimes"
-        case .xcode: "Xcode"
-        case .packages: "Package managers"
-        case .tools: "Developer tool data"
-        case .logs: "Logs & diagnostics"
-        case .temp: "Temporary files"
-        case .docker: "Docker"
-        case .trash: "Trash"
-        case .backups: "iOS device backups"
-        case .shared: "Shared & other users"
-        case .android: "Android"
-        case .apps: "Large app data"
-        case .projects: "Project build folders"
-        case .system: "System"
-        case .other: "Other large folders"
+        case .snapshots: L("Time Machine snapshots")
+        case .simulators: L("Simulator devices")
+        case .runtimes: L("Simulator runtimes")
+        case .xcode: L("Xcode")
+        case .packages: L("Package managers")
+        case .tools: L("Developer tool data")
+        case .logs: L("Logs & diagnostics")
+        case .temp: L("Temporary files")
+        case .docker: L("Docker")
+        case .vms: L("Virtual machines")
+        case .trash: L("Trash")
+        case .backups: L("iOS device backups")
+        case .shared: L("Shared & other users")
+        case .android: L("Android")
+        case .apps: L("App data & caches")
+        case .projects: L("Project build folders")
+        case .system: L("System")
+        case .other: L("Other large folders")
         }
     }
 }
@@ -41,9 +42,9 @@ enum Safety: Sendable {
 
     var label: String {
         switch self {
-        case .safe: "Safe"
-        case .review: "Review"
-        case .manual: "Manual"
+        case .safe: L("Safe")
+        case .review: L("Review")
+        case .manual: L("Manual")
         }
     }
 }
