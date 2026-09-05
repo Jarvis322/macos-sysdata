@@ -10,8 +10,10 @@ jobs:
     runs-on: macos-15
     steps:
       - uses: actions/checkout@v4
-      - name: Select Xcode 16
-        run: sudo xcode-select -s /Applications/Xcode_16.2.app
+      - name: Toolchain
+        run: |
+          xcodebuild -version
+          swift --version
       - name: Build
         run: swift build
       - name: Test
