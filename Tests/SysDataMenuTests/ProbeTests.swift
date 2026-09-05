@@ -5,13 +5,7 @@ import Testing
 /// Every probe runs against the real machine, so only invariants are checked:
 /// probes must not throw or hang, and what they return must be well-formed.
 @Suite struct ProbeTests {
-    private let probes: [(String, any StorageProbe)] = [
-        ("snapshots", SnapshotProbe()), ("simulators", SimulatorProbe()), ("runtimes", RuntimeProbe()),
-        ("xcode", XcodeProbe()), ("packages", PackageProbe()), ("tools", DeveloperToolProbe()),
-        ("logs", LogProbe()), ("temp", TempProbe()), ("docker", DockerProbe()), ("trash", TrashProbe()),
-        ("backups", BackupProbe()), ("shared", SharedProbe()), ("android", AndroidProbe()),
-        ("apps", AppDataProbe()), ("projects", ProjectProbe()), ("system", SystemProbe()),
-    ]
+    private let probes: [(String, any StorageProbe)] = ProbeRegistry.all.map { (String(describing: type(of: $0)), $0) }
 
     @Test func itemsAreWellFormed() async {
         var seen: Set<String> = []
@@ -70,5 +64,35 @@ import Testing
     @Test func whichFindsSystemTools() {
         #expect(Shell.which("tmutil") == "/usr/bin/tmutil")
         #expect(Shell.which("definitely-not-a-tool") == nil)
+    }
+
+    @Test func turkishCatalogCoversEveryInterfaceString() throws {
+        // The catalog ships with the module and must have a Turkish string for
+        // each English key, otherwise the UI silently mixes languages.
+        let url = try #require(Bundle.module.url(forResource: "Localizable", withExtension: "strings", subdirectory: nil, localization: "tr"))
+        let turkish = try #require(NSDictionary(contentsOf: url) as? [String: String])
+        #expect(turkish["Rescan"] == "Yeniden tara")
+        #expect(turkish["Safe"] == "Güvenli")
+        for category in StorageCategory.allCases {
+            #expect(turkish[englishTitle(category)] != nil, "missing Turkish title for \(category.rawValue)")
+        }
+    }
+
+    private func englishTitle(_ category: StorageCategory) -> String {
+        let english = Bundle.module.url(forResource: "Localizable", withExtension: "strings", subdirectory: nil, localization: "en")
+            .flatMap { NSDictionary(contentsOf: $0) as? [String: String] } ?? [:]
+        let title = category.title
+        return english.first { $0.value == title }?.key ?? title
+    }
+
+    @Test func jsonInventoryIsWellFormed() async throws {
+        let pipe = Pipe()
+        await JSONInventory.write(to: pipe.fileHandleForWriting)
+        try pipe.fileHandleForWriting.close()
+        let data = pipe.fileHandleForReading.readDataToEndOfFile()
+        let payload = try #require(try JSONSerialization.jsonObject(with: data) as? [String: Any])
+        let items = try #require(payload["items"] as? [[String: Any]])
+        #expect(!items.isEmpty)
+        #expect(items.allSatisfy { $0["id"] is String && $0["category"] is String && $0["safety"] is String })
     }
 }

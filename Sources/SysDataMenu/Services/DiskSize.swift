@@ -72,6 +72,29 @@ enum DiskSize {
         return Int64(values?.volumeAvailableCapacity ?? 0)
     }
 
+    /// Space macOS would free on demand (snapshots, purgeable caches). Finder
+    /// shows it as the hatched part of the storage bar.
+    static func purgeableSpace() -> Int64 {
+        let values = try? URL(fileURLWithPath: "/").resourceValues(forKeys: [
+            .volumeAvailableCapacityKey, .volumeAvailableCapacityForImportantUsageKey,
+        ])
+        let free = Int64(values?.volumeAvailableCapacity ?? 0)
+        let important = values?.volumeAvailableCapacityForImportantUsage ?? 0
+        return max(important - free, 0)
+    }
+
+    /// The `limit` biggest direct children of a directory, measured on disk.
+    static func largestChildren(of url: URL, limit: Int = 5) async -> [(url: URL, bytes: Int64)] {
+        await Task.detached(priority: .utility) {
+            url.children(includeHidden: true)
+                .map { ($0, allocatedSync(at: $0)) }
+                .filter { $0.1 > 0 }
+                .sorted { $0.1 > $1.1 }
+                .prefix(limit)
+                .map { (url: $0.0, bytes: $0.1) }
+        }.value
+    }
+
     private static func size(of url: URL, keys: Set<URLResourceKey>, cutoff: Date?) -> Int64 {
         guard let values = try? url.resourceValues(forKeys: keys),
               values.isRegularFile == true else { return 0 }

@@ -3,10 +3,12 @@ import Foundation
 /// Executes a `ReclaimAction`. Every filesystem mutation in the app goes
 /// through here.
 enum Reclaimer {
-    static func perform(_ action: ReclaimAction) async throws {
+    /// `preferTrash` moves user-owned paths to the Trash instead of deleting
+    /// them, so a Review item can be recovered for 30 days.
+    static func perform(_ action: ReclaimAction, preferTrash: Bool = false) async throws {
         switch action {
         case .removePaths(let urls):
-            try await remove(urls)
+            try await remove(urls, toTrash: preferTrash)
 
         case .emptyDirectories(let directories):
             for directory in directories where directory.exists {
@@ -37,18 +39,23 @@ enum Reclaimer {
 
     /// Removes each path directly when the current user owns it and falls
     /// back to a single privileged `rm` for the rest.
-    private static func remove(_ urls: [URL]) async throws {
+    private static func remove(_ urls: [URL], toTrash: Bool = false) async throws {
         var needsRoot: [URL] = []
         let fileManager = FileManager.default
 
         for url in urls where url.exists {
-            if fileManager.isDeletableFile(atPath: url.path) {
-                do {
-                    try fileManager.removeItem(at: url)
-                } catch {
-                    needsRoot.append(url)
-                }
-            } else {
+            guard fileManager.isDeletableFile(atPath: url.path) else {
+                needsRoot.append(url)
+                continue
+            }
+            // Trashing is a rename on the same volume; it fails for system
+            // volumes and some containers, in which case a real delete follows.
+            if toTrash, (try? fileManager.trashItem(at: url, resultingItemURL: nil)) != nil {
+                continue
+            }
+            do {
+                try fileManager.removeItem(at: url)
+            } catch {
                 needsRoot.append(url)
             }
         }

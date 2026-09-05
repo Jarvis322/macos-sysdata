@@ -12,6 +12,10 @@
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-green" alt="MIT"></a>
 </p>
 
+<p align="center">
+  <img src="assets/screenshot.png" width="460" alt="The System Data window listing simulator runtimes, Xcode caches and other items with their sizes">
+</p>
+
 ---
 
 Open System Settings > General > Storage on a developer Mac and "System
@@ -23,6 +27,49 @@ machine disks, the unified log, per-app data folders.
 This app opens the bucket. It is not a cache cleaner: `~/Library/Caches` is
 one small line among fifty, and the app never deletes anything you did not
 click.
+
+## Install
+
+```bash
+brew install --cask Jarvis322/tap/sysdata
+```
+
+Or download `SysDataMenu-<version>.zip` from the
+[latest release](https://github.com/Jarvis322/macos-sysdata/releases/latest)
+and drop the app into `/Applications`.
+
+Build from source (Xcode 16 or later):
+
+```bash
+git clone https://github.com/Jarvis322/macos-sysdata.git
+cd macos-sysdata
+scripts/build-app.sh
+open build/SysDataMenu.app
+```
+
+The app has a **Launch at login** switch in its footer.
+
+## What it does
+
+- **Menu bar total.** The icon shows how much can be freed right now without
+  losing anything. It scans on launch and once a day after that.
+- **Every item has a real size**, measured on disk, plus a badge:
+  **Safe** regenerates automatically, **Review** costs you something (a
+  simulator, a login, a re-download), **Manual** cannot be removed by the app
+  and the info button shows the command or settings path.
+- **Trash first.** Review items go to the Trash, so a wrong click can be
+  undone for 30 days. Safe items are deleted outright because they come back
+  on their own.
+- **Breakdown.** Click a row to see its five largest entries before deciding.
+- **Batch delete.** Tick rows and use **Delete N selected**; every root
+  action in the batch is folded into one script, so the administrator
+  password is asked once. **Select safe** ticks everything regenerable.
+- **Hide.** The eye button removes an item from future scans (Ollama models
+  you want to keep, say). A footer link brings hidden items back.
+- **Purgeable space** is shown in the header, so the effect of deleting
+  snapshots is visible.
+- **Turkish** interface, following the system language.
+- **`SysDataMenu --json`** prints the whole inventory for scripts.
 
 ## What it finds
 
@@ -37,51 +84,20 @@ click.
 | Logs & diagnostics | unified log store (`log erase`), crash reports, ASL, `~/Library/Logs` | Safe |
 | Temporary files | `/private/var/folders` user cache and temp, files older than 3 days | Safe |
 | Docker | `docker system prune` reclaimable space | Review |
+| Virtual machines | Parallels, UTM, VMware Fusion, VirtualBox, Tart | Review |
 | Trash | `~/.Trash` | Safe |
 | iOS device backups | each MobileSync backup with device name and date | Review |
 | Shared & other users | `/Users/Shared` app data (BlueStacks and friends), other accounts | Review / Manual |
 | Android | AVD emulators, SDK system images, platforms, build tools, NDK, emulator, Android Studio caches | Review / Safe |
-| Large app data | Claude VM bundles, Chrome on-device model, any Application Support / Containers / Group Containers folder over 200 MB, caches over 100 MB | Review / Safe |
+| App data & caches | Slack, Discord, Teams, Zoom, Spotify, Safari, Adobe, Steam, Epic, Photos, Quick Look and Final Cut render caches; Claude VM bundles; Chrome on-device model; any Application Support / Containers / Group Containers folder over 200 MB, caches over 100 MB | Safe / Review |
 | Project build folders | `node_modules`, `.build`, `Pods`, `DerivedData` under Desktop, Documents, Developer, Projects | Review |
 | System | macOS installers, device firmware, Mail downloads, `/Library/Caches`, `/Library/Application Support`, Command Line Tools, cryptexes, Spotlight index, swap, iCloud local copies | Safe / Review / Manual |
 | Other large folders | catch-all: every folder over 500 MB under `~`, `/Library`, `/private/var`, `/opt`, `/usr/local` and `/Users/Shared` that no category above explains, shown with its full path | Review |
-
-**Safe** items are regenerated automatically. **Review** items are deletable
-but cost you something (a simulator, a login, a re-download). **Manual**
-items cannot be removed by the app; the info button shows the command or
-settings path.
 
 The catch-all pass runs last and takes the longest (it walks the home folder
 once). The header shows which phase the scan is in. Folders Finder attributes
 to Photos, Music, Movies, Messages, Mail, iCloud Drive and Applications are
 skipped because they are not System Data.
-
-## Deleting
-
-- The trash button on a row deletes that item after a confirmation.
-- Tick several rows and use **Delete N selected**. Everything that needs root
-  is folded into one script, so the administrator password is asked once per
-  batch. **Select safe** ticks everything that regenerates on its own.
-- The folder button reveals the item in Finder. Every row shows the size
-  measured on disk, not an estimate.
-
-## Install
-
-Build from source (Xcode 16 or later):
-
-```bash
-git clone https://github.com/Jarvis322/macos-sysdata.git
-cd macos-sysdata
-scripts/build-app.sh
-open build/SysDataMenu.app
-```
-
-Move `build/SysDataMenu.app` to `/Applications` if you like; the app has a
-**Launch at login** switch in its footer.
-
-For development, `swift run SysDataMenu` starts it without a bundle and
-`swift test` runs the probe tests against your machine (the log prints the
-full inventory it found).
 
 ## Permissions, once
 
@@ -96,10 +112,30 @@ Two things can prompt, and both can be settled one time:
   signs with your Developer ID or Apple Development certificate when one is
   in the keychain. An ad-hoc signature changes on every build and macOS would
   forget the grant each time. Override with `CODESIGN_IDENTITY="..."`.
-- **Administrator password.** Needed for root actions. Batch them (above) to
-  be asked once per batch. Avoiding the prompt entirely would require a
+- **Administrator password.** Needed for root actions. Batch them to be
+  asked once per batch. Avoiding the prompt entirely would require a
   privileged helper daemon, which is deliberately out of scope for a small
   tool.
+
+## Scripting
+
+```bash
+/Applications/SysDataMenu.app/Contents/MacOS/SysDataMenu --json > inventory.json
+jq '.items[] | select(.safety == "safe") | [.name, .sizeBytes]' inventory.json
+```
+
+The output has `freeBytes`, `purgeableBytes`, `totalBytes` and one record per
+item with `id`, `category`, `name`, `detail`, `sizeBytes`, `safety`,
+`manual` and `path`.
+
+`sysdata` is a bash script covering the Safe categories only, for machines
+where you would rather not run an app:
+
+```bash
+./sysdata              # scan
+./sysdata clean        # dry run
+./sysdata clean --yes  # apply
+```
 
 ## How it works
 
@@ -115,18 +151,21 @@ deletes.
 The catch-all probe receives every path the other probes claimed and reports
 whatever large folder is left, so the inventory stays complete on machines
 with software the app has never heard of. Adding a category means adding one
-probe and registering it in `ScanModel`.
+probe and registering it in `ProbeRegistry`.
 
-## CLI
+Interface strings live in `Resources/Localizable.xcstrings`;
+`scripts/compile-strings.sh` turns the catalog into the `.lproj` tables
+SwiftPM ships, and a test checks that every key has a Turkish translation.
 
-`sysdata` is a bash script covering the Safe categories only, for machines
-where you would rather not run an app:
+## Releasing
 
 ```bash
-./sysdata              # scan
-./sysdata clean        # dry run
-./sysdata clean --yes  # apply
+xcrun notarytool store-credentials sysdata --apple-id you@example.com --team-id TEAMID
+NOTARY_PROFILE=sysdata scripts/build-app.sh
+gh release create vX.Y.Z build/SysDataMenu-X.Y.Z.zip
 ```
+
+Then update the sha256 in the Homebrew cask.
 
 ## Requirements
 

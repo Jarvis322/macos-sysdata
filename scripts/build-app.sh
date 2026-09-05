@@ -5,14 +5,21 @@ set -euo pipefail
 
 root=$(cd "$(dirname "$0")/.." && pwd)
 name="SysDataMenu"
+version="0.2.0"
 bundle="$root/build/$name.app"
+archive="$root/build/$name-$version.zip"
 
+"$root/scripts/compile-strings.sh"
 swift build -c release --package-path "$root"
 
-binary=$(swift build -c release --package-path "$root" --show-bin-path)/$name
+bin_path=$(swift build -c release --package-path "$root" --show-bin-path)
+binary="$bin_path/$name"
 rm -rf "$bundle"
 mkdir -p "$bundle/Contents/MacOS" "$bundle/Contents/Resources"
 cp "$binary" "$bundle/Contents/MacOS/$name"
+# Bundle.module looks for the SwiftPM resource bundle next to the main bundle's
+# resources; without it the app aborts on its first localized string.
+cp -R "$bin_path/${name}_${name}.bundle" "$bundle/Contents/Resources/"
 
 [ -f "$root/assets/AppIcon.icns" ] || "$root/scripts/make-icon.sh"
 cp "$root/assets/AppIcon.icns" "$bundle/Contents/Resources/AppIcon.icns"
@@ -33,7 +40,9 @@ cat > "$bundle/Contents/Info.plist" <<EOF
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>0.1.0</string>
+	<string>$version</string>
+	<key>CFBundleVersion</key>
+	<string>$version</string>
 	<key>LSMinimumSystemVersion</key>
 	<string>14.0</string>
 	<key>LSUIElement</key>
@@ -56,11 +65,24 @@ if [ -z "$identity" ]; then
 fi
 
 if [ -n "$identity" ]; then
-  codesign --force --sign "$identity" --identifier local.sysdata.menu "$bundle"
+  codesign --force --options runtime --timestamp --sign "$identity" --identifier local.sysdata.menu "$bundle"
   echo "Signed with: $identity"
 else
   codesign --force --sign - "$bundle"
   echo "warning: no code-signing certificate found; ad-hoc signed." >&2
   echo "         Privacy grants will reset on every rebuild." >&2
 fi
+
+# Optional notarization, so a downloaded copy opens without a Gatekeeper
+# warning. Store credentials once with:
+#   xcrun notarytool store-credentials sysdata --apple-id ... --team-id ...
+# then run: NOTARY_PROFILE=sysdata scripts/build-app.sh
+ditto -c -k --keepParent "$bundle" "$archive"
+if [ -n "${NOTARY_PROFILE:-}" ]; then
+  xcrun notarytool submit "$archive" --keychain-profile "$NOTARY_PROFILE" --wait
+  xcrun stapler staple "$bundle"
+  ditto -c -k --keepParent "$bundle" "$archive"
+  echo "Notarized and stapled"
+fi
 echo "Built $bundle"
+echo "Archive $archive"

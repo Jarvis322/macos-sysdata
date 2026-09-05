@@ -163,9 +163,14 @@ struct AppDataProbe: StorageProbe {
     /// Folder names other probes own, so they are not listed twice.
     private static let coveredCaches: Set<String> = [
         "Homebrew", "Yarn", "pip", "CocoaPods", "org.swift.swiftpm", "go-build", "Cypress",
-        "ms-playwright", "com.apple.dt.Xcode", "Google",
+        "ms-playwright", "com.apple.dt.Xcode", "Google", "Adobe", "com.apple.QuickLook.thumbnailcache",
     ]
-    private static let coveredAppSupport: Set<String> = ["MobileSync", "Claude", "Google"]
+    private static let coveredAppSupport: Set<String> = [
+        "MobileSync", "Claude", "Google", "Slack", "discord", "zoom.us", "Spotify", "Adobe", "Steam", "Epic",
+    ]
+    private static let coveredContainers: Set<String> = [
+        "com.microsoft.teams2", "com.apple.Safari", "com.apple.photolibraryd", "com.utmapp.UTM", "com.apple.mail",
+    ]
 
     func probe() async -> [StorageItem] {
         var items: [StorageItem] = []
@@ -195,7 +200,8 @@ struct AppDataProbe: StorageProbe {
         )
         items += await scan(
             URL.home("Library/Containers"), prefix: "app-container", label: "Sandboxed app data",
-            detail: "Deleting resets that app.", safety: .review, threshold: Self.threshold, skipping: []
+            detail: "Deleting resets that app.", safety: .review, threshold: Self.threshold,
+            skipping: Self.coveredContainers
         )
         items += await scan(
             URL.home("Library/Group Containers"), prefix: "app-group", label: "App group data",

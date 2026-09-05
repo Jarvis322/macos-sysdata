@@ -15,8 +15,50 @@ final class ScanModel {
     private(set) var phase = ""
     private(set) var hasFullDiskAccess = ScanModel.checkFullDiskAccess()
     private(set) var launchesAtLogin = SMAppService.mainApp.status == .enabled
+    private(set) var purgeableBytes: Int64 = DiskSize.purgeableSpace()
+    private(set) var lastScan: Date?
+    /// Items the user chose not to see again. Persisted; ids are path-based.
+    private(set) var hiddenIDs: Set<String>
     var selectedIDs: Set<String> = []
     var errorMessage: String?
+    /// Non-error feedback, such as "moved to the Trash".
+    var notice: String?
+
+    private static let hiddenKey = "hiddenItemIDs"
+    private static let rescanInterval: Duration = .seconds(24 * 60 * 60)
+
+    init() {
+        hiddenIDs = Set(UserDefaults.standard.stringArray(forKey: Self.hiddenKey) ?? [])
+        Task { await runBackgroundScans() }
+    }
+
+    /// Scans on launch and once a day after that, so the menu bar total is
+    /// meaningful without opening the window.
+    private func runBackgroundScans() async {
+        while !Task.isCancelled {
+            await scan()
+            try? await Task.sleep(for: Self.rescanInterval)
+        }
+    }
+
+    var visibleItems: [StorageItem] {
+        items.filter { !hiddenIDs.contains($0.id) }
+    }
+
+    var hiddenCount: Int {
+        items.count - visibleItems.count
+    }
+
+    func hide(_ item: StorageItem) {
+        hiddenIDs.insert(item.id)
+        selectedIDs.remove(item.id)
+        UserDefaults.standard.set(Array(hiddenIDs).sorted(), forKey: Self.hiddenKey)
+    }
+
+    func unhideAll() {
+        hiddenIDs = []
+        UserDefaults.standard.removeObject(forKey: Self.hiddenKey)
+    }
 
     /// Registers or removes the app as a login item. macOS quits the app when
     /// Full Disk Access is granted, so coming back on login is worth having.
@@ -28,23 +70,22 @@ final class ScanModel {
                 try SMAppService.mainApp.unregister()
             }
         } catch {
-            errorMessage = "Launch at login: \(error.localizedDescription)"
+            errorMessage = L("Launch at login: %@", error.localizedDescription)
         }
         launchesAtLogin = SMAppService.mainApp.status == .enabled
     }
 
-    private let probes: [any StorageProbe] = [
-        SnapshotProbe(), SimulatorProbe(), RuntimeProbe(), XcodeProbe(), PackageProbe(),
-        DeveloperToolProbe(), LogProbe(), TempProbe(), DockerProbe(), TrashProbe(), BackupProbe(),
-        SharedProbe(), AndroidProbe(), AppDataProbe(), ProjectProbe(), SystemProbe(),
-    ]
-
     var measuredBytes: Int64 {
-        items.reduce(0) { $0 + ($1.sizeBytes ?? 0) }
+        visibleItems.reduce(0) { $0 + ($1.sizeBytes ?? 0) }
+    }
+
+    /// What can be freed right now without losing anything.
+    var safeBytes: Int64 {
+        visibleItems.filter { $0.safety == .safe }.reduce(0) { $0 + ($1.sizeBytes ?? 0) }
     }
 
     var selectedItems: [StorageItem] {
-        items.filter { selectedIDs.contains($0.id) }
+        visibleItems.filter { selectedIDs.contains($0.id) }
     }
 
     var selectedBytes: Int64 {
@@ -72,7 +113,7 @@ final class ScanModel {
     }
 
     func selectAllSafe() {
-        selectedIDs = Set(items.filter { $0.safety == .safe && !$0.action.isManual }.map(\.id))
+        selectedIDs = Set(visibleItems.filter { $0.safety == .safe && !$0.action.isManual }.map(\.id))
     }
 
     func clearSelection() {
@@ -80,8 +121,9 @@ final class ScanModel {
     }
 
     var categories: [(category: StorageCategory, items: [StorageItem], total: Int64)] {
-        StorageCategory.allCases.compactMap { category in
-            let members = items.filter { $0.category == category }
+        let visible = visibleItems
+        return StorageCategory.allCases.compactMap { category in
+            let members = visible.filter { $0.category == category }
             guard !members.isEmpty else { return nil }
             return (category, members, members.reduce(0) { $0 + ($1.sizeBytes ?? 0) })
         }
@@ -93,14 +135,14 @@ final class ScanModel {
         errorMessage = nil
         selectedIDs = []
         refreshAccess()
-        phase = "Measuring known locations…"
+        phase = L("Measuring known locations…")
         defer {
             isScanning = false
             hasScanned = true
             phase = ""
         }
 
-        let probes = self.probes
+        let probes = ProbeRegistry.all
         let results = await withTaskGroup(of: [StorageItem].self) { group in
             for probe in probes {
                 group.addTask { await probe.probe() }
@@ -112,12 +154,14 @@ final class ScanModel {
 
         items = results
         freeBytes = DiskSize.freeSpace()
+        purgeableBytes = DiskSize.purgeableSpace()
 
         // The catch-all pass needs to know what is already explained, so it
         // runs after everything else and streams in as a second update.
-        phase = "Looking for anything else over 500 MB…"
+        phase = L("Looking for anything else over 500 MB…")
         let claimed = results.flatMap(\.claimedURLs)
         items += await LargeFolderProbe(claimed: claimed).probe()
+        lastScan = .now
     }
 
     func reclaim(_ item: StorageItem) async {
@@ -135,6 +179,7 @@ final class ScanModel {
     func reclaim(_ batch: [StorageItem]) async {
         let runnable = batch.filter { !busyItemIDs.contains($0.id) && !$0.action.isManual }
         errorMessage = nil
+        notice = nil
 
         var privileged: [(item: StorageItem, script: String)] = []
         var direct: [StorageItem] = []
@@ -163,14 +208,21 @@ final class ScanModel {
         busyItemIDs.formUnion(ids)
         defer { busyItemIDs.subtract(ids) }
 
+        // Review items go to the Trash so a wrong click can be undone; Safe
+        // items regenerate anyway and are deleted outright.
+        let toTrash = affected.allSatisfy { $0.safety == .review }
         let before = DiskSize.freeSpace()
         do {
-            try await Reclaimer.perform(action)
+            try await Reclaimer.perform(action, preferTrash: toTrash)
             items.removeAll { ids.contains($0.id) }
             let after = DiskSize.freeSpace()
             let expected = affected.reduce(0) { $0 + ($1.sizeBytes ?? 0) }
             reclaimedBytes += max(after - before, expected)
             freeBytes = after
+            purgeableBytes = DiskSize.purgeableSpace()
+            if toTrash, case .removePaths = action {
+                notice = L("Moved to the Trash. Empty the Trash to free the space.")
+            }
         } catch {
             let names = affected.map(\.name).joined(separator: ", ")
             errorMessage = "\(names): \(error.localizedDescription)"

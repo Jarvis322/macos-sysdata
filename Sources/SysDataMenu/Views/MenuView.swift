@@ -24,10 +24,10 @@ struct MenuView: View {
         }
         .frame(width: 460, height: 640)
         .task {
-            if !model.hasScanned { await model.scan() }
+            if !model.hasScanned, !model.isScanning { await model.scan() }
         }
         .confirmationDialog(
-            pendingDeletion.map { "Delete \($0.name)?" } ?? "",
+            pendingDeletion.map { L("Delete %@?", $0.name) } ?? "",
             isPresented: Binding(
                 get: { pendingDeletion != nil },
                 set: { if !$0 { pendingDeletion = nil } }
@@ -35,22 +35,22 @@ struct MenuView: View {
             titleVisibility: .visible,
             presenting: pendingDeletion
         ) { item in
-            Button("Delete", role: .destructive) {
+            Button(L("Delete"), role: .destructive) {
                 Task { await model.reclaim(item) }
             }
-            Button("Cancel", role: .cancel) {}
+            Button(L("Cancel"), role: .cancel) {}
         } message: { item in
             Text(confirmationMessage(for: item))
         }
         .confirmationDialog(
-            "Delete \(model.selectedItems.count) items?",
+            L("Delete %lld items?", model.selectedItems.count),
             isPresented: $confirmsBatch,
             titleVisibility: .visible
         ) {
-            Button("Delete \(model.selectedItems.count) items", role: .destructive) {
+            Button(L("Delete %lld items", model.selectedItems.count), role: .destructive) {
                 Task { await model.reclaimSelected() }
             }
-            Button("Cancel", role: .cancel) {}
+            Button(L("Cancel"), role: .cancel) {}
         } message: {
             Text(batchMessage)
         }
@@ -61,11 +61,9 @@ struct MenuView: View {
     private var header: some View {
         HStack(alignment: .firstTextBaseline) {
             VStack(alignment: .leading, spacing: 2) {
-                Text("System Data")
+                Text(L("System Data"))
                     .font(.headline)
-                Text(model.isScanning && !model.phase.isEmpty
-                     ? model.phase
-                     : "\(model.freeBytes.byteString) free · \(model.measuredBytes.byteString) found")
+                Text(subtitle)
                     .font(.caption)
                     .foregroundStyle(.secondary)
                     .monospacedDigit()
@@ -74,25 +72,33 @@ struct MenuView: View {
             if model.isScanning {
                 ProgressView()
                     .controlSize(.small)
-                    .accessibilityLabel("Scanning")
+                    .accessibilityLabel(L("Scanning"))
             } else {
-                if !model.items.isEmpty {
-                    Button("Select safe") {
+                if !model.visibleItems.isEmpty {
+                    Button(L("Select safe")) {
                         model.selectAllSafe()
                     }
                     .controlSize(.small)
-                    .help("Select every item that is regenerated automatically")
+                    .help(L("Select every item that is regenerated automatically"))
                 }
                 Button {
                     Task { await model.scan() }
                 } label: {
-                    Label("Rescan", systemImage: "arrow.clockwise")
+                    Label(L("Rescan"), systemImage: "arrow.clockwise")
                 }
                 .controlSize(.small)
             }
         }
         .padding(.horizontal, 14)
         .padding(.vertical, 10)
+    }
+
+    private var subtitle: String {
+        if model.isScanning, !model.phase.isEmpty {
+            return model.phase
+        }
+        return L("%@ free · %@ purgeable · %@ found",
+                 model.freeBytes.byteString, model.purgeableBytes.byteString, model.measuredBytes.byteString)
     }
 
     // MARK: Full Disk Access
@@ -102,14 +108,14 @@ struct MenuView: View {
             Image(systemName: "lock.shield")
                 .foregroundStyle(.orange)
             VStack(alignment: .leading, spacing: 2) {
-                Text("Grant Full Disk Access once")
+                Text(L("Grant Full Disk Access once"))
                     .font(.caption.weight(.semibold))
-                Text("Without it macOS asks for every protected folder and hides Mail, Safari and Time Machine data. Add System Data in the settings pane, then rescan.")
+                Text(L("Without it macOS asks for every protected folder and hides Mail, Safari and Time Machine data. Add System Data in the settings pane, then reopen the app."))
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
             Spacer()
-            Button("Open Settings") {
+            Button(L("Open Settings")) {
                 NSWorkspace.shared.open(Self.fullDiskAccessPane)
             }
             .controlSize(.small)
@@ -123,18 +129,18 @@ struct MenuView: View {
 
     @ViewBuilder
     private var content: some View {
-        if model.items.isEmpty {
+        if model.visibleItems.isEmpty {
             VStack(spacing: 8) {
                 Spacer()
                 if model.isScanning {
                     ProgressView()
-                    Text("Measuring…")
+                    Text(L("Measuring…"))
                         .foregroundStyle(.secondary)
                 } else {
                     Image(systemName: "checkmark.circle")
                         .font(.largeTitle)
                         .foregroundStyle(.secondary)
-                    Text("Nothing to reclaim")
+                    Text(L("Nothing to reclaim"))
                         .foregroundStyle(.secondary)
                 }
                 Spacer()
@@ -150,7 +156,8 @@ struct MenuView: View {
                                 isBusy: model.busyItemIDs.contains(item.id),
                                 isSelected: model.selectedIDs.contains(item.id),
                                 onToggle: { model.toggleSelection(item) },
-                                onDelete: { pendingDeletion = item }
+                                onDelete: { pendingDeletion = item },
+                                onHide: { model.hide(item) }
                             )
                         }
                     } header: {
@@ -173,26 +180,17 @@ struct MenuView: View {
     private var footer: some View {
         VStack(spacing: 6) {
             if let message = model.errorMessage {
-                HStack(alignment: .top, spacing: 6) {
-                    Image(systemName: "exclamationmark.triangle.fill")
-                        .foregroundStyle(.yellow)
-                    Text(message)
-                        .font(.caption)
-                        .lineLimit(3)
-                        .textSelection(.enabled)
-                    Spacer()
-                    Button {
-                        model.errorMessage = nil
-                    } label: {
-                        Image(systemName: "xmark")
-                    }
-                    .buttonStyle(.borderless)
-                    .accessibilityLabel("Dismiss error")
+                feedbackRow(message, symbol: "exclamationmark.triangle.fill", tint: .yellow) {
+                    model.errorMessage = nil
+                }
+            } else if let message = model.notice {
+                feedbackRow(message, symbol: "checkmark.circle.fill", tint: .green) {
+                    model.notice = nil
                 }
             }
             HStack {
                 if model.selectedItems.isEmpty {
-                    Text("Reclaimed this session: \(model.reclaimedBytes.byteString)")
+                    Text(L("Reclaimed this session: %@", model.reclaimedBytes.byteString))
                         .font(.caption)
                         .foregroundStyle(.secondary)
                         .monospacedDigit()
@@ -200,18 +198,26 @@ struct MenuView: View {
                     Button(role: .destructive) {
                         confirmsBatch = true
                     } label: {
-                        Text("Delete \(model.selectedItems.count) selected · \(model.selectedBytes.byteString)")
+                        Text(L("Delete %lld selected · %@", model.selectedItems.count, model.selectedBytes.byteString))
                             .monospacedDigit()
                     }
                     .controlSize(.small)
                     .disabled(!model.busyItemIDs.isEmpty)
-                    Button("Clear") {
+                    Button(L("Clear")) {
                         model.clearSelection()
                     }
                     .controlSize(.small)
                 }
+                if model.hiddenCount > 0 {
+                    Button(L("%lld hidden", model.hiddenCount)) {
+                        model.unhideAll()
+                    }
+                    .buttonStyle(.link)
+                    .font(.caption)
+                    .help(L("Show all"))
+                }
                 Spacer()
-                Button("Quit") {
+                Button(L("Quit")) {
                     NSApplication.shared.terminate(nil)
                 }
                 .controlSize(.small)
@@ -220,7 +226,7 @@ struct MenuView: View {
             HStack {
                 authorBadge
                 Spacer()
-                Toggle("Launch at login", isOn: Binding(
+                Toggle(L("Launch at login"), isOn: Binding(
                     get: { model.launchesAtLogin },
                     set: { model.setLaunchAtLogin($0) }
                 ))
@@ -232,6 +238,23 @@ struct MenuView: View {
         }
         .padding(.horizontal, 14)
         .padding(.vertical, 10)
+    }
+
+    private func feedbackRow(_ message: String, symbol: String, tint: Color, dismiss: @escaping () -> Void) -> some View {
+        HStack(alignment: .top, spacing: 6) {
+            Image(systemName: symbol)
+                .foregroundStyle(tint)
+            Text(message)
+                .font(.caption)
+                .lineLimit(3)
+                .textSelection(.enabled)
+            Spacer()
+            Button(action: dismiss) {
+                Image(systemName: "xmark")
+            }
+            .buttonStyle(.borderless)
+            .accessibilityLabel(L("Dismiss"))
+        }
     }
 
     private var authorBadge: some View {
@@ -248,18 +271,18 @@ struct MenuView: View {
         }
         .buttonStyle(.plain)
         .foregroundStyle(.secondary)
-        .accessibilityLabel("Open x.com/yigitech")
+        .accessibilityLabel(L("Open x.com/yigitech"))
     }
 
     // MARK: Confirmation copy
 
     private func confirmationMessage(for item: StorageItem) -> String {
-        let size = item.sizeBytes.map { "Frees about \($0.byteString). " } ?? ""
+        let size = item.sizeBytes.map { L("Frees about %@. ", $0.byteString) } ?? ""
         switch item.safety {
         case .safe:
-            return size + "This is regenerated automatically when needed."
+            return size + L("This is regenerated automatically when needed.")
         case .review:
-            return size + item.detail
+            return size + item.detail + " " + L("It goes to the Trash first.")
         case .manual:
             return item.detail
         }
@@ -269,15 +292,15 @@ struct MenuView: View {
         let selected = model.selectedItems
         let review = selected.filter { $0.safety == .review }
         let privileged = selected.filter { if case .privilegedScript = $0.action { true } else { false } }
-        var lines = ["Frees about \(model.selectedBytes.byteString)."]
+        var lines = [L("Frees about %@. ", model.selectedBytes.byteString)]
         if !review.isEmpty {
-            lines.append("\(review.count) marked Review: " + review.prefix(4).map(\.name).joined(separator: ", ")
-                         + (review.count > 4 ? ", …" : ""))
+            let names = review.prefix(4).map(\.name).joined(separator: ", ") + (review.count > 4 ? ", …" : "")
+            lines.append(L("%lld marked Review go to the Trash: %@", review.count, names))
         }
         if privileged.count > 1 {
-            lines.append("\(privileged.count) items need root; the password is asked once.")
+            lines.append(L("%lld items need root; the password is asked once.", privileged.count))
         } else if privileged.count == 1 {
-            lines.append("1 item needs root; the password is asked once.")
+            lines.append(L("1 item needs root; the password is asked once."))
         }
         return lines.joined(separator: "\n")
     }
