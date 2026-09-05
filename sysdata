@@ -1,0 +1,641 @@
+#!/bin/bash
+#
+# sysdata - measure and reclaim what really fills the macOS "System Data" bucket.
+#
+# "System Data" in System Settings > Storage is everything Finder cannot
+# attribute to an app, photos or documents. On developer machines the bulk of
+# it is APFS local snapshots, CoreSimulator device data, Xcode device-support
+# symbol caches, package-manager stores and the unified log archive. This tool
+# measures those sources and removes only the ones that macOS or the owning
+# tool regenerates on demand. It never touches iOS backups, Xcode archives,
+# simulator runtimes or user documents.
+#
+# Runs on macOS 12 and later with the stock /bin/bash (3.2).
+
+set -u
+
+readonly VERSION="0.1.0"
+readonly CLEANABLE="snapshots simulators xcode packages logs temp docker trash"
+readonly REPORT_ONLY="runtimes backups swap"
+
+MODE="scan"
+APPLY=0
+SELECTED=()
+TOTAL_KB=0
+
+# ---------------------------------------------------------------------------
+# Output
+# ---------------------------------------------------------------------------
+
+if [ -t 1 ]; then
+  BOLD=$'\033[1m'; DIM=$'\033[2m'; RED=$'\033[31m'; GREEN=$'\033[32m'
+  YELLOW=$'\033[33m'; RESET=$'\033[0m'
+else
+  BOLD=""; DIM=""; RED=""; GREEN=""; YELLOW=""; RESET=""
+fi
+
+say()  { printf '%s\n' "$*"; }
+note() { printf '   %s%s%s\n' "$DIM" "$*" "$RESET"; }
+warn() { printf '   %s%s%s\n' "$YELLOW" "$*" "$RESET" >&2; }
+die()  { printf '%s%s%s\n' "$RED" "$*" "$RESET" >&2; exit 1; }
+
+human_kb() {
+  awk -v kb="$1" 'BEGIN {
+    sign = ""; if (kb < 0) { sign = "-"; kb = -kb }
+    printf "%s", sign;
+    if (kb >= 1048576) printf "%.2f GB", kb / 1048576;
+    else if (kb >= 1024) printf "%.0f MB", kb / 1024;
+    else printf "%d KB", kb;
+  }'
+}
+
+# Sum of `du -sk` for every existing path in the argument list.
+dir_kb() {
+  local total=0 kb path
+  for path in "$@"; do
+    [ -e "$path" ] || continue
+    kb=$(du -sk "$path" 2>/dev/null | awk '{print $1}')
+    total=$((total + ${kb:-0}))
+  done
+  printf '%s' "$total"
+}
+
+# Disk space available on the system volume, in KB.
+free_kb() { df -k / | awk 'NR == 2 {print $4}'; }
+
+# ---------------------------------------------------------------------------
+# Actions: every mutation goes through one of these so dry-run stays honest.
+# ---------------------------------------------------------------------------
+
+run() {
+  if [ "$APPLY" -eq 1 ]; then
+    note "\$ $*"
+    "$@" || warn "command failed (exit $?): $*"
+  else
+    note "would run: $*"
+  fi
+}
+
+run_root() {
+  if [ "$APPLY" -eq 1 ]; then
+    note "\$ sudo $*"
+    sudo "$@" || warn "command failed (exit $?): sudo $*"
+  else
+    note "would run: sudo $*"
+  fi
+}
+
+remove() {
+  local path
+  for path in "$@"; do
+    [ -e "$path" ] || continue
+    if [ "$APPLY" -eq 1 ]; then
+      note "rm -rf $path"
+      rm -rf "$path" || warn "could not remove $path"
+    else
+      note "would remove: $path"
+    fi
+  done
+}
+
+remove_root() {
+  local path
+  for path in "$@"; do
+    [ -e "$path" ] || continue
+    if [ "$APPLY" -eq 1 ]; then
+      note "sudo rm -rf $path"
+      sudo rm -rf "$path" || warn "could not remove $path"
+    else
+      note "would remove (sudo): $path"
+    fi
+  done
+}
+
+# Remove the contents of a directory but keep the directory itself.
+remove_contents() {
+  local dir="$1"
+  [ -d "$dir" ] || return 0
+  if [ "$APPLY" -eq 1 ]; then
+    note "emptying $dir"
+    find "$dir" -mindepth 1 -maxdepth 1 -exec rm -rf {} + 2>/dev/null
+  else
+    note "would empty: $dir"
+  fi
+}
+
+remove_contents_root() {
+  local dir="$1"
+  [ -d "$dir" ] || return 0
+  if [ "$APPLY" -eq 1 ]; then
+    note "sudo emptying $dir"
+    sudo find "$dir" -mindepth 1 -maxdepth 1 -exec rm -rf {} + 2>/dev/null
+  else
+    note "would empty (sudo): $dir"
+  fi
+}
+
+# ---------------------------------------------------------------------------
+# snapshots - APFS local Time Machine snapshots
+# ---------------------------------------------------------------------------
+# Time Machine keeps hourly snapshots on the boot volume. Finder counts their
+# blocks as System Data and they routinely hold tens of gigabytes after large
+# deletions. Deleting them is safe: the external backup is untouched and the
+# next backup run recreates a fresh snapshot.
+
+snapshot_count() {
+  tmutil listlocalsnapshots / 2>/dev/null | grep -c 'com.apple.TimeMachine' || true
+}
+
+size_snapshots() { printf '0'; }
+
+describe_snapshots() {
+  local count
+  count=$(snapshot_count)
+  say "   $count local Time Machine snapshot(s) on /"
+  if [ "$count" -gt 0 ]; then
+    tmutil listlocalsnapshots / 2>/dev/null | grep 'com.apple.TimeMachine' | sed 's/^/     /'
+    note "APFS does not report per-snapshot size; free space is measured before and after."
+  fi
+}
+
+clean_snapshots() {
+  local count
+  count=$(snapshot_count)
+  if [ "$count" -eq 0 ]; then
+    note "nothing to do"
+    return
+  fi
+  run_root tmutil deletelocalsnapshots /
+  # Ask APFS to actually release the purgeable blocks instead of waiting for
+  # pressure. The amount is intentionally larger than any disk.
+  run_root tmutil thinlocalsnapshots / 9999999999999 4
+}
+
+# ---------------------------------------------------------------------------
+# simulators - CoreSimulator device data
+# ---------------------------------------------------------------------------
+# Each simulator device keeps its own Caches, tmp and dyld shared-cache copies.
+# Those regenerate on next boot. Devices whose runtime is no longer installed
+# are dead weight and are deleted with `simctl delete unavailable`. Existing,
+# usable simulators are never deleted or erased.
+
+SIM_ROOT="$HOME/Library/Developer/CoreSimulator"
+
+simulator_cache_paths() {
+  local dev
+  for dev in "$SIM_ROOT"/Devices/*; do
+    [ -d "$dev" ] || continue
+    [ -d "$dev/data/Library/Caches" ] && printf '%s\n' "$dev/data/Library/Caches"
+    [ -d "$dev/data/tmp" ] && printf '%s\n' "$dev/data/tmp"
+  done
+  [ -d "$SIM_ROOT/Caches/dyld" ] && printf '%s\n' "$SIM_ROOT/Caches/dyld"
+  return 0
+}
+
+size_simulators() {
+  local paths
+  paths=$(simulator_cache_paths)
+  [ -n "$paths" ] || { printf '0'; return; }
+  printf '%s\n' "$paths" | tr '\n' '\0' | xargs -0 du -sk 2>/dev/null | awk '{s += $1} END {print s + 0}'
+}
+
+describe_simulators() {
+  local devices unavailable
+  devices=$(find "$SIM_ROOT/Devices" -mindepth 1 -maxdepth 1 -type d 2>/dev/null | wc -l | tr -d ' ')
+  unavailable=$(xcrun simctl list devices 2>/dev/null | grep -c 'unavailable' || true)
+  say "   $devices simulator device(s), $unavailable with a missing runtime"
+  note "per-device Caches, tmp and the shared dyld cache; devices themselves stay"
+}
+
+clean_simulators() {
+  command -v xcrun >/dev/null 2>&1 || { note "xcrun not found, skipping"; return; }
+  run xcrun simctl shutdown all
+  run xcrun simctl delete unavailable
+  local path
+  while IFS= read -r path; do
+    [ -n "$path" ] && remove_contents "$path"
+  done <<EOF
+$(simulator_cache_paths)
+EOF
+}
+
+# ---------------------------------------------------------------------------
+# xcode - regenerable Xcode caches
+# ---------------------------------------------------------------------------
+# DerivedData is rebuilt on the next build. DeviceSupport holds symbol files
+# copied from every iOS/watchOS/tvOS version ever plugged in; Xcode copies
+# them again (a few minutes) the next time that device connects. Archives are
+# release artifacts and are reported but never removed.
+
+XCODE_ROOT="$HOME/Library/Developer/Xcode"
+
+xcode_paths() {
+  printf '%s\n' \
+    "$XCODE_ROOT/DerivedData" \
+    "$XCODE_ROOT/iOS DeviceSupport" \
+    "$XCODE_ROOT/watchOS DeviceSupport" \
+    "$XCODE_ROOT/tvOS DeviceSupport" \
+    "$XCODE_ROOT/visionOS DeviceSupport" \
+    "$XCODE_ROOT/UserData/Previews/Simulator Devices" \
+    "$HOME/Library/Caches/com.apple.dt.Xcode"
+}
+
+size_xcode() {
+  local paths
+  paths=$(xcode_paths)
+  printf '%s\n' "$paths" | tr '\n' '\0' | xargs -0 du -sk 2>/dev/null | awk '{s += $1} END {print s + 0}'
+}
+
+describe_xcode() {
+  local path kb
+  while IFS= read -r path; do
+    [ -e "$path" ] || continue
+    kb=$(dir_kb "$path")
+    [ "$kb" -gt 0 ] && printf '   %10s  %s\n' "$(human_kb "$kb")" "${path#"$HOME"/}"
+  done <<EOF
+$(xcode_paths)
+EOF
+  if [ -d "$XCODE_ROOT/Archives" ]; then
+    kb=$(dir_kb "$XCODE_ROOT/Archives")
+    note "Archives ($(human_kb "$kb")) are release artifacts and are left alone"
+  fi
+}
+
+clean_xcode() {
+  local path
+  while IFS= read -r path; do
+    remove_contents "$path"
+  done <<EOF
+$(xcode_paths)
+EOF
+}
+
+# ---------------------------------------------------------------------------
+# packages - package-manager caches and stores
+# ---------------------------------------------------------------------------
+# Every entry is a download cache the tool refills on demand. Where the tool
+# ships its own prune command it is used, so internal bookkeeping stays valid.
+
+PNPM_STORE=""
+command -v pnpm >/dev/null 2>&1 && PNPM_STORE=$(pnpm store path 2>/dev/null)
+
+package_paths() {
+  printf '%s\n' \
+    "$HOME/Library/Caches/Homebrew" \
+    "$HOME/.npm/_cacache" \
+    "$HOME/Library/Caches/Yarn" \
+    "$HOME/Library/Caches/pip" \
+    "$HOME/.cache/uv" \
+    "$HOME/.gradle/caches" \
+    "$HOME/.cargo/registry" \
+    "$HOME/Library/Caches/CocoaPods" \
+    "$HOME/Library/Caches/org.swift.swiftpm" \
+    "$HOME/Library/Caches/go-build" \
+    "$HOME/Library/Caches/Cypress" \
+    "$HOME/Library/Caches/ms-playwright"
+  [ -n "$PNPM_STORE" ] && printf '%s\n' "$PNPM_STORE"
+  return 0
+}
+
+size_packages() {
+  local paths
+  paths=$(package_paths)
+  printf '%s\n' "$paths" | tr '\n' '\0' | xargs -0 du -sk 2>/dev/null | awk '{s += $1} END {print s + 0}'
+}
+
+describe_packages() {
+  local path kb
+  while IFS= read -r path; do
+    [ -e "$path" ] || continue
+    kb=$(dir_kb "$path")
+    [ "$kb" -gt 0 ] && printf '   %10s  %s\n' "$(human_kb "$kb")" "${path#"$HOME"/}"
+  done <<EOF
+$(package_paths)
+EOF
+  return 0
+}
+
+clean_packages() {
+  if command -v brew >/dev/null 2>&1; then
+    run brew cleanup --prune=all -s
+  fi
+  if command -v npm >/dev/null 2>&1; then
+    run npm cache clean --force
+  else
+    remove "$HOME/.npm/_cacache"
+  fi
+  [ -n "$PNPM_STORE" ] && run pnpm store prune
+  command -v yarn >/dev/null 2>&1 && run yarn cache clean
+  command -v pip3 >/dev/null 2>&1 && run pip3 cache purge
+  command -v uv >/dev/null 2>&1 && run uv cache clean
+  command -v pod >/dev/null 2>&1 && run pod cache clean --all
+  remove "$HOME/.gradle/caches"
+  remove "$HOME/.cargo/registry/cache" "$HOME/.cargo/registry/src"
+  remove_contents "$HOME/Library/Caches/org.swift.swiftpm"
+  remove_contents "$HOME/Library/Caches/go-build"
+  remove_contents "$HOME/Library/Caches/Cypress"
+  remove_contents "$HOME/Library/Caches/ms-playwright"
+  # Homebrew and CocoaPods caches are covered by their own commands above;
+  # fall back to plain removal when the CLI is not installed.
+  command -v brew >/dev/null 2>&1 || remove_contents "$HOME/Library/Caches/Homebrew"
+  command -v pod >/dev/null 2>&1 || remove_contents "$HOME/Library/Caches/CocoaPods"
+  command -v yarn >/dev/null 2>&1 || remove_contents "$HOME/Library/Caches/Yarn"
+  command -v pip3 >/dev/null 2>&1 || remove_contents "$HOME/Library/Caches/pip"
+}
+
+# ---------------------------------------------------------------------------
+# logs - unified log archive and crash reports
+# ---------------------------------------------------------------------------
+# /private/var/db/diagnostics and /private/var/db/uuidtext are the persisted
+# unified log. `log erase --all` is the supported way to drop them; deleting
+# the files by hand corrupts the store. Crash reports and app logs are plain
+# files and can go.
+
+log_root_paths() {
+  printf '%s\n' \
+    /private/var/db/diagnostics \
+    /private/var/db/uuidtext \
+    /Library/Logs/DiagnosticReports \
+    /private/var/log/asl
+}
+
+log_user_paths() {
+  printf '%s\n' \
+    "$HOME/Library/Logs"
+}
+
+size_logs() {
+  local root user
+  root=$(log_root_paths | tr '\n' '\0' | xargs -0 sudo -n du -sk 2>/dev/null | awk '{s += $1} END {print s + 0}')
+  if [ -z "$root" ] || [ "$root" -eq 0 ]; then
+    root=$(log_root_paths | tr '\n' '\0' | xargs -0 du -sk 2>/dev/null | awk '{s += $1} END {print s + 0}')
+  fi
+  user=$(log_user_paths | tr '\n' '\0' | xargs -0 du -sk 2>/dev/null | awk '{s += $1} END {print s + 0}')
+  printf '%s' $((root + user))
+}
+
+describe_logs() {
+  local path kb
+  while IFS= read -r path; do
+    [ -e "$path" ] || continue
+    kb=$(dir_kb "$path")
+    printf '   %10s  %s\n' "$(human_kb "$kb")" "$path"
+  done <<EOF
+$(log_root_paths)
+$(log_user_paths)
+EOF
+  note "unified log store is cleared with 'log erase --all' (needs sudo)"
+}
+
+clean_logs() {
+  run_root log erase --all
+  remove_contents_root /Library/Logs/DiagnosticReports
+  remove_root /private/var/log/asl/*.asl
+  remove_contents "$HOME/Library/Logs"
+}
+
+# ---------------------------------------------------------------------------
+# temp - per-user cache and temp directories under /private/var/folders
+# ---------------------------------------------------------------------------
+# macOS only sweeps these on reboot or under disk pressure, so they grow for
+# weeks on machines that sleep instead of restart. Files modified in the last
+# three days are kept so running apps do not lose scratch state.
+
+TEMP_AGE_DAYS=3
+USER_CACHE_DIR=$(getconf DARWIN_USER_CACHE_DIR 2>/dev/null)
+USER_TEMP_DIR=$(getconf DARWIN_USER_TEMP_DIR 2>/dev/null)
+
+size_temp() {
+  dir_kb "$USER_CACHE_DIR" "$USER_TEMP_DIR"
+}
+
+describe_temp() {
+  printf '   %10s  %s\n' "$(human_kb "$(dir_kb "$USER_CACHE_DIR")")" "$USER_CACHE_DIR"
+  printf '   %10s  %s\n' "$(human_kb "$(dir_kb "$USER_TEMP_DIR")")" "$USER_TEMP_DIR"
+  note "files untouched for more than $TEMP_AGE_DAYS days are removed"
+}
+
+clean_temp() {
+  local dir
+  for dir in "$USER_CACHE_DIR" "$USER_TEMP_DIR"; do
+    [ -d "$dir" ] || continue
+    if [ "$APPLY" -eq 1 ]; then
+      note "pruning $dir (older than $TEMP_AGE_DAYS days)"
+      find "$dir" -mindepth 1 -type f -mtime +"$TEMP_AGE_DAYS" -delete 2>/dev/null
+      find "$dir" -mindepth 1 -type d -empty -delete 2>/dev/null
+    else
+      local kb
+      kb=$(find "$dir" -mindepth 1 -type f -mtime +"$TEMP_AGE_DAYS" -print0 2>/dev/null \
+           | xargs -0 du -ck 2>/dev/null | tail -1 | awk '{print $1 + 0}')
+      note "would prune $(human_kb "${kb:-0}") from $dir"
+    fi
+  done
+}
+
+# ---------------------------------------------------------------------------
+# docker - dangling images, stopped containers, build cache
+# ---------------------------------------------------------------------------
+# Docker Desktop keeps everything inside one sparse disk image that Finder
+# reports as System Data. Only Docker's own prune reclaims it. Volumes are
+# kept because they hold databases.
+
+docker_available() {
+  command -v docker >/dev/null 2>&1 && docker info >/dev/null 2>&1
+}
+
+size_docker() {
+  if docker_available; then
+    docker system df --format '{{.Reclaimable}}' 2>/dev/null \
+      | awk '{
+          v = $1; gsub(/[^0-9.]/, "", v);
+          if ($1 ~ /GB/) s += v * 1048576; else if ($1 ~ /MB/) s += v * 1024; else if ($1 ~ /kB/) s += v;
+        } END {printf "%d", s}'
+  else
+    printf '0'
+  fi
+}
+
+describe_docker() {
+  if docker_available; then
+    docker system df 2>/dev/null | sed 's/^/   /'
+  else
+    note "docker not running or not installed"
+    local vm="$HOME/Library/Containers/com.docker.docker/Data/vms"
+    [ -d "$vm" ] && note "Docker disk image on disk: $(human_kb "$(dir_kb "$vm")") (start Docker to prune it)"
+  fi
+  return 0
+}
+
+clean_docker() {
+  docker_available || { note "docker not running, skipping"; return; }
+  run docker system prune -f
+  run docker builder prune -f
+}
+
+# ---------------------------------------------------------------------------
+# trash
+# ---------------------------------------------------------------------------
+
+size_trash() { dir_kb "$HOME/.Trash"; }
+describe_trash() { printf '   %10s  %s\n' "$(human_kb "$(size_trash)")" "$HOME/.Trash"; }
+clean_trash() { remove_contents "$HOME/.Trash"; }
+
+# ---------------------------------------------------------------------------
+# report-only categories
+# ---------------------------------------------------------------------------
+
+describe_runtimes() {
+  command -v xcrun >/dev/null 2>&1 || { note "xcrun not found"; return; }
+  local list
+  list=$(xcrun simctl runtime list 2>/dev/null)
+  [ -n "$list" ] || { note "no runtime disk images"; return; }
+  printf '%s\n' "$list" | grep -E '^(-- |Total|[A-Za-z]+ [0-9])' | sed 's/^/   /'
+  note "remove a version you no longer test with:"
+  note "  xcrun simctl runtime delete <UUID>"
+  note "delete simulators that use it first; Xcode > Settings > Components re-downloads it"
+}
+
+describe_backups() {
+  local dir="$HOME/Library/Application Support/MobileSync/Backup"
+  local kb
+  kb=$(dir_kb "$dir")
+  printf '   %10s  %s\n' "$(human_kb "$kb")" "${dir#"$HOME"/}"
+  if [ "$kb" -gt 0 ]; then
+    note "device backups are user data; archive to an external disk, then"
+    note "remove in Finder > [device] > Manage Backups"
+  fi
+}
+
+describe_swap() {
+  local kb
+  kb=$(dir_kb /private/var/vm)
+  printf '   %10s  %s\n' "$(human_kb "$kb")" "/private/var/vm"
+  note "sleepimage and swapfiles are managed by the kernel; reboot to shrink them"
+}
+
+# ---------------------------------------------------------------------------
+# driver
+# ---------------------------------------------------------------------------
+
+usage() {
+  cat <<EOF
+${BOLD}sysdata${RESET} $VERSION - reclaim macOS "System Data"
+
+Usage:
+  sysdata                         scan every category (default)
+  sysdata scan                    same
+  sysdata clean [category ...]    dry run for all or the given categories
+  sysdata clean --yes [...]       actually delete
+
+Cleanable categories:
+  snapshots   APFS local Time Machine snapshots            (sudo)
+  simulators  CoreSimulator device caches, dead devices
+  xcode       DerivedData, DeviceSupport, preview caches
+  packages    brew, npm, pnpm, yarn, pip, uv, gradle, cargo, pods, swiftpm
+  logs        unified log store, crash reports, app logs   (sudo)
+  temp        /private/var/folders user cache and temp
+  docker      dangling images, stopped containers, build cache
+  trash       ~/.Trash
+
+Reported only:
+  runtimes    simulator runtime disk images
+  backups     iOS device backups
+  swap        sleepimage and swapfiles
+
+Nothing is deleted without --yes. Categories marked (sudo) prompt for your
+password when applied.
+EOF
+}
+
+category_header() {
+  local name="$1" kb="$2" tag="$3"
+  printf '\n%s%-11s%s %10s  %s%s%s\n' "$BOLD" "$name" "$RESET" "$(human_kb "$kb")" "$DIM" "$tag" "$RESET"
+}
+
+scan_category() {
+  local cat="$1" kb
+  kb=$("size_$cat")
+  TOTAL_KB=$((TOTAL_KB + kb))
+  case "$cat" in
+    snapshots|logs) category_header "$cat" "$kb" "cleanable, sudo" ;;
+    *)              category_header "$cat" "$kb" "cleanable" ;;
+  esac
+  "describe_$cat"
+}
+
+report_category() {
+  local cat="$1"
+  printf '\n%s%-11s%s %10s  %sreport only%s\n' "$BOLD" "$cat" "$RESET" "" "$DIM" "$RESET"
+  "describe_$cat"
+}
+
+do_scan() {
+  local cat
+  say "${BOLD}Free space on /:${RESET} $(human_kb "$(free_kb)")"
+  for cat in $CLEANABLE; do scan_category "$cat"; done
+  for cat in $REPORT_ONLY; do report_category "$cat"; done
+  say ""
+  say "${BOLD}Measured cleanable:${RESET} $(human_kb "$TOTAL_KB") (snapshots not included; APFS hides their size)"
+  say "Run '${BOLD}sysdata clean${RESET}' for a dry run, '${BOLD}sysdata clean --yes${RESET}' to apply."
+}
+
+do_clean() {
+  local cat before after
+  before=$(free_kb)
+  if [ "$APPLY" -eq 1 ]; then
+    say "${BOLD}Applying${RESET} (${SELECTED[*]})"
+  else
+    say "${BOLD}Dry run${RESET} (${SELECTED[*]}) - nothing is deleted without --yes"
+  fi
+  for cat in "${SELECTED[@]}"; do
+    printf '\n%s%s%s\n' "$BOLD" "$cat" "$RESET"
+    "clean_$cat"
+  done
+  after=$(free_kb)
+  say ""
+  if [ "$APPLY" -eq 1 ]; then
+    say "${GREEN}${BOLD}Free space:${RESET} $(human_kb "$before") -> $(human_kb "$after") ($(human_kb $((after - before))) reclaimed)"
+    note "Finder's Storage pane recalculates lazily; reopen it or wait a minute."
+  else
+    say "Free space now: $(human_kb "$before")"
+  fi
+}
+
+is_cleanable() {
+  local c
+  for c in $CLEANABLE; do [ "$c" = "$1" ] && return 0; done
+  return 1
+}
+
+main() {
+  [ "$(uname -s)" = "Darwin" ] || die "sysdata only runs on macOS"
+
+  while [ $# -gt 0 ]; do
+    case "$1" in
+      scan)          MODE="scan" ;;
+      clean)         MODE="clean" ;;
+      --yes|-y)      APPLY=1 ;;
+      --help|-h)     usage; exit 0 ;;
+      --version)     say "$VERSION"; exit 0 ;;
+      --*)           die "unknown option: $1" ;;
+      *)
+        is_cleanable "$1" || die "unknown or report-only category: $1 (see --help)"
+        SELECTED+=("$1")
+        ;;
+    esac
+    shift
+  done
+
+  case "$MODE" in
+    scan)
+      [ ${#SELECTED[@]} -eq 0 ] || die "scan takes no categories"
+      do_scan
+      ;;
+    clean)
+      [ ${#SELECTED[@]} -gt 0 ] || read -r -a SELECTED <<<"$CLEANABLE"
+      do_clean
+      ;;
+  esac
+}
+
+main "$@"
