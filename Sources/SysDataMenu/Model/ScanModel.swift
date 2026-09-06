@@ -23,6 +23,7 @@ final class ScanModel {
     /// Items the user chose not to see again. Persisted; ids are path-based.
     private(set) var hiddenIDs: Set<String>
     var selectedIDs: Set<String> = []
+    private var selectionAnchorID: String?
     var errorMessage: String?
     /// Non-error feedback, such as "moved to the Trash".
     var notice: String?
@@ -59,6 +60,7 @@ final class ScanModel {
     func hide(_ item: StorageItem) {
         hiddenIDs.insert(item.id)
         selectedIDs.remove(item.id)
+        if selectionAnchorID == item.id { selectionAnchorID = nil }
         UserDefaults.standard.set(Array(hiddenIDs).sorted(), forKey: Self.hiddenKey)
     }
 
@@ -110,21 +112,40 @@ final class ScanModel {
         hasFullDiskAccess = Self.checkFullDiskAccess()
     }
 
-    func toggleSelection(_ item: StorageItem) {
+    func setSelection(_ item: StorageItem, selected: Bool, extendingRange: Bool) {
         guard !item.action.isManual else { return }
-        if selectedIDs.contains(item.id) {
-            selectedIDs.remove(item.id)
-        } else {
-            selectedIDs.insert(item.id)
+
+        let selectableItems = categories
+            .flatMap { $0.items }
+            .filter { !$0.action.isManual }
+
+        if extendingRange,
+           let anchorID = selectionAnchorID,
+           let anchorIndex = selectableItems.firstIndex(where: { $0.id == anchorID }),
+           let itemIndex = selectableItems.firstIndex(where: { $0.id == item.id }) {
+            let bounds = min(anchorIndex, itemIndex)...max(anchorIndex, itemIndex)
+            let rangeIDs = Set(selectableItems[bounds].map(\.id))
+            if selected {
+                selectedIDs.formUnion(rangeIDs)
+            } else {
+                selectedIDs.subtract(rangeIDs)
+            }
+            return
         }
+
+        if selected { selectedIDs.insert(item.id) }
+        else { selectedIDs.remove(item.id) }
+        selectionAnchorID = item.id
     }
 
     func selectAllSafe() {
         selectedIDs = Set(visibleItems.filter { $0.safety == .safe && !$0.action.isManual }.map(\.id))
+        selectionAnchorID = nil
     }
 
     func clearSelection() {
         selectedIDs = []
+        selectionAnchorID = nil
     }
 
     var categories: [(category: StorageCategory, items: [StorageItem], total: Int64)] {
@@ -141,6 +162,7 @@ final class ScanModel {
         isScanning = true
         errorMessage = nil
         selectedIDs = []
+        selectionAnchorID = nil
         refreshAccess()
         phase = L("Measuring known locations…")
         defer {
@@ -180,6 +202,7 @@ final class ScanModel {
     func reclaimSelected() async {
         let chosen = selectedItems
         selectedIDs = []
+        selectionAnchorID = nil
         await reclaim(chosen)
     }
 

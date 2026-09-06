@@ -5,7 +5,7 @@ struct ItemRow: View {
     let item: StorageItem
     let isBusy: Bool
     let isSelected: Bool
-    let onToggle: () -> Void
+    let onToggle: (Bool) -> Void
     let onDelete: () -> Void
     let onHide: () -> Void
 
@@ -16,7 +16,7 @@ struct ItemRow: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 6) {
             HStack(alignment: .top, spacing: 10) {
-                Toggle(isOn: Binding(get: { isSelected }, set: { _ in onToggle() })) {
+                Toggle(isOn: Binding(get: { isSelected }, set: { onToggle($0) })) {
                     EmptyView()
                 }
                 .toggleStyle(.checkbox)

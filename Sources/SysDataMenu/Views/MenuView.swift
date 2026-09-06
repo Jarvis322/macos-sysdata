@@ -191,7 +191,13 @@ struct MenuView: View {
                                 item: item,
                                 isBusy: model.busyItemIDs.contains(item.id),
                                 isSelected: model.selectedIDs.contains(item.id),
-                                onToggle: { model.toggleSelection(item) },
+                                onToggle: { isSelected in
+                                    model.setSelection(
+                                        item,
+                                        selected: isSelected,
+                                        extendingRange: NSEvent.modifierFlags.contains(.shift)
+                                    )
+                                },
                                 onDelete: { pendingDeletion = item },
                                 onHide: { model.hide(item) }
                             )
