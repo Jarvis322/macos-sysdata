@@ -38,6 +38,19 @@ Or download `SysDataMenu-<version>.zip` from the
 [latest release](https://github.com/Jarvis322/macos-sysdata/releases/latest)
 and drop the app into `/Applications`.
 
+The build is signed with a Developer ID but not yet notarized, so the first
+launch is blocked with "Apple could not verify". Open System Settings >
+Privacy & Security, scroll to the message about SysDataMenu and click
+**Open Anyway** (on macOS 15 and later right-click > Open no longer works).
+Or clear the quarantine flag yourself:
+
+```bash
+xattr -d com.apple.quarantine /Applications/SysDataMenu.app
+```
+
+With Homebrew, `brew install --cask --no-quarantine Jarvis322/tap/sysdata`
+skips the prompt.
+
 Build from source (Xcode 16 or later):
 
 ```bash

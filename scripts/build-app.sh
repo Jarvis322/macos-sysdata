@@ -5,7 +5,7 @@ set -euo pipefail
 
 root=$(cd "$(dirname "$0")/.." && pwd)
 name="SysDataMenu"
-version="0.3.0"
+version="0.3.1"
 bundle="$root/build/$name.app"
 archive="$root/build/$name-$version.zip"
 
@@ -77,11 +77,11 @@ fi
 # warning. Store credentials once with:
 #   xcrun notarytool store-credentials sysdata --apple-id ... --team-id ...
 # then run: NOTARY_PROFILE=sysdata scripts/build-app.sh
-ditto -c -k --keepParent "$bundle" "$archive"
+ditto -c -k --keepParent --norsrc "$bundle" "$archive"
 if [ -n "${NOTARY_PROFILE:-}" ]; then
   xcrun notarytool submit "$archive" --keychain-profile "$NOTARY_PROFILE" --wait
   xcrun stapler staple "$bundle"
-  ditto -c -k --keepParent "$bundle" "$archive"
+  ditto -c -k --keepParent --norsrc "$bundle" "$archive"
   echo "Notarized and stapled"
 fi
 echo "Built $bundle"
