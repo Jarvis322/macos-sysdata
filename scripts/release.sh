@@ -44,7 +44,9 @@ echo "==> $current -> $version"
 
 # Verify before anything is published.
 swift build
-swift test
+# The disk-walking tests are opt-in so `swift test` stays quick during the
+# day. A release is the one moment they have to run.
+SYSDATA_SCAN_TESTS=1 swift test
 shellcheck sysdata scripts/*.sh
 
 printf '%s\n' "$version" > VERSION

@@ -10,8 +10,9 @@ import Testing
 ///
 ///     SYSDATA_SCAN_TESTS=1 swift test
 ///
-/// CI enables them, where the runner starts nearly empty and the walk is quick.
-/// Everything else here runs in milliseconds.
+/// The release script sets it, so no version ships without them. CI leaves
+/// them off: a runner carries Xcode and its simulator runtimes, so the walk is
+/// no quicker there. Everything else here runs in milliseconds.
 enum MachineScan {
     static let isEnabled = ProcessInfo.processInfo.environment["SYSDATA_SCAN_TESTS"] != nil
 }
