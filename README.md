@@ -6,7 +6,6 @@
 
 <p align="center">
   A menu bar app that shows what is really inside macOS "System Data" and lets you delete it, item by item.<br>
-  <a href="https://github.com/Jarvis322/macos-sysdata/actions/workflows/ci.yml"><img src="https://github.com/Jarvis322/macos-sysdata/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
   <img src="https://img.shields.io/badge/macOS-14%2B-black" alt="macOS 14+">
   <img src="https://img.shields.io/badge/Swift-6-orange" alt="Swift 6">
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-green" alt="MIT"></a>
