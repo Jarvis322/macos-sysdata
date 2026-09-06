@@ -12,7 +12,10 @@ struct CommandError: LocalizedError {
     let result: CommandResult
 
     var errorDescription: String? {
-        let trimmed = result.output.trimmingCharacters(in: .whitespacesAndNewlines)
+        // osascript prefixes shell failures with "12:345: execution error: ".
+        let trimmed = result.output
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+            .replacingOccurrences(of: #"^\d+:\d+: execution error: "#, with: "", options: .regularExpression)
         return trimmed.isEmpty ? "\(command) failed (exit \(result.status))" : trimmed
     }
 }

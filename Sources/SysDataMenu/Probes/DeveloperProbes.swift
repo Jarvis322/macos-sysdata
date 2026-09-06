@@ -74,7 +74,7 @@ struct SimulatorProbe: StorageProbe {
                         detail: "Resets this \(runtimeName) simulator to factory state. Installed apps and their data are lost.",
                         sizeBytes: dataSize,
                         safety: .review,
-                        action: .command(executable: xcrun, arguments: ["simctl", "erase", udid]),
+                        action: .steps([.shutdownSimulators, .command(executable: xcrun, arguments: ["simctl", "erase", udid])]),
                         revealURL: data
                     ))
                 }
@@ -95,7 +95,7 @@ struct SimulatorProbe: StorageProbe {
                     detail: "Per-device Caches and tmp plus the shared dyld cache. Rebuilt on the next boot.",
                     sizeBytes: total,
                     safety: .safe,
-                    action: .emptyDirectories(cacheDirectories),
+                    action: .steps([.shutdownSimulators, .emptyDirectories(cacheDirectories)]),
                     revealURL: root.appending(path: "Devices")
                 ), at: 0)
             }
@@ -106,10 +106,13 @@ struct SimulatorProbe: StorageProbe {
             id: "sim-system-dyld",
             category: .simulators,
             name: "System dyld cache",
-            detail: "Shared cache CoreSimulator builds for every installed runtime. Recreated on next simulator launch (slow first boot).",
+            detail: "Shared cache CoreSimulator builds for every installed runtime. Simulators are shut down first; the next boot rebuilds it (slow).",
             url: systemDyld,
             safety: .review,
-            action: .privilegedScript("rm -rf /Library/Developer/CoreSimulator/Caches/dyld/*"),
+            action: .steps([
+                .shutdownSimulators,
+                .privilegedScript("rm -rf /Library/Developer/CoreSimulator/Caches/dyld/*"),
+            ]),
             minimumBytes: 50 * ProbeSupport.megabyte
         ) {
             items.append(item)

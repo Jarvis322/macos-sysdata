@@ -32,6 +32,14 @@ enum Reclaimer {
                 throw CommandError(command: script, result: result)
             }
 
+        case .shutdownSimulators:
+            _ = try? await Shell.run("/usr/bin/xcrun", ["simctl", "shutdown", "all"])
+
+        case .steps(let actions):
+            for action in actions {
+                try await perform(action, preferTrash: preferTrash)
+            }
+
         case .manual:
             return
         }

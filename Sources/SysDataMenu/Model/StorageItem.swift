@@ -55,6 +55,11 @@ enum ReclaimAction: Sendable {
     case pruneOlderThan(URL, days: Int)
     case command(executable: String, arguments: [String])
     case privilegedScript(String)
+    /// Shuts every simulator down, ignoring the result. Files a booted
+    /// simulator has mapped cannot be deleted, not even by root.
+    case shutdownSimulators
+    /// Runs several actions in order, stopping at the first failure.
+    indirect case steps([ReclaimAction])
     case manual(String)
 
     var isManual: Bool {
@@ -72,7 +77,8 @@ enum ReclaimAction: Sendable {
         switch self {
         case .removePaths(let urls), .emptyDirectories(let urls): urls
         case .pruneOlderThan(let url, _): [url]
-        case .command, .privilegedScript, .manual: []
+        case .steps(let actions): actions.flatMap(\.paths)
+        case .command, .privilegedScript, .shutdownSimulators, .manual: []
         }
     }
 }

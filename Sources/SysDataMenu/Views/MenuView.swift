@@ -274,23 +274,30 @@ struct MenuView: View {
         }
         .padding(.horizontal, 14)
         .padding(.vertical, 10)
+        // The list above is greedy; the footer must keep its full height so
+        // a long error never overlaps the status line.
+        .layoutPriority(1)
     }
 
     private func feedbackRow(_ message: String, symbol: String, tint: Color, dismiss: @escaping () -> Void) -> some View {
         HStack(alignment: .top, spacing: 6) {
             Image(systemName: symbol)
                 .foregroundStyle(tint)
-            Text(message)
-                .font(.caption)
-                .lineLimit(3)
-                .textSelection(.enabled)
-            Spacer()
+            ScrollView {
+                Text(message)
+                    .font(.caption)
+                    .textSelection(.enabled)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+            }
+            .frame(maxHeight: 96)
             Button(action: dismiss) {
                 Image(systemName: "xmark")
             }
             .buttonStyle(.borderless)
             .accessibilityLabel(L("Dismiss"))
         }
+        .padding(.bottom, 4)
     }
 
     private var authorBadge: some View {
