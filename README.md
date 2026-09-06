@@ -39,7 +39,9 @@ open it and drag the app onto Applications. A `.zip` of the same app is
 attached to every release for anyone scripting the download.
 
 Releases from 0.3.2 on are signed with a Developer ID and notarized by
-Apple, so the app opens without a Gatekeeper prompt.
+Apple, so the app opens without a Gatekeeper prompt. From 0.3.7 the binary
+is universal; 0.3.2 to 0.3.6 were Apple Silicon only and will not launch on
+an Intel Mac.
 
 Build from source (Xcode 16 or later):
 

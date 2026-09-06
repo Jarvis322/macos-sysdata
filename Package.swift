@@ -9,6 +9,11 @@ let package = Package(
         .executableTarget(
             name: "SysDataMenu",
             path: "Sources/SysDataMenu",
+            // The catalogue is the source the .lproj tables are generated
+            // from, not a resource. Xcode's build system, which the universal
+            // build uses, compiles it into the same files scripts/compile-
+            // strings.sh already produced, and the two collide.
+            exclude: ["Resources/Localizable.xcstrings"],
             resources: [.process("Resources")]
         ),
         .testTarget(

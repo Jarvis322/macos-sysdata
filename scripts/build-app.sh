@@ -10,13 +10,21 @@ bundle="$root/build/$name.app"
 archive="$root/build/$name-$version.zip"
 
 "$root/scripts/compile-strings.sh"
-swift build -c release --package-path "$root"
+# Universal: macOS 14 still runs on Intel Macs, and a single-architecture
+# build silently excludes every one of them.
+build_flags=(-c release --package-path "$root" --arch arm64 --arch x86_64)
+swift build "${build_flags[@]}"
 
-bin_path=$(swift build -c release --package-path "$root" --show-bin-path)
+bin_path=$(swift build "${build_flags[@]}" --show-bin-path)
 binary="$bin_path/$name"
 rm -rf "$bundle"
 mkdir -p "$bundle/Contents/MacOS" "$bundle/Contents/Resources"
 cp "$binary" "$bundle/Contents/MacOS/$name"
+architectures=$(lipo -archs "$binary")
+case "$architectures" in
+  *arm64*x86_64*|*x86_64*arm64*) ;;
+  *) echo "warning: built for $architectures only; Intel Macs cannot run this." >&2 ;;
+esac
 # Bundle.module looks for the SwiftPM resource bundle next to the main bundle's
 # resources; without it the app aborts on its first localized string.
 cp -R "$bin_path/${name}_${name}.bundle" "$bundle/Contents/Resources/"
