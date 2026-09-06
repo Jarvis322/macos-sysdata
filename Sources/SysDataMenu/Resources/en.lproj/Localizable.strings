@@ -8,6 +8,8 @@
 "App data & caches" = "App data & caches";
 "Booted simulators ignore the quit request and hold the shutdown for 33 seconds. This shuts them down first." = "Booted simulators ignore the quit request and hold the shutdown for 33 seconds. This shuts them down first.";
 "Cancel" = "Cancel";
+"Cancelled. %d already deleted, the rest left alone." = "Cancelled. %d already deleted, the rest left alone.";
+"Cancelled. Nothing was deleted." = "Cancelled. Nothing was deleted.";
 "Clear" = "Clear";
 "Copy" = "Copy";
 "Delete" = "Delete";

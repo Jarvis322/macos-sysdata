@@ -8,6 +8,8 @@
 "App data & caches" = "Uygulama verileri ve önbellekler";
 "Booted simulators ignore the quit request and hold the shutdown for 33 seconds. This shuts them down first." = "Açık simülatörler çıkış isteğini yok sayar ve kapanışı 33 saniye bekletir. Bu seçenek önce onları kapatır.";
 "Cancel" = "Vazgeç";
+"Cancelled. %d already deleted, the rest left alone." = "İptal edildi. %d tanesi silinmişti, kalanlara dokunulmadı.";
+"Cancelled. Nothing was deleted." = "İptal edildi. Hiçbir şey silinmedi.";
 "Clear" = "Temizle";
 "Copy" = "Kopyala";
 "Delete" = "Sil";
