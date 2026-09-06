@@ -12,7 +12,7 @@
 </p>
 
 <p align="center">
-  <img src="assets/screenshot.png" width="460" alt="The System Data window listing simulator runtimes, Xcode caches and other items with their sizes">
+  <img src="assets/screenshot.png" width="460" alt="The System Data window: a filter field under the header, then simulator devices and runtimes listed with their sizes and safety badges">
 </p>
 
 ---
@@ -26,27 +26,6 @@ machine disks, the unified log, per-app data folders.
 This app opens the bucket. It is not a cache cleaner: `~/Library/Caches` is
 one small line among fifty, and the app never deletes anything you did not
 click.
-
-## Updates
-
-The app can check GitHub once a day for a newer release and offer to install
-it. It is **off by default**, and it is the only network request the app
-makes: with the switch off, nothing leaves the Mac.
-
-Installing replaces the app in place. Before anything is moved, the download
-must have come from `github.com` over HTTPS, pass the same Gatekeeper
-assessment a fresh download gets, and be signed by the same team as the copy
-asking for the update. Anything else is discarded with a message, and the
-installed app is left alone.
-
-## Checks
-
-```bash
-scripts/ci.sh                        # build, tests, lint, bundle, strings
-SYSDATA_SCAN_TESTS=1 scripts/ci.sh   # and the tests that walk the whole disk
-```
-
-Run before pushing; the release script runs it too.
 
 ## Install
 
@@ -74,6 +53,18 @@ open build/SysDataMenu.app
 ```
 
 The app has a **Launch at login** switch in its footer.
+
+## Updates
+
+The app can check GitHub once a day for a newer release and offer to install
+it. It is **off by default**, and it is the only network request the app
+makes: with the switch off, nothing leaves the Mac.
+
+Installing replaces the app in place. Before anything is moved, the download
+must have come from `github.com` over HTTPS, pass the same Gatekeeper
+assessment a fresh download gets, and be signed by the same team as the copy
+asking for the update. Anything else is discarded with a message, and the
+installed app is left alone.
 
 ## What it does
 
@@ -120,7 +111,7 @@ The app has a **Launch at login** switch in its footer.
 | Simulator runtimes | each installed runtime disk image | Review |
 | Xcode | DerivedData, DeviceSupport, preview devices, caches, Archives, inactive Xcode.app copies | Safe / Review |
 | Package managers | brew, npm, pnpm, yarn, pip, uv, CocoaPods, Gradle, Cargo, SwiftPM, Go, Cypress, Playwright; the whole Homebrew prefix | Safe / Manual |
-| Developer tool data | Ollama and Hugging Face models, nvm/rustup/pyenv/rbenv/SDKMAN toolchains, conda, Maven, CocoaPods specs, Gradle distributions, Go modules, Bun, Deno, VS Code and Cursor extensions, Docker CLI, OrbStack, Lima, Colima, Claude Code, Codex; any other hidden home folder over 100 MB | Safe / Review |
+| Developer tool data | Ollama and Hugging Face models, nvm/rustup/pyenv/rbenv/SDKMAN toolchains, conda, Maven, CocoaPods specs, Gradle distributions, Go modules, Bun, Deno, VS Code and Cursor extensions, Docker CLI, OrbStack, Lima, Colima; the AI coding tools (Claude Code, Codex, Grok, Copilot, Kilo, Gemini, Antigravity); any other hidden home folder over 100 MB | Safe / Review |
 | Logs & diagnostics | unified log store (`log erase`), crash reports, ASL, `~/Library/Logs` | Safe |
 | Temporary files | `/private/var/folders` user cache and temp, files older than 3 days | Safe |
 | Docker | `docker system prune` reclaimable space | Review |
@@ -130,14 +121,21 @@ The app has a **Launch at login** switch in its footer.
 | Shared & other users | `/Users/Shared` app data (BlueStacks and friends), other accounts | Review / Manual |
 | Android | AVD emulators, SDK system images, platforms, build tools, NDK, emulator, Android Studio caches | Review / Safe |
 | App data & caches | Slack, Discord, Teams, Zoom, Spotify, Safari, Adobe, Steam, Epic, Photos, Quick Look and Final Cut render caches; Claude VM bundles; Chrome on-device model; any Application Support / Containers / Group Containers folder over 200 MB, caches over 100 MB | Safe / Review |
-| Project build folders | `node_modules`, `.build`, `Pods`, `DerivedData` under Desktop, Documents, Developer, Projects | Review |
+| Project build folders | `node_modules`, `.build`, `Pods`, `DerivedData`, and the web frameworks' output (`.next`, `.nuxt`, `.svelte-kit`, `.astro`, `.angular`, `.turbo`, `.parcel-cache`, `.expo`) under Desktop, Documents, Developer, Projects | Review |
 | System | macOS installers, device firmware, Mail downloads, `/Library/Caches`, `/Library/Application Support`, Command Line Tools, cryptexes, Spotlight index, swap, iCloud local copies | Safe / Review / Manual |
 | Other large folders | catch-all: every folder over 500 MB under `~`, `/Library`, `/private/var`, `/opt`, `/usr/local` and `/Users/Shared` that no category above explains, shown with its full path | Review |
 
 The catch-all pass runs last and takes the longest (it walks the home folder
-once). The header shows which phase the scan is in. Folders Finder attributes
-to Photos, Music, Movies, Messages, Mail, iCloud Drive and Applications are
-skipped because they are not System Data.
+once, skipping everything another probe already explains). The header shows
+which phase the scan is in.
+
+Folders Finder attributes to Photos, Music, Movies, Messages, Mail, iCloud
+Drive and Applications are left out, because they are not System Data.
+**Desktop, Documents and Downloads are left out too**, for a second reason:
+Storage settings counts them as Documents, and what is in them is your own
+work, which no delete regenerates. The things under them that *are*
+reclaimable — build folders, virtual machines, render files — still each get
+their own row, named for what they are.
 
 ## Permissions, once
 
@@ -196,6 +194,15 @@ probe and registering it in `ProbeRegistry`.
 Interface strings live in `Resources/Localizable.xcstrings`;
 `scripts/compile-strings.sh` turns the catalog into the `.lproj` tables
 SwiftPM ships, and a test checks that every key has a Turkish translation.
+
+## Checks
+
+```bash
+scripts/ci.sh                        # build, tests, lint, bundle, strings
+SYSDATA_SCAN_TESTS=1 scripts/ci.sh   # and the tests that walk the whole disk
+```
+
+Run before pushing; the release script runs it too.
 
 ## Releasing
 
