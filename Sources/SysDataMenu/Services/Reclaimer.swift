@@ -5,50 +5,63 @@ import Foundation
 enum Reclaimer {
     /// `preferTrash` moves user-owned paths to the Trash instead of deleting
     /// them, so a Review item can be recovered for 30 days.
-    static func perform(_ action: ReclaimAction, preferTrash: Bool = false) async throws {
+    ///
+    /// Returns true when anything was moved to the Trash rather than deleted,
+    /// because that frees no disk space until the Trash is emptied.
+    @discardableResult
+    static func perform(_ action: ReclaimAction, preferTrash: Bool = false) async throws -> Bool {
         switch action {
         case .removePaths(let urls):
-            try await remove(urls, toTrash: preferTrash)
+            return try await remove(urls, toTrash: preferTrash)
 
         case .emptyDirectories(let directories):
             for directory in directories where directory.exists {
-                try await remove(directory.children(includeHidden: true))
+                _ = try await remove(directory.children(includeHidden: true))
             }
+            return false
 
         case .pruneOlderThan(let directory, let days):
             await Task.detached(priority: .utility) {
                 prune(directory, olderThanDays: days)
             }.value
+            return false
 
         case .command(let executable, let arguments):
             let result = try await Shell.run(executable, arguments)
             guard result.succeeded else {
                 throw CommandError(command: ([executable] + arguments).joined(separator: " "), result: result)
             }
+            return false
 
         case .privilegedScript(let script):
             let result = try await Shell.runPrivileged(script)
             guard result.succeeded else {
                 throw CommandError(command: script, result: result)
             }
+            return false
 
         case .shutdownSimulators:
             _ = try? await Shell.run("/usr/bin/xcrun", ["simctl", "shutdown", "all"])
+            return false
 
         case .steps(let actions):
+            var trashed = false
             for action in actions {
-                try await perform(action, preferTrash: preferTrash)
+                trashed = try await perform(action, preferTrash: preferTrash) || trashed
             }
+            return trashed
 
         case .manual:
-            return
+            return false
         }
     }
 
     /// Removes each path directly when the current user owns it and falls
-    /// back to a single privileged `rm` for the rest.
-    private static func remove(_ urls: [URL], toTrash: Bool = false) async throws {
+    /// back to a single privileged `rm` for the rest. Returns true when at
+    /// least one path was trashed instead of deleted.
+    private static func remove(_ urls: [URL], toTrash: Bool = false) async throws -> Bool {
         var needsRoot: [URL] = []
+        var trashed = false
         let fileManager = FileManager.default
 
         for url in urls where url.exists {
@@ -59,6 +72,7 @@ enum Reclaimer {
             // Trashing is a rename on the same volume; it fails for system
             // volumes and some containers, in which case a real delete follows.
             if toTrash, (try? fileManager.trashItem(at: url, resultingItemURL: nil)) != nil {
+                trashed = true
                 continue
             }
             do {
@@ -68,12 +82,13 @@ enum Reclaimer {
             }
         }
 
-        guard !needsRoot.isEmpty else { return }
+        guard !needsRoot.isEmpty else { return trashed }
         let script = "rm -rf " + needsRoot.map { Shell.shellQuote($0.path) }.joined(separator: " ")
         let result = try await Shell.runPrivileged(script)
         guard result.succeeded else {
             throw CommandError(command: script, result: result)
         }
+        return trashed
     }
 
     /// Deletes files not modified in the last `days` days, then any directories

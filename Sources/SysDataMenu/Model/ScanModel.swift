@@ -246,14 +246,18 @@ final class ScanModel {
         let toTrash = affected.allSatisfy { $0.safety == .review }
         let before = DiskSize.freeSpace()
         do {
-            try await Reclaimer.perform(action, preferTrash: toTrash)
+            let movedToTrash = try await Reclaimer.perform(action, preferTrash: toTrash)
             items.removeAll { ids.contains($0.id) }
             let after = DiskSize.freeSpace()
             let expected = affected.reduce(0) { $0 + ($1.sizeBytes ?? 0) }
-            reclaimedBytes += max(after - before, expected)
+            // A trashed item is renamed onto the same volume, so the drive has
+            // no more room than before. Falling back to the item's size there
+            // would credit the header with space the disk does not have, right
+            // next to a notice saying the Trash still has to be emptied.
+            reclaimedBytes += movedToTrash ? max(after - before, 0) : max(after - before, expected)
             freeBytes = after
             purgeableBytes = DiskSize.purgeableSpace()
-            if toTrash, case .removePaths = action {
+            if movedToTrash {
                 notice = L("Moved to the Trash. Empty the Trash to free the space.")
             }
         } catch {
