@@ -2,12 +2,27 @@ import Foundation
 import Testing
 @testable import SysDataMenu
 
+/// The scan measures whatever the machine happens to hold, so a full run costs
+/// minutes on a developer Mac (20+ with Xcode, simulators and node_modules
+/// around) and its result changes with what is installed. That is worth having,
+/// but not on every `swift test`, so the two tests that walk the disk are
+/// opt-in:
+///
+///     SYSDATA_SCAN_TESTS=1 swift test
+///
+/// CI enables them, where the runner starts nearly empty and the walk is quick.
+/// Everything else here runs in milliseconds.
+enum MachineScan {
+    static let isEnabled = ProcessInfo.processInfo.environment["SYSDATA_SCAN_TESTS"] != nil
+}
+
 /// Every probe runs against the real machine, so only invariants are checked:
 /// probes must not throw or hang, and what they return must be well-formed.
 @Suite struct ProbeTests {
     private let probes: [(String, any StorageProbe)] = ProbeRegistry.all.map { (String(describing: type(of: $0)), $0) }
 
-    @Test func itemsAreWellFormed() async {
+    @Test(.enabled(if: MachineScan.isEnabled), .timeLimit(.minutes(30)))
+    func itemsAreWellFormed() async {
         var seen: Set<String> = []
         var all: [StorageItem] = []
         for (label, probe) in probes {
@@ -85,7 +100,8 @@ import Testing
         return english.first { $0.value == title }?.key ?? title
     }
 
-    @Test func jsonInventoryIsWellFormed() async throws {
+    @Test(.enabled(if: MachineScan.isEnabled), .timeLimit(.minutes(30)))
+    func jsonInventoryIsWellFormed() async throws {
         let pipe = Pipe()
         await JSONInventory.write(to: pipe.fileHandleForWriting)
         try pipe.fileHandleForWriting.close()
