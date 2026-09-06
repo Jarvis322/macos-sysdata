@@ -5,7 +5,7 @@ set -euo pipefail
 
 root=$(cd "$(dirname "$0")/.." && pwd)
 name="SysDataMenu"
-version="0.3.2"
+version=$(tr -d "[:space:]" < "$root/VERSION")
 bundle="$root/build/$name.app"
 archive="$root/build/$name-$version.zip"
 

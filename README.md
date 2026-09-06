@@ -172,13 +172,17 @@ SwiftPM ships, and a test checks that every key has a Turkish translation.
 
 ## Releasing
 
+One command bumps `VERSION`, runs the tests, builds a signed and notarized
+app, commits, tags, pushes, publishes the GitHub release with notes from the
+commit log and updates the Homebrew cask:
+
 ```bash
-xcrun notarytool store-credentials sysdata --apple-id you@example.com --team-id TEAMID
-NOTARY_PROFILE=sysdata scripts/build-app.sh
-gh release create vX.Y.Z build/SysDataMenu-X.Y.Z.zip
+scripts/release.sh          # patch
+scripts/release.sh minor
 ```
 
-Then update the sha256 in the Homebrew cask.
+It expects `gh` to be logged in and a notarytool keychain profile (once:
+`xcrun notarytool store-credentials sysdata --key AuthKey.p8 --key-id ID --issuer ISSUER`).
 
 ## Requirements
 
