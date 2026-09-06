@@ -727,6 +727,72 @@
         }
       }
     },
+    "The app could not be replaced: %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Uygulama değiştirilemedi: %@"
+          }
+        }
+      }
+    },
+    "The download did not finish. Nothing was installed.": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "İndirme tamamlanmadı. Hiçbir şey kurulmadı."
+          }
+        }
+      }
+    },
+    "The download does not come from GitHub. Nothing was installed.": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "İndirilen dosya GitHub'dan gelmiyor. Hiçbir şey kurulmadı."
+          }
+        }
+      }
+    },
+    "The download is not signed by this app's developer, so it was discarded. (%@)": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "İndirilen dosya bu uygulamanın geliştiricisi tarafından imzalanmamış, bu yüzden atıldı. (%@)"
+          }
+        }
+      }
+    },
+    "The downloaded image could not be opened. Nothing was installed.": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "İndirilen disk imajı açılamadı. Hiçbir şey kurulmadı."
+          }
+        }
+      }
+    },
+    "The downloaded image does not contain the app. Nothing was installed.": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "İndirilen disk imajı uygulamayı içermiyor. Hiçbir şey kurulmadı."
+          }
+        }
+      }
+    },
     "This is regenerated automatically when needed.": {
       "localizations": {
         "tr": {
@@ -753,6 +819,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Çöp Sepeti"
+          }
+        }
+      }
+    },
+    "Update": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Güncelle"
           }
         }
       }
@@ -794,6 +871,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Xcode"
+          }
+        }
+      }
+    },
+    "different developer": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "farklı geliştirici"
           }
         }
       }

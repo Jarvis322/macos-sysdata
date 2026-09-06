@@ -19,6 +19,10 @@ final class UpdateCheck {
 
     /// The version on GitHub when it is newer than this build, else nil.
     private(set) var newVersion: String?
+    /// The disk image for that version.
+    private(set) var newVersionImage: URL?
+    private(set) var isInstalling = false
+    var installError: String?
 
     var isEnabled: Bool = UserDefaults.standard.bool(forKey: UpdateCheck.enabledKey) {
         didSet {
@@ -56,7 +60,31 @@ final class UpdateCheck {
               let tag = json["tag_name"] as? String else { return }
 
         let latest = tag.hasPrefix("v") ? String(tag.dropFirst()) : tag
-        newVersion = Self.isNewer(latest, than: Self.current) ? latest : nil
+        guard Self.isNewer(latest, than: Self.current) else {
+            newVersion = nil
+            newVersionImage = nil
+            return
+        }
+        newVersion = latest
+        let assets = json["assets"] as? [[String: Any]] ?? []
+        newVersionImage = assets
+            .compactMap { $0["browser_download_url"] as? String }
+            .first { $0.hasSuffix(".dmg") }
+            .flatMap(URL.init(string:))
+    }
+
+    /// Downloads the release and replaces this app with it. Everything that
+    /// decides whether that is safe lives in `Updater`.
+    func install() async {
+        guard let image = newVersionImage, !isInstalling else { return }
+        isInstalling = true
+        installError = nil
+        defer { isInstalling = false }
+        do {
+            try await Updater.installLatest(from: image)
+        } catch {
+            installError = error.localizedDescription
+        }
     }
 
     /// Compares dotted versions numerically, so 0.3.10 is newer than 0.3.9;

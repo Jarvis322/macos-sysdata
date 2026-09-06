@@ -25,6 +25,12 @@ struct MenuView: View {
                 updateBanner(version)
                 Divider()
             }
+            if let failure = updates.installError {
+                feedbackRow(failure, symbol: "exclamationmark.triangle.fill", tint: .orange) {
+                    updates.installError = nil
+                }
+                Divider()
+            }
             content
             Divider()
             if pendingDeletion != nil || confirmsBatch {
@@ -49,8 +55,17 @@ struct MenuView: View {
             Text(L("Version %@ is available.", version))
                 .font(.callout)
             Spacer()
-            Button(L("Download")) { NSWorkspace.shared.open(updates.downloadURL) }
-                .controlSize(.small)
+            if updates.isInstalling {
+                ProgressView().controlSize(.small)
+            } else if updates.newVersionImage != nil {
+                Button(L("Update")) { Task { await updates.install() } }
+                    .controlSize(.small)
+            } else {
+                // No image on the release: nothing to install, so the release
+                // page is the only honest offer.
+                Button(L("Download")) { NSWorkspace.shared.open(updates.downloadURL) }
+                    .controlSize(.small)
+            }
         }
         .padding(.horizontal, 14)
         .padding(.vertical, 8)

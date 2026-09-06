@@ -29,9 +29,15 @@ click.
 
 ## Updates
 
-The app can check GitHub once a day for a newer release and offer a download
-link in the menu. It is **off by default**, and it is the only network request
-the app makes: with the switch off, nothing leaves the Mac.
+The app can check GitHub once a day for a newer release and offer to install
+it. It is **off by default**, and it is the only network request the app
+makes: with the switch off, nothing leaves the Mac.
+
+Installing replaces the app in place. Before anything is moved, the download
+must have come from `github.com` over HTTPS, pass the same Gatekeeper
+assessment a fresh download gets, and be signed by the same team as the copy
+asking for the update. Anything else is discarded with a message, and the
+installed app is left alone.
 
 ## Checks
 
