@@ -134,6 +134,16 @@
         }
       }
     },
+    "Collapse %@": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ kategorisini daralt"
+          }
+        }
+      }
+    },
     "Copy": {
       "localizations": {
         "tr": {
@@ -250,6 +260,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Boş klasör"
+          }
+        }
+      }
+    },
+    "Expand %@": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ kategorisini genişlet"
           }
         }
       }

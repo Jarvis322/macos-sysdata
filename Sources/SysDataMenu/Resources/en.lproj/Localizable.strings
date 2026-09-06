@@ -11,6 +11,7 @@
 "Cancelled. %d already deleted, the rest left alone." = "Cancelled. %d already deleted, the rest left alone.";
 "Cancelled. Nothing was deleted." = "Cancelled. Nothing was deleted.";
 "Clear" = "Clear";
+"Collapse %@" = "Collapse %@";
 "Copy" = "Copy";
 "Delete" = "Delete";
 "Delete %@" = "Delete %@";
@@ -23,6 +24,7 @@
 "Docker" = "Docker";
 "Don't show this item again" = "Don't show this item again";
 "Empty folder" = "Empty folder";
+"Expand %@" = "Expand %@";
 "Frees about %@. " = "Frees about %@. ";
 "Grant Full Disk Access once" = "Grant Full Disk Access once";
 "Hide %@ from future scans" = "Hide %@ from future scans";

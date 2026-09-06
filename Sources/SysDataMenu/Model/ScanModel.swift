@@ -112,12 +112,13 @@ final class ScanModel {
         hasFullDiskAccess = Self.checkFullDiskAccess()
     }
 
-    func setSelection(_ item: StorageItem, selected: Bool, extendingRange: Bool) {
+    func setSelection(
+        _ item: StorageItem,
+        selected: Bool,
+        extendingRange: Bool,
+        selectableItems: [StorageItem]
+    ) {
         guard !item.action.isManual else { return }
-
-        let selectableItems = categories
-            .flatMap { $0.items }
-            .filter { !$0.action.isManual }
 
         if extendingRange,
            let anchorID = selectionAnchorID,
