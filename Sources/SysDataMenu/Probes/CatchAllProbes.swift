@@ -53,6 +53,17 @@ struct DeveloperToolProbe: StorageProbe {
         Known(".colima", "Colima virtual machine", "VM disk.", .review),
         Known(".claude", "Claude Code data", "Session transcripts, memory, plugins and caches. Deleting loses history.", .review),
         Known(".codex", "Codex CLI data", "Sessions and caches.", .review),
+        // Reported as unrecognised in issue #1. Named so the list says what
+        // made the folder, but left at Review: these hold sessions and signed-in
+        // state as often as they hold cache, and none of them is safe to delete
+        // unseen.
+        Known(".grok", "Grok CLI data", "Sessions, settings and caches. Deleting loses history.", .review),
+        Known(".copilot", "GitHub Copilot CLI data", "Sessions, settings and caches. Deleting signs you out.", .review),
+        Known(".kilo", "Kilo Code data", "Sessions, settings and caches. Deleting loses history.", .review),
+        Known(".gemini", "Gemini CLI data", "Settings and IDE support files.", .review),
+        // Same shape as the VS Code and Cursor entries above: almost all of it
+        // is installed extensions, which reinstall from the marketplace.
+        Known(".antigravity-ide/extensions", "Antigravity extensions", "Installed extensions. Reinstall from the marketplace.", .review),
     ]
 
     /// Top-level dot-folders another probe already reports.
