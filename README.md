@@ -27,6 +27,15 @@ This app opens the bucket. It is not a cache cleaner: `~/Library/Caches` is
 one small line among fifty, and the app never deletes anything you did not
 click.
 
+## Checks
+
+```bash
+scripts/ci.sh                        # build, tests, lint, bundle, strings
+SYSDATA_SCAN_TESTS=1 scripts/ci.sh   # and the tests that walk the whole disk
+```
+
+Run before pushing; the release script runs it too.
+
 ## Install
 
 ```bash

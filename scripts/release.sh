@@ -43,11 +43,9 @@ git rev-parse -q --verify "refs/tags/$tag" >/dev/null && { echo "tag $tag alread
 echo "==> $current -> $version"
 
 # Verify before anything is published.
-swift build
-# The disk-walking tests are opt-in so `swift test` stays quick during the
-# day. A release is the one moment they have to run.
-SYSDATA_SCAN_TESTS=1 swift test
-shellcheck sysdata scripts/*.sh
+# The same checks CI would run, plus the disk-walking tests: a release is the
+# one moment those have to happen.
+SYSDATA_SCAN_TESTS=1 scripts/ci.sh
 
 printf '%s\n' "$version" > VERSION
 scripts/build-app.sh
