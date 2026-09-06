@@ -40,8 +40,17 @@ enum Updater {
     /// Where a release may come from. A redirect off this host is refused.
     private static let expectedHost = "github.com"
 
+    /// Accept only github.com itself or one of its DNS subdomains. A plain
+    /// suffix check would also accept lookalike registrable domains such as
+    /// `notgithub.com` and `evilgithub.com`.
+    static func isExpectedDownloadURL(_ url: URL) -> Bool {
+        guard url.scheme?.lowercased() == "https",
+              let host = url.host()?.lowercased() else { return false }
+        return host == expectedHost || host.hasSuffix("." + expectedHost)
+    }
+
     static func installLatest(from url: URL) async throws {
-        guard url.host()?.hasSuffix(expectedHost) == true, url.scheme == "https" else {
+        guard isExpectedDownloadURL(url) else {
             throw Failure.unexpectedHost
         }
 
@@ -66,7 +75,7 @@ enum Updater {
         }
         // A redirect could have left the expected host between the request and
         // the bytes that arrived, so the final URL is checked too.
-        if let final = response.url, final.host()?.hasSuffix(expectedHost) != true {
+        if let final = response.url, !isExpectedDownloadURL(final) {
             try? FileManager.default.removeItem(at: temporary)
             throw Failure.unexpectedHost
         }
