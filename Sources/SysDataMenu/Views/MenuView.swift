@@ -20,40 +20,65 @@ struct MenuView: View {
             }
             content
             Divider()
+            if pendingDeletion != nil || confirmsBatch {
+                confirmationBar
+                Divider()
+            }
             footer
         }
         .frame(width: 460, height: 640)
         .task {
             if !model.hasScanned, !model.isScanning { await model.scan() }
         }
-        .confirmationDialog(
-            pendingDeletion.map { L("Delete %@?", $0.name) } ?? "",
-            isPresented: Binding(
-                get: { pendingDeletion != nil },
-                set: { if !$0 { pendingDeletion = nil } }
-            ),
-            titleVisibility: .visible,
-            presenting: pendingDeletion
-        ) { item in
-            Button(L("Delete"), role: .destructive) {
-                Task { await model.reclaim(item) }
+    }
+
+    // MARK: Confirmation
+
+    /// Inline rather than a sheet: the menu bar panel is not a regular window,
+    /// so sheets and confirmation dialogs never appear on it.
+    private var confirmationBar: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            if let item = pendingDeletion {
+                Text(L("Delete %@?", item.name))
+                    .font(.subheadline.weight(.semibold))
+                Text(confirmationMessage(for: item))
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                    .fixedSize(horizontal: false, vertical: true)
+            } else {
+                Text(L("Delete %lld items?", model.selectedItems.count))
+                    .font(.subheadline.weight(.semibold))
+                Text(batchMessage)
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                    .fixedSize(horizontal: false, vertical: true)
             }
-            Button(L("Cancel"), role: .cancel) {}
-        } message: { item in
-            Text(confirmationMessage(for: item))
-        }
-        .confirmationDialog(
-            L("Delete %lld items?", model.selectedItems.count),
-            isPresented: $confirmsBatch,
-            titleVisibility: .visible
-        ) {
-            Button(L("Delete %lld items", model.selectedItems.count), role: .destructive) {
-                Task { await model.reclaimSelected() }
+            HStack {
+                Spacer()
+                Button(L("Cancel")) {
+                    pendingDeletion = nil
+                    confirmsBatch = false
+                }
+                .keyboardShortcut(.cancelAction)
+                Button(role: .destructive) {
+                    if let item = pendingDeletion {
+                        Task { await model.reclaim(item) }
+                    } else {
+                        Task { await model.reclaimSelected() }
+                    }
+                    pendingDeletion = nil
+                    confirmsBatch = false
+                } label: {
+                    Text(pendingDeletion != nil ? L("Delete") : L("Delete %lld items", model.selectedItems.count))
+                }
+                .keyboardShortcut(.defaultAction)
+                .tint(.red)
             }
-            Button(L("Cancel"), role: .cancel) {}
-        } message: {
-            Text(batchMessage)
+            .controlSize(.small)
         }
+        .padding(.horizontal, 14)
+        .padding(.vertical, 10)
+        .background(.red.opacity(0.06))
     }
 
     // MARK: Header
@@ -61,8 +86,16 @@ struct MenuView: View {
     private var header: some View {
         HStack(alignment: .firstTextBaseline) {
             VStack(alignment: .leading, spacing: 2) {
-                Text(L("System Data"))
-                    .font(.headline)
+                HStack(alignment: .firstTextBaseline, spacing: 6) {
+                    Text(L("System Data"))
+                        .font(.headline)
+                    if !model.visibleItems.isEmpty {
+                        Text(model.measuredBytes.byteString)
+                            .font(.headline)
+                            .foregroundStyle(.secondary)
+                            .monospacedDigit()
+                    }
+                }
                 Text(subtitle)
                     .font(.caption)
                     .foregroundStyle(.secondary)
@@ -97,8 +130,11 @@ struct MenuView: View {
         if model.isScanning, !model.phase.isEmpty {
             return model.phase
         }
-        return L("%@ free · %@ purgeable · %@ found",
-                 model.freeBytes.byteString, model.purgeableBytes.byteString, model.measuredBytes.byteString)
+        if model.visibleItems.isEmpty {
+            return L("%@ free on disk", model.freeBytes.byteString)
+        }
+        return L("%@ safe to free now · %@ free on disk · %@ purgeable",
+                 model.safeBytes.byteString, model.freeBytes.byteString, model.purgeableBytes.byteString)
     }
 
     // MARK: Full Disk Access

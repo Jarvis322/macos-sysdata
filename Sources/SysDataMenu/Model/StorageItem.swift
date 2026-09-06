@@ -120,7 +120,8 @@ struct StorageItem: Identifiable, Sendable {
 }
 
 extension Int64 {
+    /// File-style byte count; "0 bytes" rather than "Zero KB".
     var byteString: String {
-        ByteCountFormatter.string(fromByteCount: self, countStyle: .file)
+        formatted(.byteCount(style: .file, spellsOutZero: false))
     }
 }

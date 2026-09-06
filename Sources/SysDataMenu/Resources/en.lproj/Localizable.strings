@@ -1,4 +1,5 @@
-"%@ free · %@ purgeable · %@ found" = "%@ free · %@ purgeable · %@ found";
+"%@ free on disk" = "%@ free on disk";
+"%@ safe to free now · %@ free on disk · %@ purgeable" = "%@ safe to free now · %@ free on disk · %@ purgeable";
 "%lld hidden" = "%lld hidden";
 "%lld items need root; the password is asked once." = "%lld items need root; the password is asked once.";
 "%lld marked Review go to the Trash: %@" = "%lld marked Review go to the Trash: %@";
@@ -58,6 +59,7 @@
 "Simulator runtimes" = "Simulator runtimes";
 "System" = "System";
 "System Data" = "System Data";
+"System Data found: %@" = "System Data found: %@";
 "Temporary files" = "Temporary files";
 "This is regenerated automatically when needed." = "This is regenerated automatically when needed.";
 "Time Machine snapshots" = "Time Machine snapshots";

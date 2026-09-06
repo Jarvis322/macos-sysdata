@@ -1,4 +1,5 @@
-"%@ free · %@ purgeable · %@ found" = "%@ boş · %@ temizlenebilir · %@ bulundu";
+"%@ free on disk" = "diskte %@ boş";
+"%@ safe to free now · %@ free on disk · %@ purgeable" = "%@ güvenle boşaltılabilir · diskte %@ boş · %@ temizlenebilir";
 "%lld hidden" = "%lld gizli";
 "%lld items need root; the password is asked once." = "%lld kalem yönetici yetkisi istiyor; parola bir kez sorulur.";
 "%lld marked Review go to the Trash: %@" = "%lld tanesi İncele işaretli, Çöp Sepeti'ne gider: %@";
@@ -58,6 +59,7 @@
 "Simulator runtimes" = "Simülatör runtime'ları";
 "System" = "Sistem";
 "System Data" = "Sistem Verileri";
+"System Data found: %@" = "Bulunan Sistem Verileri: %@";
 "Temporary files" = "Geçici dosyalar";
 "This is regenerated automatically when needed." = "Gerektiğinde kendiliğinden yeniden oluşturulur.";
 "Time Machine snapshots" = "Time Machine anlık görüntüleri";

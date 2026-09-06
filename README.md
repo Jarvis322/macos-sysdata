@@ -51,8 +51,9 @@ The app has a **Launch at login** switch in its footer.
 
 ## What it does
 
-- **Menu bar total.** The icon shows how much can be freed right now without
-  losing anything. It scans on launch and once a day after that.
+- **Menu bar total.** The icon shows the size of everything the scan found,
+  the number Storage settings calls System Data. The window header says how
+  much of it is safe to free right now. It scans on launch and once a day.
 - **Every item has a real size**, measured on disk, plus a badge:
   **Safe** regenerates automatically, **Review** costs you something (a
   simulator, a login, a re-download), **Manual** cannot be removed by the app

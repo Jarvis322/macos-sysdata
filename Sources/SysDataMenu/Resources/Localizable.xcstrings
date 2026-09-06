@@ -1,74 +1,706 @@
 {
-  "sourceLanguage" : "en",
-  "version" : "1.0",
-  "strings" : {
-    "%@ free · %@ purgeable · %@ found" : { "localizations" : { "tr" : { "stringUnit" : { "state" : "translated", "value" : "%@ boş · %@ temizlenebilir · %@ bulundu" } } } },
-    "%lld hidden" : { "localizations" : { "tr" : { "stringUnit" : { "state" : "translated", "value" : "%lld gizli" } } } },
-    "%lld items need root; the password is asked once." : { "localizations" : { "tr" : { "stringUnit" : { "state" : "translated", "value" : "%lld kalem yönetici yetkisi istiyor; parola bir kez sorulur." } } } },
-    "%lld marked Review go to the Trash: %@" : { "localizations" : { "tr" : { "stringUnit" : { "state" : "translated", "value" : "%lld tanesi İncele işaretli, Çöp Sepeti'ne gider: %@" } } } },
-    "1 item needs root; the password is asked once." : { "localizations" : { "tr" : { "stringUnit" : { "state" : "translated", "value" : "1 kalem yönetici yetkisi istiyor; parola bir kez sorulur." } } } },
-    "Android" : { "localizations" : { "tr" : { "stringUnit" : { "state" : "translated", "value" : "Android" } } } },
-    "App data & caches" : { "localizations" : { "tr" : { "stringUnit" : { "state" : "translated", "value" : "Uygulama verileri ve önbellekler" } } } },
-    "Cancel" : { "localizations" : { "tr" : { "stringUnit" : { "state" : "translated", "value" : "Vazgeç" } } } },
-    "Clear" : { "localizations" : { "tr" : { "stringUnit" : { "state" : "translated", "value" : "Temizle" } } } },
-    "Copy" : { "localizations" : { "tr" : { "stringUnit" : { "state" : "translated", "value" : "Kopyala" } } } },
-    "Delete" : { "localizations" : { "tr" : { "stringUnit" : { "state" : "translated", "value" : "Sil" } } } },
-    "Delete %@" : { "localizations" : { "tr" : { "stringUnit" : { "state" : "translated", "value" : "%@ öğesini sil" } } } },
-    "Delete %@?" : { "localizations" : { "tr" : { "stringUnit" : { "state" : "translated", "value" : "%@ silinsin mi?" } } } },
-    "Delete %lld items" : { "localizations" : { "tr" : { "stringUnit" : { "state" : "translated", "value" : "%lld kalemi sil" } } } },
-    "Delete %lld items?" : { "localizations" : { "tr" : { "stringUnit" : { "state" : "translated", "value" : "%lld kalem silinsin mi?" } } } },
-    "Delete %lld selected · %@" : { "localizations" : { "tr" : { "stringUnit" : { "state" : "translated", "value" : "Seçili %lld kalemi sil · %@" } } } },
-    "Developer tool data" : { "localizations" : { "tr" : { "stringUnit" : { "state" : "translated", "value" : "Geliştirici araç verileri" } } } },
-    "Dismiss" : { "localizations" : { "tr" : { "stringUnit" : { "state" : "translated", "value" : "Kapat" } } } },
-    "Docker" : { "localizations" : { "tr" : { "stringUnit" : { "state" : "translated", "value" : "Docker" } } } },
-    "Don't show this item again" : { "localizations" : { "tr" : { "stringUnit" : { "state" : "translated", "value" : "Bu kalemi bir daha gösterme" } } } },
-    "Empty folder" : { "localizations" : { "tr" : { "stringUnit" : { "state" : "translated", "value" : "Boş klasör" } } } },
-    "Frees about %@. " : { "localizations" : { "tr" : { "stringUnit" : { "state" : "translated", "value" : "Yaklaşık %@ boşaltır. " } } } },
-    "Grant Full Disk Access once" : { "localizations" : { "tr" : { "stringUnit" : { "state" : "translated", "value" : "Tam Disk Erişimi'ni bir kez verin" } } } },
-    "Hide %@ from future scans" : { "localizations" : { "tr" : { "stringUnit" : { "state" : "translated", "value" : "%@ öğesini sonraki taramalarda gizle" } } } },
-    "Hide breakdown" : { "localizations" : { "tr" : { "stringUnit" : { "state" : "translated", "value" : "Kırılımı gizle" } } } },
-    "How to remove %@" : { "localizations" : { "tr" : { "stringUnit" : { "state" : "translated", "value" : "%@ nasıl kaldırılır" } } } },
-    "iOS device backups" : { "localizations" : { "tr" : { "stringUnit" : { "state" : "translated", "value" : "iOS aygıt yedekleri" } } } },
-    "It goes to the Trash first." : { "localizations" : { "tr" : { "stringUnit" : { "state" : "translated", "value" : "Önce Çöp Sepeti'ne gider." } } } },
-    "Launch at login" : { "localizations" : { "tr" : { "stringUnit" : { "state" : "translated", "value" : "Girişte başlat" } } } },
-    "Launch at login: %@" : { "localizations" : { "tr" : { "stringUnit" : { "state" : "translated", "value" : "Girişte başlat: %@" } } } },
-    "Logs & diagnostics" : { "localizations" : { "tr" : { "stringUnit" : { "state" : "translated", "value" : "Günlükler ve tanılama" } } } },
-    "Looking for anything else over 500 MB…" : { "localizations" : { "tr" : { "stringUnit" : { "state" : "translated", "value" : "500 MB üstü başka ne varsa aranıyor…" } } } },
-    "Manual" : { "localizations" : { "tr" : { "stringUnit" : { "state" : "translated", "value" : "Elle" } } } },
-    "Measuring the largest entries…" : { "localizations" : { "tr" : { "stringUnit" : { "state" : "translated", "value" : "En büyük girdiler ölçülüyor…" } } } },
-    "Measuring known locations…" : { "localizations" : { "tr" : { "stringUnit" : { "state" : "translated", "value" : "Bilinen konumlar ölçülüyor…" } } } },
-    "Measuring…" : { "localizations" : { "tr" : { "stringUnit" : { "state" : "translated", "value" : "Ölçülüyor…" } } } },
-    "Moved to the Trash. Empty the Trash to free the space." : { "localizations" : { "tr" : { "stringUnit" : { "state" : "translated", "value" : "Çöp Sepeti'ne taşındı. Alanı boşaltmak için Çöp Sepeti'ni boşaltın." } } } },
-    "Nothing to reclaim" : { "localizations" : { "tr" : { "stringUnit" : { "state" : "translated", "value" : "Geri kazanılacak bir şey yok" } } } },
-    "Open Settings" : { "localizations" : { "tr" : { "stringUnit" : { "state" : "translated", "value" : "Ayarları Aç" } } } },
-    "Open x.com/yigitech" : { "localizations" : { "tr" : { "stringUnit" : { "state" : "translated", "value" : "x.com/yigitech adresini aç" } } } },
-    "Other large folders" : { "localizations" : { "tr" : { "stringUnit" : { "state" : "translated", "value" : "Diğer büyük klasörler" } } } },
-    "Package managers" : { "localizations" : { "tr" : { "stringUnit" : { "state" : "translated", "value" : "Paket yöneticileri" } } } },
-    "Project build folders" : { "localizations" : { "tr" : { "stringUnit" : { "state" : "translated", "value" : "Proje derleme klasörleri" } } } },
-    "Quit" : { "localizations" : { "tr" : { "stringUnit" : { "state" : "translated", "value" : "Çık" } } } },
-    "Reclaimed this session: %@" : { "localizations" : { "tr" : { "stringUnit" : { "state" : "translated", "value" : "Bu oturumda kazanılan: %@" } } } },
-    "Rescan" : { "localizations" : { "tr" : { "stringUnit" : { "state" : "translated", "value" : "Yeniden tara" } } } },
-    "Reveal %@ in Finder" : { "localizations" : { "tr" : { "stringUnit" : { "state" : "translated", "value" : "%@ öğesini Finder'da göster" } } } },
-    "Review" : { "localizations" : { "tr" : { "stringUnit" : { "state" : "translated", "value" : "İncele" } } } },
-    "Safe" : { "localizations" : { "tr" : { "stringUnit" : { "state" : "translated", "value" : "Güvenli" } } } },
-    "Safety: %@" : { "localizations" : { "tr" : { "stringUnit" : { "state" : "translated", "value" : "Güvenlik: %@" } } } },
-    "Scanning" : { "localizations" : { "tr" : { "stringUnit" : { "state" : "translated", "value" : "Taranıyor" } } } },
-    "Select %@" : { "localizations" : { "tr" : { "stringUnit" : { "state" : "translated", "value" : "%@ öğesini seç" } } } },
-    "Select every item that is regenerated automatically" : { "localizations" : { "tr" : { "stringUnit" : { "state" : "translated", "value" : "Kendiliğinden yeniden oluşan her kalemi seç" } } } },
-    "Select safe" : { "localizations" : { "tr" : { "stringUnit" : { "state" : "translated", "value" : "Güvenlileri seç" } } } },
-    "Shared & other users" : { "localizations" : { "tr" : { "stringUnit" : { "state" : "translated", "value" : "Paylaşılan ve diğer kullanıcılar" } } } },
-    "Show all" : { "localizations" : { "tr" : { "stringUnit" : { "state" : "translated", "value" : "Tümünü göster" } } } },
-    "Show largest entries" : { "localizations" : { "tr" : { "stringUnit" : { "state" : "translated", "value" : "En büyük girdileri göster" } } } },
-    "Simulator devices" : { "localizations" : { "tr" : { "stringUnit" : { "state" : "translated", "value" : "Simülatör aygıtları" } } } },
-    "Simulator runtimes" : { "localizations" : { "tr" : { "stringUnit" : { "state" : "translated", "value" : "Simülatör runtime'ları" } } } },
-    "System" : { "localizations" : { "tr" : { "stringUnit" : { "state" : "translated", "value" : "Sistem" } } } },
-    "System Data" : { "localizations" : { "tr" : { "stringUnit" : { "state" : "translated", "value" : "Sistem Verileri" } } } },
-    "Temporary files" : { "localizations" : { "tr" : { "stringUnit" : { "state" : "translated", "value" : "Geçici dosyalar" } } } },
-    "This is regenerated automatically when needed." : { "localizations" : { "tr" : { "stringUnit" : { "state" : "translated", "value" : "Gerektiğinde kendiliğinden yeniden oluşturulur." } } } },
-    "Time Machine snapshots" : { "localizations" : { "tr" : { "stringUnit" : { "state" : "translated", "value" : "Time Machine anlık görüntüleri" } } } },
-    "Trash" : { "localizations" : { "tr" : { "stringUnit" : { "state" : "translated", "value" : "Çöp Sepeti" } } } },
-    "Virtual machines" : { "localizations" : { "tr" : { "stringUnit" : { "state" : "translated", "value" : "Sanal makineler" } } } },
-    "Without it macOS asks for every protected folder and hides Mail, Safari and Time Machine data. Add System Data in the settings pane, then reopen the app." : { "localizations" : { "tr" : { "stringUnit" : { "state" : "translated", "value" : "Verilmezse macOS her korumalı klasör için ayrı sorar; Mail, Safari ve Time Machine verileri görünmez. Ayarlar bölmesinde System Data'yı ekleyin, sonra uygulamayı yeniden açın." } } } },
-    "Xcode" : { "localizations" : { "tr" : { "stringUnit" : { "state" : "translated", "value" : "Xcode" } } } }
+  "sourceLanguage": "en",
+  "version": "1.0",
+  "strings": {
+    "%@ free on disk": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "diskte %@ boş"
+          }
+        }
+      }
+    },
+    "%@ safe to free now · %@ free on disk · %@ purgeable": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ güvenle boşaltılabilir · diskte %@ boş · %@ temizlenebilir"
+          }
+        }
+      }
+    },
+    "%lld hidden": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld gizli"
+          }
+        }
+      }
+    },
+    "%lld items need root; the password is asked once.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld kalem yönetici yetkisi istiyor; parola bir kez sorulur."
+          }
+        }
+      }
+    },
+    "%lld marked Review go to the Trash: %@": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld tanesi İncele işaretli, Çöp Sepeti'ne gider: %@"
+          }
+        }
+      }
+    },
+    "1 item needs root; the password is asked once.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 kalem yönetici yetkisi istiyor; parola bir kez sorulur."
+          }
+        }
+      }
+    },
+    "Android": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Android"
+          }
+        }
+      }
+    },
+    "App data & caches": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Uygulama verileri ve önbellekler"
+          }
+        }
+      }
+    },
+    "Cancel": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vazgeç"
+          }
+        }
+      }
+    },
+    "Clear": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Temizle"
+          }
+        }
+      }
+    },
+    "Copy": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kopyala"
+          }
+        }
+      }
+    },
+    "Delete": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sil"
+          }
+        }
+      }
+    },
+    "Delete %@": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ öğesini sil"
+          }
+        }
+      }
+    },
+    "Delete %@?": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ silinsin mi?"
+          }
+        }
+      }
+    },
+    "Delete %lld items": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld kalemi sil"
+          }
+        }
+      }
+    },
+    "Delete %lld items?": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld kalem silinsin mi?"
+          }
+        }
+      }
+    },
+    "Delete %lld selected · %@": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seçili %lld kalemi sil · %@"
+          }
+        }
+      }
+    },
+    "Developer tool data": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geliştirici araç verileri"
+          }
+        }
+      }
+    },
+    "Dismiss": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kapat"
+          }
+        }
+      }
+    },
+    "Docker": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Docker"
+          }
+        }
+      }
+    },
+    "Don't show this item again": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu kalemi bir daha gösterme"
+          }
+        }
+      }
+    },
+    "Empty folder": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Boş klasör"
+          }
+        }
+      }
+    },
+    "Frees about %@. ": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yaklaşık %@ boşaltır. "
+          }
+        }
+      }
+    },
+    "Grant Full Disk Access once": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tam Disk Erişimi'ni bir kez verin"
+          }
+        }
+      }
+    },
+    "Hide %@ from future scans": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ öğesini sonraki taramalarda gizle"
+          }
+        }
+      }
+    },
+    "Hide breakdown": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kırılımı gizle"
+          }
+        }
+      }
+    },
+    "How to remove %@": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ nasıl kaldırılır"
+          }
+        }
+      }
+    },
+    "It goes to the Trash first.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Önce Çöp Sepeti'ne gider."
+          }
+        }
+      }
+    },
+    "Launch at login": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Girişte başlat"
+          }
+        }
+      }
+    },
+    "Launch at login: %@": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Girişte başlat: %@"
+          }
+        }
+      }
+    },
+    "Logs & diagnostics": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Günlükler ve tanılama"
+          }
+        }
+      }
+    },
+    "Looking for anything else over 500 MB…": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "500 MB üstü başka ne varsa aranıyor…"
+          }
+        }
+      }
+    },
+    "Manual": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Elle"
+          }
+        }
+      }
+    },
+    "Measuring known locations…": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bilinen konumlar ölçülüyor…"
+          }
+        }
+      }
+    },
+    "Measuring the largest entries…": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "En büyük girdiler ölçülüyor…"
+          }
+        }
+      }
+    },
+    "Measuring…": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ölçülüyor…"
+          }
+        }
+      }
+    },
+    "Moved to the Trash. Empty the Trash to free the space.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Çöp Sepeti'ne taşındı. Alanı boşaltmak için Çöp Sepeti'ni boşaltın."
+          }
+        }
+      }
+    },
+    "Nothing to reclaim": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geri kazanılacak bir şey yok"
+          }
+        }
+      }
+    },
+    "Open Settings": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ayarları Aç"
+          }
+        }
+      }
+    },
+    "Open x.com/yigitech": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "x.com/yigitech adresini aç"
+          }
+        }
+      }
+    },
+    "Other large folders": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diğer büyük klasörler"
+          }
+        }
+      }
+    },
+    "Package managers": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Paket yöneticileri"
+          }
+        }
+      }
+    },
+    "Project build folders": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Proje derleme klasörleri"
+          }
+        }
+      }
+    },
+    "Quit": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Çık"
+          }
+        }
+      }
+    },
+    "Reclaimed this session: %@": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu oturumda kazanılan: %@"
+          }
+        }
+      }
+    },
+    "Rescan": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yeniden tara"
+          }
+        }
+      }
+    },
+    "Reveal %@ in Finder": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ öğesini Finder'da göster"
+          }
+        }
+      }
+    },
+    "Review": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "İncele"
+          }
+        }
+      }
+    },
+    "Safe": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Güvenli"
+          }
+        }
+      }
+    },
+    "Safety: %@": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Güvenlik: %@"
+          }
+        }
+      }
+    },
+    "Scanning": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Taranıyor"
+          }
+        }
+      }
+    },
+    "Select %@": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ öğesini seç"
+          }
+        }
+      }
+    },
+    "Select every item that is regenerated automatically": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kendiliğinden yeniden oluşan her kalemi seç"
+          }
+        }
+      }
+    },
+    "Select safe": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Güvenlileri seç"
+          }
+        }
+      }
+    },
+    "Shared & other users": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Paylaşılan ve diğer kullanıcılar"
+          }
+        }
+      }
+    },
+    "Show all": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tümünü göster"
+          }
+        }
+      }
+    },
+    "Show largest entries": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "En büyük girdileri göster"
+          }
+        }
+      }
+    },
+    "Simulator devices": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Simülatör aygıtları"
+          }
+        }
+      }
+    },
+    "Simulator runtimes": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Simülatör runtime'ları"
+          }
+        }
+      }
+    },
+    "System": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sistem"
+          }
+        }
+      }
+    },
+    "System Data": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sistem Verileri"
+          }
+        }
+      }
+    },
+    "System Data found: %@": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bulunan Sistem Verileri: %@"
+          }
+        }
+      }
+    },
+    "Temporary files": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geçici dosyalar"
+          }
+        }
+      }
+    },
+    "This is regenerated automatically when needed.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gerektiğinde kendiliğinden yeniden oluşturulur."
+          }
+        }
+      }
+    },
+    "Time Machine snapshots": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Time Machine anlık görüntüleri"
+          }
+        }
+      }
+    },
+    "Trash": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Çöp Sepeti"
+          }
+        }
+      }
+    },
+    "Virtual machines": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sanal makineler"
+          }
+        }
+      }
+    },
+    "Without it macOS asks for every protected folder and hides Mail, Safari and Time Machine data. Add System Data in the settings pane, then reopen the app.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verilmezse macOS her korumalı klasör için ayrı sorar; Mail, Safari ve Time Machine verileri görünmez. Ayarlar bölmesinde System Data'yı ekleyin, sonra uygulamayı yeniden açın."
+          }
+        }
+      }
+    },
+    "Xcode": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Xcode"
+          }
+        }
+      }
+    },
+    "iOS device backups": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iOS aygıt yedekleri"
+          }
+        }
+      }
+    }
   }
 }

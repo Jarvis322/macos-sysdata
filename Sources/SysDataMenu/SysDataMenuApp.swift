@@ -6,8 +6,13 @@ enum Entry {
     static func main() async {
         // `--json` turns the binary into a scanner for scripts: no UI, the
         // full inventory on stdout, exit.
-        if CommandLine.arguments.contains("--json") {
+        let arguments = CommandLine.arguments
+        if arguments.contains("--json") {
             await JSONInventory.write(to: FileHandle.standardOutput)
+            return
+        }
+        if let index = arguments.firstIndex(of: "--screenshot"), arguments.indices.contains(index + 1) {
+            await WindowSnapshot.write(to: arguments[index + 1])
             return
         }
         SysDataMenuApp.main()
@@ -32,16 +37,17 @@ struct SysDataMenuApp: App {
         .menuBarExtraStyle(.window)
     }
 
-    /// Drive glyph plus what can be freed right now, so the number is visible
-    /// without opening the window.
+    /// Drive glyph plus the size of everything the scan found, the same
+    /// number Storage settings calls "System Data".
     @ViewBuilder
     private var menuBarLabel: some View {
-        if model.safeBytes >= 100 * ProbeSupport.megabyte {
+        if model.measuredBytes >= 100 * ProbeSupport.megabyte {
             HStack(spacing: 3) {
                 Image(systemName: "internaldrive")
-                Text(model.safeBytes.byteString)
+                Text(model.measuredBytes.byteString)
                     .monospacedDigit()
             }
+            .help(L("System Data found: %@", model.measuredBytes.byteString))
         } else {
             Image(systemName: "internaldrive")
         }

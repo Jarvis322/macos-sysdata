@@ -27,9 +27,13 @@ final class ScanModel {
     private static let hiddenKey = "hiddenItemIDs"
     private static let rescanInterval: Duration = .seconds(24 * 60 * 60)
 
-    init() {
+    /// `scansAutomatically` is off for the headless modes, which drive the
+    /// scan themselves.
+    init(scansAutomatically: Bool = true) {
         hiddenIDs = Set(UserDefaults.standard.stringArray(forKey: Self.hiddenKey) ?? [])
-        Task { await runBackgroundScans() }
+        if scansAutomatically {
+            Task { await runBackgroundScans() }
+        }
     }
 
     /// Scans on launch and once a day after that, so the menu bar total is
