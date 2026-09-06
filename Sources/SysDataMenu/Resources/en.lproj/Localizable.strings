@@ -23,6 +23,7 @@
 "Docker" = "Docker";
 "Don't show this item again" = "Don't show this item again";
 "Empty folder" = "Empty folder";
+"Filter" = "Filter";
 "Frees about %@. " = "Frees about %@. ";
 "Grant Full Disk Access once" = "Grant Full Disk Access once";
 "Hide %@ from future scans" = "Hide %@ from future scans";
@@ -38,6 +39,7 @@
 "Measuring the largest entries…" = "Measuring the largest entries…";
 "Measuring…" = "Measuring…";
 "Moved to the Trash. Empty the Trash to free the space." = "Moved to the Trash. Empty the Trash to free the space.";
+"No item matches" = "No item matches";
 "Nothing to reclaim" = "Nothing to reclaim";
 "Open Settings" = "Open Settings";
 "Open x.com/yigitech" = "Open x.com/yigitech";

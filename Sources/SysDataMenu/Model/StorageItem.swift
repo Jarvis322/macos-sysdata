@@ -123,6 +123,17 @@ struct StorageItem: Identifiable, Sendable {
     var claimedURLs: [URL] {
         action.paths + (revealURL.map { [$0] } ?? []) + alsoClaims
     }
+
+    /// Whether the filter keeps this item. The category title is matched too,
+    /// so typing "simulator" brings back the whole group rather than only the
+    /// rows that happen to repeat the word.
+    func matches(filter needle: String) -> Bool {
+        let needle = needle.trimmingCharacters(in: .whitespaces).lowercased()
+        guard !needle.isEmpty else { return true }
+        return name.lowercased().contains(needle)
+            || detail.lowercased().contains(needle)
+            || category.title.lowercased().contains(needle)
+    }
 }
 
 extension Int64 {

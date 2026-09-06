@@ -3,6 +3,7 @@ import SwiftUI
 
 struct MenuView: View {
     @Environment(ScanModel.self) private var model
+    @FocusState private var filterIsFocused: Bool
     @State private var pendingDeletion: StorageItem?
     @State private var confirmsBatch = false
 
@@ -13,6 +14,7 @@ struct MenuView: View {
     var body: some View {
         VStack(spacing: 0) {
             header
+            filterField
             Divider()
             if !model.hasFullDiskAccess {
                 accessBanner
@@ -126,6 +128,39 @@ struct MenuView: View {
         .padding(.vertical, 10)
     }
 
+    /// Shown once the list is long enough that finding a row by eye is work.
+    @ViewBuilder
+    private var filterField: some View {
+        @Bindable var model = model
+        if model.visibleItems.count >= 12 || !model.filterText.isEmpty {
+            HStack(spacing: 6) {
+                Image(systemName: "magnifyingglass")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                TextField(L("Filter"), text: $model.filterText)
+                    .textFieldStyle(.plain)
+                    .font(.callout)
+                    .focused($filterIsFocused)
+                    .onSubmit { filterIsFocused = false }
+                if !model.filterText.isEmpty {
+                    Button {
+                        model.filterText = ""
+                    } label: {
+                        Image(systemName: "xmark.circle.fill")
+                            .foregroundStyle(.secondary)
+                    }
+                    .buttonStyle(.plain)
+                    .accessibilityLabel(L("Clear"))
+                }
+            }
+            .padding(.horizontal, 8)
+            .padding(.vertical, 5)
+            .background(.quaternary.opacity(0.4), in: RoundedRectangle(cornerRadius: 6))
+            .padding(.horizontal, 14)
+            .padding(.bottom, 8)
+        }
+    }
+
     private var subtitle: String {
         if model.isScanning, !model.phase.isEmpty {
             return model.phase
@@ -165,7 +200,20 @@ struct MenuView: View {
 
     @ViewBuilder
     private var content: some View {
-        if model.visibleItems.isEmpty {
+        if model.listedItems.isEmpty, !model.filterText.isEmpty {
+            VStack(spacing: 8) {
+                Spacer()
+                Image(systemName: "magnifyingglass")
+                    .font(.largeTitle)
+                    .foregroundStyle(.secondary)
+                Text(L("No item matches"))
+                    .foregroundStyle(.secondary)
+                Button(L("Clear")) { model.filterText = "" }
+                    .controlSize(.small)
+                Spacer()
+            }
+            .frame(maxWidth: .infinity)
+        } else if model.visibleItems.isEmpty {
             VStack(spacing: 8) {
                 Spacer()
                 if model.isScanning {

@@ -76,6 +76,10 @@ The app has a **Launch at login** switch in its footer.
   undone for 30 days. Safe items are deleted outright because they come back
   on their own.
 - **Breakdown.** Click a row to see its five largest entries before deciding.
+- **Filter.** A scan finds around 180 items across eighteen groups, so the
+  field under the header narrows the list by name, description or group.
+  Filtering clears the selection, so a batch only ever holds rows you can
+  see.
 - **Batch delete.** Tick rows and use **Delete N selected**; every root
   action in the batch is folded into one script, so the administrator
   password is asked once. **Select safe** ticks everything regenerable.

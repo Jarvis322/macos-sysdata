@@ -254,6 +254,16 @@
         }
       }
     },
+    "Filter": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Filtrele"
+          }
+        }
+      }
+    },
     "Frees about %@. ": {
       "localizations": {
         "tr": {
@@ -400,6 +410,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Çöp Sepeti'ne taşındı. Alanı boşaltmak için Çöp Sepeti'ni boşaltın."
+          }
+        }
+      }
+    },
+    "No item matches": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eşleşen öğe yok"
           }
         }
       }

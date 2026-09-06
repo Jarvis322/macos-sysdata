@@ -23,6 +23,16 @@ final class ScanModel {
     /// Items the user chose not to see again. Persisted; ids are path-based.
     private(set) var hiddenIDs: Set<String>
     var selectedIDs: Set<String> = []
+    /// Narrows the list to matching items. Clearing the selection on every
+    /// change is deliberate: a selection made before a filter would otherwise
+    /// still be deleted by "Delete N selected" while the user can no longer
+    /// see what is in it.
+    var filterText = "" {
+        didSet {
+            guard filterText != oldValue else { return }
+            selectedIDs = []
+        }
+    }
     var errorMessage: String?
     /// Non-error feedback, such as "moved to the Trash".
     var notice: String?
@@ -54,6 +64,13 @@ final class ScanModel {
 
     var hiddenCount: Int {
         items.count - visibleItems.count
+    }
+
+    /// What the list shows: visible items narrowed by the filter. The totals
+    /// in the header and the menu bar stay on `visibleItems`, because they
+    /// answer "how much System Data is there", not "what am I looking at".
+    var listedItems: [StorageItem] {
+        visibleItems.filter { $0.matches(filter: filterText) }
     }
 
     func hide(_ item: StorageItem) {
@@ -119,8 +136,10 @@ final class ScanModel {
         }
     }
 
+    /// Only what is on screen: ticking rows the filter is hiding would put
+    /// them in the next batch delete unseen.
     func selectAllSafe() {
-        selectedIDs = Set(visibleItems.filter { $0.safety == .safe && !$0.action.isManual }.map(\.id))
+        selectedIDs = Set(listedItems.filter { $0.safety == .safe && !$0.action.isManual }.map(\.id))
     }
 
     func clearSelection() {
@@ -128,7 +147,7 @@ final class ScanModel {
     }
 
     var categories: [(category: StorageCategory, items: [StorageItem], total: Int64)] {
-        let visible = visibleItems
+        let visible = listedItems
         return StorageCategory.allCases.compactMap { category in
             let members = visible.filter { $0.category == category }
             guard !members.isEmpty else { return nil }
@@ -141,6 +160,7 @@ final class ScanModel {
         isScanning = true
         errorMessage = nil
         selectedIDs = []
+        filterText = ""
         refreshAccess()
         phase = L("Measuring known locations…")
         defer {
