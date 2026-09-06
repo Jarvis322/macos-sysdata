@@ -251,7 +251,13 @@ struct AppDataProbe: StorageProbe {
 /// locations. Finder files most of their contents under System Data.
 struct ProjectProbe: StorageProbe {
     private static let roots = ["Desktop", "Documents", "Developer", "Projects", "Projeler"].map(URL.home)
-    private static let targets: Set<String> = ["node_modules", ".build", "Pods", "DerivedData"]
+    private static let targets: Set<String> = [
+        "node_modules", ".build", "Pods", "DerivedData",
+        // Build output of the web frameworks, all of them rebuilt by the
+        // project's own build command and none of them worth keeping.
+        ".next", ".nuxt", ".svelte-kit", ".astro", ".angular", ".turbo",
+        ".parcel-cache", ".expo",
+    ]
     private static let maxDepth = 4
     private static let threshold = 30 * ProbeSupport.megabyte
 
@@ -268,6 +274,11 @@ struct ProjectProbe: StorageProbe {
             case "node_modules": "npm install"
             case ".build": "swift build"
             case "Pods": "pod install"
+            case ".next": "next build"
+            case ".nuxt": "nuxt build"
+            case ".svelte-kit": "vite build"
+            case ".astro": "astro build"
+            case ".angular", ".turbo", ".parcel-cache", ".expo": "the next build"
             default: "the next build"
             }
             if let item = await ProbeSupport.directoryItem(
