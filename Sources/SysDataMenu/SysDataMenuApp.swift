@@ -20,6 +20,7 @@ enum Entry {
 }
 
 struct SysDataMenuApp: App {
+    @NSApplicationDelegateAdaptor(PowerOffGuard.self) private var powerOffGuard
     @State private var model = ScanModel()
 
     init() {

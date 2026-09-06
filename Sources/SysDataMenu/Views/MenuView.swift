@@ -262,6 +262,15 @@ struct MenuView: View {
             HStack {
                 authorBadge
                 Spacer()
+                Toggle(L("Shut down simulators at power off"), isOn: Binding(
+                    get: { model.shutsDownSimulatorsAtPowerOff },
+                    set: { model.shutsDownSimulatorsAtPowerOff = $0 }
+                ))
+                .toggleStyle(.switch)
+                .controlSize(.mini)
+                .font(.caption)
+                .foregroundStyle(.secondary)
+                .help(L("Booted simulators ignore the quit request and hold the shutdown for 33 seconds. This shuts them down first."))
                 Toggle(L("Launch at login"), isOn: Binding(
                     get: { model.launchesAtLogin },
                     set: { model.setLaunchAtLogin($0) }

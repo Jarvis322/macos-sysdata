@@ -15,6 +15,9 @@ final class ScanModel {
     private(set) var phase = ""
     private(set) var hasFullDiskAccess = ScanModel.checkFullDiskAccess()
     private(set) var launchesAtLogin = SMAppService.mainApp.status == .enabled
+    var shutsDownSimulatorsAtPowerOff = PowerOffGuard.isEnabled {
+        didSet { PowerOffGuard.isEnabled = shutsDownSimulatorsAtPowerOff }
+    }
     private(set) var purgeableBytes: Int64 = DiskSize.purgeableSpace()
     private(set) var lastScan: Date?
     /// Items the user chose not to see again. Persisted; ids are path-based.

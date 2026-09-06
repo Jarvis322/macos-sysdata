@@ -69,6 +69,11 @@ The app has a **Launch at login** switch in its footer.
   you want to keep, say). A footer link brings hidden items back.
 - **Purgeable space** is shown in the header, so the effect of deleting
   snapshots is visible.
+- **Faster shutdown.** A booted iOS simulator ignores the quit request and
+  makes macOS wait 33 seconds before killing it (`launchd`: "Service did not
+  exit 33 seconds after SIGTERM"). Because the app is running at power off,
+  it shuts every simulator down the moment the shutdown starts and only
+  quits once that is done. Switch in the footer, on by default.
 - **Turkish** interface, following the system language.
 - **`SysDataMenu --json`** prints the whole inventory for scripts.
 

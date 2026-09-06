@@ -6,6 +6,7 @@
 "1 item needs root; the password is asked once." = "1 item needs root; the password is asked once.";
 "Android" = "Android";
 "App data & caches" = "App data & caches";
+"Booted simulators ignore the quit request and hold the shutdown for 33 seconds. This shuts them down first." = "Booted simulators ignore the quit request and hold the shutdown for 33 seconds. This shuts them down first.";
 "Cancel" = "Cancel";
 "Clear" = "Clear";
 "Copy" = "Copy";
@@ -55,6 +56,7 @@
 "Shared & other users" = "Shared & other users";
 "Show all" = "Show all";
 "Show largest entries" = "Show largest entries";
+"Shut down simulators at power off" = "Shut down simulators at power off";
 "Simulator devices" = "Simulator devices";
 "Simulator runtimes" = "Simulator runtimes";
 "System" = "System";
