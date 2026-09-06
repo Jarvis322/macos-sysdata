@@ -82,6 +82,17 @@
         }
       }
     },
+    "Asks GitHub once a day whether a newer version exists. It is the only request this app makes; leave it off and nothing leaves your Mac.": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Günde bir kez GitHub'a yeni sürüm olup olmadığını sorar. Uygulamanın yaptığı tek istek budur; kapalı bırakırsanız Mac'inizden hiçbir şey çıkmaz."
+          }
+        }
+      }
+    },
     "Booted simulators ignore the quit request and hold the shutdown for 33 seconds. This shuts them down first.": {
       "localizations": {
         "tr": {
@@ -120,6 +131,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "İptal edildi. Hiçbir şey silinmedi."
+          }
+        }
+      }
+    },
+    "Check for updates": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Güncellemeleri denetle"
           }
         }
       }
@@ -240,6 +262,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Bu kalemi bir daha gösterme"
+          }
+        }
+      }
+    },
+    "Download": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "İndir"
           }
         }
       }
@@ -700,6 +733,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Çöp Sepeti"
+          }
+        }
+      }
+    },
+    "Version %@ is available.": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ sürümü yayınlandı."
           }
         }
       }

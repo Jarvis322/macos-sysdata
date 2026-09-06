@@ -6,10 +6,12 @@
 "1 item needs root; the password is asked once." = "1 item needs root; the password is asked once.";
 "Android" = "Android";
 "App data & caches" = "App data & caches";
+"Asks GitHub once a day whether a newer version exists. It is the only request this app makes; leave it off and nothing leaves your Mac." = "Asks GitHub once a day whether a newer version exists. It is the only request this app makes; leave it off and nothing leaves your Mac.";
 "Booted simulators ignore the quit request and hold the shutdown for 33 seconds. This shuts them down first." = "Booted simulators ignore the quit request and hold the shutdown for 33 seconds. This shuts them down first.";
 "Cancel" = "Cancel";
 "Cancelled. %d already deleted, the rest left alone." = "Cancelled. %d already deleted, the rest left alone.";
 "Cancelled. Nothing was deleted." = "Cancelled. Nothing was deleted.";
+"Check for updates" = "Check for updates";
 "Clear" = "Clear";
 "Copy" = "Copy";
 "Delete" = "Delete";
@@ -22,6 +24,7 @@
 "Dismiss" = "Dismiss";
 "Docker" = "Docker";
 "Don't show this item again" = "Don't show this item again";
+"Download" = "Download";
 "Empty folder" = "Empty folder";
 "Frees about %@. " = "Frees about %@. ";
 "Grant Full Disk Access once" = "Grant Full Disk Access once";
@@ -68,6 +71,7 @@
 "This is regenerated automatically when needed." = "This is regenerated automatically when needed.";
 "Time Machine snapshots" = "Time Machine snapshots";
 "Trash" = "Trash";
+"Version %@ is available." = "Version %@ is available.";
 "Virtual machines" = "Virtual machines";
 "Without it macOS asks for every protected folder and hides Mail, Safari and Time Machine data. Add System Data in the settings pane, then reopen the app." = "Without it macOS asks for every protected folder and hides Mail, Safari and Time Machine data. Add System Data in the settings pane, then reopen the app.";
 "Xcode" = "Xcode";

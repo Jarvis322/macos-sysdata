@@ -6,10 +6,12 @@
 "1 item needs root; the password is asked once." = "1 kalem yönetici yetkisi istiyor; parola bir kez sorulur.";
 "Android" = "Android";
 "App data & caches" = "Uygulama verileri ve önbellekler";
+"Asks GitHub once a day whether a newer version exists. It is the only request this app makes; leave it off and nothing leaves your Mac." = "Günde bir kez GitHub'a yeni sürüm olup olmadığını sorar. Uygulamanın yaptığı tek istek budur; kapalı bırakırsanız Mac'inizden hiçbir şey çıkmaz.";
 "Booted simulators ignore the quit request and hold the shutdown for 33 seconds. This shuts them down first." = "Açık simülatörler çıkış isteğini yok sayar ve kapanışı 33 saniye bekletir. Bu seçenek önce onları kapatır.";
 "Cancel" = "Vazgeç";
 "Cancelled. %d already deleted, the rest left alone." = "İptal edildi. %d tanesi silinmişti, kalanlara dokunulmadı.";
 "Cancelled. Nothing was deleted." = "İptal edildi. Hiçbir şey silinmedi.";
+"Check for updates" = "Güncellemeleri denetle";
 "Clear" = "Temizle";
 "Copy" = "Kopyala";
 "Delete" = "Sil";
@@ -22,6 +24,7 @@
 "Dismiss" = "Kapat";
 "Docker" = "Docker";
 "Don't show this item again" = "Bu kalemi bir daha gösterme";
+"Download" = "İndir";
 "Empty folder" = "Boş klasör";
 "Frees about %@. " = "Yaklaşık %@ boşaltır. ";
 "Grant Full Disk Access once" = "Tam Disk Erişimi'ni bir kez verin";
@@ -68,6 +71,7 @@
 "This is regenerated automatically when needed." = "Gerektiğinde kendiliğinden yeniden oluşturulur.";
 "Time Machine snapshots" = "Time Machine anlık görüntüleri";
 "Trash" = "Çöp Sepeti";
+"Version %@ is available." = "%@ sürümü yayınlandı.";
 "Virtual machines" = "Sanal makineler";
 "Without it macOS asks for every protected folder and hides Mail, Safari and Time Machine data. Add System Data in the settings pane, then reopen the app." = "Verilmezse macOS her korumalı klasör için ayrı sorar; Mail, Safari ve Time Machine verileri görünmez. Ayarlar bölmesinde System Data'yı ekleyin, sonra uygulamayı yeniden açın.";
 "Xcode" = "Xcode";

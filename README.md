@@ -27,6 +27,12 @@ This app opens the bucket. It is not a cache cleaner: `~/Library/Caches` is
 one small line among fifty, and the app never deletes anything you did not
 click.
 
+## Updates
+
+The app can check GitHub once a day for a newer release and offer a download
+link in the menu. It is **off by default**, and it is the only network request
+the app makes: with the switch off, nothing leaves the Mac.
+
 ## Checks
 
 ```bash

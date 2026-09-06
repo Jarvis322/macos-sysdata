@@ -3,6 +3,7 @@ import SwiftUI
 
 struct MenuView: View {
     @Environment(ScanModel.self) private var model
+    @State private var updates = UpdateCheck()
     @State private var pendingDeletion: StorageItem?
     @State private var confirmsBatch = false
 
@@ -18,6 +19,10 @@ struct MenuView: View {
                 accessBanner
                 Divider()
             }
+            if let version = updates.newVersion {
+                updateBanner(version)
+                Divider()
+            }
             content
             Divider()
             if pendingDeletion != nil || confirmsBatch {
@@ -29,7 +34,24 @@ struct MenuView: View {
         .frame(width: 460, height: 640)
         .task {
             if !model.hasScanned, !model.isScanning { await model.scan() }
+            await updates.checkIfDue()
         }
+    }
+
+    /// Shown where the Full Disk Access banner goes: the one place in this
+    /// window that is already understood as "something needs your attention".
+    private func updateBanner(_ version: String) -> some View {
+        HStack(spacing: 8) {
+            Image(systemName: "arrow.down.circle.fill")
+                .foregroundStyle(.tint)
+            Text(L("Version %@ is available.", version))
+                .font(.callout)
+            Spacer()
+            Button(L("Download")) { NSWorkspace.shared.open(updates.downloadURL) }
+                .controlSize(.small)
+        }
+        .padding(.horizontal, 14)
+        .padding(.vertical, 8)
     }
 
     // MARK: Confirmation
@@ -271,6 +293,18 @@ struct MenuView: View {
                 .font(.caption)
                 .foregroundStyle(.secondary)
                 .help(L("Booted simulators ignore the quit request and hold the shutdown for 33 seconds. This shuts them down first."))
+                Toggle(L("Check for updates"), isOn: Binding(
+                    get: { updates.isEnabled },
+                    set: { wanted in
+                        updates.isEnabled = wanted
+                        if wanted { Task { await updates.check() } }
+                    }
+                ))
+                .toggleStyle(.switch)
+                .controlSize(.mini)
+                .font(.caption)
+                .foregroundStyle(.secondary)
+                .help(L("Asks GitHub once a day whether a newer version exists. It is the only request this app makes; leave it off and nothing leaves your Mac."))
                 Toggle(L("Launch at login"), isOn: Binding(
                     get: { model.launchesAtLogin },
                     set: { model.setLaunchAtLogin($0) }
@@ -325,6 +359,7 @@ struct MenuView: View {
         .foregroundStyle(.secondary)
         .accessibilityLabel(L("Open x.com/yigitech"))
     }
+
 
     // MARK: Confirmation copy
 
