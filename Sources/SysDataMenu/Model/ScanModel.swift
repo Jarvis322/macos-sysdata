@@ -138,6 +138,26 @@ final class ScanModel {
         selectionAnchorID = item.id
     }
 
+    func isCategorySelected(_ category: StorageCategory) -> Bool {
+        let selectableIDs = visibleItems
+            .filter { $0.category == category && !$0.action.isManual }
+            .map(\.id)
+        return !selectableIDs.isEmpty && selectableIDs.allSatisfy(selectedIDs.contains)
+    }
+
+    func categoryHasSelectableItems(_ category: StorageCategory) -> Bool {
+        visibleItems.contains { $0.category == category && !$0.action.isManual }
+    }
+
+    func setSelection(_ category: StorageCategory, selected: Bool) {
+        let ids = Set(visibleItems
+            .filter { $0.category == category && !$0.action.isManual }
+            .map(\.id))
+        if selected { selectedIDs.formUnion(ids) }
+        else { selectedIDs.subtract(ids) }
+        selectionAnchorID = nil
+    }
+
     func selectAllSafe() {
         selectedIDs = Set(visibleItems.filter { $0.safety == .safe && !$0.action.isManual }.map(\.id))
         selectionAnchorID = nil

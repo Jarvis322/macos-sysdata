@@ -204,7 +204,15 @@ struct MenuView: View {
                         }
                     } header: {
                         HStack {
-                            Text(group.category.title)
+                            Toggle(isOn: Binding(
+                                get: { model.isCategorySelected(group.category) },
+                                set: { model.setSelection(group.category, selected: $0) }
+                            )) {
+                                Text(group.category.title)
+                            }
+                            .toggleStyle(.checkbox)
+                            .controlSize(.small)
+                            .disabled(!model.categoryHasSelectableItems(group.category))
                             Spacer()
                             Text(group.total.byteString)
                                 .monospacedDigit()
