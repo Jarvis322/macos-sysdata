@@ -77,7 +77,7 @@ The app has a **Launch at login** switch in its footer.
 | Category | Items | Badge |
 | --- | --- | --- |
 | Time Machine snapshots | local APFS snapshots (`tmutil`) | Safe |
-| Simulator devices | per-device caches, unavailable devices, erase a device, system dyld cache | Safe / Review |
+| Simulator devices | per-device caches, unavailable devices, erase a device; the system dyld cache is reported (macOS blocks deleting it, even as root) | Safe / Review / Manual |
 | Simulator runtimes | each installed runtime disk image | Review |
 | Xcode | DerivedData, DeviceSupport, preview devices, caches, Archives, inactive Xcode.app copies | Safe / Review |
 | Package managers | brew, npm, pnpm, yarn, pip, uv, CocoaPods, Gradle, Cargo, SwiftPM, Go, Cypress, Playwright; the whole Homebrew prefix | Safe / Manual |

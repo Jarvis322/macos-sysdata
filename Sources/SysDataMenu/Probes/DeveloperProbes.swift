@@ -101,18 +101,19 @@ struct SimulatorProbe: StorageProbe {
             }
         }
 
+        // macOS refuses to unlink anything under this folder, even for root
+        // (verified on macOS 26: rm as uid 0 returns EPERM on an empty
+        // subdirectory). Only CoreSimulator's own daemon can remove it, which
+        // happens when the runtime it belongs to is deleted.
         let systemDyld = URL(fileURLWithPath: "/Library/Developer/CoreSimulator/Caches/dyld")
         if let item = await ProbeSupport.directoryItem(
             id: "sim-system-dyld",
             category: .simulators,
             name: "System dyld cache",
-            detail: "Shared cache CoreSimulator builds for every installed runtime. Simulators are shut down first; the next boot rebuilds it (slow).",
+            detail: "One shared cache per installed runtime, built by CoreSimulator. Protected by macOS: it goes away with its runtime, not on its own.",
             url: systemDyld,
-            safety: .review,
-            action: .steps([
-                .shutdownSimulators,
-                .privilegedScript("rm -rf /Library/Developer/CoreSimulator/Caches/dyld/*"),
-            ]),
+            safety: .manual,
+            action: .manual("Delete the runtime it belongs to (Simulator runtimes above), or:\nxcrun simctl runtime delete <UUID>\nThe cache is rebuilt when the runtime is installed again."),
             minimumBytes: 50 * ProbeSupport.megabyte
         ) {
             items.append(item)
