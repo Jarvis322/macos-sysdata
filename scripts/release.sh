@@ -49,8 +49,12 @@ shellcheck sysdata scripts/*.sh
 
 printf '%s\n' "$version" > VERSION
 scripts/build-app.sh
+scripts/make-dmg.sh
 archive="build/SysDataMenu-$version.zip"
-[ -f "$archive" ] || { echo "missing $archive" >&2; exit 1; }
+image="build/SysDataMenu-$version.dmg"
+for artefact in "$archive" "$image"; do
+  [ -f "$artefact" ] || { echo "missing $artefact" >&2; exit 1; }
+done
 spctl --assess --type execute "build/SysDataMenu.app"
 
 # Release notes: commits since the previous tag.
@@ -66,7 +70,7 @@ notes=$(mktemp)
   echo '```bash'
   echo "brew install --cask $tap_repo/$cask" | sed 's|/homebrew-tap/|/tap/|'
   echo '```'
-  echo "or unzip \`SysDataMenu-$version.zip\` and move the app to /Applications. Signed and notarized. Requires macOS 14 or later."
+  echo "or open \`SysDataMenu-$version.dmg\` and drag the app to Applications. The zip is the same app for anyone scripting the download. Signed and notarized. Requires macOS 14 or later."
 } > "$notes"
 
 # Commit, tag, push, publish.
@@ -74,17 +78,21 @@ git add VERSION
 git commit -q -m "chore: release $tag"
 git tag -a "$tag" -m "$tag"
 git push -q origin main "$tag"
-gh release create "$tag" "$archive" --repo "$repo" --title "$tag" --notes-file "$notes"
+gh release create "$tag" "$image" "$archive" --repo "$repo" --title "$tag" --notes-file "$notes"
 rm -f "$notes"
 
 # Homebrew cask.
-sha=$(shasum -a 256 "$archive" | cut -d' ' -f1)
+sha=$(shasum -a 256 "$image" | cut -d' ' -f1)
 tap_dir=$(mktemp -d)
 gh repo clone "$tap_repo" "$tap_dir" -- -q
 sed -i '' \
   -e "s/version \"[0-9.]*\"/version \"$version\"/" \
   -e "s/sha256 \"[0-9a-f]*\"/sha256 \"$sha\"/" \
+  -e 's/SysDataMenu-#{version}\.zip/SysDataMenu-#{version}.dmg/' \
   "$tap_dir/Casks/$cask.rb"
+# The checksum is the image's, so the cask must be pointing at the image.
+grep -q 'SysDataMenu-#{version}.dmg' "$tap_dir/Casks/$cask.rb" \
+  || { echo "cask still points at the zip; its sha256 would not match" >&2; exit 1; }
 ruby -c "$tap_dir/Casks/$cask.rb" >/dev/null
 git -C "$tap_dir" commit -qam "$cask $version"
 git -C "$tap_dir" push -q origin main

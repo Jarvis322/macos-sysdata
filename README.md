@@ -33,9 +33,10 @@ click.
 brew install --cask Jarvis322/tap/sysdata
 ```
 
-Or download `SysDataMenu-<version>.zip` from the
-[latest release](https://github.com/Jarvis322/macos-sysdata/releases/latest)
-and drop the app into `/Applications`.
+Or download `SysDataMenu-<version>.dmg` from the
+[latest release](https://github.com/Jarvis322/macos-sysdata/releases/latest),
+open it and drag the app onto Applications. A `.zip` of the same app is
+attached to every release for anyone scripting the download.
 
 Releases from 0.3.2 on are signed with a Developer ID and notarized by
 Apple, so the app opens without a Gatekeeper prompt.
