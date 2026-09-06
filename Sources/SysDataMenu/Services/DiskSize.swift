@@ -39,8 +39,20 @@ enum DiskSize {
     /// Allocated size of every directory under `root` up to `maxDepth` levels,
     /// keyed by path, from a single enumeration. Used by the catch-all scan so
     /// it does not re-walk the same tree once per level.
-    static func directorySizes(under root: URL, maxDepth: Int) -> [String: Int64] {
-        let rootPath = root.standardizedFileURL.path
+    ///
+    /// Directories in `skipping` are not descended into. The catch-all passes
+    /// the locations it will refuse to report anyway — the ones another probe
+    /// already explains, and the ones Finder counts as Photos or Mail rather
+    /// than System Data — which is most of the files on a developer Mac.
+    static func directorySizes(under root: URL, maxDepth: Int, skipping: Set<String> = []) -> [String: Int64] {
+        // The enumerator hands back the paths realpath(3) would produce, and
+        // those are what the arithmetic below and the skip test are compared
+        // against. `resolvingSymlinksInPath` is not the same thing: it strips a
+        // leading /private, so a root under /var or /tmp would come back eight
+        // characters shorter than every path the enumerator yields and the
+        // relative path would be cut inside a directory name.
+        let rootPath = realPath(root.path)
+        let skipped = Set(skipping.map(realPath))
         let keys: Set<URLResourceKey> = [.totalFileAllocatedSizeKey, .isRegularFileKey]
         guard let enumerator = FileManager.default.enumerator(
             at: URL(fileURLWithPath: rootPath),
@@ -51,9 +63,14 @@ enum DiskSize {
 
         var sizes: [String: Int64] = [:]
         for case let file as URL in enumerator {
-            guard let values = try? file.resourceValues(forKeys: keys),
-                  values.isRegularFile == true,
-                  let size = values.totalFileAllocatedSize, size > 0 else { continue }
+            guard let values = try? file.resourceValues(forKeys: keys) else { continue }
+            guard values.isRegularFile == true else {
+                if !skipped.isEmpty, skipped.contains(file.path) {
+                    enumerator.skipDescendants()
+                }
+                continue
+            }
+            guard let size = values.totalFileAllocatedSize, size > 0 else { continue }
 
             let relative = file.path.dropFirst(rootPath.count + 1)
             let components = relative.split(separator: "/", omittingEmptySubsequences: true).dropLast()
@@ -65,6 +82,14 @@ enum DiskSize {
             }
         }
         return sizes
+    }
+
+    /// The path with every symlink resolved, as realpath(3) reports it and as
+    /// `FileManager`'s enumerator yields it.
+    static func realPath(_ path: String) -> String {
+        guard let resolved = realpath(path, nil) else { return path }
+        defer { free(resolved) }
+        return String(cString: resolved)
     }
 
     static func freeSpace() -> Int64 {

@@ -172,7 +172,17 @@ struct LargeFolderProbe: StorageProbe {
             for root in Self.roots where root.exists {
                 group.addTask {
                     await Task.detached(priority: .utility) {
-                        let sizes = DiskSize.directorySizes(under: root, maxDepth: Self.maxDepth)
+                        // Nothing under a claimed or excluded directory can ever
+                        // be reported: `visit` returns on both before it looks at
+                        // a size. Their bytes only ever fed the totals of parents,
+                        // and a parent holding a claimed child is recursed into
+                        // rather than listed, so leaving those bytes out cannot
+                        // hide an item — a child that survives the filters is
+                        // smaller than the reduced parent total by definition.
+                        let sizes = DiskSize.directorySizes(
+                            under: root, maxDepth: Self.maxDepth,
+                            skipping: Set(claimedPaths + excludedPaths)
+                        )
                         var items: [StorageItem] = []
                         for child in root.children(includeHidden: true) where child.isDirectory {
                             Self.visit(child, depth: 1, sizes: sizes, claimed: claimedPaths, excluded: excludedPaths, into: &items)
