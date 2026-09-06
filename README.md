@@ -8,7 +8,7 @@
   A menu bar app that shows what is really inside macOS "System Data" and lets you delete it, item by item.<br>
   <img src="https://img.shields.io/badge/macOS-14%2B-black" alt="macOS 14+">
   <img src="https://img.shields.io/badge/Swift-6-orange" alt="Swift 6">
-  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-green" alt="MIT"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-proprietary-lightgrey" alt="Proprietary"></a>
 </p>
 
 <p align="center">
@@ -194,4 +194,9 @@ absent.
 
 ## License
 
-MIT. Made by [@yigitech](https://x.com/yigitech).
+Proprietary; see [LICENSE](LICENSE). The source is here to be read, not
+reused: you can build and run it yourself, but copying, redistributing or
+forking it for distribution needs written permission. Versions up to v0.3.7
+were MIT and stay MIT.
+
+Made by [@yigitech](https://x.com/yigitech).
