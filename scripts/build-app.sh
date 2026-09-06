@@ -59,7 +59,9 @@ identity=${CODESIGN_IDENTITY:-}
 if [ -z "$identity" ]; then
   identities=$(security find-identity -v -p codesigning 2>/dev/null)
   for kind in "Developer ID Application" "Apple Development"; do
-    identity=$(printf '%s\n' "$identities" | grep -oE "\"${kind}[^\"]*\"" | head -1 | tr -d '"')
+    # `|| true`: grep exits 1 when the kind is absent, which would abort the
+    # script under `set -e` before the next kind is tried.
+    identity=$(printf '%s\n' "$identities" | grep -oE "\"${kind}[^\"]*\"" | head -1 | tr -d '"' || true)
     [ -n "$identity" ] && break
   done
 fi
