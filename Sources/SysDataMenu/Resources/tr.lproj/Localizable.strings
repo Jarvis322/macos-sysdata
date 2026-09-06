@@ -13,6 +13,7 @@
 "Cancelled. Nothing was deleted." = "İptal edildi. Hiçbir şey silinmedi.";
 "Check for updates" = "Güncellemeleri denetle";
 "Clear" = "Temizle";
+"Collapse %@" = "%@ kategorisini daralt";
 "Copy" = "Kopyala";
 "Delete" = "Sil";
 "Delete %@" = "%@ öğesini sil";
@@ -26,6 +27,7 @@
 "Don't show this item again" = "Bu kalemi bir daha gösterme";
 "Download" = "İndir";
 "Empty folder" = "Boş klasör";
+"Expand %@" = "%@ kategorisini genişlet";
 "Filter" = "Filtrele";
 "Frees about %@. " = "Yaklaşık %@ boşaltır. ";
 "Grant Full Disk Access once" = "Tam Disk Erişimi'ni bir kez verin";

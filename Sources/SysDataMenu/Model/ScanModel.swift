@@ -31,8 +31,11 @@ final class ScanModel {
         didSet {
             guard filterText != oldValue else { return }
             selectedIDs = []
+            selectionAnchorID = nil
         }
     }
+    /// Where a shift-click measures its range from.
+    private var selectionAnchorID: String?
     var errorMessage: String?
     /// Non-error feedback, such as "moved to the Trash".
     var notice: String?
@@ -41,8 +44,10 @@ final class ScanModel {
     private static let rescanInterval: Duration = .seconds(24 * 60 * 60)
 
     /// `scansAutomatically` is off for the headless modes, which drive the
-    /// scan themselves.
-    init(scansAutomatically: Bool = true) {
+    /// scan themselves. `items` starts the model on a known list instead of
+    /// whichever machine the tests happen to run on.
+    init(scansAutomatically: Bool = true, items: [StorageItem] = []) {
+        self.items = items
         hiddenIDs = Set(UserDefaults.standard.stringArray(forKey: Self.hiddenKey) ?? [])
         if scansAutomatically {
             Task { await runBackgroundScans() }
@@ -76,6 +81,7 @@ final class ScanModel {
     func hide(_ item: StorageItem) {
         hiddenIDs.insert(item.id)
         selectedIDs.remove(item.id)
+        if selectionAnchorID == item.id { selectionAnchorID = nil }
         UserDefaults.standard.set(Array(hiddenIDs).sorted(), forKey: Self.hiddenKey)
     }
 
@@ -127,23 +133,75 @@ final class ScanModel {
         hasFullDiskAccess = Self.checkFullDiskAccess()
     }
 
-    func toggleSelection(_ item: StorageItem) {
+    func setSelection(
+        _ item: StorageItem,
+        selected: Bool,
+        extendingRange: Bool,
+        selectableItems: [StorageItem]
+    ) {
         guard !item.action.isManual else { return }
-        if selectedIDs.contains(item.id) {
-            selectedIDs.remove(item.id)
-        } else {
-            selectedIDs.insert(item.id)
+
+        if extendingRange,
+           let anchorID = selectionAnchorID,
+           let anchorIndex = selectableItems.firstIndex(where: { $0.id == anchorID }),
+           let itemIndex = selectableItems.firstIndex(where: { $0.id == item.id }) {
+            let bounds = min(anchorIndex, itemIndex)...max(anchorIndex, itemIndex)
+            let rangeIDs = Set(selectableItems[bounds].map(\.id))
+            if selected {
+                selectedIDs.formUnion(rangeIDs)
+            } else {
+                selectedIDs.subtract(rangeIDs)
+            }
+            return
         }
+
+        if selected { selectedIDs.insert(item.id) }
+        else { selectedIDs.remove(item.id) }
+        selectionAnchorID = item.id
+    }
+
+    /// The header checkbox reads and writes the rows under that header, which
+    /// is `listedItems` and not `visibleItems`: a filtered-out row is not
+    /// under the header, and ticking it would put it in the next batch delete
+    /// unseen.
+    func isCategorySelected(_ category: StorageCategory) -> Bool {
+        let selectableIDs = selectableItems(in: category).map(\.id)
+        return !selectableIDs.isEmpty && selectableIDs.allSatisfy(selectedIDs.contains)
+    }
+
+    func categoryHasSelectableItems(_ category: StorageCategory) -> Bool {
+        !selectableItems(in: category).isEmpty
+    }
+
+    func setSelection(_ category: StorageCategory, selected: Bool) {
+        let ids = Set(selectableItems(in: category).map(\.id))
+        if selected { selectedIDs.formUnion(ids) }
+        else { selectedIDs.subtract(ids) }
+        selectionAnchorID = nil
+    }
+
+    /// Drops the whole category from the selection. Collapsing a category
+    /// calls this, so a fold never leaves ticked rows behind the chevron for
+    /// "Delete N selected" to pick up.
+    func deselect(_ category: StorageCategory) {
+        selectedIDs.subtract(visibleItems.filter { $0.category == category }.map(\.id))
+        selectionAnchorID = nil
+    }
+
+    private func selectableItems(in category: StorageCategory) -> [StorageItem] {
+        listedItems.filter { $0.category == category && !$0.action.isManual }
     }
 
     /// Only what is on screen: ticking rows the filter is hiding would put
     /// them in the next batch delete unseen.
     func selectAllSafe() {
         selectedIDs = Set(listedItems.filter { $0.safety == .safe && !$0.action.isManual }.map(\.id))
+        selectionAnchorID = nil
     }
 
     func clearSelection() {
         selectedIDs = []
+        selectionAnchorID = nil
     }
 
     var categories: [(category: StorageCategory, items: [StorageItem], total: Int64)] {
@@ -161,6 +219,7 @@ final class ScanModel {
         errorMessage = nil
         selectedIDs = []
         filterText = ""
+        selectionAnchorID = nil
         refreshAccess()
         phase = L("Measuring known locations…")
         defer {
@@ -200,6 +259,7 @@ final class ScanModel {
     func reclaimSelected() async {
         let chosen = selectedItems
         selectedIDs = []
+        selectionAnchorID = nil
         await reclaim(chosen)
     }
 

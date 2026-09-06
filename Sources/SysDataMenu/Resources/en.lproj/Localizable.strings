@@ -13,6 +13,7 @@
 "Cancelled. Nothing was deleted." = "Cancelled. Nothing was deleted.";
 "Check for updates" = "Check for updates";
 "Clear" = "Clear";
+"Collapse %@" = "Collapse %@";
 "Copy" = "Copy";
 "Delete" = "Delete";
 "Delete %@" = "Delete %@";
@@ -26,6 +27,7 @@
 "Don't show this item again" = "Don't show this item again";
 "Download" = "Download";
 "Empty folder" = "Empty folder";
+"Expand %@" = "Expand %@";
 "Filter" = "Filter";
 "Frees about %@. " = "Frees about %@. ";
 "Grant Full Disk Access once" = "Grant Full Disk Access once";

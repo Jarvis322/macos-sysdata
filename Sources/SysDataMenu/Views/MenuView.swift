@@ -7,6 +7,7 @@ struct MenuView: View {
     @FocusState private var filterIsFocused: Bool
     @State private var pendingDeletion: StorageItem?
     @State private var confirmsBatch = false
+    @State private var collapsedCategories: Set<StorageCategory> = []
 
     private static let fullDiskAccessPane = URL(
         string: "x-apple.systempreferences:com.apple.preference.security?Privacy_AllFiles"
@@ -270,23 +271,24 @@ struct MenuView: View {
         } else {
             List {
                 ForEach(model.categories, id: \.category) { group in
-                    Section {
+                    categoryHeader(group.category, total: group.total)
+                    if !collapsedCategories.contains(group.category) {
                         ForEach(group.items) { item in
                             ItemRow(
                                 item: item,
                                 isBusy: model.busyItemIDs.contains(item.id),
                                 isSelected: model.selectedIDs.contains(item.id),
-                                onToggle: { model.toggleSelection(item) },
+                                onToggle: { isSelected in
+                                    model.setSelection(
+                                        item,
+                                        selected: isSelected,
+                                        extendingRange: NSEvent.modifierFlags.contains(.shift),
+                                        selectableItems: rangeSelectableItems
+                                    )
+                                },
                                 onDelete: { pendingDeletion = item },
                                 onHide: { model.hide(item) }
                             )
-                        }
-                    } header: {
-                        HStack {
-                            Text(group.category.title)
-                            Spacer()
-                            Text(group.total.byteString)
-                                .monospacedDigit()
                         }
                     }
                 }
@@ -294,6 +296,56 @@ struct MenuView: View {
             .listStyle(.inset)
             .scrollContentBackground(.hidden)
         }
+    }
+
+    private func categoryHeader(_ category: StorageCategory, total: Int64) -> some View {
+        HStack {
+            Button {
+                withAnimation {
+                    if collapsedCategories.contains(category) {
+                        collapsedCategories.remove(category)
+                    } else {
+                        collapsedCategories.insert(category)
+                        // Folding a category hides its rows; leaving them
+                        // ticked would delete what the person can no longer
+                        // see.
+                        model.deselect(category)
+                    }
+                }
+            } label: {
+                Image(systemName: collapsedCategories.contains(category)
+                      ? "chevron.right"
+                      : "chevron.down")
+                    .frame(width: 10)
+            }
+            .buttonStyle(.borderless)
+            .accessibilityLabel(
+                collapsedCategories.contains(category)
+                    ? L("Expand %@", category.title)
+                    : L("Collapse %@", category.title)
+            )
+
+            Toggle(isOn: Binding(
+                get: { model.isCategorySelected(category) },
+                set: { model.setSelection(category, selected: $0) }
+            )) {
+                Text(category.title)
+                    .fontWeight(.semibold)
+            }
+            .toggleStyle(.checkbox)
+            .controlSize(.small)
+            .disabled(!model.categoryHasSelectableItems(category))
+            Spacer()
+            Text(total.byteString)
+                .monospacedDigit()
+        }
+    }
+
+    private var rangeSelectableItems: [StorageItem] {
+        model.categories
+            .filter { !collapsedCategories.contains($0.category) }
+            .flatMap { $0.items }
+            .filter { !$0.action.isManual }
     }
 
     // MARK: Footer
