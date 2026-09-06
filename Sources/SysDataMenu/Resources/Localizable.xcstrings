@@ -102,6 +102,28 @@
         }
       }
     },
+    "Cancelled. %d already deleted, the rest left alone.": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "İptal edildi. %d tanesi silinmişti, kalanlara dokunulmadı."
+          }
+        }
+      }
+    },
+    "Cancelled. Nothing was deleted.": {
+      "extractionState": "manual",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "İptal edildi. Hiçbir şey silinmedi."
+          }
+        }
+      }
+    },
     "Clear": {
       "localizations": {
         "tr": {

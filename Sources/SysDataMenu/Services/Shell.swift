@@ -11,6 +11,10 @@ struct CommandError: LocalizedError {
     let command: String
     let result: CommandResult
 
+    /// osascript reports a dismissed authorization dialog as -128. The message
+    /// is localized by the system; the number is not, so match on the number.
+    var wasCancelled: Bool { result.output.contains("(-128)") }
+
     var errorDescription: String? {
         // osascript prefixes shell failures with "12:345: execution error: ".
         let trimmed = result.output

@@ -201,16 +201,42 @@ final class ScanModel {
         if privileged.count == 1 {
             direct.insert(privileged[0].item, at: 0)
         } else if privileged.count > 1 {
+            let items = privileged.map(\.item)
             let combined = privileged.map(\.script).joined(separator: " ; ")
-            await perform(.privilegedScript(combined), for: privileged.map(\.item))
+            guard await perform(.privilegedScript(combined), for: items) else {
+                // Dismissing the password dialog is the last chance anyone has
+                // to stop a batch. It stops the whole batch, not just the part
+                // that needed the password.
+                stopped(after: 0, remaining: items + direct)
+                return
+            }
         }
 
-        for item in direct {
-            await perform(item.action, for: [item])
+        var deleted = 0
+        for (index, item) in direct.enumerated() {
+            guard await perform(item.action, for: [item]) else {
+                stopped(after: deleted, remaining: Array(direct[index...]))
+                return
+            }
+            deleted += 1
         }
     }
 
-    private func perform(_ action: ReclaimAction, for affected: [StorageItem]) async {
+    /// Puts the untouched items back in the selection and says plainly how far
+    /// the batch got, because "cancelled" next to a rising reclaimed total is
+    /// what makes people think the app ignored them.
+    private func stopped(after deleted: Int, remaining: [StorageItem]) {
+        selectedIDs = Set(remaining.map(\.id))
+        errorMessage = nil
+        notice = deleted == 0
+            ? L("Cancelled. Nothing was deleted.")
+            : L("Cancelled. %d already deleted, the rest left alone.", deleted)
+    }
+
+    /// Returns false when the person dismissed the authorization dialog, so
+    /// the caller can stop instead of carrying on down the list.
+    @discardableResult
+    private func perform(_ action: ReclaimAction, for affected: [StorageItem]) async -> Bool {
         let ids = Set(affected.map(\.id))
         busyItemIDs.formUnion(ids)
         defer { busyItemIDs.subtract(ids) }
@@ -231,8 +257,10 @@ final class ScanModel {
                 notice = L("Moved to the Trash. Empty the Trash to free the space.")
             }
         } catch {
+            if let command = error as? CommandError, command.wasCancelled { return false }
             let names = affected.map(\.name).joined(separator: ", ")
             errorMessage = "\(names): \(error.localizedDescription)"
         }
+        return true
     }
 }
