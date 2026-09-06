@@ -146,8 +146,17 @@ struct LargeFolderProbe: StorageProbe {
 
     /// Locations Finder attributes to their own category (Photos, Music,
     /// Messages, Mail, Applications), so they are not System Data.
+    ///
+    /// Desktop, Documents and Downloads are on the list for a second reason:
+    /// Storage settings counts them as Documents, and what is in them is the
+    /// user's own work, which no delete regenerates. Listing "~/Desktop" at
+    /// 102 GB beside a Delete button is one wrong click away from a very bad
+    /// afternoon. The probes that have business there still run — build
+    /// folders, virtual machines and Final Cut render files each have their
+    /// own item, with a name that says what it is.
     private static let excluded: [URL] = [
         .home("Pictures"), .home("Music"), .home("Movies"),
+        .home("Desktop"), .home("Documents"), .home("Downloads"),
         .home("Library/Messages"), .home("Library/Mail"), .home("Library/Containers/com.apple.mail"),
         .home("Library/Mobile Documents"), .home("Applications"),
     ]
