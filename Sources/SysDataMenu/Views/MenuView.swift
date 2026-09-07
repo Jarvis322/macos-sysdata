@@ -405,7 +405,7 @@ struct MenuView: View {
             }
             .frame(maxWidth: .infinity)
         } else {
-            InventoryList {
+            List {
                 ForEach(model.categories, id: \.category) { group in
                     categoryHeader(group.category, total: group.total, items: group.items)
                     if !model.collapsedCategories.contains(group.category) {
@@ -430,6 +430,8 @@ struct MenuView: View {
                     }
                 }
             }
+            .listStyle(.inset)
+            .scrollContentBackground(.hidden)
         }
     }
 
