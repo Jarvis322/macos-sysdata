@@ -4,6 +4,12 @@
   "strings": {
     "%@ free on disk": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "磁盘可用空间：%@"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -14,6 +20,12 @@
     },
     "%@ safe to free now · %@ free on disk · %@ purgeable": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "当前可安全释放 %@ · 磁盘可用空间 %@ · 可清除空间 %@"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -24,6 +36,12 @@
     },
     "%lld days idle": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld 天未变动"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -34,6 +52,12 @@
     },
     "%lld hidden": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已隐藏 %lld 项"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -44,6 +68,12 @@
     },
     "%lld items need root; the password is asked once.": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld 个项目需要 root 权限；只需输入一次密码。"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -54,6 +84,12 @@
     },
     "%lld items need root; the password may be asked more than once.": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld 个项目需要 root 权限；可能需要多次输入密码。"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -64,6 +100,12 @@
     },
     "%lld marked Review go to the Trash: %@": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld 个标记为“需确认”的项目将移到废纸篓：%@"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -74,6 +116,12 @@
     },
     "%lld months idle": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld 个月未变动"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -84,6 +132,12 @@
     },
     "%lld not on screen": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld 项未显示在当前界面中"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -94,6 +148,12 @@
     },
     "%lld years idle": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld 年未变动"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -104,6 +164,12 @@
     },
     "1 item needs root.": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 个项目需要 root 权限。"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -114,6 +180,12 @@
     },
     "1 month idle": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 个月未变动"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -124,6 +196,12 @@
     },
     "1 year idle": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 年未变动"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -134,6 +212,12 @@
     },
     "After a second scan this shows what grew, and whether anything you deleted came back.": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "再次扫描后，这里会显示哪些项目占用的空间增加了，以及已删除的项目是否重新出现。"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -144,6 +228,12 @@
     },
     "Android": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Android"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -154,6 +244,12 @@
     },
     "App data & caches": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "应用数据与缓存"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -164,6 +260,12 @@
     },
     "As administrator: %@": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "以管理员身份执行：%@"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -175,6 +277,12 @@
     "Asks GitHub once a day whether a newer version exists. It is the only request this app makes; leave it off and nothing leaves your Mac.": {
       "extractionState": "manual",
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "每天向 GitHub 检查一次是否有新版本。这是此应用唯一的网络请求；保持关闭时，不会从你的 Mac 向外发送任何数据。"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -185,6 +293,12 @@
     },
     "Back to the list": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "返回列表"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -195,6 +309,12 @@
     },
     "Booted simulators ignore the quit request and hold the shutdown for 33 seconds. This shuts them down first.": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已启动的模拟器会忽略退出请求，导致关机延迟 33 秒。此选项会先关闭模拟器。"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -205,6 +325,12 @@
     },
     "Came back": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "重新出现"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -215,6 +341,12 @@
     },
     "Cancel": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "取消"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -226,6 +358,12 @@
     "Cancelled. %d already deleted, the rest left alone.": {
       "extractionState": "manual",
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已取消。已删除 %d 项，其余项目未作更改。"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -237,6 +375,12 @@
     "Cancelled. Nothing was deleted.": {
       "extractionState": "manual",
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已取消。未删除任何内容。"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -248,6 +392,12 @@
     "Check for updates": {
       "extractionState": "manual",
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "检查更新"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -258,6 +408,12 @@
     },
     "Clear": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "清除"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -268,6 +424,12 @@
     },
     "Collapse %@": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "折叠%@"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -278,6 +440,12 @@
     },
     "Copied": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已复制"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -288,6 +456,12 @@
     },
     "Copy": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "复制"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -298,6 +472,12 @@
     },
     "Copy the plan": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "复制操作计划"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -308,6 +488,12 @@
     },
     "Delete": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "删除"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -318,6 +504,12 @@
     },
     "Delete %@": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "删除%@"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -328,6 +520,12 @@
     },
     "Delete %@?": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "确定要删除“%@”吗？"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -338,6 +536,12 @@
     },
     "Delete %lld items": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "删除 %lld 个项目"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -348,6 +552,12 @@
     },
     "Delete %lld items?": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "确定要删除 %lld 个项目吗？"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -358,6 +568,12 @@
     },
     "Delete %lld selected · %@": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "删除所选的 %lld 项 · %@"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -368,6 +584,12 @@
     },
     "Delete everything inside %@": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "删除%@中的所有内容"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -378,6 +600,12 @@
     },
     "Delete files older than %lld days in %@": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "删除 %2$@ 中超过 %1$lld 天的文件"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -388,6 +616,12 @@
     },
     "Delete the history file": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "删除历史记录文件"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -398,6 +632,12 @@
     },
     "Deleted": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已删除"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -408,6 +648,12 @@
     },
     "Deleted %@, back by %@": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "于 %@ 删除，截至 %@ 已重新出现"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -418,6 +664,12 @@
     },
     "Deselect safe": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "取消选择可安全清理的项目"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -428,6 +680,12 @@
     },
     "Developer tool data": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "开发者工具数据"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -438,6 +696,12 @@
     },
     "Dismiss": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "关闭"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -448,6 +712,12 @@
     },
     "Docker": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Docker"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -458,6 +728,12 @@
     },
     "Don't show this item again": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "不再显示此项目"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -469,6 +745,12 @@
     "Download": {
       "extractionState": "manual",
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "下载"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -479,6 +761,12 @@
     },
     "Empty folder": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "空文件夹"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -489,6 +777,12 @@
     },
     "Expand %@": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "展开%@"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -499,6 +793,12 @@
     },
     "Filter": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "筛选"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -509,6 +809,12 @@
     },
     "Forget everything": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "清除所有记录"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -519,6 +825,12 @@
     },
     "Free space on the startup disk.": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "启动磁盘上的可用空间。"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -529,6 +841,12 @@
     },
     "Frees about %@. ": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "可释放约 %@ 的空间。 "
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -539,6 +857,12 @@
     },
     "Grant Full Disk Access once": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "只需授予一次完全磁盘访问权限"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -549,6 +873,12 @@
     },
     "Grew most": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "空间增长最多"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -559,6 +889,12 @@
     },
     "Hide %@ from future scans": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "在后续扫描中隐藏%@"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -569,6 +905,12 @@
     },
     "Hide breakdown": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "隐藏明细"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -579,6 +921,12 @@
     },
     "History": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "历史记录"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -589,6 +937,12 @@
     },
     "History and settings": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "历史记录与设置"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -599,6 +953,12 @@
     },
     "How to remove %@": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "如何移除%@"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -609,6 +969,12 @@
     },
     "Idle longest": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "最久未变动"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -619,6 +985,12 @@
     },
     "It goes to the Trash first.": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "会先移到废纸篓。"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -629,6 +1001,12 @@
     },
     "Keep a local record of each scan and deletion, so the list can show what changed": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "在本机记录每次扫描和删除操作，以便在列表中显示变化"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -639,6 +1017,12 @@
     },
     "Launch at login": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "登录时启动"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -649,6 +1033,12 @@
     },
     "Launch at login: %@": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "登录时启动：%@"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -659,6 +1049,12 @@
     },
     "Logs & diagnostics": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "日志与诊断"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -669,6 +1065,12 @@
     },
     "Looking for anything else over 500 MB…": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "正在查找其他超过 500 MB 的项目…"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -679,6 +1081,12 @@
     },
     "Manual": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "手动处理"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -689,6 +1097,12 @@
     },
     "Measuring known locations…": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "正在计算已知位置的大小…"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -699,6 +1113,12 @@
     },
     "Measuring the largest entries…": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "正在计算最大项目的大小…"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -709,6 +1129,12 @@
     },
     "Measuring…": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "正在计算大小…"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -719,6 +1145,12 @@
     },
     "Measuring… %lld of %lld places": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "正在计算大小… 已完成 %lld 个位置，共 %lld 个"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -729,6 +1161,12 @@
     },
     "Moved to the Trash. Empty the Trash to free the space.": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已移到废纸篓。清倒废纸篓以释放空间。"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -739,6 +1177,12 @@
     },
     "No item matches": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "没有匹配的项目"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -749,6 +1193,12 @@
     },
     "Nothing to compare yet": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "暂无可比较的记录"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -759,6 +1209,12 @@
     },
     "Nothing to reclaim": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "没有可释放的空间"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -769,6 +1225,12 @@
     },
     "One grant covers everything. Until then this scan leaves the protected places alone — app containers, Desktop, Documents, Music, Photos — rather than asking about them one app at a time, so what you see below is incomplete. Add System Data in the settings pane, then reopen the app.": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "一次授权即可涵盖所有位置。在授权前，扫描会跳过受保护的位置（应用容器、桌面、文稿、音乐、照片），而不会逐个应用请求权限，因此下方结果并不完整。请在“完全磁盘访问权限”设置中添加“System Data”，然后重新打开应用。"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -779,6 +1241,12 @@
     },
     "Open Settings": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "打开设置"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -789,6 +1257,12 @@
     },
     "Open System Data to see what is taking up room.": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "打开“系统数据”以查看哪些内容占用了空间。"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -799,6 +1273,12 @@
     },
     "Open x.com/yigitech": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "打开 x.com/yigitech"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -809,6 +1289,12 @@
     },
     "Order rows by size, or by how long they have sat untouched": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "按大小或未变动的时长排列项目"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -819,6 +1305,12 @@
     },
     "Other large folders": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "其他大型文件夹"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -829,6 +1321,12 @@
     },
     "Package managers": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "软件包管理器"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -839,6 +1337,12 @@
     },
     "Project build folders": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "项目构建文件夹"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -849,6 +1353,12 @@
     },
     "Purgeable is what macOS estimates it could give back if it had to: caches and local snapshots. It is an estimate, not space you can count on — it moves on its own, and writing a file does not spend it. The items below are the ones you can actually free.": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "可清除空间是 macOS 估计在必要时可释放的空间，包括缓存和本地快照。这只是估计值，不能当作确定可用的空间；它会自行变化，写入文件也不会直接消耗这部分空间。下方列出的项目才是你可以实际清理以释放空间的内容。"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -859,6 +1369,12 @@
     },
     "Quit": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "退出"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -869,6 +1385,12 @@
     },
     "Reclaimed this session: %@": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "本次已释放：%@"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -879,6 +1401,12 @@
     },
     "Remember what changed": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "记录变化"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -889,6 +1417,12 @@
     },
     "Rescan": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "重新扫描"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -899,6 +1433,12 @@
     },
     "Reveal %@ in Finder": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "在“访达”中显示%@"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -909,6 +1449,12 @@
     },
     "Reveal in Finder": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "在“访达”中显示"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -919,6 +1465,12 @@
     },
     "Review": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "需确认"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -929,6 +1481,12 @@
     },
     "Safe": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "可安全清理"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -939,6 +1497,12 @@
     },
     "Safety: %@": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "安全性：%@"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -949,6 +1513,12 @@
     },
     "Scanning": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "正在扫描"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -959,6 +1529,12 @@
     },
     "Select %@": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "选择%@"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -969,6 +1545,12 @@
     },
     "Select every item that is regenerated automatically": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "选择所有会自动重新生成的项目"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -979,6 +1561,12 @@
     },
     "Select safe": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "选择可安全清理的项目"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -989,6 +1577,12 @@
     },
     "Settings": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "设置"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -999,6 +1593,12 @@
     },
     "Shared & other users": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "共享与其他用户"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -1009,6 +1609,12 @@
     },
     "Show all": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "显示全部"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -1019,6 +1625,12 @@
     },
     "Show exactly what runs": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "显示将执行的具体操作"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -1029,6 +1641,12 @@
     },
     "Show largest entries": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "显示最大的项目"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -1039,6 +1657,12 @@
     },
     "Show the commands that run as administrator": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "显示以管理员身份执行的命令"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -1049,6 +1673,12 @@
     },
     "Shut down simulators at power off": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "关机时关闭模拟器"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -1059,6 +1689,12 @@
     },
     "Shut every simulator down first": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "先关闭所有模拟器"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -1069,6 +1705,12 @@
     },
     "Simulator devices": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "模拟器设备"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -1079,6 +1721,12 @@
     },
     "Simulator runtimes": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "模拟器运行时"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -1089,6 +1737,12 @@
     },
     "Since %@": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "自 %@ 起"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -1099,6 +1753,12 @@
     },
     "Size": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "大小"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -1109,6 +1769,12 @@
     },
     "Sort by": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "排序方式"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -1119,6 +1785,12 @@
     },
     "System": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "系统"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -1129,6 +1801,12 @@
     },
     "System Data": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "系统数据"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -1139,6 +1817,12 @@
     },
     "System Data found: %@": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "发现的系统数据：%@"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -1149,6 +1833,12 @@
     },
     "System Data holds %@ that is safe to free.": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "系统数据中有 %@ 可安全释放。"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -1159,6 +1849,12 @@
     },
     "Temporary files": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "临时文件"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -1170,6 +1866,12 @@
     "The app could not be replaced: %@": {
       "extractionState": "manual",
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "无法替换应用：%@"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -1181,6 +1883,12 @@
     "The download did not finish. Nothing was installed.": {
       "extractionState": "manual",
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "下载未完成。未安装任何内容。"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -1192,6 +1900,12 @@
     "The download does not come from GitHub. Nothing was installed.": {
       "extractionState": "manual",
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "下载内容并非来自 GitHub。未安装任何内容。"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -1203,6 +1917,12 @@
     "The download is not signed by this app's developer, so it was discarded. (%@)": {
       "extractionState": "manual",
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "下载内容并非由此应用的开发者签名，已丢弃。（%@）"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -1214,6 +1934,12 @@
     "The downloaded image could not be opened. Nothing was installed.": {
       "extractionState": "manual",
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "无法打开下载的磁盘映像。未安装任何内容。"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -1225,6 +1951,12 @@
     "The downloaded image does not contain the app. Nothing was installed.": {
       "extractionState": "manual",
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "下载的磁盘映像中不包含此应用。未安装任何内容。"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -1235,6 +1967,12 @@
     },
     "This is regenerated automatically when needed.": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "需要时会自动重新生成。"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -1245,6 +1983,12 @@
     },
     "Time Machine snapshots": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "时间机器快照"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -1255,6 +1999,12 @@
     },
     "Trash": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "废纸篓"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -1266,6 +2016,12 @@
     "Update": {
       "extractionState": "manual",
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "更新"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -1277,6 +2033,12 @@
     "Version %@ is available.": {
       "extractionState": "manual",
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "版本 %@ 现已可用。"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -1287,6 +2049,12 @@
     },
     "Virtual machines": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "虚拟机"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -1297,6 +2065,12 @@
     },
     "Warn below": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "可用空间低于此值时提醒"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -1307,6 +2081,12 @@
     },
     "Warn when free space runs low": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "可用空间不足时提醒"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -1317,6 +2097,12 @@
     },
     "What grew, and what came back": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "空间增长与重新出现的项目"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -1327,6 +2113,12 @@
     },
     "Xcode": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Xcode"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -1338,6 +2130,12 @@
     "different developer": {
       "extractionState": "manual",
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "签名开发者不一致"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -1348,6 +2146,12 @@
     },
     "iOS device backups": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iOS 设备备份"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
@@ -1358,6 +2162,12 @@
     },
     "macOS is not allowing notifications from this app. Turn them on in System Settings > Notifications.": {
       "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "macOS 当前不允许此应用发送通知。请在“系统设置”>“通知”中开启通知。"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
