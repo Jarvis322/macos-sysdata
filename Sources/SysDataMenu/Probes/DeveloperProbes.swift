@@ -136,6 +136,10 @@ struct RuntimeProbe: StorageProbe {
                   let build = runtime["build"] as? String else { return nil }
             let platform = platformName(runtime["platformIdentifier"] as? String ?? "")
             let size = (runtime["sizeBytes"] as? NSNumber)?.int64Value
+            // simctl knows when a runtime was last booted, which is a truer
+            // answer than any file date under the image: mounting it for a
+            // build touches nothing the way running a simulator does.
+            let lastUsedAt = (runtime["lastUsedAt"] as? String).flatMap(Self.parseTimestamp)
             let lastUsed = (runtime["lastUsedAt"] as? String).map { "Last used \($0.prefix(10)). " } ?? ""
 
             return StorageItem(
@@ -146,10 +150,19 @@ struct RuntimeProbe: StorageProbe {
                 sizeBytes: size,
                 safety: .review,
                 action: .command(executable: xcrun, arguments: ["simctl", "runtime", "delete", identifier]),
-                revealURL: (runtime["path"] as? String).map { URL(fileURLWithPath: $0) }
+                revealURL: (runtime["path"] as? String).map { URL(fileURLWithPath: $0) },
+                lastModified: lastUsedAt
             )
         }
         .sorted { ($0.sizeBytes ?? 0) > ($1.sizeBytes ?? 0) }
+    }
+
+    /// simctl reports ISO-8601 in UTC, today without fractional seconds.
+    /// Both spellings are accepted so a future Xcode adding them does not
+    /// silently drop the date.
+    static func parseTimestamp(_ text: String) -> Date? {
+        (try? Date(text, strategy: .iso8601))
+            ?? (try? Date(text, strategy: .iso8601.time(includingFractionalSeconds: true)))
     }
 
     private func platformName(_ identifier: String) -> String {

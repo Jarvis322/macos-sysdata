@@ -36,11 +36,19 @@ final class ScanModel {
     }
     /// Where a shift-click measures its range from.
     private var selectionAnchorID: String?
+    /// What the rows inside a category are ordered by. Size answers "what is
+    /// big"; age answers "what is dead". Sorting by age and shift-clicking a
+    /// range is how the untouched things get selected, which is safer than a
+    /// button that ticks them all on the person's behalf.
+    var sortOrder: SortOrder = SortOrder(rawValue: UserDefaults.standard.string(forKey: ScanModel.sortKey) ?? "") ?? .size {
+        didSet { UserDefaults.standard.set(sortOrder.rawValue, forKey: Self.sortKey) }
+    }
     var errorMessage: String?
     /// Non-error feedback, such as "moved to the Trash".
     var notice: String?
 
     private static let hiddenKey = "hiddenItemIDs"
+    private static let sortKey = "sortOrder"
     private static let rescanInterval: Duration = .seconds(24 * 60 * 60)
 
     /// `scansAutomatically` is off for the headless modes, which drive the
@@ -209,7 +217,26 @@ final class ScanModel {
         return StorageCategory.allCases.compactMap { category in
             let members = visible.filter { $0.category == category }
             guard !members.isEmpty else { return nil }
-            return (category, members, members.reduce(0) { $0 + ($1.sizeBytes ?? 0) })
+            return (category, sorted(members), members.reduce(0) { $0 + ($1.sizeBytes ?? 0) })
+        }
+    }
+
+    private func sorted(_ items: [StorageItem]) -> [StorageItem] {
+        switch sortOrder {
+        case .size:
+            items.sorted { ($0.sizeBytes ?? 0) > ($1.sizeBytes ?? 0) }
+        case .age:
+            // Items with no date are not "new": they are things this app did
+            // not measure a folder for, such as a Docker estimate. They sort
+            // last rather than claiming an age they do not have.
+            items.sorted {
+                switch ($0.lastModified, $1.lastModified) {
+                case let (left?, right?): left < right
+                case (nil, _?): false
+                case (_?, nil): true
+                case (nil, nil): ($0.sizeBytes ?? 0) > ($1.sizeBytes ?? 0)
+                }
+            }
         }
     }
 

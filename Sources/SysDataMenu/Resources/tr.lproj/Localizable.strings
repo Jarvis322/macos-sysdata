@@ -1,9 +1,14 @@
 "%@ free on disk" = "diskte %@ boş";
 "%@ safe to free now · %@ free on disk · %@ purgeable" = "%@ güvenle boşaltılabilir · diskte %@ boş · %@ temizlenebilir";
+"%lld days idle" = "%lld gündür boşta";
 "%lld hidden" = "%lld gizli";
 "%lld items need root; the password is asked once." = "%lld kalem yönetici yetkisi istiyor; parola bir kez sorulur.";
 "%lld marked Review go to the Trash: %@" = "%lld tanesi İncele işaretli, Çöp Sepeti'ne gider: %@";
+"%lld months idle" = "%lld aydır boşta";
+"%lld years idle" = "%lld yıldır boşta";
 "1 item needs root; the password is asked once." = "1 kalem yönetici yetkisi istiyor; parola bir kez sorulur.";
+"1 month idle" = "1 aydır boşta";
+"1 year idle" = "1 yıldır boşta";
 "Android" = "Android";
 "App data & caches" = "Uygulama verileri ve önbellekler";
 "Asks GitHub once a day whether a newer version exists. It is the only request this app makes; leave it off and nothing leaves your Mac." = "Günde bir kez GitHub'a yeni sürüm olup olmadığını sorar. Uygulamanın yaptığı tek istek budur; kapalı bırakırsanız Mac'inizden hiçbir şey çıkmaz.";
@@ -34,6 +39,7 @@
 "Hide %@ from future scans" = "%@ öğesini sonraki taramalarda gizle";
 "Hide breakdown" = "Kırılımı gizle";
 "How to remove %@" = "%@ nasıl kaldırılır";
+"Idle longest" = "En uzun boşta";
 "It goes to the Trash first." = "Önce Çöp Sepeti'ne gider.";
 "Launch at login" = "Girişte başlat";
 "Launch at login: %@" = "Girişte başlat: %@";
@@ -48,6 +54,7 @@
 "Nothing to reclaim" = "Geri kazanılacak bir şey yok";
 "Open Settings" = "Ayarları Aç";
 "Open x.com/yigitech" = "x.com/yigitech adresini aç";
+"Order rows by size, or by how long they have sat untouched" = "Satırları boyuta ya da ne kadardır dokunulmadığına göre sırala";
 "Other large folders" = "Diğer büyük klasörler";
 "Package managers" = "Paket yöneticileri";
 "Project build folders" = "Proje derleme klasörleri";
@@ -68,6 +75,8 @@
 "Shut down simulators at power off" = "Kapanışta simülatörleri kapat";
 "Simulator devices" = "Simülatör aygıtları";
 "Simulator runtimes" = "Simülatör runtime'ları";
+"Size" = "Boyut";
+"Sort by" = "Sıralama";
 "System" = "Sistem";
 "System Data" = "Sistem Verileri";
 "System Data found: %@" = "Bulunan Sistem Verileri: %@";

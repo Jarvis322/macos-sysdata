@@ -33,6 +33,10 @@ struct InventoryRecord: Codable {
     let safety: String
     let manual: Bool
     let path: String?
+    /// When anything inside last changed, ISO-8601. Absent when this app did
+    /// not measure a folder for the item.
+    let lastModified: String?
+    let idleDays: Int?
 
     init(_ item: StorageItem) {
         id = item.id
@@ -47,6 +51,8 @@ struct InventoryRecord: Codable {
         }
         manual = item.action.isManual
         path = item.revealURL?.path
+        lastModified = item.lastModified.map(ISO8601DateFormatter().string(from:))
+        idleDays = item.idleDays
     }
 }
 

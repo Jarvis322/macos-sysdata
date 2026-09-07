@@ -32,10 +32,23 @@ struct ItemRow: View {
                             .lineLimit(1)
                         safetyBadge
                     }
-                    Text(item.detail)
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                        .lineLimit(2)
+                    HStack(alignment: .firstTextBaseline, spacing: 4) {
+                        if let idle = item.idleLabel {
+                            // Only appears past a fortnight, so it marks the
+                            // rows where age is the deciding fact rather than
+                            // repeating "in use" on every line.
+                            Text(idle)
+                                .font(.caption.weight(.medium))
+                                .foregroundStyle(.tertiary)
+                            Text("·")
+                                .font(.caption)
+                                .foregroundStyle(.tertiary)
+                        }
+                        Text(item.detail)
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                            .lineLimit(2)
+                    }
                 }
                 .contentShape(Rectangle())
                 .onTapGesture { toggleExpanded() }

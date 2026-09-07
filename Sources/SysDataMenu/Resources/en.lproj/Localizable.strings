@@ -1,9 +1,14 @@
 "%@ free on disk" = "%@ free on disk";
 "%@ safe to free now · %@ free on disk · %@ purgeable" = "%@ safe to free now · %@ free on disk · %@ purgeable";
+"%lld days idle" = "%lld days idle";
 "%lld hidden" = "%lld hidden";
 "%lld items need root; the password is asked once." = "%lld items need root; the password is asked once.";
 "%lld marked Review go to the Trash: %@" = "%lld marked Review go to the Trash: %@";
+"%lld months idle" = "%lld months idle";
+"%lld years idle" = "%lld years idle";
 "1 item needs root; the password is asked once." = "1 item needs root; the password is asked once.";
+"1 month idle" = "1 month idle";
+"1 year idle" = "1 year idle";
 "Android" = "Android";
 "App data & caches" = "App data & caches";
 "Asks GitHub once a day whether a newer version exists. It is the only request this app makes; leave it off and nothing leaves your Mac." = "Asks GitHub once a day whether a newer version exists. It is the only request this app makes; leave it off and nothing leaves your Mac.";
@@ -34,6 +39,7 @@
 "Hide %@ from future scans" = "Hide %@ from future scans";
 "Hide breakdown" = "Hide breakdown";
 "How to remove %@" = "How to remove %@";
+"Idle longest" = "Idle longest";
 "It goes to the Trash first." = "It goes to the Trash first.";
 "Launch at login" = "Launch at login";
 "Launch at login: %@" = "Launch at login: %@";
@@ -48,6 +54,7 @@
 "Nothing to reclaim" = "Nothing to reclaim";
 "Open Settings" = "Open Settings";
 "Open x.com/yigitech" = "Open x.com/yigitech";
+"Order rows by size, or by how long they have sat untouched" = "Order rows by size, or by how long they have sat untouched";
 "Other large folders" = "Other large folders";
 "Package managers" = "Package managers";
 "Project build folders" = "Project build folders";
@@ -68,6 +75,8 @@
 "Shut down simulators at power off" = "Shut down simulators at power off";
 "Simulator devices" = "Simulator devices";
 "Simulator runtimes" = "Simulator runtimes";
+"Size" = "Size";
+"Sort by" = "Sort by";
 "System" = "System";
 "System Data" = "System Data";
 "System Data found: %@" = "System Data found: %@";

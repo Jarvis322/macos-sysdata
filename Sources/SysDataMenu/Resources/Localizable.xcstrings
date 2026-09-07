@@ -22,6 +22,16 @@
         }
       }
     },
+    "%lld days idle": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld gündür boşta"
+          }
+        }
+      }
+    },
     "%lld hidden": {
       "localizations": {
         "tr": {
@@ -52,12 +62,52 @@
         }
       }
     },
+    "%lld months idle": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld aydır boşta"
+          }
+        }
+      }
+    },
+    "%lld years idle": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld yıldır boşta"
+          }
+        }
+      }
+    },
     "1 item needs root; the password is asked once.": {
       "localizations": {
         "tr": {
           "stringUnit": {
             "state": "translated",
             "value": "1 kalem yönetici yetkisi istiyor; parola bir kez sorulur."
+          }
+        }
+      }
+    },
+    "1 month idle": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 aydır boşta"
+          }
+        }
+      }
+    },
+    "1 year idle": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 yıldır boşta"
           }
         }
       }
@@ -367,6 +417,16 @@
         }
       }
     },
+    "Idle longest": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "En uzun boşta"
+          }
+        }
+      }
+    },
     "It goes to the Trash first.": {
       "localizations": {
         "tr": {
@@ -503,6 +563,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "x.com/yigitech adresini aç"
+          }
+        }
+      }
+    },
+    "Order rows by size, or by how long they have sat untouched": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Satırları boyuta ya da ne kadardır dokunulmadığına göre sırala"
           }
         }
       }
@@ -703,6 +773,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "Simülatör runtime'ları"
+          }
+        }
+      }
+    },
+    "Size": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Boyut"
+          }
+        }
+      }
+    },
+    "Sort by": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sıralama"
           }
         }
       }

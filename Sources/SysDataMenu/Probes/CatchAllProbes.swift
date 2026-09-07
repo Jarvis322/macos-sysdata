@@ -228,7 +228,11 @@ struct LargeFolderProbe: StorageProbe {
             sizeBytes: size,
             safety: .review,
             action: .removePaths([url]),
-            revealURL: url
+            revealURL: url,
+            // These are the rows the person has to judge with the least help,
+            // so how long the folder has sat untouched is worth the extra
+            // stat of its top level.
+            lastModified: DiskSize.shallowLastModified(at: url)
         ))
     }
 }

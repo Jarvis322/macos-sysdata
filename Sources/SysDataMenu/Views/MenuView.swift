@@ -148,6 +148,20 @@ struct MenuView: View {
                     .accessibilityLabel(L("Scanning"))
             } else {
                 if !model.visibleItems.isEmpty {
+                    Picker(L("Sort by"), selection: Binding(
+                        get: { model.sortOrder },
+                        set: { model.sortOrder = $0 }
+                    )) {
+                        ForEach(SortOrder.allCases) { order in
+                            Text(order.title).tag(order)
+                        }
+                    }
+                    .pickerStyle(.menu)
+                    .labelsHidden()
+                    .controlSize(.small)
+                    .fixedSize()
+                    .help(L("Order rows by size, or by how long they have sat untouched"))
+
                     Button(L("Select safe")) {
                         model.selectAllSafe()
                     }

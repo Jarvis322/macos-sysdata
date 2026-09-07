@@ -93,6 +93,10 @@ struct StorageItem: Identifiable, Sendable {
     let safety: Safety
     let action: ReclaimAction
     let revealURL: URL?
+    /// When anything inside this item last changed. `nil` when the item is not
+    /// a place on disk this app measured — a `docker system prune` estimate,
+    /// an APFS snapshot — rather than "never used".
+    let lastModified: Date?
     /// Locations this item accounts for beyond its action and reveal paths
     /// (for example the second half of the unified log store).
     let alsoClaims: [URL]
@@ -106,6 +110,7 @@ struct StorageItem: Identifiable, Sendable {
         safety: Safety,
         action: ReclaimAction,
         revealURL: URL? = nil,
+        lastModified: Date? = nil,
         alsoClaims: [URL] = []
     ) {
         self.id = id
@@ -116,7 +121,26 @@ struct StorageItem: Identifiable, Sendable {
         self.safety = safety
         self.action = action
         self.revealURL = revealURL
+        self.lastModified = lastModified
         self.alsoClaims = alsoClaims
+    }
+
+    /// Whole days since anything inside changed.
+    var idleDays: Int? {
+        guard let lastModified else { return nil }
+        return Calendar.current.dateComponents([.day], from: lastModified, to: .now).day.map { max($0, 0) }
+    }
+
+    /// Short "untouched for" phrase, or nil when the item is too recent to be
+    /// worth a badge. Below a fortnight the age says nothing useful: a cache
+    /// touched yesterday and one touched last week are both simply in use.
+    var idleLabel: String? {
+        guard let days = idleDays, days >= 14 else { return nil }
+        let months = days / 30
+        let years = days / 365
+        if years >= 1 { return years == 1 ? L("1 year idle") : L("%lld years idle", years) }
+        if months >= 1 { return months == 1 ? L("1 month idle") : L("%lld months idle", months) }
+        return L("%lld days idle", days)
     }
 
     /// Every location this item accounts for, so the catch-all scan can skip it.
@@ -140,5 +164,19 @@ extension Int64 {
     /// File-style byte count; "0 bytes" rather than "Zero KB".
     var byteString: String {
         formatted(.byteCount(style: .file, spellsOutZero: false))
+    }
+}
+
+/// How rows are ordered inside a category.
+enum SortOrder: String, CaseIterable, Identifiable, Sendable {
+    case size, age
+
+    var id: String { rawValue }
+
+    var title: String {
+        switch self {
+        case .size: L("Size")
+        case .age: L("Idle longest")
+        }
     }
 }

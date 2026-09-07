@@ -19,17 +19,18 @@ enum ProbeSupport {
         minimumBytes: Int64 = 1
     ) async -> StorageItem? {
         guard url.exists else { return nil }
-        let size = await DiskSize.allocated(at: url)
-        guard size >= minimumBytes else { return nil }
+        let measured = await DiskSize.measure(at: url)
+        guard measured.bytes >= minimumBytes else { return nil }
         return StorageItem(
             id: id,
             category: category,
             name: name,
             detail: detail,
-            sizeBytes: size,
+            sizeBytes: measured.bytes,
             safety: safety,
             action: action,
-            revealURL: url
+            revealURL: url,
+            lastModified: measured.lastModified
         )
     }
 

@@ -1,25 +1,50 @@
 import Foundation
 
 enum DiskSize {
+    /// What one walk of a location reports: how much it takes up, and when
+    /// anything inside it last changed.
+    ///
+    /// The date is the interesting half. Size alone cannot tell a 2 GB build
+    /// folder for today's work apart from a 2 GB one for a project abandoned
+    /// two years ago, and those are opposite decisions. The walk already reads
+    /// every file's modification date to honour `cutoff`, so carrying the
+    /// newest one out costs nothing.
+    struct Measurement: Sendable {
+        var bytes: Int64
+        /// Newest modification date under the location, or nil when it holds
+        /// no regular files.
+        var lastModified: Date?
+    }
+
     /// Allocated bytes under `url`, following the same rules Finder uses for
     /// System Data: on-disk blocks, no symlink traversal.
     static func allocated(at url: URL, olderThan cutoff: Date? = nil) async -> Int64 {
+        await measure(at: url, olderThan: cutoff).bytes
+    }
+
+    static func measure(at url: URL, olderThan cutoff: Date? = nil) async -> Measurement {
         await Task.detached(priority: .utility) {
-            allocatedSync(at: url, olderThan: cutoff)
+            measureSync(at: url, olderThan: cutoff)
         }.value
     }
 
     static func allocatedSync(at url: URL, olderThan cutoff: Date? = nil) -> Int64 {
+        measureSync(at: url, olderThan: cutoff).bytes
+    }
+
+    static func measureSync(at url: URL, olderThan cutoff: Date? = nil) -> Measurement {
         let fileManager = FileManager.default
         var isDirectory: ObjCBool = false
-        guard fileManager.fileExists(atPath: url.path, isDirectory: &isDirectory) else { return 0 }
+        guard fileManager.fileExists(atPath: url.path, isDirectory: &isDirectory) else {
+            return Measurement(bytes: 0, lastModified: nil)
+        }
 
         let keys: Set<URLResourceKey> = [
             .totalFileAllocatedSizeKey, .isRegularFileKey, .contentModificationDateKey,
         ]
 
         if !isDirectory.boolValue {
-            return size(of: url, keys: keys, cutoff: cutoff)
+            return measure(of: url, keys: keys, cutoff: cutoff)
         }
 
         guard let enumerator = fileManager.enumerator(
@@ -27,11 +52,16 @@ enum DiskSize {
             includingPropertiesForKeys: Array(keys),
             options: [],
             errorHandler: { _, _ in true }
-        ) else { return 0 }
+        ) else { return Measurement(bytes: 0, lastModified: nil) }
 
-        var total: Int64 = 0
+        var total = Measurement(bytes: 0, lastModified: nil)
         for case let child as URL in enumerator {
-            total += size(of: child, keys: keys, cutoff: cutoff)
+            let child = measure(of: child, keys: keys, cutoff: cutoff)
+            total.bytes += child.bytes
+            if let modified = child.lastModified,
+               modified > (total.lastModified ?? .distantPast) {
+                total.lastModified = modified
+            }
         }
         return total
     }
@@ -84,6 +114,20 @@ enum DiskSize {
         return sizes
     }
 
+    /// The newest modification date at the top of a directory, from a shallow
+    /// listing. Used where a full walk has already happened for the size and
+    /// walking again for the date alone would double the scan.
+    static func shallowLastModified(at url: URL) -> Date? {
+        let keys: Set<URLResourceKey> = [.contentModificationDateKey]
+        var newest = (try? url.resourceValues(forKeys: keys))?.contentModificationDate
+        for child in url.children(includeHidden: true) {
+            guard let modified = (try? child.resourceValues(forKeys: keys))?.contentModificationDate
+            else { continue }
+            if modified > (newest ?? .distantPast) { newest = modified }
+        }
+        return newest
+    }
+
     /// The path with every symlink resolved, as realpath(3) reports it and as
     /// `FileManager`'s enumerator yields it.
     static func realPath(_ path: String) -> String {
@@ -120,13 +164,19 @@ enum DiskSize {
         }.value
     }
 
-    private static func size(of url: URL, keys: Set<URLResourceKey>, cutoff: Date?) -> Int64 {
+    /// One file's contribution. A file excluded by `cutoff` contributes
+    /// neither its bytes nor its date, so a pruning item's age describes what
+    /// it would actually delete.
+    private static func measure(of url: URL, keys: Set<URLResourceKey>, cutoff: Date?) -> Measurement {
         guard let values = try? url.resourceValues(forKeys: keys),
-              values.isRegularFile == true else { return 0 }
+              values.isRegularFile == true else { return Measurement(bytes: 0, lastModified: nil) }
         if let cutoff, let modified = values.contentModificationDate, modified > cutoff {
-            return 0
+            return Measurement(bytes: 0, lastModified: nil)
         }
-        return Int64(values.totalFileAllocatedSize ?? 0)
+        return Measurement(
+            bytes: Int64(values.totalFileAllocatedSize ?? 0),
+            lastModified: values.contentModificationDate
+        )
     }
 }
 
