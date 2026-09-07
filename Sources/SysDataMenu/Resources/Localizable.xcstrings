@@ -142,6 +142,16 @@
         }
       }
     },
+    "As administrator: %@": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yönetici olarak: %@"
+          }
+        }
+      }
+    },
     "Asks GitHub once a day whether a newer version exists. It is the only request this app makes; leave it off and nothing leaves your Mac.": {
       "extractionState": "manual",
       "localizations": {
@@ -271,7 +281,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "%@ öğesini sil"
+            "value": "%@ silinir"
           }
         }
       }
@@ -312,6 +322,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "Seçili %lld kalemi sil · %@"
+          }
+        }
+      }
+    },
+    "Delete everything inside %@": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ içindeki her şey silinir"
+          }
+        }
+      }
+    },
+    "Delete files older than %lld days in %@": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%2$@ içinde %1$lld günden eski dosyalar silinir"
           }
         }
       }
@@ -887,6 +917,16 @@
         }
       }
     },
+    "Show exactly what runs": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tam olarak ne çalışacağını göster"
+          }
+        }
+      }
+    },
     "Show largest entries": {
       "localizations": {
         "tr": {
@@ -897,12 +937,32 @@
         }
       }
     },
+    "Show the commands that run as administrator": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yönetici olarak çalışacak komutları göster"
+          }
+        }
+      }
+    },
     "Shut down simulators at power off": {
       "localizations": {
         "tr": {
           "stringUnit": {
             "state": "translated",
             "value": "Kapanışta simülatörleri kapat"
+          }
+        }
+      }
+    },
+    "Shut every simulator down first": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Önce bütün simulator'lar kapatılır"
           }
         }
       }

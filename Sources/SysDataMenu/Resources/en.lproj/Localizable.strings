@@ -12,6 +12,7 @@
 "After a second scan this shows what grew, and whether anything you deleted came back." = "After a second scan this shows what grew, and whether anything you deleted came back.";
 "Android" = "Android";
 "App data & caches" = "App data & caches";
+"As administrator: %@" = "As administrator: %@";
 "Asks GitHub once a day whether a newer version exists. It is the only request this app makes; leave it off and nothing leaves your Mac." = "Asks GitHub once a day whether a newer version exists. It is the only request this app makes; leave it off and nothing leaves your Mac.";
 "Back to the list" = "Back to the list";
 "Booted simulators ignore the quit request and hold the shutdown for 33 seconds. This shuts them down first." = "Booted simulators ignore the quit request and hold the shutdown for 33 seconds. This shuts them down first.";
@@ -29,6 +30,8 @@
 "Delete %lld items" = "Delete %lld items";
 "Delete %lld items?" = "Delete %lld items?";
 "Delete %lld selected · %@" = "Delete %lld selected · %@";
+"Delete everything inside %@" = "Delete everything inside %@";
+"Delete files older than %lld days in %@" = "Delete files older than %lld days in %@";
 "Delete the history file" = "Delete the history file";
 "Deleted" = "Deleted";
 "Deleted %@, back by %@" = "Deleted %@, back by %@";
@@ -86,8 +89,11 @@
 "Settings" = "Settings";
 "Shared & other users" = "Shared & other users";
 "Show all" = "Show all";
+"Show exactly what runs" = "Show exactly what runs";
 "Show largest entries" = "Show largest entries";
+"Show the commands that run as administrator" = "Show the commands that run as administrator";
 "Shut down simulators at power off" = "Shut down simulators at power off";
+"Shut every simulator down first" = "Shut every simulator down first";
 "Simulator devices" = "Simulator devices";
 "Simulator runtimes" = "Simulator runtimes";
 "Since %@" = "Since %@";

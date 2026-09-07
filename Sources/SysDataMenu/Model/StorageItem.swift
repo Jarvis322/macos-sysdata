@@ -72,6 +72,42 @@ enum ReclaimAction: Sendable {
         return nil
     }
 
+    /// Exactly what this action does, one line per operation.
+    ///
+    /// The README says the source is published so anyone can see what the app
+    /// does to their machine. This is that promise inside the app: the person
+    /// about to type an administrator password can read the command first,
+    /// which is the one moment reading it matters.
+    var plan: [String] {
+        switch self {
+        case .removePaths(let urls):
+            urls.map { L("Delete %@", $0.path) }
+        case .emptyDirectories(let urls):
+            urls.map { L("Delete everything inside %@", $0.path) }
+        case .pruneOlderThan(let url, let days):
+            [L("Delete files older than %lld days in %@", days, url.path)]
+        case .command(let executable, let arguments):
+            [([executable] + arguments).joined(separator: " ")]
+        case .privilegedScript(let script):
+            [L("As administrator: %@", script)]
+        case .shutdownSimulators:
+            [L("Shut every simulator down first")]
+        case .steps(let actions):
+            actions.flatMap(\.plan)
+        case .manual:
+            []
+        }
+    }
+
+    /// Whether running this asks for an administrator password.
+    var needsAdministrator: Bool {
+        switch self {
+        case .privilegedScript: true
+        case .steps(let actions): actions.contains(where: \.needsAdministrator)
+        default: false
+        }
+    }
+
     /// Filesystem locations this action touches.
     var paths: [URL] {
         switch self {

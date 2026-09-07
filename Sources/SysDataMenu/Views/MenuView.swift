@@ -12,6 +12,21 @@ struct MenuView: View {
     @State private var warnsAboutLowSpace = LowSpaceAlert.isEnabled
     @State private var lowSpaceThreshold = LowSpaceAlert.threshold
     @State private var notificationsRefused = false
+    @State private var showsPlan = false
+
+    /// What the pending delete will actually do, whether it is one row or a
+    /// whole selection.
+    private var pendingItems: [StorageItem] {
+        pendingDeletion.map { [$0] } ?? model.selectedItems
+    }
+
+    private var plannedOperations: [String] {
+        pendingItems.flatMap(\.action.plan)
+    }
+
+    private var needsAdministrator: Bool {
+        pendingItems.contains { $0.action.needsAdministrator }
+    }
 
     private static let fullDiskAccessPane = URL(
         string: "x-apple.systempreferences:com.apple.preference.security?Privacy_AllFiles"
@@ -112,11 +127,35 @@ struct MenuView: View {
                     .foregroundStyle(.secondary)
                     .fixedSize(horizontal: false, vertical: true)
             }
+            if !plannedOperations.isEmpty {
+                DisclosureGroup(isExpanded: $showsPlan) {
+                    ScrollView {
+                        VStack(alignment: .leading, spacing: 2) {
+                            ForEach(plannedOperations, id: \.self) { line in
+                                Text(line)
+                                    .font(.caption.monospaced())
+                                    .foregroundStyle(.secondary)
+                                    .textSelection(.enabled)
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                            }
+                        }
+                        .padding(.top, 4)
+                    }
+                    .frame(maxHeight: 120)
+                } label: {
+                    Text(needsAdministrator
+                         ? L("Show the commands that run as administrator")
+                         : L("Show exactly what runs"))
+                        .font(.caption)
+                }
+                .font(.caption)
+            }
             HStack {
                 Spacer()
                 Button(L("Cancel")) {
                     pendingDeletion = nil
                     confirmsBatch = false
+                    showsPlan = false
                 }
                 .keyboardShortcut(.cancelAction)
                 Button(role: .destructive) {
@@ -127,6 +166,7 @@ struct MenuView: View {
                     }
                     pendingDeletion = nil
                     confirmsBatch = false
+                    showsPlan = false
                 } label: {
                     Text(pendingDeletion != nil ? L("Delete") : L("Delete %lld items", model.selectedItems.count))
                 }

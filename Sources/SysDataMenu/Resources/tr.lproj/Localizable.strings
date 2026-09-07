@@ -12,6 +12,7 @@
 "After a second scan this shows what grew, and whether anything you deleted came back." = "İkinci taramadan sonra burada ne büyüdüğü ve sildiğin bir şeyin geri gelip gelmediği görünür.";
 "Android" = "Android";
 "App data & caches" = "Uygulama verileri ve önbellekler";
+"As administrator: %@" = "Yönetici olarak: %@";
 "Asks GitHub once a day whether a newer version exists. It is the only request this app makes; leave it off and nothing leaves your Mac." = "Günde bir kez GitHub'a yeni sürüm olup olmadığını sorar. Uygulamanın yaptığı tek istek budur; kapalı bırakırsanız Mac'inizden hiçbir şey çıkmaz.";
 "Back to the list" = "Listeye dön";
 "Booted simulators ignore the quit request and hold the shutdown for 33 seconds. This shuts them down first." = "Açık simülatörler çıkış isteğini yok sayar ve kapanışı 33 saniye bekletir. Bu seçenek önce onları kapatır.";
@@ -24,11 +25,13 @@
 "Collapse %@" = "%@ kategorisini daralt";
 "Copy" = "Kopyala";
 "Delete" = "Sil";
-"Delete %@" = "%@ öğesini sil";
+"Delete %@" = "%@ silinir";
 "Delete %@?" = "%@ silinsin mi?";
 "Delete %lld items" = "%lld kalemi sil";
 "Delete %lld items?" = "%lld kalem silinsin mi?";
 "Delete %lld selected · %@" = "Seçili %lld kalemi sil · %@";
+"Delete everything inside %@" = "%@ içindeki her şey silinir";
+"Delete files older than %lld days in %@" = "%2$@ içinde %1$lld günden eski dosyalar silinir";
 "Delete the history file" = "Geçmiş dosyasını sil";
 "Deleted" = "Silinen";
 "Deleted %@, back by %@" = "%@ tarihinde silindi, %@ tarihinde geri geldi";
@@ -86,8 +89,11 @@
 "Settings" = "Ayarlar";
 "Shared & other users" = "Paylaşılan ve diğer kullanıcılar";
 "Show all" = "Tümünü göster";
+"Show exactly what runs" = "Tam olarak ne çalışacağını göster";
 "Show largest entries" = "En büyük girdileri göster";
+"Show the commands that run as administrator" = "Yönetici olarak çalışacak komutları göster";
 "Shut down simulators at power off" = "Kapanışta simülatörleri kapat";
+"Shut every simulator down first" = "Önce bütün simulator'lar kapatılır";
 "Simulator devices" = "Simülatör aygıtları";
 "Simulator runtimes" = "Simülatör runtime'ları";
 "Since %@" = "%@ tarihinden beri";
