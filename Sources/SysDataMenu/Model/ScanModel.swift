@@ -36,6 +36,21 @@ final class ScanModel {
     }
     /// Where a shift-click measures its range from.
     private var selectionAnchorID: String?
+    /// What previous scans and deletions recorded. Read once per scan rather
+    /// than per row, because the list redraws far more often than it changes.
+    private(set) var history = ScanHistory.load()
+    /// Whether scans and deletions are written down at all. On by default:
+    /// the app already knows everything the log holds, and without it the
+    /// list cannot say anything about change. Turning it off deletes the file.
+    var keepsHistory: Bool = UserDefaults.standard.object(forKey: ScanModel.historyKey) as? Bool ?? true {
+        didSet {
+            UserDefaults.standard.set(keepsHistory, forKey: Self.historyKey)
+            if !keepsHistory {
+                ScanHistory.forget()
+                history = ScanHistory.Log()
+            }
+        }
+    }
     /// What the rows inside a category are ordered by. Size answers "what is
     /// big"; age answers "what is dead". Sorting by age and shift-clicking a
     /// range is how the untouched things get selected, which is safer than a
@@ -49,6 +64,7 @@ final class ScanModel {
 
     private static let hiddenKey = "hiddenItemIDs"
     private static let sortKey = "sortOrder"
+    private static let historyKey = "keepsHistory"
     private static let rescanInterval: Duration = .seconds(24 * 60 * 60)
 
     /// `scansAutomatically` is off for the headless modes, which drive the
@@ -275,6 +291,24 @@ final class ScanModel {
         let claimed = results.flatMap(\.claimedURLs)
         items += await LargeFolderProbe(claimed: claimed).probe()
         lastScan = .now
+
+        if keepsHistory {
+            // Written after the catch-all so the record is the whole picture,
+            // not the two thirds that finished first.
+            let measured = items
+            let free = freeBytes
+            await Task.detached(priority: .utility) {
+                ScanHistory.record(measured, freeBytes: free)
+            }.value
+            history = ScanHistory.load()
+        }
+    }
+
+    /// How much this item grew or shrank since the previous scan, or nil when
+    /// there is nothing to compare it against. Nil is not zero and must not be
+    /// drawn as "no change".
+    func change(since previousScan: StorageItem) -> Int64? {
+        ScanHistory.change(forItem: previousScan.id, in: history)
     }
 
     func reclaim(_ item: StorageItem) async {
@@ -354,6 +388,15 @@ final class ScanModel {
         let before = DiskSize.freeSpace()
         do {
             let movedToTrash = try await Reclaimer.perform(action, preferTrash: toTrash)
+            if keepsHistory {
+                // Written before the size is forgotten, and before the free
+                // space is re-read, so it records what was asked for even if
+                // the disk disagrees about what it got.
+                for item in affected {
+                    ScanHistory.record(deleted: item, bytes: item.sizeBytes ?? 0)
+                }
+                history = ScanHistory.load()
+            }
             items.removeAll { ids.contains($0.id) }
             let after = DiskSize.freeSpace()
             let expected = affected.reduce(0) { $0 + ($1.sizeBytes ?? 0) }

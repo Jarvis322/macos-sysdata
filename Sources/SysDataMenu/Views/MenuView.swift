@@ -8,6 +8,7 @@ struct MenuView: View {
     @State private var pendingDeletion: StorageItem?
     @State private var confirmsBatch = false
     @State private var collapsedCategories: Set<StorageCategory> = []
+    @State private var showsHistory = false
 
     private static let fullDiskAccessPane = URL(
         string: "x-apple.systempreferences:com.apple.preference.security?Privacy_AllFiles"
@@ -16,7 +17,11 @@ struct MenuView: View {
     var body: some View {
         VStack(spacing: 0) {
             header
-            filterField
+            // The filter narrows the list; there is no list to narrow while
+            // the history is showing.
+            if !showsHistory {
+                filterField
+            }
             Divider()
             if !model.hasFullDiskAccess {
                 accessBanner
@@ -32,7 +37,11 @@ struct MenuView: View {
                 }
                 Divider()
             }
-            content
+            if showsHistory {
+                HistoryPanel(log: model.history) { model.keepsHistory = false; showsHistory = false }
+            } else {
+                content
+            }
             Divider()
             if pendingDeletion != nil || confirmsBatch {
                 confirmationBar
@@ -148,16 +157,25 @@ struct MenuView: View {
                     .accessibilityLabel(L("Scanning"))
             } else {
                 if !model.visibleItems.isEmpty {
-                    Picker(L("Sort by"), selection: Binding(
-                        get: { model.sortOrder },
-                        set: { model.sortOrder = $0 }
-                    )) {
-                        ForEach(SortOrder.allCases) { order in
-                            Text(order.title).tag(order)
+                    // Icon-only: spelling out "Size"/"Idle longest" here cost
+                    // enough width to push the title onto two lines.
+                    Menu {
+                        Picker(L("Sort by"), selection: Binding(
+                            get: { model.sortOrder },
+                            set: { model.sortOrder = $0 }
+                        )) {
+                            ForEach(SortOrder.allCases) { order in
+                                Text(order.title).tag(order)
+                            }
                         }
+                        .pickerStyle(.inline)
+                        .labelsHidden()
+                    } label: {
+                        Label(L("Sort by"), systemImage: "arrow.up.arrow.down")
+                            .labelStyle(.iconOnly)
                     }
-                    .pickerStyle(.menu)
-                    .labelsHidden()
+                    .menuStyle(.borderlessButton)
+                    .menuIndicator(.hidden)
                     .controlSize(.small)
                     .fixedSize()
                     .help(L("Order rows by size, or by how long they have sat untouched"))
@@ -174,6 +192,7 @@ struct MenuView: View {
                     Label(L("Rescan"), systemImage: "arrow.clockwise")
                 }
                 .controlSize(.small)
+                settingsMenu
             }
         }
         .padding(.horizontal, 14)
@@ -290,6 +309,7 @@ struct MenuView: View {
                         ForEach(group.items) { item in
                             ItemRow(
                                 item: item,
+                                change: model.change(since: item),
                                 isBusy: model.busyItemIDs.contains(item.id),
                                 isSelected: model.selectedIDs.contains(item.id),
                                 onToggle: { isSelected in
@@ -362,6 +382,50 @@ struct MenuView: View {
             .filter { !$0.action.isManual }
     }
 
+    /// The four preferences and the history view.
+    ///
+    /// They used to be a row of switches along the bottom. A fourth did not
+    /// fit: at this panel width the labels wrapped mid-word and pushed the
+    /// title onto two lines. A menu holds them without competing with the
+    /// list, which is what the panel is actually for.
+    private var settingsMenu: some View {
+        Menu {
+            if model.keepsHistory {
+                Button(showsHistory ? L("Back to the list") : L("History")) {
+                    showsHistory.toggle()
+                }
+            }
+            Divider()
+            Toggle(L("Remember what changed"), isOn: Binding(
+                get: { model.keepsHistory },
+                set: { model.keepsHistory = $0; if !$0 { showsHistory = false } }
+            ))
+            Toggle(L("Shut down simulators at power off"), isOn: Binding(
+                get: { model.shutsDownSimulatorsAtPowerOff },
+                set: { model.shutsDownSimulatorsAtPowerOff = $0 }
+            ))
+            Toggle(L("Check for updates"), isOn: Binding(
+                get: { updates.isEnabled },
+                set: { wanted in
+                    updates.isEnabled = wanted
+                    if wanted { Task { await updates.check() } }
+                }
+            ))
+            Toggle(L("Launch at login"), isOn: Binding(
+                get: { model.launchesAtLogin },
+                set: { model.setLaunchAtLogin($0) }
+            ))
+        } label: {
+            Label(L("Settings"), systemImage: "ellipsis.circle")
+                .labelStyle(.iconOnly)
+        }
+        .menuStyle(.borderlessButton)
+        .menuIndicator(.hidden)
+        .controlSize(.small)
+        .fixedSize()
+        .help(L("History and settings"))
+    }
+
     // MARK: Footer
 
     private var footer: some View {
@@ -413,35 +477,6 @@ struct MenuView: View {
             HStack {
                 authorBadge
                 Spacer()
-                Toggle(L("Shut down simulators at power off"), isOn: Binding(
-                    get: { model.shutsDownSimulatorsAtPowerOff },
-                    set: { model.shutsDownSimulatorsAtPowerOff = $0 }
-                ))
-                .toggleStyle(.switch)
-                .controlSize(.mini)
-                .font(.caption)
-                .foregroundStyle(.secondary)
-                .help(L("Booted simulators ignore the quit request and hold the shutdown for 33 seconds. This shuts them down first."))
-                Toggle(L("Check for updates"), isOn: Binding(
-                    get: { updates.isEnabled },
-                    set: { wanted in
-                        updates.isEnabled = wanted
-                        if wanted { Task { await updates.check() } }
-                    }
-                ))
-                .toggleStyle(.switch)
-                .controlSize(.mini)
-                .font(.caption)
-                .foregroundStyle(.secondary)
-                .help(L("Asks GitHub once a day whether a newer version exists. It is the only request this app makes; leave it off and nothing leaves your Mac."))
-                Toggle(L("Launch at login"), isOn: Binding(
-                    get: { model.launchesAtLogin },
-                    set: { model.setLaunchAtLogin($0) }
-                ))
-                .toggleStyle(.switch)
-                .controlSize(.mini)
-                .font(.caption)
-                .foregroundStyle(.secondary)
             }
         }
         .padding(.horizontal, 14)

@@ -112,6 +112,16 @@
         }
       }
     },
+    "After a second scan this shows what grew, and whether anything you deleted came back.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "İkinci taramadan sonra burada ne büyüdüğü ve sildiğin bir şeyin geri gelip gelmediği görünür."
+          }
+        }
+      }
+    },
     "Android": {
       "localizations": {
         "tr": {
@@ -143,12 +153,32 @@
         }
       }
     },
+    "Back to the list": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Listeye dön"
+          }
+        }
+      }
+    },
     "Booted simulators ignore the quit request and hold the shutdown for 33 seconds. This shuts them down first.": {
       "localizations": {
         "tr": {
           "stringUnit": {
             "state": "translated",
             "value": "Açık simülatörler çıkış isteğini yok sayar ve kapanışı 33 saniye bekletir. Bu seçenek önce onları kapatır."
+          }
+        }
+      }
+    },
+    "Came back": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geri geldi"
           }
         }
       }
@@ -286,6 +316,36 @@
         }
       }
     },
+    "Delete the history file": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geçmiş dosyasını sil"
+          }
+        }
+      }
+    },
+    "Deleted": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Silinen"
+          }
+        }
+      }
+    },
+    "Deleted %@, back by %@": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ tarihinde silindi, %@ tarihinde geri geldi"
+          }
+        }
+      }
+    },
     "Developer tool data": {
       "localizations": {
         "tr": {
@@ -367,6 +427,16 @@
         }
       }
     },
+    "Forget everything": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hepsini unut"
+          }
+        }
+      }
+    },
     "Frees about %@. ": {
       "localizations": {
         "tr": {
@@ -387,6 +457,16 @@
         }
       }
     },
+    "Grew most": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "En çok büyüyen"
+          }
+        }
+      }
+    },
     "Hide %@ from future scans": {
       "localizations": {
         "tr": {
@@ -403,6 +483,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "Kırılımı gizle"
+          }
+        }
+      }
+    },
+    "History": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geçmiş"
+          }
+        }
+      }
+    },
+    "History and settings": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geçmiş ve ayarlar"
           }
         }
       }
@@ -433,6 +533,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Önce Çöp Sepeti'ne gider."
+          }
+        }
+      }
+    },
+    "Keep a local record of each scan and deletion, so the list can show what changed": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Her taramanın ve silmenin yerel kaydını tut, böylece liste neyin değiştiğini gösterebilir"
           }
         }
       }
@@ -537,6 +647,16 @@
         }
       }
     },
+    "Nothing to compare yet": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Henüz karşılaştıracak bir şey yok"
+          }
+        }
+      }
+    },
     "Nothing to reclaim": {
       "localizations": {
         "tr": {
@@ -623,6 +743,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Bu oturumda kazanılan: %@"
+          }
+        }
+      }
+    },
+    "Remember what changed": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Neyin değiştiğini hatırla"
           }
         }
       }
@@ -717,6 +847,16 @@
         }
       }
     },
+    "Settings": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ayarlar"
+          }
+        }
+      }
+    },
     "Shared & other users": {
       "localizations": {
         "tr": {
@@ -773,6 +913,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Simülatör runtime'ları"
+          }
+        }
+      }
+    },
+    "Since %@": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ tarihinden beri"
           }
         }
       }
@@ -961,6 +1111,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Sanal makineler"
+          }
+        }
+      }
+    },
+    "What grew, and what came back": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ne büyüdü, ne geri geldi"
           }
         }
       }

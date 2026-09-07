@@ -3,6 +3,8 @@ import SwiftUI
 
 struct ItemRow: View {
     let item: StorageItem
+    /// Growth since the previous scan, when there is one to compare against.
+    let change: Int64?
     let isBusy: Bool
     let isSelected: Bool
     let onToggle: (Bool) -> Void
@@ -54,10 +56,21 @@ struct ItemRow: View {
                 .onTapGesture { toggleExpanded() }
 
                 Spacer(minLength: 8)
-                Text(item.sizeBytes?.byteString ?? "—")
-                    .monospacedDigit()
-                    .foregroundStyle(item.sizeBytes == nil ? .secondary : .primary)
-                    .frame(minWidth: 68, alignment: .trailing)
+                VStack(alignment: .trailing, spacing: 1) {
+                    Text(item.sizeBytes?.byteString ?? "—")
+                        .monospacedDigit()
+                        .foregroundStyle(item.sizeBytes == nil ? .secondary : .primary)
+                    if let change, change != 0 {
+                        // Only growth and shrinkage since the previous scan.
+                        // No comparison at all reads as nothing here rather
+                        // than as "+0", which would be a claim.
+                        Text(change > 0 ? "+\(change.byteString)" : "−\(abs(change).byteString)")
+                            .font(.caption2)
+                            .monospacedDigit()
+                            .foregroundStyle(change > 0 ? Color.orange : Color.secondary)
+                    }
+                }
+                .frame(minWidth: 68, alignment: .trailing)
                 actions
             }
             if isExpanded {
