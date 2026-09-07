@@ -13,6 +13,8 @@ struct ItemRow: View {
 
     @State private var showsInstructions = false
     @State private var isExpanded = false
+    @State private var isHovered = false
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var breakdown: [(url: URL, bytes: Int64)]?
 
     var body: some View {
@@ -28,58 +30,113 @@ struct ItemRow: View {
                 .accessibilityLabel(L("Select %@", item.name))
                 .padding(.top, 2)
 
-                VStack(alignment: .leading, spacing: 3) {
-                    HStack(spacing: 6) {
-                        Text(item.name)
-                            .lineLimit(1)
-                        safetyBadge
-                    }
-                    HStack(alignment: .firstTextBaseline, spacing: 4) {
-                        if let idle = item.idleLabel {
-                            // Only appears past a fortnight, so it marks the
-                            // rows where age is the deciding fact rather than
-                            // repeating "in use" on every line.
-                            Text(idle)
-                                .font(.caption.weight(.medium))
-                                .foregroundStyle(.tertiary)
-                            Text("·")
-                                .font(.caption)
-                                .foregroundStyle(.tertiary)
-                        }
-                        Text(item.detail)
-                            .font(.caption)
-                            .foregroundStyle(.secondary)
-                            .lineLimit(2)
-                    }
+                // Everything between the checkbox and the buttons opens the
+                // breakdown, which is most of the row — aiming at a 13pt label
+                // was work the pointer should not have had. The checkbox and
+                // the action buttons stay outside it: whether a tap gesture or
+                // the control under the pointer wins is SwiftUI's to
+                // arbitrate, and the selection checkbox is not the place to
+                // find out.
+                HStack(alignment: .top, spacing: 10) {
+                    details
+                    Spacer(minLength: 8)
+                    sizeColumn
                 }
                 .contentShape(Rectangle())
                 .onTapGesture { toggleExpanded() }
 
-                Spacer(minLength: 8)
-                VStack(alignment: .trailing, spacing: 1) {
-                    Text(item.sizeBytes?.byteString ?? "—")
-                        .monospacedDigit()
-                        .foregroundStyle(item.sizeBytes == nil ? .secondary : .primary)
-                    if let change, change != 0 {
-                        // Only growth and shrinkage since the previous scan.
-                        // No comparison at all reads as nothing here rather
-                        // than as "+0", which would be a claim.
-                        Text(change > 0 ? "+\(change.byteString)" : "−\(abs(change).byteString)")
-                            .font(.caption2)
-                            .monospacedDigit()
-                            .foregroundStyle(change > 0 ? Color.orange : Color.secondary)
-                    }
-                }
-                .frame(minWidth: 68, alignment: .trailing)
                 actions
             }
             if isExpanded {
                 breakdownView
                     .padding(.leading, 28)
+                    .transition(.opacity)
             }
         }
-        .padding(.vertical, 2)
+        .padding(.vertical, 4)
+        .background(rowBackground)
+        .onHover { isHovered = $0 }
+        // Hover is a pointer idea. The same three controls have to be
+        // reachable without one — by right-click, and by the keyboard through
+        // the context menu — or hiding them takes them away from the people
+        // least able to spare them.
+        .contextMenu { rowMenu }
         .opacity(isBusy ? 0.5 : 1)
+    }
+
+    private var details: some View {
+        VStack(alignment: .leading, spacing: 3) {
+            HStack(spacing: 6) {
+                Text(item.name)
+                    .lineLimit(1)
+                safetyBadge
+            }
+            HStack(alignment: .firstTextBaseline, spacing: 4) {
+                if let idle = item.idleLabel {
+                    // Only appears past a fortnight, so it marks the rows
+                    // where age is the deciding fact rather than repeating
+                    // "in use" on every line.
+                    Text(idle)
+                        .font(.caption.weight(.medium))
+                        .foregroundStyle(.tertiary)
+                    Text("·")
+                        .font(.caption)
+                        .foregroundStyle(.tertiary)
+                }
+                Text(item.detail)
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                    .lineLimit(2)
+            }
+        }
+    }
+
+    private var sizeColumn: some View {
+        VStack(alignment: .trailing, spacing: 1) {
+            Text(item.sizeBytes?.byteString ?? "—")
+                .monospacedDigit()
+                .foregroundStyle(item.sizeBytes == nil ? .secondary : .primary)
+            if let change, change != 0 {
+                // Only growth and shrinkage since the previous scan. No
+                // comparison at all reads as nothing here rather than as
+                // "+0", which would be a claim.
+                Text(change > 0 ? "+\(change.byteString)" : "−\(abs(change).byteString)")
+                    .font(.caption2)
+                    .monospacedDigit()
+                    .foregroundStyle(change > 0 ? Color.orange : Color.secondary)
+            }
+        }
+        .frame(minWidth: 68, alignment: .trailing)
+    }
+
+    @ViewBuilder
+    private var rowMenu: some View {
+        if canExpand {
+            Button(isExpanded ? L("Hide breakdown") : L("Show largest entries"), action: toggleExpanded)
+        }
+        if let url = item.revealURL {
+            Button(L("Reveal in Finder")) {
+                NSWorkspace.shared.activateFileViewerSelecting([url])
+            }
+        }
+        Button(L("Don't show this item again"), action: onHide)
+        if !item.action.isManual {
+            Divider()
+            Button(L("Delete"), role: .destructive, action: onDelete)
+        }
+    }
+
+    /// Only rows that do something on click light up, so the highlight is a
+    /// promise rather than decoration.
+    @ViewBuilder
+    private var rowBackground: some View {
+        if isHovered, canExpand, !isBusy {
+            // Bleeds past the row's own width rather than padding the content,
+            // which would push every row 6pt off the category headers above it.
+            RoundedRectangle(cornerRadius: 6)
+                .fill(.quaternary.opacity(0.5))
+                .padding(.horizontal, -6)
+        }
     }
 
     private var canExpand: Bool {
@@ -88,7 +145,9 @@ struct ItemRow: View {
 
     private func toggleExpanded() {
         guard canExpand else { return }
-        isExpanded.toggle()
+        withAnimation(reduceMotion ? nil : .snappy(duration: 0.22, extraBounce: 0)) {
+            isExpanded.toggle()
+        }
     }
 
     // MARK: Breakdown
@@ -156,30 +215,47 @@ struct ItemRow: View {
 
     // MARK: Actions
 
+    /// Reveal, hide and the breakdown chevron are shown on hover. They are the
+    /// three least-used controls on a row, and a list of 180 rows was carrying
+    /// well over five hundred icons at rest, which made the one control that
+    /// matters — delete — no more prominent than the rest.
+    ///
+    /// They stay in the view tree at zero opacity rather than being removed, so
+    /// VoiceOver still reaches them; hit testing goes with the opacity so an
+    /// invisible "hide this item" button cannot be clicked by accident.
+    private var showsSecondaryActions: Bool {
+        isHovered || isExpanded
+    }
+
     @ViewBuilder
     private var actions: some View {
         HStack(spacing: 4) {
-            if canExpand {
-                Button(action: toggleExpanded) {
-                    Image(systemName: isExpanded ? "chevron.up" : "chevron.down")
+            Group {
+                if canExpand {
+                    Button(action: toggleExpanded) {
+                        Image(systemName: isExpanded ? "chevron.up" : "chevron.down")
+                    }
+                    .accessibilityLabel(isExpanded ? L("Hide breakdown") : L("Show largest entries"))
                 }
-                .accessibilityLabel(isExpanded ? L("Hide breakdown") : L("Show largest entries"))
-            }
 
-            if let url = item.revealURL {
-                Button {
-                    NSWorkspace.shared.activateFileViewerSelecting([url])
-                } label: {
-                    Image(systemName: "folder")
+                if let url = item.revealURL {
+                    Button {
+                        NSWorkspace.shared.activateFileViewerSelecting([url])
+                    } label: {
+                        Image(systemName: "folder")
+                    }
+                    .accessibilityLabel(L("Reveal %@ in Finder", item.name))
                 }
-                .accessibilityLabel(L("Reveal %@ in Finder", item.name))
-            }
 
-            Button(action: onHide) {
-                Image(systemName: "eye.slash")
+                Button(action: onHide) {
+                    Image(systemName: "eye.slash")
+                }
+                .accessibilityLabel(L("Hide %@ from future scans", item.name))
+                .help(L("Don't show this item again"))
             }
-            .accessibilityLabel(L("Hide %@ from future scans", item.name))
-            .help(L("Don't show this item again"))
+            .opacity(showsSecondaryActions ? 1 : 0)
+            .allowsHitTesting(showsSecondaryActions)
+            .animation(reduceMotion ? nil : .easeOut(duration: 0.12), value: showsSecondaryActions)
 
             if let instructions = item.action.manualInstructions {
                 Button {

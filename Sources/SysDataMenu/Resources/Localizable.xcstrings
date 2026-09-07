@@ -837,6 +837,16 @@
         }
       }
     },
+    "Reveal in Finder": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Finder'da göster"
+          }
+        }
+      }
+    },
     "Review": {
       "localizations": {
         "tr": {
