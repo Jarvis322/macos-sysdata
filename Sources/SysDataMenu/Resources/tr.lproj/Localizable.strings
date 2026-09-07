@@ -44,6 +44,7 @@
 "Expand %@" = "%@ kategorisini genişlet";
 "Filter" = "Filtrele";
 "Forget everything" = "Hepsini unut";
+"Free space on the startup disk." = "Başlangıç diskindeki boş alan.";
 "Frees about %@. " = "Yaklaşık %@ boşaltır. ";
 "Grant Full Disk Access once" = "Tam Disk Erişimi'ni bir kez verin";
 "Grew most" = "En çok büyüyen";
@@ -74,6 +75,7 @@
 "Other large folders" = "Diğer büyük klasörler";
 "Package managers" = "Paket yöneticileri";
 "Project build folders" = "Proje derleme klasörleri";
+"Purgeable is what macOS estimates it could give back if it had to: caches and local snapshots. It is an estimate, not space you can count on — it moves on its own, and writing a file does not spend it. The items below are the ones you can actually free." = "Temizlenebilir alan, macOS'in gerekirse geri verebileceğini tahmin ettiği yerdir: önbellekler ve yerel anlık görüntüler. Bu bir tahmindir, güvenebileceğin bir alan değil — kendiliğinden değişir ve dosya yazmak onu harcamaz. Aşağıdaki öğeler gerçekten boşaltabileceklerin.";
 "Quit" = "Çık";
 "Reclaimed this session: %@" = "Bu oturumda kazanılan: %@";
 "Remember what changed" = "Neyin değiştiğini hatırla";

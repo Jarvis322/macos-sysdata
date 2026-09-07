@@ -467,6 +467,16 @@
         }
       }
     },
+    "Free space on the startup disk.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Başlangıç diskindeki boş alan."
+          }
+        }
+      }
+    },
     "Frees about %@. ": {
       "localizations": {
         "tr": {
@@ -763,6 +773,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Proje derleme klasörleri"
+          }
+        }
+      }
+    },
+    "Purgeable is what macOS estimates it could give back if it had to: caches and local snapshots. It is an estimate, not space you can count on — it moves on its own, and writing a file does not spend it. The items below are the ones you can actually free.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Temizlenebilir alan, macOS'in gerekirse geri verebileceğini tahmin ettiği yerdir: önbellekler ve yerel anlık görüntüler. Bu bir tahmindir, güvenebileceğin bir alan değil — kendiliğinden değişir ve dosya yazmak onu harcamaz. Aşağıdaki öğeler gerçekten boşaltabileceklerin."
           }
         }
       }

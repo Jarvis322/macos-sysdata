@@ -44,6 +44,7 @@
 "Expand %@" = "Expand %@";
 "Filter" = "Filter";
 "Forget everything" = "Forget everything";
+"Free space on the startup disk." = "Free space on the startup disk.";
 "Frees about %@. " = "Frees about %@. ";
 "Grant Full Disk Access once" = "Grant Full Disk Access once";
 "Grew most" = "Grew most";
@@ -74,6 +75,7 @@
 "Other large folders" = "Other large folders";
 "Package managers" = "Package managers";
 "Project build folders" = "Project build folders";
+"Purgeable is what macOS estimates it could give back if it had to: caches and local snapshots. It is an estimate, not space you can count on — it moves on its own, and writing a file does not spend it. The items below are the ones you can actually free." = "Purgeable is what macOS estimates it could give back if it had to: caches and local snapshots. It is an estimate, not space you can count on — it moves on its own, and writing a file does not spend it. The items below are the ones you can actually free.";
 "Quit" = "Quit";
 "Reclaimed this session: %@" = "Reclaimed this session: %@";
 "Remember what changed" = "Remember what changed";

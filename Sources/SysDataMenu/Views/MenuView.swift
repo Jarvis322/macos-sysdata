@@ -199,6 +199,15 @@ struct MenuView: View {
                     .font(.caption)
                     .foregroundStyle(.secondary)
                     .monospacedDigit()
+                    // The purgeable figure is the one number here nobody can
+                    // act on, and the one people meet in Finder wondering why
+                    // free space they can see will not open a file. Measured
+                    // on this Mac: writing 6.44 GB cost 6.44 GB of real free
+                    // space and took nothing from the pool, which then
+                    // refilled itself. See docs/purgeable-measurement.md.
+                    .help(model.purgeableBytes > 0
+                          ? L("Purgeable is what macOS estimates it could give back if it had to: caches and local snapshots. It is an estimate, not space you can count on — it moves on its own, and writing a file does not spend it. The items below are the ones you can actually free.")
+                          : L("Free space on the startup disk."))
             }
             Spacer()
             if model.isScanning {
