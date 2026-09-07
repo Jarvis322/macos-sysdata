@@ -211,9 +211,19 @@ struct MenuView: View {
             }
             Spacer()
             if model.isScanning {
-                ProgressView()
-                    .controlSize(.small)
-                    .accessibilityLabel(L("Scanning"))
+                // Determinate while the probes run: the first scan on a full
+                // disk is slow enough that a spinner alone cannot be told
+                // apart from a hang.
+                if model.probesTotal > 0, model.probesFinished < model.probesTotal {
+                    ProgressView(value: Double(model.probesFinished), total: Double(model.probesTotal))
+                        .progressViewStyle(.circular)
+                        .controlSize(.small)
+                        .accessibilityLabel(L("Scanning"))
+                } else {
+                    ProgressView()
+                        .controlSize(.small)
+                        .accessibilityLabel(L("Scanning"))
+                }
             } else {
                 if !model.visibleItems.isEmpty {
                     // Icon-only: spelling out "Size"/"Idle longest" here cost
@@ -311,7 +321,7 @@ struct MenuView: View {
             VStack(alignment: .leading, spacing: 2) {
                 Text(L("Grant Full Disk Access once"))
                     .font(.caption.weight(.semibold))
-                Text(L("Without it macOS asks for every protected folder and hides Mail, Safari and Time Machine data. Add System Data in the settings pane, then reopen the app."))
+                Text(L("One grant covers everything. Until then this scan leaves the protected places alone — app containers, Desktop, Documents, Music, Photos — rather than asking about them one app at a time, so what you see below is incomplete. Add System Data in the settings pane, then reopen the app."))
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }

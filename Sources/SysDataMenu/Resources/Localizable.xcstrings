@@ -667,6 +667,16 @@
         }
       }
     },
+    "Measuring… %lld of %lld places": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ölçülüyor… %lld / %lld yer"
+          }
+        }
+      }
+    },
     "Moved to the Trash. Empty the Trash to free the space.": {
       "localizations": {
         "tr": {
@@ -703,6 +713,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Geri kazanılacak bir şey yok"
+          }
+        }
+      }
+    },
+    "One grant covers everything. Until then this scan leaves the protected places alone — app containers, Desktop, Documents, Music, Photos — rather than asking about them one app at a time, so what you see below is incomplete. Add System Data in the settings pane, then reopen the app.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tek izin hepsini kapsar. O zamana kadar bu tarama korumalı yerlere dokunmuyor — uygulama konteynerleri, Masaüstü, Belgeler, Müzik, Fotoğraflar — tek tek izin sormaktansa; yani aşağıda gördüğün eksik. Ayarlar bölmesinden Sistem Verileri'ni ekle, sonra uygulamayı yeniden aç."
           }
         }
       }

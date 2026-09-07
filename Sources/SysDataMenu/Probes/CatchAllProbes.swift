@@ -166,7 +166,12 @@ struct LargeFolderProbe: StorageProbe {
 
     func probe() async -> [StorageItem] {
         let claimedPaths = claimed.map(\.standardizedFileURL.path)
-        let excludedPaths = Self.excluded.map(\.path)
+        // Without Full Disk Access the containers are added to the exclusions:
+        // descending into one asks macOS for permission by the owning app's
+        // name, and a walk of ~/Library/Containers asks about all of them.
+        let excludedPaths = (Self.excluded + (ProbeSupport.hasFullDiskAccess ? [] : [
+            .home("Library/Containers"), .home("Library/Group Containers"),
+        ])).map(\.path)
 
         return await withTaskGroup(of: [StorageItem].self) { group in
             for root in Self.roots where root.exists {

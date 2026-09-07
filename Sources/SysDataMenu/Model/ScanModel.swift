@@ -13,6 +13,11 @@ final class ScanModel {
     private(set) var busyItemIDs: Set<String> = []
     /// Short description of what the scan is doing right now.
     private(set) var phase = ""
+    /// How far through the probes the scan is. The window shows the count
+    /// because the first scan on a full disk takes long enough that silence
+    /// reads as a hang.
+    private(set) var probesFinished = 0
+    private(set) var probesTotal = 0
     private(set) var hasFullDiskAccess = ScanModel.checkFullDiskAccess()
     private(set) var launchesAtLogin = SMAppService.mainApp.status == .enabled
     var shutsDownSimulatorsAtPowerOff = PowerOffGuard.isEnabled {
@@ -272,16 +277,27 @@ final class ScanModel {
         }
 
         let probes = ProbeRegistry.all
-        let results = await withTaskGroup(of: [StorageItem].self) { group in
+        probesFinished = 0
+        probesTotal = probes.count
+        items = []
+
+        // Each probe's findings land as they arrive rather than all at the
+        // end. The scan takes a while on a full disk, and a window that stays
+        // empty until every probe has finished cannot be told apart from one
+        // that has hung.
+        var results: [StorageItem] = []
+        await withTaskGroup(of: [StorageItem].self) { group in
             for probe in probes {
                 group.addTask { await probe.probe() }
             }
-            var collected: [StorageItem] = []
-            for await batch in group { collected += batch }
-            return collected
+            for await batch in group {
+                results += batch
+                items = results
+                probesFinished += 1
+                phase = L("Measuring… %lld of %lld places", probesFinished, probesTotal)
+            }
         }
 
-        items = results
         freeBytes = DiskSize.freeSpace()
         purgeableBytes = DiskSize.purgeableSpace()
 

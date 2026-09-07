@@ -23,7 +23,16 @@ struct VirtualMachineProbe: StorageProbe {
 
     func probe() async -> [StorageItem] {
         var items: [StorageItem] = []
-        for source in Self.sources {
+        // Three of these live under ~/Documents or inside another app's
+        // container, which macOS asks about one dialog at a time. They are
+        // worth finding, but only once the single grant that covers them all
+        // exists.
+        let readable = ProbeSupport.hasFullDiskAccess
+            ? Self.sources
+            : Self.sources.filter { source in
+                !ProbeSupport.protectedLocations.contains { source.directory.path.hasPrefix($0.path + "/") }
+            }
+        for source in readable {
             for machine in source.directory.children()
             where machine.isDirectory && (source.suffix == nil || machine.pathExtension == source.suffix) {
                 if let item = await ProbeSupport.directoryItem(
@@ -102,8 +111,9 @@ struct AppCacheProbe: StorageProbe {
             }
         }
 
-        // Final Cut Pro render files live inside each library bundle.
-        for root in [URL.home("Movies"), URL.home("Documents")] {
+        // Final Cut Pro render files live inside each library bundle, under
+        // two folders macOS keeps behind TCC.
+        for root in ProbeSupport.hasFullDiskAccess ? [URL.home("Movies"), URL.home("Documents")] : [] {
             for library in root.children() where library.pathExtension == "fcpbundle" {
                 let renders = library.children().filter(\.isDirectory)
                     .map { $0.appending(path: "Render Files") }

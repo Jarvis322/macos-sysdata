@@ -64,10 +64,12 @@
 "Measuring known locations…" = "Measuring known locations…";
 "Measuring the largest entries…" = "Measuring the largest entries…";
 "Measuring…" = "Measuring…";
+"Measuring… %lld of %lld places" = "Measuring… %lld of %lld places";
 "Moved to the Trash. Empty the Trash to free the space." = "Moved to the Trash. Empty the Trash to free the space.";
 "No item matches" = "No item matches";
 "Nothing to compare yet" = "Nothing to compare yet";
 "Nothing to reclaim" = "Nothing to reclaim";
+"One grant covers everything. Until then this scan leaves the protected places alone — app containers, Desktop, Documents, Music, Photos — rather than asking about them one app at a time, so what you see below is incomplete. Add System Data in the settings pane, then reopen the app." = "One grant covers everything. Until then this scan leaves the protected places alone — app containers, Desktop, Documents, Music, Photos — rather than asking about them one app at a time, so what you see below is incomplete. Add System Data in the settings pane, then reopen the app.";
 "Open Settings" = "Open Settings";
 "Open System Data to see what is taking up room." = "Open System Data to see what is taking up room.";
 "Open x.com/yigitech" = "Open x.com/yigitech";

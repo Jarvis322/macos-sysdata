@@ -64,10 +64,12 @@
 "Measuring known locations…" = "Bilinen konumlar ölçülüyor…";
 "Measuring the largest entries…" = "En büyük girdiler ölçülüyor…";
 "Measuring…" = "Ölçülüyor…";
+"Measuring… %lld of %lld places" = "Ölçülüyor… %lld / %lld yer";
 "Moved to the Trash. Empty the Trash to free the space." = "Çöp Sepeti'ne taşındı. Alanı boşaltmak için Çöp Sepeti'ni boşaltın.";
 "No item matches" = "Eşleşen öğe yok";
 "Nothing to compare yet" = "Henüz karşılaştıracak bir şey yok";
 "Nothing to reclaim" = "Geri kazanılacak bir şey yok";
+"One grant covers everything. Until then this scan leaves the protected places alone — app containers, Desktop, Documents, Music, Photos — rather than asking about them one app at a time, so what you see below is incomplete. Add System Data in the settings pane, then reopen the app." = "Tek izin hepsini kapsar. O zamana kadar bu tarama korumalı yerlere dokunmuyor — uygulama konteynerleri, Masaüstü, Belgeler, Müzik, Fotoğraflar — tek tek izin sormaktansa; yani aşağıda gördüğün eksik. Ayarlar bölmesinden Sistem Verileri'ni ekle, sonra uygulamayı yeniden aç.";
 "Open Settings" = "Ayarları Aç";
 "Open System Data to see what is taking up room." = "Neyin yer kapladığını görmek için Sistem Verileri'ni aç.";
 "Open x.com/yigitech" = "x.com/yigitech adresini aç";
