@@ -3,11 +3,12 @@
 "%lld days idle" = "%lld days idle";
 "%lld hidden" = "%lld hidden";
 "%lld items need root; the password is asked once." = "%lld items need root; the password is asked once.";
+"%lld items need root; the password may be asked more than once." = "%lld items need root; the password may be asked more than once.";
 "%lld marked Review go to the Trash: %@" = "%lld marked Review go to the Trash: %@";
 "%lld months idle" = "%lld months idle";
 "%lld not on screen" = "%lld not on screen";
 "%lld years idle" = "%lld years idle";
-"1 item needs root; the password is asked once." = "1 item needs root; the password is asked once.";
+"1 item needs root." = "1 item needs root.";
 "1 month idle" = "1 month idle";
 "1 year idle" = "1 year idle";
 "After a second scan this shows what grew, and whether anything you deleted came back." = "After a second scan this shows what grew, and whether anything you deleted came back.";

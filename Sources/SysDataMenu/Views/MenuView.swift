@@ -686,16 +686,24 @@ struct MenuView: View {
     private var batchMessage: String {
         let selected = model.selectedItems
         let review = selected.filter { $0.safety == .review }
-        let privileged = selected.filter { if case .privilegedScript = $0.action { true } else { false } }
+        // Everything that will ask, not only the items whose action is a
+        // privileged script: a plain delete of a root-owned path asks too,
+        // because the reclaimer falls back to `rm -rf` as root rather than
+        // failing.
+        let privileged = selected.filter(\.action.needsAdministrator)
+        // The scripts are folded into one prompt. A root-owned path is not.
+        let asksMoreThanOnce = selected.contains { $0.action.asksForThePasswordSeparately }
         var lines = [L("Frees about %@. ", model.selectedBytes.byteString)]
         if !review.isEmpty {
             let names = review.prefix(4).map(\.name).joined(separator: ", ") + (review.count > 4 ? ", …" : "")
             lines.append(L("%lld marked Review go to the Trash: %@", review.count, names))
         }
         if privileged.count > 1 {
-            lines.append(L("%lld items need root; the password is asked once.", privileged.count))
+            lines.append(asksMoreThanOnce
+                ? L("%lld items need root; the password may be asked more than once.", privileged.count)
+                : L("%lld items need root; the password is asked once.", privileged.count))
         } else if privileged.count == 1 {
-            lines.append(L("1 item needs root; the password is asked once."))
+            lines.append(L("1 item needs root."))
         }
         return lines.joined(separator: "\n")
     }

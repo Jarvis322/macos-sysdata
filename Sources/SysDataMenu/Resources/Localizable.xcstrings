@@ -52,6 +52,16 @@
         }
       }
     },
+    "%lld items need root; the password may be asked more than once.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld kalem yönetici yetkisi istiyor; parola birden fazla kez sorulabilir."
+          }
+        }
+      }
+    },
     "%lld marked Review go to the Trash: %@": {
       "localizations": {
         "tr": {
@@ -92,12 +102,12 @@
         }
       }
     },
-    "1 item needs root; the password is asked once.": {
+    "1 item needs root.": {
       "localizations": {
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "1 kalem yönetici yetkisi istiyor; parola bir kez sorulur."
+            "value": "1 kalem yönetici yetkisi istiyor."
           }
         }
       }

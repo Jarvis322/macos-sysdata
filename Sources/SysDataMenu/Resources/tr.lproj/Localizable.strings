@@ -3,11 +3,12 @@
 "%lld days idle" = "%lld gündür boşta";
 "%lld hidden" = "%lld gizli";
 "%lld items need root; the password is asked once." = "%lld kalem yönetici yetkisi istiyor; parola bir kez sorulur.";
+"%lld items need root; the password may be asked more than once." = "%lld kalem yönetici yetkisi istiyor; parola birden fazla kez sorulabilir.";
 "%lld marked Review go to the Trash: %@" = "%lld tanesi İncele işaretli, Çöp Sepeti'ne gider: %@";
 "%lld months idle" = "%lld aydır boşta";
 "%lld not on screen" = "%lld tanesi ekranda değil";
 "%lld years idle" = "%lld yıldır boşta";
-"1 item needs root; the password is asked once." = "1 kalem yönetici yetkisi istiyor; parola bir kez sorulur.";
+"1 item needs root." = "1 kalem yönetici yetkisi istiyor.";
 "1 month idle" = "1 aydır boşta";
 "1 year idle" = "1 yıldır boşta";
 "After a second scan this shows what grew, and whether anything you deleted came back." = "İkinci taramadan sonra burada ne büyüdüğü ve sildiğin bir şeyin geri gelip gelmediği görünür.";

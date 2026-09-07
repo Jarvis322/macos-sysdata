@@ -100,11 +100,34 @@ enum ReclaimAction: Sendable {
     }
 
     /// Whether running this asks for an administrator password.
+    ///
+    /// A privileged script always does. So does a plain delete of something
+    /// this user cannot unlink: `Reclaimer` falls back to `rm -rf` as root
+    /// rather than failing, which is the right behaviour and an invisible one
+    /// — the confirmation used to count only the scripts and promise a single
+    /// prompt above a batch that would ask several times.
     var needsAdministrator: Bool {
         switch self {
         case .privilegedScript: true
         case .steps(let actions): actions.contains(where: \.needsAdministrator)
-        default: false
+        default: !pathsNeedingRoot.isEmpty
+        }
+    }
+
+    /// Paths this action would have to delete as root, using the same test the
+    /// reclaimer uses before it decides.
+    var pathsNeedingRoot: [URL] {
+        paths.filter { $0.exists && !FileManager.default.isDeletableFile(atPath: $0.path) }
+    }
+
+    /// Whether one password prompt covers this action. Privileged scripts in a
+    /// batch are folded into a single script; a root-owned path is deleted by
+    /// its own `rm`, so each one asks again.
+    var asksForThePasswordSeparately: Bool {
+        switch self {
+        case .privilegedScript: false
+        case .steps(let actions): actions.contains(where: \.asksForThePasswordSeparately)
+        default: !pathsNeedingRoot.isEmpty
         }
     }
 
