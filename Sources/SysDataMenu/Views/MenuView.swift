@@ -399,35 +399,7 @@ struct MenuView: View {
             HStack {
                 authorBadge
                 Spacer()
-                Toggle(L("Shut down simulators at power off"), isOn: Binding(
-                    get: { model.shutsDownSimulatorsAtPowerOff },
-                    set: { model.shutsDownSimulatorsAtPowerOff = $0 }
-                ))
-                .toggleStyle(.switch)
-                .controlSize(.mini)
-                .font(.caption)
-                .foregroundStyle(.secondary)
-                .help(L("Booted simulators ignore the quit request and hold the shutdown for 33 seconds. This shuts them down first."))
-                Toggle(L("Check for updates"), isOn: Binding(
-                    get: { updates.isEnabled },
-                    set: { wanted in
-                        updates.isEnabled = wanted
-                        if wanted { Task { await updates.check() } }
-                    }
-                ))
-                .toggleStyle(.switch)
-                .controlSize(.mini)
-                .font(.caption)
-                .foregroundStyle(.secondary)
-                .help(L("Asks GitHub once a day whether a newer version exists. It is the only request this app makes; leave it off and nothing leaves your Mac."))
-                Toggle(L("Launch at login"), isOn: Binding(
-                    get: { model.launchesAtLogin },
-                    set: { model.setLaunchAtLogin($0) }
-                ))
-                .toggleStyle(.switch)
-                .controlSize(.mini)
-                .font(.caption)
-                .foregroundStyle(.secondary)
+                settingsMenu
             }
         }
         .padding(.horizontal, 14)
@@ -435,6 +407,43 @@ struct MenuView: View {
         // The list above is greedy; the footer must keep its full height so
         // a long error never overlaps the status line.
         .layoutPriority(1)
+    }
+
+    /// The three switches used to sit along the footer with their labels. At
+    /// the window's 460pt every one of them wrapped onto a second line —
+    /// "Shut down simulators at / power off" — which is where a setting stops
+    /// being readable. They are preferences, not controls anyone touches during
+    /// a clean-up, so they move one level down into the menu macOS puts them
+    /// in, with room for the full label and its explanation.
+    private var settingsMenu: some View {
+        Menu {
+            Toggle(L("Shut down simulators at power off"), isOn: Binding(
+                get: { model.shutsDownSimulatorsAtPowerOff },
+                set: { model.shutsDownSimulatorsAtPowerOff = $0 }
+            ))
+            .help(L("Booted simulators ignore the quit request and hold the shutdown for 33 seconds. This shuts them down first."))
+
+            Toggle(L("Check for updates"), isOn: Binding(
+                get: { updates.isEnabled },
+                set: { wanted in
+                    updates.isEnabled = wanted
+                    if wanted { Task { await updates.check() } }
+                }
+            ))
+            .help(L("Asks GitHub once a day whether a newer version exists. It is the only request this app makes; leave it off and nothing leaves your Mac."))
+
+            Toggle(L("Launch at login"), isOn: Binding(
+                get: { model.launchesAtLogin },
+                set: { model.setLaunchAtLogin($0) }
+            ))
+        } label: {
+            Image(systemName: "gearshape")
+        }
+        .menuStyle(.borderlessButton)
+        .menuIndicator(.hidden)
+        .fixedSize()
+        .controlSize(.small)
+        .accessibilityLabel(L("Settings"))
     }
 
     private func feedbackRow(_ message: String, symbol: String, tint: Color, dismiss: @escaping () -> Void) -> some View {
