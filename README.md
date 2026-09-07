@@ -8,6 +8,7 @@
   A menu bar app that shows what is really inside macOS "System Data" and lets you delete it, item by item.<br>
   <img src="https://img.shields.io/badge/macOS-14%2B-black" alt="macOS 14+">
   <img src="https://img.shields.io/badge/Swift-6-orange" alt="Swift 6">
+  <img src="https://img.shields.io/badge/i18n-EN%20·%20TR%20·%20ZH%20·%20JA-blue" alt="English, Turkish, Simplified Chinese, Japanese">
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-proprietary-lightgrey" alt="Proprietary"></a>
 </p>
 
@@ -176,7 +177,8 @@ prompt, which is why it asks each time and shows you the command first.
   33,074 ms to 5,842 ms, the remaining 5 s being macOS's own service timeout.
   Check your own numbers after a restart with
   `grep "Userspace teardown took" /var/log/com.apple.xpc.launchd/launchd.log.2`.
-- **Turkish** interface, following the system language.
+- **Four languages**, following the system: English, Turkish, Simplified
+  Chinese and Japanese. Every interface string is translated in all of them.
 - **`SysDataMenu --json`** prints the whole inventory for scripts.
 
 ## What it finds
@@ -303,7 +305,9 @@ probe and registering it in `ProbeRegistry`.
 
 Interface strings live in `Resources/Localizable.xcstrings`;
 `scripts/compile-strings.sh` turns the catalog into the `.lproj` tables
-SwiftPM ships, and a test checks that every key has a Turkish translation.
+SwiftPM ships (en, tr, zh-Hans, ja), and a test checks that every key has a
+Turkish translation. `ci.sh` fails if a hand-edited `.lproj` drifts from what
+the catalog would generate, so the catalog stays the single source of truth.
 
 ## Checks
 
