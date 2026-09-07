@@ -53,7 +53,6 @@ struct ItemRow: View {
             }
         }
         .padding(.vertical, 4)
-        .padding(.horizontal, 6)
         .background(rowBackground)
         // The row is the target, not just the two lines of text: aiming at a
         // 13pt label to open a breakdown is work the pointer should not have.
@@ -68,8 +67,11 @@ struct ItemRow: View {
     @ViewBuilder
     private var rowBackground: some View {
         if isHovered, canExpand, !isBusy {
+            // Bleeds past the row's own width rather than padding the content,
+            // which would push every row 6pt off the category headers above it.
             RoundedRectangle(cornerRadius: 6)
                 .fill(.quaternary.opacity(0.5))
+                .padding(.horizontal, -6)
         }
     }
 
