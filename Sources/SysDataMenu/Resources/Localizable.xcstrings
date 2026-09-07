@@ -42,16 +42,6 @@
         }
       }
     },
-    "%lld hidden by the filter": {
-      "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%lld filtre tarafından gizli"
-          }
-        }
-      }
-    },
     "%lld items need root; the password is asked once.": {
       "localizations": {
         "tr": {
@@ -78,6 +68,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "%lld aydır boşta"
+          }
+        }
+      }
+    },
+    "%lld not on screen": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld tanesi ekranda değil"
           }
         }
       }
@@ -391,7 +391,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Güvenlilerin seçimini kaldır"
+            "value": "Güvenlileri bırak"
           }
         }
       }

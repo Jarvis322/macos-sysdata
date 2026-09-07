@@ -43,6 +43,15 @@ final class ScanModel {
             selectionAnchorID = nil
         }
     }
+    /// Categories folded shut. It lives here rather than in the view because
+    /// it decides the same thing the filter does — what is on screen — and the
+    /// selection rules are written in terms of that.
+    var collapsedCategories: Set<StorageCategory> = [] {
+        didSet {
+            guard collapsedCategories != oldValue else { return }
+            selectionAnchorID = nil
+        }
+    }
     /// Where a shift-click measures its range from.
     private var selectionAnchorID: String?
     /// What previous scans and deletions recorded. Read once per scan rather
@@ -109,6 +118,13 @@ final class ScanModel {
     /// answer "how much System Data is there", not "what am I looking at".
     var listedItems: [StorageItem] {
         visibleItems.filter { $0.matches(filter: filterText) }
+    }
+
+    /// What the person can actually see: listed, and not inside a category
+    /// they have folded shut. Every selection rule is written against this,
+    /// because a fold and a filter do the same thing to a row.
+    var onScreenItems: [StorageItem] {
+        listedItems.filter { !collapsedCategories.contains($0.category) }
     }
 
     func hide(_ item: StorageItem) {
@@ -213,14 +229,6 @@ final class ScanModel {
         selectionAnchorID = nil
     }
 
-    /// Drops the whole category from the selection. Collapsing a category
-    /// calls this, so a fold never leaves ticked rows behind the chevron for
-    /// "Delete N selected" to pick up.
-    func deselect(_ category: StorageCategory) {
-        selectedIDs.subtract(visibleItems.filter { $0.category == category }.map(\.id))
-        selectionAnchorID = nil
-    }
-
     private func selectableItems(in category: StorageCategory) -> [StorageItem] {
         listedItems.filter { $0.category == category && !$0.action.isManual }
     }
@@ -232,7 +240,7 @@ final class ScanModel {
     /// hiding are neither ticked behind the person's back nor dropped from a
     /// selection they made before they started typing.
     func selectAllSafe() {
-        let listedSafeIDs = Set(listedItems.filter { $0.safety == .safe && !$0.action.isManual }.map(\.id))
+        let listedSafeIDs = Set(onScreenItems.filter { $0.safety == .safe && !$0.action.isManual }.map(\.id))
         guard !listedSafeIDs.isEmpty else { return }
         if listedSafeIDs.isSubset(of: selectedIDs) {
             selectedIDs.subtract(listedSafeIDs)
@@ -244,16 +252,17 @@ final class ScanModel {
 
     /// True when another press of "Select safe" would untick rather than tick.
     var everyListedSafeItemIsSelected: Bool {
-        let listedSafeIDs = Set(listedItems.filter { $0.safety == .safe && !$0.action.isManual }.map(\.id))
+        let listedSafeIDs = Set(onScreenItems.filter { $0.safety == .safe && !$0.action.isManual }.map(\.id))
         return !listedSafeIDs.isEmpty && listedSafeIDs.isSubset(of: selectedIDs)
     }
 
-    /// Selected rows the filter is currently hiding. They are still in the
-    /// batch, so the footer has to say so; a delete that reaches further than
-    /// the window is the one thing the filter must not make possible quietly.
-    var selectedHiddenByFilterCount: Int {
-        let listedIDs = Set(listedItems.map(\.id))
-        return selectedItems.filter { !listedIDs.contains($0.id) }.count
+    /// Selected rows that are not on screen, whether a filter or a folded
+    /// category took them off it. They are still in the batch, so the footer
+    /// has to say so: a delete that reaches further than the window is the one
+    /// thing neither control may make possible quietly.
+    var selectedOffScreenCount: Int {
+        let onScreenIDs = Set(onScreenItems.map(\.id))
+        return selectedItems.filter { !onScreenIDs.contains($0.id) }.count
     }
 
     func clearSelection() {
@@ -295,6 +304,7 @@ final class ScanModel {
         errorMessage = nil
         selectedIDs = []
         filterText = ""
+        collapsedCategories = []
         selectionAnchorID = nil
         refreshAccess()
         phase = L("Measuring known locations…")

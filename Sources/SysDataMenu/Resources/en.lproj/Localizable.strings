@@ -2,10 +2,10 @@
 "%@ safe to free now · %@ free on disk · %@ purgeable" = "%@ safe to free now · %@ free on disk · %@ purgeable";
 "%lld days idle" = "%lld days idle";
 "%lld hidden" = "%lld hidden";
-"%lld hidden by the filter" = "%lld hidden by the filter";
 "%lld items need root; the password is asked once." = "%lld items need root; the password is asked once.";
 "%lld marked Review go to the Trash: %@" = "%lld marked Review go to the Trash: %@";
 "%lld months idle" = "%lld months idle";
+"%lld not on screen" = "%lld not on screen";
 "%lld years idle" = "%lld years idle";
 "1 item needs root; the password is asked once." = "1 item needs root; the password is asked once.";
 "1 month idle" = "1 month idle";

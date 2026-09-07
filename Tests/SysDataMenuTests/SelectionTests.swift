@@ -86,23 +86,49 @@ import Testing
 
         model.filterText = "npm"
 
-        #expect(model.selectedHiddenByFilterCount == 1)
+        #expect(model.selectedOffScreenCount == 1)
         #expect(model.selectedItems.count == 2, "the batch still holds both")
     }
 
-    @Test func nothingIsHiddenWithoutAFilter() {
+    @Test func nothingIsOffScreenWithoutAFilterOrAFold() {
         let model = model([item("npm cache"), item("yarn cache")])
         model.selectedIDs = ["npm cache", "yarn cache"]
 
-        #expect(model.selectedHiddenByFilterCount == 0)
+        #expect(model.selectedOffScreenCount == 0)
     }
 
-    @Test func collapsingACategoryDropsItsSelection() {
+    /// A fold and a filter do the same thing to a row, so they answer for it
+    /// the same way: the selection stands and the footer counts it.
+    @Test func foldingACategoryKeepsItsSelectionAndCountsIt() {
         let model = model([item("npm cache"), item("Xcode archives", category: .xcode)])
         model.selectedIDs = ["npm cache", "Xcode archives"]
 
-        model.deselect(.tools)
+        model.collapsedCategories = [.tools]
 
-        #expect(model.selectedIDs == ["Xcode archives"])
+        #expect(model.selectedIDs == ["npm cache", "Xcode archives"], "the batch is not edited by a fold")
+        #expect(model.selectedOffScreenCount == 1)
+        #expect(model.selectedItems.count == 2)
+    }
+
+    @Test func selectSafeLeavesAFoldedCategoryAlone() {
+        let model = model([item("npm cache"), item("Xcode archives", category: .xcode)])
+        model.collapsedCategories = [.xcode]
+
+        model.selectAllSafe()
+
+        #expect(model.selectedIDs == ["npm cache"], "a folded row is not ticked behind the person's back")
+        #expect(model.selectedOffScreenCount == 0)
+    }
+
+    @Test func unfoldingBringsTheCountBackToZero() {
+        let model = model([item("npm cache"), item("Xcode archives", category: .xcode)])
+        model.selectedIDs = ["npm cache", "Xcode archives"]
+        model.collapsedCategories = [.xcode]
+        #expect(model.selectedOffScreenCount == 1)
+
+        model.collapsedCategories = []
+
+        #expect(model.selectedOffScreenCount == 0)
+        #expect(model.selectedIDs == ["npm cache", "Xcode archives"])
     }
 }

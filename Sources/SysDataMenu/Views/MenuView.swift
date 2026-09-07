@@ -7,7 +7,6 @@ struct MenuView: View {
     @FocusState private var filterIsFocused: Bool
     @State private var pendingDeletion: StorageItem?
     @State private var confirmsBatch = false
-    @State private var collapsedCategories: Set<StorageCategory> = []
     @State private var showsHistory = false
     @State private var warnsAboutLowSpace = LowSpaceAlert.isEnabled
     @State private var lowSpaceThreshold = LowSpaceAlert.threshold
@@ -376,7 +375,7 @@ struct MenuView: View {
             List {
                 ForEach(model.categories, id: \.category) { group in
                     categoryHeader(group.category, total: group.total, items: group.items)
-                    if !collapsedCategories.contains(group.category) {
+                    if !model.collapsedCategories.contains(group.category) {
                         ForEach(group.items) { item in
                             ItemRow(
                                 item: item,
@@ -407,25 +406,25 @@ struct MenuView: View {
         HStack {
             Button {
                 withAnimation {
-                    if collapsedCategories.contains(category) {
-                        collapsedCategories.remove(category)
+                    // Folding keeps the selection. A fold and a filter do the
+                    // same thing to a row, and the footer counts what either
+                    // one has taken off screen rather than either of them
+                    // quietly editing the batch.
+                    if model.collapsedCategories.contains(category) {
+                        model.collapsedCategories.remove(category)
                     } else {
-                        collapsedCategories.insert(category)
-                        // Folding a category hides its rows; leaving them
-                        // ticked would delete what the person can no longer
-                        // see.
-                        model.deselect(category)
+                        model.collapsedCategories.insert(category)
                     }
                 }
             } label: {
-                Image(systemName: collapsedCategories.contains(category)
+                Image(systemName: model.collapsedCategories.contains(category)
                       ? "chevron.right"
                       : "chevron.down")
                     .frame(width: 10)
             }
             .buttonStyle(.borderless)
             .accessibilityLabel(
-                collapsedCategories.contains(category)
+                model.collapsedCategories.contains(category)
                     ? L("Expand %@", category.title)
                     : L("Collapse %@", category.title)
             )
@@ -456,7 +455,7 @@ struct MenuView: View {
 
     private var rangeSelectableItems: [StorageItem] {
         model.categories
-            .filter { !collapsedCategories.contains($0.category) }
+            .filter { !model.collapsedCategories.contains($0.category) }
             .flatMap { $0.items }
             .filter { !$0.action.isManual }
     }
@@ -558,10 +557,10 @@ struct MenuView: View {
                     }
                     .controlSize(.small)
                     .disabled(!model.busyItemIDs.isEmpty)
-                    if model.selectedHiddenByFilterCount > 0 {
+                    if model.selectedOffScreenCount > 0 {
                         // The batch reaches further than the window does. Say
                         // so, rather than deleting rows nobody can see.
-                        Text(L("%lld hidden by the filter", model.selectedHiddenByFilterCount))
+                        Text(L("%lld not on screen", model.selectedOffScreenCount))
                             .font(.caption)
                             .foregroundStyle(.secondary)
                             .monospacedDigit()
