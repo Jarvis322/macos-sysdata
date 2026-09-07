@@ -67,3 +67,47 @@ import Testing
         }
     }
 }
+
+/// The published release, fetched the way the app fetches it.
+///
+/// Every other guard in the updater can be checked against a made-up URL.
+/// The redirect check cannot: GitHub answers a release download with a 302
+/// to an entirely different host, and no test that invents a URL will ever
+/// see it. That is how 0.3.10 shipped an updater that refused every real
+/// update. Gated on the same variable as the disk-walking tests, so it runs
+/// on release and not on every save.
+@Suite struct ReleaseDownloadTests {
+    static let isEnabled = ProcessInfo.processInfo.environment["SYSDATA_SCAN_TESTS"] != nil
+
+    @Test(.enabled(if: isEnabled), .timeLimit(.minutes(5)))
+    func theLatestReleaseSurvivesTheRedirectAndIsOurs() async throws {
+        let latest = URL(string: "https://github.com/Jarvis322/macos-sysdata/releases/latest")!
+        let (data, _) = try await URLSession.shared.data(
+            from: URL(string: "https://api.github.com/repos/Jarvis322/macos-sysdata/releases/latest")!
+        )
+        let json = try #require(try JSONSerialization.jsonObject(with: data) as? [String: Any])
+        let assets = try #require(json["assets"] as? [[String: Any]])
+        let image = try #require(
+            assets.compactMap { $0["browser_download_url"] as? String }
+                .first { $0.hasSuffix(".dmg") }
+                .flatMap(URL.init(string:))
+        )
+        #expect(Updater.isExpectedDownloadURL(image), "\(latest) publishes an asset we would refuse to ask for")
+
+        // Throws Failure.unexpectedHost if the post-redirect check is wrong.
+        let downloaded = try await Updater.download(image)
+        defer { try? FileManager.default.removeItem(at: downloaded) }
+
+        let mount = try await Updater.attach(downloaded)
+        defer { Task { _ = try? await Shell.run("/usr/bin/hdiutil", ["detach", mount.path, "-quiet"]) } }
+
+        // Gatekeeper's own verdict on the download, the first gate `verify`
+        // applies. The second gate compares the team against Bundle.main,
+        // which under `swift test` is the test runner rather than the
+        // installed app, so `refusesAnAppFromAnotherDeveloper` covers that
+        // one instead.
+        let app = mount.appending(path: "SysDataMenu.app")
+        let assessment = try await Shell.run("/usr/sbin/spctl", ["--assess", "--type", "execute", app.path])
+        #expect(assessment.succeeded, "Gatekeeper refused the published release: \(assessment.output)")
+    }
+}

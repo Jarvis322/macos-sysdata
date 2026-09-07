@@ -82,7 +82,10 @@ enum Updater {
         relaunch()
     }
 
-    private static func download(_ url: URL) async throws -> URL {
+    /// Not private: the redirect check below is the one guard that cannot be
+    /// exercised without a real release, and shipping it broken is exactly
+    /// what happened in 0.3.10, so the release test reaches it directly.
+    static func download(_ url: URL) async throws -> URL {
         guard let (temporary, response) = try? await URLSession.shared.download(from: url),
               (response as? HTTPURLResponse)?.statusCode == 200 else {
             throw Failure.downloadFailed
@@ -99,7 +102,7 @@ enum Updater {
         return destination
     }
 
-    private static func attach(_ image: URL) async throws -> URL {
+    static func attach(_ image: URL) async throws -> URL {
         // -nobrowse keeps it out of the Finder sidebar; -noautoopen stops a
         // window appearing behind the menu.
         let result = try await Shell.run(
