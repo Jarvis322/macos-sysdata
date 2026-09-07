@@ -27,6 +27,9 @@ This app opens the bucket. It is not a cache cleaner: `~/Library/Caches` is
 one small line among fifty, and the app never deletes anything you did not
 click.
 
+Every release is listed in [CHANGELOG.md](CHANGELOG.md), including the two
+that shipped a broken updater and what to do if you are on one of them.
+
 ## Install
 
 ```bash
@@ -276,9 +279,15 @@ can be exercised at all.
 
 ## Releasing
 
+Write the version's section in [CHANGELOG.md](CHANGELOG.md) first — the
+release script refuses without one, and uses it as the release notes. A list
+of commit subjects says what was touched, not what changed for anyone using
+the app.
+
+
 One command bumps `VERSION`, runs the tests, builds a signed and notarized
-app, commits, tags, pushes, publishes the GitHub release with notes from the
-commit log and updates the Homebrew cask:
+app, commits, tags, pushes, publishes the GitHub release with the changelog
+section as its notes, and updates the Homebrew cask:
 
 ```bash
 scripts/release.sh          # patch

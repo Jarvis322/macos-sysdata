@@ -40,6 +40,14 @@ esac
 version="$major.$minor.$patch"
 tag="v$version"
 git rev-parse -q --verify "refs/tags/$tag" >/dev/null && { echo "tag $tag already exists" >&2; exit 1; }
+
+# The changelog is written before the release, not derived from it: a list of
+# commit subjects says what was touched, not what changed for anyone using
+# this. Its section becomes the release notes.
+grep -q "^## $tag " CHANGELOG.md || {
+  echo "CHANGELOG.md has no '## $tag' section; write it before releasing" >&2
+  exit 1
+}
 echo "==> $current -> $version"
 
 # Verify before anything is published.
@@ -57,14 +65,14 @@ for artefact in "$archive" "$image"; do
 done
 spctl --assess --type execute "build/SysDataMenu.app"
 
-# Release notes: commits since the previous tag.
-previous=$(git describe --tags --abbrev=0 2>/dev/null || true)
-log_range=()
-[ -n "$previous" ] && log_range=("$previous..HEAD")
+# Release notes: this version's section of the changelog.
 notes=$(mktemp)
 {
-  echo "## Changes"
-  git log ${log_range[@]+"${log_range[@]}"} --no-merges --pretty='- %s' | grep -vE '^- (chore: release|docs: record)' || true
+  awk -v tag="## $tag " '
+    index($0, tag) == 1 { inside = 1; next }
+    inside && /^## v/ { exit }
+    inside { print }
+  ' CHANGELOG.md
   echo
   echo "## Install"
   echo '```bash'
