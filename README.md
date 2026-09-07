@@ -96,17 +96,24 @@ installed app is left alone.
   deleted; nothing leaves the machine either way.
 - **Breakdown.** Click a row to see its five largest entries before deciding.
 - **Filter.** A scan finds around 180 items across eighteen groups, so the
-  field under the header narrows the list by name, description or group.
-  Filtering clears the selection, so a batch only ever holds rows you can
-  see.
-- **Batch delete.** Tick rows and use **Delete N selected**; every root
-  action in the batch is folded into one script, so the administrator
-  password is asked once. **Select safe** ticks everything regenerable.
+  field under the header narrows the list by name, description or group. The
+  selection survives it, because ticking **Select safe** and then filtering
+  to untick two of them is how the two controls are meant to be used
+  together. Folding a category keeps it too. Neither one quietly edits the
+  batch: the footer says how many selected rows are not on screen, next to
+  the button that would take them.
+- **Batch delete.** Tick rows and use **Delete N selected**. **Select safe**
+  ticks everything regenerable that is on screen, and unticks it on a second
+  press. Root actions are folded into one script where they can be, and the
+  confirmation says so — including when they cannot, because a delete of
+  something you do not own is run on its own and asks again.
 - **Read the command first.** The confirmation shows every operation
   verbatim before anything runs — `As administrator: rm -rf
   /Library/Logs/DiagnosticReports/*`, not a count of items. The source is
   published so you can see what this does to your machine; this is the same
-  promise at the moment it matters.
+  promise at the moment it matters. **Copy** puts the whole plan on the
+  pasteboard, since a list that scrolls inside 120pt often has to be read
+  somewhere else.
 - **Low space warning.** Optional, off until you switch it on. The daily scan
   knows the disk is nearly full a day before you do. It only ever tells you:
   nothing this app could delete unattended is worth the one time it gets it
@@ -200,10 +207,12 @@ Two things can prompt, and both can be settled one time:
   signs with your Developer ID or Apple Development certificate when one is
   in the keychain. An ad-hoc signature changes on every build and macOS would
   forget the grant each time. Override with `CODESIGN_IDENTITY="..."`.
-- **Administrator password.** Needed for root actions. Batch them to be
-  asked once per batch. Avoiding the prompt entirely would require a
-  privileged helper daemon, which is deliberately out of scope for a small
-  tool.
+- **Administrator password.** Needed for root actions. Batching folds them
+  into one script, so one password covers all of them — except a delete of
+  something you do not own, which is run on its own and asks again; the
+  confirmation says which case you are in rather than promising a single
+  prompt. Avoiding the prompt entirely would require a privileged helper
+  daemon, which is deliberately out of scope for a small tool.
 
 ## Scripting
 
@@ -259,7 +268,7 @@ scripts/ci.sh                        # build, tests, lint, bundle, strings
 SYSDATA_SCAN_TESTS=1 scripts/ci.sh   # and the tests that walk the whole disk
 ```
 
-Run before pushing; the release script runs it too. 79 tests. The
+Run before pushing; the release script runs it too. 92 tests. The
 disk-walking set is gated because it measures this machine rather than a
 fixture: it scans the real disk, and it downloads the published release and
 puts it to Gatekeeper, which is the only way the updater's redirect handling

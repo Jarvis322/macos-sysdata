@@ -1325,16 +1325,6 @@
         }
       }
     },
-    "Without it macOS asks for every protected folder and hides Mail, Safari and Time Machine data. Add System Data in the settings pane, then reopen the app.": {
-      "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Verilmezse macOS her korumalı klasör için ayrı sorar; Mail, Safari ve Time Machine verileri görünmez. Ayarlar bölmesinde System Data'yı ekleyin, sonra uygulamayı yeniden açın."
-          }
-        }
-      }
-    },
     "Xcode": {
       "localizations": {
         "tr": {

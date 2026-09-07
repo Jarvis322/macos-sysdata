@@ -505,12 +505,14 @@ struct MenuView: View {
                 Button(showsHistory ? L("Back to the list") : L("History")) {
                     showsHistory.toggle()
                 }
+                .help(L("What grew, and what came back"))
             }
             Divider()
             Toggle(L("Remember what changed"), isOn: Binding(
                 get: { model.keepsHistory },
                 set: { model.keepsHistory = $0; if !$0 { showsHistory = false } }
             ))
+            .help(L("Keep a local record of each scan and deletion, so the list can show what changed"))
             Toggle(L("Warn when free space runs low"), isOn: Binding(
                 get: { warnsAboutLowSpace },
                 set: { wanted in
@@ -540,6 +542,7 @@ struct MenuView: View {
                 get: { model.shutsDownSimulatorsAtPowerOff },
                 set: { model.shutsDownSimulatorsAtPowerOff = $0 }
             ))
+            .help(L("Booted simulators ignore the quit request and hold the shutdown for 33 seconds. This shuts them down first."))
             Toggle(L("Check for updates"), isOn: Binding(
                 get: { updates.isEnabled },
                 set: { wanted in
@@ -547,6 +550,7 @@ struct MenuView: View {
                     if wanted { Task { await updates.check() } }
                 }
             ))
+            .help(L("Asks GitHub once a day whether a newer version exists. It is the only request this app makes; leave it off and nothing leaves your Mac."))
             Toggle(L("Launch at login"), isOn: Binding(
                 get: { model.launchesAtLogin },
                 set: { model.setLaunchAtLogin($0) }

@@ -129,7 +129,6 @@
 "Warn below" = "Şunun altında uyar";
 "Warn when free space runs low" = "Boş alan azalınca uyar";
 "What grew, and what came back" = "Ne büyüdü, ne geri geldi";
-"Without it macOS asks for every protected folder and hides Mail, Safari and Time Machine data. Add System Data in the settings pane, then reopen the app." = "Verilmezse macOS her korumalı klasör için ayrı sorar; Mail, Safari ve Time Machine verileri görünmez. Ayarlar bölmesinde System Data'yı ekleyin, sonra uygulamayı yeniden açın.";
 "Xcode" = "Xcode";
 "different developer" = "farklı geliştirici";
 "iOS device backups" = "iOS aygıt yedekleri";
