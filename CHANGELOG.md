@@ -5,6 +5,14 @@ What changed in each release, and where it is worth saying, why.
 Versions up to and including v0.3.7 were released under the MIT License; see
 [LICENSE](LICENSE).
 
+## v0.4.7 — 2026-09-07
+
+- The Homebrew cask's `zap` removed the preferences file and left the other
+  three, including the scan history — the one artefact that records paths, so
+  the one worth being thorough about. It now removes everything.
+- The README says how to uninstall, what the four files are, and which two
+  grants outlive the app because macOS keeps them rather than the app.
+
 ## v0.4.6 — 2026-09-07
 
 - This changelog. Releases now refuse to go out without a section, and use it

@@ -69,6 +69,42 @@ assessment a fresh download gets, and be signed by the same team as the copy
 asking for the update. Anything else is discarded with a message, and the
 installed app is left alone.
 
+## Uninstall
+
+```bash
+brew uninstall --zap --cask sysdata
+```
+
+`--zap` is the part that matters: without it the app goes and its files stay.
+
+If it was installed by dragging the disk image, drag the app to the Trash and
+remove the four things it leaves behind:
+
+```bash
+rm -rf ~/Library/Application\ Support/SysDataMenu \
+       ~/Library/Caches/local.sysdata.menu \
+       ~/Library/HTTPStorages/local.sysdata.menu \
+       ~/Library/Preferences/local.sysdata.menu.plist
+```
+
+The first of those is the scan history, which records the path of everything
+the app measured and everything you deleted. It never leaves the machine, but
+it is the file worth being deliberate about. **Remember what changed** in the
+settings menu deletes it at any time without uninstalling anything.
+
+Two grants outlive the app, because macOS keeps them rather than the app:
+
+- **Full Disk Access**, in System Settings > Privacy & Security. Remove the
+  entry with the **−** button.
+- **Notifications**, if you turned the low-space warning on.
+
+If **Launch at login** was on, switch it off before uninstalling, or remove
+the entry from System Settings > General > Login Items afterwards.
+
+Nothing else is left. The app installs no privileged helper, no launch daemon
+and no kernel extension: every root action runs as a one-off `osascript`
+prompt, which is why it asks each time and shows you the command first.
+
 ## What it does
 
 - **Menu bar total.** The icon shows the size of everything the scan found,
@@ -180,18 +216,23 @@ their own row, named for what they are.
 
 ## What it writes down
 
-Two files, both on the machine:
+Two files it writes, and two macOS makes for it. All four on the machine:
 
 | Path | What is in it |
 | --- | --- |
 | `~/Library/Preferences/local.sysdata.menu.plist` | the switches, the sort order, hidden item ids |
 | `~/Library/Application Support/SysDataMenu/history.json` | each scan's item sizes, and each deletion with its paths |
+| `~/Library/Caches/local.sysdata.menu` | macOS's own cache folder for the app |
+| `~/Library/HTTPStorages/local.sysdata.menu` | what URLSession keeps for the update check |
 
 The history file exists so the list can show what changed; it holds no more
 than the window already shows, it is capped at six months, and turning
 **Remember what changed** off deletes it. Nothing is sent anywhere. The one
 network request the app can make is the daily update check, which is off
-unless you switch it on.
+unless you switch it on — and the last two rows above are what making it
+costs.
+
+[Uninstalling](#uninstall) removes all four.
 
 ## Permissions, once
 
