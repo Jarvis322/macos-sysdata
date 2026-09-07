@@ -78,6 +78,17 @@ installed app is left alone.
 - **Trash first.** Review items go to the Trash, so a wrong click can be
   undone for 30 days. Safe items are deleted outright because they come back
   on their own.
+- **Idle time.** Rows past a fortnight say how long they have sat untouched,
+  and the sort control orders by it. Size cannot tell a build folder for
+  today's work apart from one for a project abandoned two years ago; those
+  are the same number of bytes and opposite decisions. Simulator runtimes
+  take their date from `simctl`, which knows when one was last booted.
+- **What changed.** Each scan and deletion is written to a local file, so the
+  list can show growth beside each size, and a history view can answer three
+  things a single scan cannot: what came back, what grew most, and what you
+  deleted. A cache cleared on Monday that is 12 GB again by Friday is the
+  most useful thing this app can tell you. Switch it off and the file is
+  deleted; nothing leaves the machine either way.
 - **Breakdown.** Click a row to see its five largest entries before deciding.
 - **Filter.** A scan finds around 180 items across eighteen groups, so the
   field under the header narrows the list by name, description or group.
@@ -86,10 +97,25 @@ installed app is left alone.
 - **Batch delete.** Tick rows and use **Delete N selected**; every root
   action in the batch is folded into one script, so the administrator
   password is asked once. **Select safe** ticks everything regenerable.
+- **Read the command first.** The confirmation shows every operation
+  verbatim before anything runs — `As administrator: rm -rf
+  /Library/Logs/DiagnosticReports/*`, not a count of items. The source is
+  published so you can see what this does to your machine; this is the same
+  promise at the moment it matters.
+- **Low space warning.** Optional, off until you switch it on. The daily scan
+  knows the disk is nearly full a day before you do. It only ever tells you:
+  nothing this app could delete unattended is worth the one time it gets it
+  wrong. Fires on the way down and stays quiet until free space has been back
+  above the line.
 - **Hide.** The eye button removes an item from future scans (Ollama models
   you want to keep, say). A footer link brings hidden items back.
-- **Purgeable space** is shown in the header, so the effect of deleting
-  snapshots is visible.
+- **Purgeable space** is shown in the header, with a tooltip saying what it
+  is and what it is not. It is macOS's estimate of what it could give back,
+  not space you can plan around: writing 6.44 GB on the test machine cost
+  6.44 GB of real free space and took nothing from the 3.55 GB pool, which
+  then refilled itself. The measurement is in
+  [docs/purgeable-measurement.md](docs/purgeable-measurement.md), along with
+  why forcing macOS to evict is not a feature here.
 - **Faster shutdown.** A booted iOS simulator ignores the quit request and
   makes macOS wait 33 seconds before killing it (`launchd`: "Service did not
   exit 33 seconds after SIGTERM"). Because the app is running at power off,
@@ -137,6 +163,21 @@ work, which no delete regenerates. The things under them that *are*
 reclaimable — build folders, virtual machines, render files — still each get
 their own row, named for what they are.
 
+## What it writes down
+
+Two files, both on the machine:
+
+| Path | What is in it |
+| --- | --- |
+| `~/Library/Preferences/local.sysdata.menu.plist` | the switches, the sort order, hidden item ids |
+| `~/Library/Application Support/SysDataMenu/history.json` | each scan's item sizes, and each deletion with its paths |
+
+The history file exists so the list can show what changed; it holds no more
+than the window already shows, it is capped at six months, and turning
+**Remember what changed** off deletes it. Nothing is sent anywhere. The one
+network request the app can make is the daily update check, which is off
+unless you switch it on.
+
 ## Permissions, once
 
 Two things can prompt, and both can be settled one time:
@@ -164,7 +205,14 @@ jq '.items[] | select(.safety == "safe") | [.name, .sizeBytes]' inventory.json
 
 The output has `freeBytes`, `purgeableBytes`, `totalBytes` and one record per
 item with `id`, `category`, `name`, `detail`, `sizeBytes`, `safety`,
-`manual` and `path`.
+`manual`, `path`, `lastModified` and `idleDays`. The last two are absent when
+the item is not a folder this app measured — a `docker system prune` estimate
+or an APFS snapshot has no age.
+
+```bash
+# everything safe that nothing has touched in six months
+jq '.items[] | select(.safety == "safe" and .idleDays > 180) | [.name, .sizeBytes]' inventory.json
+```
 
 `sysdata` is a bash script covering the Safe categories only, for machines
 where you would rather not run an app:
