@@ -37,16 +37,30 @@ enum Updater {
         }
     }
 
-    /// Where a release may come from. A redirect off this host is refused.
-    private static let expectedHost = "github.com"
+    /// Where a release may be asked for.
+    private static let releaseHost = "github.com"
+    /// Where GitHub actually serves the bytes. A release download from
+    /// `github.com` answers with a 302 to `release-assets.githubusercontent.com`,
+    /// so the host the file arrives from is never the host it was asked for.
+    private static let assetHost = "githubusercontent.com"
 
-    /// Accept only github.com itself or one of its DNS subdomains. A plain
-    /// suffix check would also accept lookalike registrable domains such as
-    /// `notgithub.com` and `evilgithub.com`.
+    /// The URL an update may be requested from.
     static func isExpectedDownloadURL(_ url: URL) -> Bool {
+        isHTTPS(url, within: releaseHost)
+    }
+
+    /// The URL the bytes may arrive from, once redirects have been followed.
+    static func isExpectedAssetURL(_ url: URL) -> Bool {
+        isHTTPS(url, within: releaseHost) || isHTTPS(url, within: assetHost)
+    }
+
+    /// True for the domain itself or one of its DNS subdomains. The boundary
+    /// is the leading dot: a plain suffix check would also accept lookalike
+    /// registrable domains such as `notgithub.com` and `evilgithub.com`.
+    private static func isHTTPS(_ url: URL, within domain: String) -> Bool {
         guard url.scheme?.lowercased() == "https",
               let host = url.host()?.lowercased() else { return false }
-        return host == expectedHost || host.hasSuffix("." + expectedHost)
+        return host == domain || host.hasSuffix("." + domain)
     }
 
     static func installLatest(from url: URL) async throws {
@@ -75,7 +89,7 @@ enum Updater {
         }
         // A redirect could have left the expected host between the request and
         // the bytes that arrived, so the final URL is checked too.
-        if let final = response.url, !isExpectedDownloadURL(final) {
+        if let final = response.url, !isExpectedAssetURL(final) {
             try? FileManager.default.removeItem(at: temporary)
             throw Failure.unexpectedHost
         }
