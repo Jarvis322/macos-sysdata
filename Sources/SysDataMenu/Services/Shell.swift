@@ -79,12 +79,38 @@ enum Shell {
         "'" + path.replacingOccurrences(of: "'", with: "'\\''") + "'"
     }
 
+    /// Not private: which directories are searched decides whether a tool
+    /// reads as absent, and for pnpm that decides whether its store is offered
+    /// for deletion.
+    static var searchPathForTesting: [String] { searchPath }
+
     private static let searchPath: [String] = {
         let home = FileManager.default.homeDirectoryForCurrentUser.path
         var directories = [
             "/opt/homebrew/bin", "/usr/local/bin", "/usr/bin", "/bin", "/usr/sbin", "/sbin",
             "\(home)/.cargo/bin", "\(home)/.local/bin", "\(home)/Library/pnpm",
+            // Version managers put their shims outside the usual prefixes. A
+            // GUI process inherits no PATH, so missing these does not mean
+            // "not on this Mac" — it means "not looked for", and the app acts
+            // on the difference: a tool it cannot find loses its own prune
+            // command, and a pnpm it cannot find makes the store look
+            // abandoned.
+            "\(home)/.volta/bin",
+            "\(home)/.asdf/shims",
+            "\(home)/.local/share/mise/shims",
+            "\(home)/Library/Application Support/fnm/aliases/default/bin",
+            "\(home)/.bun/bin",
+            "\(home)/.deno/bin",
         ]
+        // nvm keeps one directory per Node version and a `default` alias
+        // naming the current one.
+        if let version = try? String(contentsOf: URL(fileURLWithPath: "\(home)/.nvm/alias/default"), encoding: .utf8) {
+            let version = version.trimmingCharacters(in: .whitespacesAndNewlines)
+            if !version.isEmpty {
+                let prefix = version.hasPrefix("v") ? version : "v\(version)"
+                directories.append("\(home)/.nvm/versions/node/\(prefix)/bin")
+            }
+        }
         if let inherited = ProcessInfo.processInfo.environment["PATH"] {
             directories += inherited.split(separator: ":").map(String.init)
         }
