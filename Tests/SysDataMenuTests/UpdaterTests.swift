@@ -23,6 +23,40 @@ import Testing
 
     @Test func refusesPlainHTTPEvenFromGitHub() {
         #expect(!Updater.isExpectedDownloadURL(URL(string: "http://github.com/a.dmg")!))
+        #expect(!Updater.isExpectedAssetURL(URL(string: "http://release-assets.githubusercontent.com/a.dmg")!))
+    }
+
+    /// A release download from github.com answers with a 302 to the asset
+    /// host, so refusing everything but github.com after the redirect refused
+    /// every real update. This is the host the bytes actually come from.
+    @Test func acceptsTheHostGitHubServesReleaseAssetsFrom() {
+        #expect(Updater.isExpectedAssetURL(
+            URL(string: "https://release-assets.githubusercontent.com/github-production-release-asset/1/2?sig=x")!
+        ))
+        #expect(Updater.isExpectedAssetURL(URL(string: "https://objects.githubusercontent.com/example.dmg")!))
+    }
+
+    /// The redirect target is checked, not just the URL that was asked for.
+    @Test func refusesALookalikeAssetHost() {
+        for address in ["https://notgithubusercontent.com/a.dmg",
+                        "https://githubusercontent.com.evil.example.com/a.dmg",
+                        "https://evil.example.com/a.dmg"] {
+            #expect(!Updater.isExpectedAssetURL(URL(string: address)!))
+        }
+    }
+
+    /// The predicates above are the rule; these prove `installLatest` is the
+    /// thing that applies it, so a later edit cannot route around them.
+    @Test func installRefusesAHostThatIsNotGitHub() async {
+        for address in ["https://notgithub.com/SysDataMenu.dmg",
+                        "http://github.com/SysDataMenu.dmg",
+                        // The asset host is where bytes may arrive from, not
+                        // somewhere an update may be requested from.
+                        "https://release-assets.githubusercontent.com/SysDataMenu.dmg"] {
+            await #expect(throws: Updater.Failure.self) {
+                try await Updater.installLatest(from: URL(string: address)!)
+            }
+        }
     }
 
     /// An app signed by someone else is rejected before anything is replaced.
