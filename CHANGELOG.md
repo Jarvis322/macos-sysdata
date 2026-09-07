@@ -5,6 +5,20 @@ What changed in each release, and where it is worth saying, why.
 Versions up to and including v0.3.7 were released under the MIT License; see
 [LICENSE](LICENSE).
 
+## v0.5.0 — 2026-09-08
+
+- **Simplified Chinese and Japanese.** The app now ships in four languages —
+  English, Turkish, Simplified Chinese and Japanese — each covering all 135
+  interface strings, with format placeholders preserved (including the ones
+  the two new languages reorder). Chinese is from [#19](https://github.com/Jarvis322/macos-sysdata/pull/19)
+  by @Mavlan, a native speaker; Japanese follows the same terminology
+  conventions macOS itself uses.
+- Recorded a scroll-during-scan crash investigation from
+  [#18](https://github.com/Jarvis322/macos-sysdata/pull/18) by @dzy1997 in
+  `docs/`; no code change, since it does not reproduce on macOS 26.6 and the
+  List, its styling and virtualization are worth keeping until there is a
+  failing case to fix against.
+
 ## v0.4.7 — 2026-09-07
 
 - The Homebrew cask's `zap` removed the preferences file and left the other
