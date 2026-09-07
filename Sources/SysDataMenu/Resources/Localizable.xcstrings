@@ -15,6 +15,12 @@
             "state": "translated",
             "value": "diskte %@ boş"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ディスクの空き容量：%@"
+          }
         }
       }
     },
@@ -30,6 +36,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "%@ güvenle boşaltılabilir · diskte %@ boş · %@ temizlenebilir"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "今すぐ安全に解放：%@ · ディスクの空き：%@ · パージ可能：%@"
           }
         }
       }
@@ -47,6 +59,12 @@
             "state": "translated",
             "value": "%lld gündür boşta"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld 日未使用"
+          }
         }
       }
     },
@@ -62,6 +80,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "%lld gizli"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld 件非表示"
           }
         }
       }
@@ -79,6 +103,12 @@
             "state": "translated",
             "value": "%lld kalem yönetici yetkisi istiyor; parola bir kez sorulur."
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld 項目に管理者権限が必要です。パスワードは一度だけ求められます。"
+          }
         }
       }
     },
@@ -94,6 +124,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "%lld kalem yönetici yetkisi istiyor; parola birden fazla kez sorulabilir."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld 項目に管理者権限が必要です。パスワードが複数回求められることがあります。"
           }
         }
       }
@@ -111,6 +147,12 @@
             "state": "translated",
             "value": "%lld tanesi İncele işaretli, Çöp Sepeti'ne gider: %@"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "「確認」の %lld 項目はゴミ箱へ移動します：%@"
+          }
         }
       }
     },
@@ -126,6 +168,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "%lld aydır boşta"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld か月未使用"
           }
         }
       }
@@ -143,6 +191,12 @@
             "state": "translated",
             "value": "%lld tanesi ekranda değil"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld 件は画面外"
+          }
         }
       }
     },
@@ -158,6 +212,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "%lld yıldır boşta"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld 年未使用"
           }
         }
       }
@@ -175,6 +235,12 @@
             "state": "translated",
             "value": "1 kalem yönetici yetkisi istiyor."
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 項目に管理者権限が必要です。"
+          }
         }
       }
     },
@@ -190,6 +256,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "1 aydır boşta"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 か月未使用"
           }
         }
       }
@@ -207,6 +279,12 @@
             "state": "translated",
             "value": "1 yıldır boşta"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 年未使用"
+          }
         }
       }
     },
@@ -223,6 +301,12 @@
             "state": "translated",
             "value": "İkinci taramadan sonra burada ne büyüdüğü ve sildiğin bir şeyin geri gelip gelmediği görünür."
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "2 回目以降のスキャンで、何が増えたか、削除したものが戻っていないかを表示します。"
+          }
         }
       }
     },
@@ -235,6 +319,12 @@
           }
         },
         "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Android"
+          }
+        },
+        "ja": {
           "stringUnit": {
             "state": "translated",
             "value": "Android"
@@ -255,6 +345,12 @@
             "state": "translated",
             "value": "Uygulama verileri ve önbellekler"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Appのデータとキャッシュ"
+          }
         }
       }
     },
@@ -270,6 +366,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Yönetici olarak: %@"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "管理者として実行：%@"
           }
         }
       }
@@ -288,6 +390,12 @@
             "state": "translated",
             "value": "Günde bir kez GitHub'a yeni sürüm olup olmadığını sorar. Uygulamanın yaptığı tek istek budur; kapalı bırakırsanız Mac'inizden hiçbir şey çıkmaz."
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "新しいバージョンがあるか、1 日に一度 GitHub に問い合わせます。このAppが行う唯一の通信です。オフにすれば、Macから何も送信されません。"
+          }
         }
       }
     },
@@ -303,6 +411,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Listeye dön"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "リストに戻る"
           }
         }
       }
@@ -320,6 +434,12 @@
             "state": "translated",
             "value": "Açık simülatörler çıkış isteğini yok sayar ve kapanışı 33 saniye bekletir. Bu seçenek önce onları kapatır."
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "起動中のシミュレータは終了要求を無視し、シャットダウンを 33 秒間止めます。これは先にシミュレータを終了させます。"
+          }
         }
       }
     },
@@ -336,6 +456,12 @@
             "state": "translated",
             "value": "Geri geldi"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "戻ってきた"
+          }
         }
       }
     },
@@ -351,6 +477,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Vazgeç"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "キャンセル"
           }
         }
       }
@@ -369,6 +501,12 @@
             "state": "translated",
             "value": "İptal edildi. %d tanesi silinmişti, kalanlara dokunulmadı."
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "キャンセルしました。%d 件は削除済み、残りはそのままです。"
+          }
         }
       }
     },
@@ -385,6 +523,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "İptal edildi. Hiçbir şey silinmedi."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "キャンセルしました。何も削除されていません。"
           }
         }
       }
@@ -403,6 +547,12 @@
             "state": "translated",
             "value": "Güncellemeleri denetle"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "アップデートを確認"
+          }
         }
       }
     },
@@ -418,6 +568,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Temizle"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "クリア"
           }
         }
       }
@@ -435,6 +591,12 @@
             "state": "translated",
             "value": "%@ kategorisini daralt"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ を折りたたむ"
+          }
         }
       }
     },
@@ -450,6 +612,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Kopyalandı"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "コピーしました"
           }
         }
       }
@@ -467,6 +635,12 @@
             "state": "translated",
             "value": "Kopyala"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "コピー"
+          }
         }
       }
     },
@@ -482,6 +656,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Planı kopyala"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "実行内容をコピー"
           }
         }
       }
@@ -499,6 +679,12 @@
             "state": "translated",
             "value": "Sil"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "削除"
+          }
         }
       }
     },
@@ -514,6 +700,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "%@ silinir"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ を削除"
           }
         }
       }
@@ -531,6 +723,12 @@
             "state": "translated",
             "value": "%@ silinsin mi?"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ を削除しますか？"
+          }
         }
       }
     },
@@ -546,6 +744,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "%lld kalemi sil"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld 項目を削除"
           }
         }
       }
@@ -563,6 +767,12 @@
             "state": "translated",
             "value": "%lld kalem silinsin mi?"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld 項目を削除しますか？"
+          }
         }
       }
     },
@@ -578,6 +788,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Seçili %lld kalemi sil · %@"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "選択した %lld 項目を削除 · %@"
           }
         }
       }
@@ -595,6 +811,12 @@
             "state": "translated",
             "value": "%@ içindeki her şey silinir"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ の中身をすべて削除"
+          }
         }
       }
     },
@@ -610,6 +832,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "%2$@ içinde %1$lld günden eski dosyalar silinir"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%2$@ 内の %1$lld 日より古いファイルを削除"
           }
         }
       }
@@ -627,6 +855,12 @@
             "state": "translated",
             "value": "Geçmiş dosyasını sil"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "履歴ファイルを削除"
+          }
         }
       }
     },
@@ -642,6 +876,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Silinen"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "削除済み"
           }
         }
       }
@@ -659,6 +899,12 @@
             "state": "translated",
             "value": "%@ tarihinde silindi, %@ tarihinde geri geldi"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ に削除、%@ までに復活"
+          }
         }
       }
     },
@@ -674,6 +920,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Güvenlileri bırak"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "安全な項目の選択を解除"
           }
         }
       }
@@ -691,6 +943,12 @@
             "state": "translated",
             "value": "Geliştirici araç verileri"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "開発ツールのデータ"
+          }
         }
       }
     },
@@ -707,6 +965,12 @@
             "state": "translated",
             "value": "Kapat"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "閉じる"
+          }
         }
       }
     },
@@ -719,6 +983,12 @@
           }
         },
         "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Docker"
+          }
+        },
+        "ja": {
           "stringUnit": {
             "state": "translated",
             "value": "Docker"
@@ -739,6 +1009,12 @@
             "state": "translated",
             "value": "Bu kalemi bir daha gösterme"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "この項目を今後表示しない"
+          }
         }
       }
     },
@@ -756,6 +1032,12 @@
             "state": "translated",
             "value": "İndir"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ダウンロード"
+          }
         }
       }
     },
@@ -771,6 +1053,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Boş klasör"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "空のフォルダ"
           }
         }
       }
@@ -788,6 +1076,12 @@
             "state": "translated",
             "value": "%@ kategorisini genişlet"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ を展開"
+          }
         }
       }
     },
@@ -803,6 +1097,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Filtrele"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "フィルタ"
           }
         }
       }
@@ -820,6 +1120,12 @@
             "state": "translated",
             "value": "Hepsini unut"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "すべて消去"
+          }
         }
       }
     },
@@ -835,6 +1141,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Başlangıç diskindeki boş alan."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "起動ディスクの空き容量。"
           }
         }
       }
@@ -852,6 +1164,12 @@
             "state": "translated",
             "value": "Yaklaşık %@ boşaltır. "
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "約 %@ を解放します。 "
+          }
         }
       }
     },
@@ -867,6 +1185,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Tam Disk Erişimi'ni bir kez verin"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "フルディスクアクセスを一度許可"
           }
         }
       }
@@ -884,6 +1208,12 @@
             "state": "translated",
             "value": "En çok büyüyen"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "増加が最大"
+          }
         }
       }
     },
@@ -899,6 +1229,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "%@ öğesini sonraki taramalarda gizle"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ を今後のスキャンから除外"
           }
         }
       }
@@ -916,6 +1252,12 @@
             "state": "translated",
             "value": "Kırılımı gizle"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "内訳を隠す"
+          }
         }
       }
     },
@@ -931,6 +1273,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Geçmiş"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "履歴"
           }
         }
       }
@@ -948,6 +1296,12 @@
             "state": "translated",
             "value": "Geçmiş ve ayarlar"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "履歴と設定"
+          }
         }
       }
     },
@@ -963,6 +1317,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "%@ nasıl kaldırılır"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ の削除方法"
           }
         }
       }
@@ -980,6 +1340,12 @@
             "state": "translated",
             "value": "En uzun boşta"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "未使用期間順"
+          }
         }
       }
     },
@@ -995,6 +1361,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Önce Çöp Sepeti'ne gider."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "まずゴミ箱に移動します。"
           }
         }
       }
@@ -1012,6 +1384,12 @@
             "state": "translated",
             "value": "Her taramanın ve silmenin yerel kaydını tut, böylece liste neyin değiştiğini gösterebilir"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "各スキャンと削除の記録をこのMac内に保存し、変化をリストに表示できるようにします"
+          }
         }
       }
     },
@@ -1027,6 +1405,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Girişte başlat"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ログイン時に起動"
           }
         }
       }
@@ -1044,6 +1428,12 @@
             "state": "translated",
             "value": "Girişte başlat: %@"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ログイン時に起動：%@"
+          }
         }
       }
     },
@@ -1059,6 +1449,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Günlükler ve tanılama"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ログと診断"
           }
         }
       }
@@ -1076,6 +1472,12 @@
             "state": "translated",
             "value": "500 MB üstü başka ne varsa aranıyor…"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "500 MB を超えるその他の項目を検索中…"
+          }
         }
       }
     },
@@ -1091,6 +1493,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Elle"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "手動"
           }
         }
       }
@@ -1108,6 +1516,12 @@
             "state": "translated",
             "value": "Bilinen konumlar ölçülüyor…"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "既知の場所を計測中…"
+          }
         }
       }
     },
@@ -1123,6 +1537,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "En büyük girdiler ölçülüyor…"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "最大の項目を計測中…"
           }
         }
       }
@@ -1140,6 +1560,12 @@
             "state": "translated",
             "value": "Ölçülüyor…"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "計測中…"
+          }
         }
       }
     },
@@ -1155,6 +1581,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Ölçülüyor… %lld / %lld yer"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "計測中… %lld / %lld か所"
           }
         }
       }
@@ -1172,6 +1604,12 @@
             "state": "translated",
             "value": "Çöp Sepeti'ne taşındı. Alanı boşaltmak için Çöp Sepeti'ni boşaltın."
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ゴミ箱に移動しました。容量を解放するにはゴミ箱を空にしてください。"
+          }
         }
       }
     },
@@ -1187,6 +1625,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Eşleşen öğe yok"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "一致する項目がありません"
           }
         }
       }
@@ -1204,6 +1648,12 @@
             "state": "translated",
             "value": "Henüz karşılaştıracak bir şey yok"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "まだ比較できるものがありません"
+          }
         }
       }
     },
@@ -1219,6 +1669,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Geri kazanılacak bir şey yok"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "解放できるものがありません"
           }
         }
       }
@@ -1236,6 +1692,12 @@
             "state": "translated",
             "value": "Tek izin hepsini kapsar. O zamana kadar bu tarama korumalı yerlere dokunmuyor — uygulama konteynerleri, Masaüstü, Belgeler, Müzik, Fotoğraflar — tek tek izin sormaktansa; yani aşağıda gördüğün eksik. Ayarlar bölmesinden Sistem Verileri'ni ekle, sonra uygulamayı yeniden aç."
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 回の許可ですべてに対応できます。それまでこのスキャンは保護された場所——Appコンテナ、デスクトップ、書類、ミュージック、写真——には触れず、Appごとに個別に確認を求めることもしません。そのため下に表示される内容は不完全です。設定パネルで「システムデータ」を追加してから、Appを開き直してください。"
+          }
         }
       }
     },
@@ -1251,6 +1713,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Ayarları Aç"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "設定を開く"
           }
         }
       }
@@ -1268,6 +1736,12 @@
             "state": "translated",
             "value": "Neyin yer kapladığını görmek için Sistem Verileri'ni aç."
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "何が容量を使っているかを見るには、システムデータを開いてください。"
+          }
         }
       }
     },
@@ -1283,6 +1757,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "x.com/yigitech adresini aç"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "x.com/yigitech を開く"
           }
         }
       }
@@ -1300,6 +1780,12 @@
             "state": "translated",
             "value": "Satırları boyuta ya da ne kadardır dokunulmadığına göre sırala"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "項目をサイズ順、または未使用期間順に並べ替えます"
+          }
         }
       }
     },
@@ -1315,6 +1801,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Diğer büyük klasörler"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "その他の大きいフォルダ"
           }
         }
       }
@@ -1332,6 +1824,12 @@
             "state": "translated",
             "value": "Paket yöneticileri"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "パッケージマネージャ"
+          }
         }
       }
     },
@@ -1347,6 +1845,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Proje derleme klasörleri"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "プロジェクトのビルドフォルダ"
           }
         }
       }
@@ -1364,6 +1868,12 @@
             "state": "translated",
             "value": "Temizlenebilir alan, macOS'in gerekirse geri verebileceğini tahmin ettiği yerdir: önbellekler ve yerel anlık görüntüler. Bu bir tahmindir, güvenebileceğin bir alan değil — kendiliğinden değişir ve dosya yazmak onu harcamaz. Aşağıdaki öğeler gerçekten boşaltabileceklerin."
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "パージ可能とは、必要になればmacOSが解放できると見積もっている容量です——キャッシュやローカルスナップショットなど。これは見積もりであり、当てにできる空き容量ではありません。ひとりでに変動し、ファイルを書き込んでも消費されません。下の項目こそ、実際に解放できるものです。"
+          }
         }
       }
     },
@@ -1379,6 +1889,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Çık"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "終了"
           }
         }
       }
@@ -1396,6 +1912,12 @@
             "state": "translated",
             "value": "Bu oturumda kazanılan: %@"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "今回解放した容量：%@"
+          }
         }
       }
     },
@@ -1411,6 +1933,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Neyin değiştiğini hatırla"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "変化を記録する"
           }
         }
       }
@@ -1428,6 +1956,12 @@
             "state": "translated",
             "value": "Yeniden tara"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "再スキャン"
+          }
         }
       }
     },
@@ -1443,6 +1977,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "%@ öğesini Finder'da göster"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ をFinderで表示"
           }
         }
       }
@@ -1460,6 +2000,12 @@
             "state": "translated",
             "value": "Finder'da göster"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Finderで表示"
+          }
         }
       }
     },
@@ -1475,6 +2021,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "İncele"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "確認"
           }
         }
       }
@@ -1492,6 +2044,12 @@
             "state": "translated",
             "value": "Güvenli"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "安全"
+          }
         }
       }
     },
@@ -1507,6 +2065,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Güvenlik: %@"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "安全度：%@"
           }
         }
       }
@@ -1524,6 +2088,12 @@
             "state": "translated",
             "value": "Taranıyor"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "スキャン中"
+          }
         }
       }
     },
@@ -1539,6 +2109,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "%@ öğesini seç"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ を選択"
           }
         }
       }
@@ -1556,6 +2132,12 @@
             "state": "translated",
             "value": "Kendiliğinden yeniden oluşan her kalemi seç"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "自動的に再生成される項目をすべて選択"
+          }
         }
       }
     },
@@ -1571,6 +2153,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Güvenlileri seç"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "安全な項目を選択"
           }
         }
       }
@@ -1588,6 +2176,12 @@
             "state": "translated",
             "value": "Ayarlar"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "設定"
+          }
         }
       }
     },
@@ -1603,6 +2197,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Paylaşılan ve diğer kullanıcılar"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "共有と他のユーザ"
           }
         }
       }
@@ -1620,6 +2220,12 @@
             "state": "translated",
             "value": "Tümünü göster"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "すべて表示"
+          }
         }
       }
     },
@@ -1635,6 +2241,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Tam olarak ne çalışacağını göster"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "実行される内容を表示"
           }
         }
       }
@@ -1652,6 +2264,12 @@
             "state": "translated",
             "value": "En büyük girdileri göster"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "最大の項目を表示"
+          }
         }
       }
     },
@@ -1667,6 +2285,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Yönetici olarak çalışacak komutları göster"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "管理者として実行されるコマンドを表示"
           }
         }
       }
@@ -1684,6 +2308,12 @@
             "state": "translated",
             "value": "Kapanışta simülatörleri kapat"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "電源オフ時にシミュレータを終了"
+          }
         }
       }
     },
@@ -1699,6 +2329,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Önce bütün simulator'lar kapatılır"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "先にすべてのシミュレータを終了"
           }
         }
       }
@@ -1716,6 +2352,12 @@
             "state": "translated",
             "value": "Simülatör aygıtları"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "シミュレータデバイス"
+          }
         }
       }
     },
@@ -1731,6 +2373,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Simülatör runtime'ları"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "シミュレータランタイム"
           }
         }
       }
@@ -1748,6 +2396,12 @@
             "state": "translated",
             "value": "%@ tarihinden beri"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ 以降"
+          }
         }
       }
     },
@@ -1763,6 +2417,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Boyut"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "サイズ"
           }
         }
       }
@@ -1780,6 +2440,12 @@
             "state": "translated",
             "value": "Sıralama"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "並べ替え"
+          }
         }
       }
     },
@@ -1795,6 +2461,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Sistem"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "システム"
           }
         }
       }
@@ -1812,6 +2484,12 @@
             "state": "translated",
             "value": "Sistem Verileri"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "システムデータ"
+          }
         }
       }
     },
@@ -1827,6 +2505,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Bulunan Sistem Verileri: %@"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "見つかったシステムデータ：%@"
           }
         }
       }
@@ -1844,6 +2528,12 @@
             "state": "translated",
             "value": "Sistem Verileri içinde güvenle boşaltılabilir %@ var."
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "システムデータには安全に解放できる %@ があります。"
+          }
         }
       }
     },
@@ -1859,6 +2549,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Geçici dosyalar"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "一時ファイル"
           }
         }
       }
@@ -1877,6 +2573,12 @@
             "state": "translated",
             "value": "Uygulama değiştirilemedi: %@"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Appを置き換えられませんでした：%@"
+          }
         }
       }
     },
@@ -1893,6 +2595,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "İndirme tamamlanmadı. Hiçbir şey kurulmadı."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ダウンロードが完了しませんでした。何もインストールされていません。"
           }
         }
       }
@@ -1911,6 +2619,12 @@
             "state": "translated",
             "value": "İndirilen dosya GitHub'dan gelmiyor. Hiçbir şey kurulmadı."
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ダウンロード元が GitHub ではありません。何もインストールされていません。"
+          }
         }
       }
     },
@@ -1927,6 +2641,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "İndirilen dosya bu uygulamanın geliştiricisi tarafından imzalanmamış, bu yüzden atıldı. (%@)"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ダウンロードがこのAppの開発元によって署名されていないため、破棄しました。(%@)"
           }
         }
       }
@@ -1945,6 +2665,12 @@
             "state": "translated",
             "value": "İndirilen disk imajı açılamadı. Hiçbir şey kurulmadı."
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ダウンロードしたイメージを開けませんでした。何もインストールされていません。"
+          }
         }
       }
     },
@@ -1962,6 +2688,12 @@
             "state": "translated",
             "value": "İndirilen disk imajı uygulamayı içermiyor. Hiçbir şey kurulmadı."
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ダウンロードしたイメージにAppが含まれていません。何もインストールされていません。"
+          }
         }
       }
     },
@@ -1977,6 +2709,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Gerektiğinde kendiliğinden yeniden oluşturulur."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "これは必要に応じて自動的に再生成されます。"
           }
         }
       }
@@ -1994,6 +2732,12 @@
             "state": "translated",
             "value": "Time Machine anlık görüntüleri"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Time Machine スナップショット"
+          }
         }
       }
     },
@@ -2009,6 +2753,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Çöp Sepeti"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ゴミ箱"
           }
         }
       }
@@ -2027,6 +2777,12 @@
             "state": "translated",
             "value": "Güncelle"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "アップデート"
+          }
         }
       }
     },
@@ -2044,6 +2800,12 @@
             "state": "translated",
             "value": "%@ sürümü yayınlandı."
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "バージョン %@ が利用可能です。"
+          }
         }
       }
     },
@@ -2059,6 +2821,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Sanal makineler"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "仮想マシン"
           }
         }
       }
@@ -2076,6 +2844,12 @@
             "state": "translated",
             "value": "Şunun altında uyar"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "この値を下回ったら警告"
+          }
         }
       }
     },
@@ -2091,6 +2865,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Boş alan azalınca uyar"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "空き容量が少なくなったら警告"
           }
         }
       }
@@ -2108,6 +2888,12 @@
             "state": "translated",
             "value": "Ne büyüdü, ne geri geldi"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "何が増え、何が戻ってきたか"
+          }
         }
       }
     },
@@ -2120,6 +2906,12 @@
           }
         },
         "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Xcode"
+          }
+        },
+        "ja": {
           "stringUnit": {
             "state": "translated",
             "value": "Xcode"
@@ -2141,6 +2933,12 @@
             "state": "translated",
             "value": "farklı geliştirici"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "別の開発元"
+          }
         }
       }
     },
@@ -2157,6 +2955,12 @@
             "state": "translated",
             "value": "iOS aygıt yedekleri"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iOSデバイスのバックアップ"
+          }
         }
       }
     },
@@ -2172,6 +2976,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "macOS bu uygulamanın bildirimlerine izin vermiyor. Sistem Ayarları > Bildirimler'den açabilirsin."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "macOS がこのAppの通知を許可していません。システム設定 > 通知 で有効にしてください。"
           }
         }
       }
