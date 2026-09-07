@@ -12,7 +12,7 @@
 </p>
 
 <p align="center">
-  <img src="assets/screenshot.png" width="460" alt="The System Data window: a filter field under the header, then simulator devices and runtimes listed with their sizes and safety badges">
+  <img src="assets/screenshot.png" width="460" alt="The System Data window: a header with the total, a sort control and a settings menu, a filter field, then simulator devices and runtimes listed with their sizes and safety badges">
 </p>
 
 ---
@@ -71,6 +71,8 @@ installed app is left alone.
 - **Menu bar total.** The icon shows the size of everything the scan found,
   the number Storage settings calls System Data. The window header says how
   much of it is safe to free right now. It scans on launch and once a day.
+  Results appear as each place is measured, with a count in the header, so a
+  slow first scan on a full disk cannot be mistaken for a stuck one.
 - **Every item has a real size**, measured on disk, plus a badge:
   **Safe** regenerates automatically, **Review** costs you something (a
   simulator, a login, a re-download), **Manual** cannot be removed by the app
@@ -78,6 +80,9 @@ installed app is left alone.
 - **Trash first.** Review items go to the Trash, so a wrong click can be
   undone for 30 days. Safe items are deleted outright because they come back
   on their own.
+- **Quiet rows.** Reveal, hide and the breakdown chevron appear on hover, the
+  way Finder and Mail do it; delete stays visible, because it is the reason
+  the window is open. Right-click reaches all of them without a pointer.
 - **Idle time.** Rows past a fortnight say how long they have sat untouched,
   and the sort control orders by it. Size cannot tell a build folder for
   today's work apart from one for a project abandoned two years ago; those
@@ -136,7 +141,7 @@ installed app is left alone.
 | Simulator devices | per-device caches, unavailable devices, erase a device; the system dyld cache is reported (macOS blocks deleting it, even as root) | Safe / Review / Manual |
 | Simulator runtimes | each installed runtime disk image | Review |
 | Xcode | DerivedData, DeviceSupport, preview devices, caches, Archives, inactive Xcode.app copies | Safe / Review |
-| Package managers | brew, npm, pnpm, yarn, pip, uv, CocoaPods, Gradle, Cargo, SwiftPM, Go, Cypress, Playwright; the whole Homebrew prefix | Safe / Manual |
+| Package managers | brew, npm, pnpm, yarn, pip, uv, CocoaPods, Gradle, Cargo, SwiftPM, Go, Cypress, Playwright; the whole Homebrew prefix. A pnpm store left behind by an uninstalled pnpm is found by its default path, since `pnpm store path` is exactly what is missing then | Safe / Review / Manual |
 | Developer tool data | Ollama and Hugging Face models, nvm/rustup/pyenv/rbenv/SDKMAN toolchains, conda, Maven, CocoaPods specs, Gradle distributions, Go modules, Bun, Deno, VS Code and Cursor extensions, Docker CLI, OrbStack, Lima, Colima; the AI coding tools (Claude Code, Codex, Grok, Copilot, Kilo, Gemini, Antigravity); any other hidden home folder over 100 MB | Safe / Review |
 | Logs & diagnostics | unified log store (`log erase`), crash reports, ASL, `~/Library/Logs` | Safe |
 | Temporary files | `/private/var/folders` user cache and temp, files older than 3 days | Safe |
@@ -182,11 +187,15 @@ unless you switch it on.
 
 Two things can prompt, and both can be settled one time:
 
-- **Folder access.** macOS asks per protected folder (Desktop, Documents,
-  Downloads, …) and silently hides Mail, Safari and Time Machine data. Grant
-  **Full Disk Access** to the app in System Settings > Privacy & Security
-  instead; the app shows a banner with a button until that is done. macOS
-  quits the app when the grant is toggled, so reopen it afterwards. The grant
+- **Folder access.** One grant, **Full Disk Access**, in System Settings >
+  Privacy & Security. Until it exists the app leaves every protected place
+  alone — app containers, Desktop, Documents, Downloads, Music, Pictures,
+  Movies — rather than asking about them one at a time, so a first launch is
+  a single banner instead of a queue of dialogs naming each app whose
+  container it touched. The scan still runs and still finds plenty; the
+  banner says it is incomplete. Without the grant, Mail, Safari and Time
+  Machine data stay hidden too. macOS quits the app when the grant is
+  toggled, so reopen it afterwards. The grant
   is remembered by code-signing identity, which is why `scripts/build-app.sh`
   signs with your Developer ID or Apple Development certificate when one is
   in the keychain. An ad-hoc signature changes on every build and macOS would
@@ -250,7 +259,11 @@ scripts/ci.sh                        # build, tests, lint, bundle, strings
 SYSDATA_SCAN_TESTS=1 scripts/ci.sh   # and the tests that walk the whole disk
 ```
 
-Run before pushing; the release script runs it too.
+Run before pushing; the release script runs it too. 79 tests. The
+disk-walking set is gated because it measures this machine rather than a
+fixture: it scans the real disk, and it downloads the published release and
+puts it to Gatekeeper, which is the only way the updater's redirect handling
+can be exercised at all.
 
 ## Releasing
 
