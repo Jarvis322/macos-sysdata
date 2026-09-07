@@ -2,6 +2,7 @@
 "%@ safe to free now · %@ free on disk · %@ purgeable" = "%@ güvenle boşaltılabilir · diskte %@ boş · %@ temizlenebilir";
 "%lld days idle" = "%lld gündür boşta";
 "%lld hidden" = "%lld gizli";
+"%lld hidden by the filter" = "%lld filtre tarafından gizli";
 "%lld items need root; the password is asked once." = "%lld kalem yönetici yetkisi istiyor; parola bir kez sorulur.";
 "%lld marked Review go to the Trash: %@" = "%lld tanesi İncele işaretli, Çöp Sepeti'ne gider: %@";
 "%lld months idle" = "%lld aydır boşta";
@@ -35,6 +36,7 @@
 "Delete the history file" = "Geçmiş dosyasını sil";
 "Deleted" = "Silinen";
 "Deleted %@, back by %@" = "%@ tarihinde silindi, %@ tarihinde geri geldi";
+"Deselect safe" = "Güvenlilerin seçimini kaldır";
 "Developer tool data" = "Geliştirici araç verileri";
 "Dismiss" = "Kapat";
 "Docker" = "Docker";

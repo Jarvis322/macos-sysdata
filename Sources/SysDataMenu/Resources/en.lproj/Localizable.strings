@@ -2,6 +2,7 @@
 "%@ safe to free now · %@ free on disk · %@ purgeable" = "%@ safe to free now · %@ free on disk · %@ purgeable";
 "%lld days idle" = "%lld days idle";
 "%lld hidden" = "%lld hidden";
+"%lld hidden by the filter" = "%lld hidden by the filter";
 "%lld items need root; the password is asked once." = "%lld items need root; the password is asked once.";
 "%lld marked Review go to the Trash: %@" = "%lld marked Review go to the Trash: %@";
 "%lld months idle" = "%lld months idle";
@@ -35,6 +36,7 @@
 "Delete the history file" = "Delete the history file";
 "Deleted" = "Deleted";
 "Deleted %@, back by %@" = "Deleted %@, back by %@";
+"Deselect safe" = "Deselect safe";
 "Developer tool data" = "Developer tool data";
 "Dismiss" = "Dismiss";
 "Docker" = "Docker";

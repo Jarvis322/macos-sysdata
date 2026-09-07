@@ -30,25 +30,14 @@ import Testing
     }
 
     @MainActor
-    @Test func changingTheFilterClearsTheSelection() {
-        // Otherwise "Delete N selected" would still act on rows the filter has
-        // taken off screen.
+    @Test func filteringKeepsTheSelection() {
+        // Ticking "Select safe" and then filtering to untick two of them is the
+        // way the two controls are meant to be used together.
         let model = ScanModel(scansAutomatically: false)
         model.selectedIDs = ["one", "two"]
 
         model.filterText = "npm"
 
-        #expect(model.selectedIDs.isEmpty)
-    }
-
-    @MainActor
-    @Test func rewritingTheSameFilterKeepsTheSelection() {
-        let model = ScanModel(scansAutomatically: false)
-        model.filterText = "npm"
-        model.selectedIDs = ["one"]
-
-        model.filterText = "npm"
-
-        #expect(model.selectedIDs == ["one"])
+        #expect(model.selectedIDs == ["one", "two"])
     }
 }

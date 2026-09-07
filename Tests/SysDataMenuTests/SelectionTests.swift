@@ -46,6 +46,57 @@ import Testing
         #expect(!model.categoryHasSelectableItems(.tools))
     }
 
+    @Test func selectSafeTicksEveryListedSafeRow() {
+        let model = model([item("npm cache"), item("yarn cache")])
+
+        model.selectAllSafe()
+
+        #expect(model.selectedIDs == ["npm cache", "yarn cache"])
+        #expect(model.everyListedSafeItemIsSelected)
+    }
+
+    @Test func selectSafeUnticksWhenEverythingListedIsAlreadyTicked() {
+        // The button undoes itself; reaching for Clear to undo one press was a
+        // detour, and Clear also drops selections the person made by hand.
+        let model = model([item("npm cache"), item("yarn cache")])
+        model.selectAllSafe()
+
+        model.selectAllSafe()
+
+        #expect(model.selectedIDs.isEmpty)
+    }
+
+    @Test func selectSafeLeavesRowsTheFilterHidesAlone() {
+        let model = model([item("npm cache"), item("yarn cache")])
+        model.selectedIDs = ["yarn cache"]
+        model.filterText = "npm"
+
+        model.selectAllSafe()
+
+        // yarn was ticked before the filter and stays ticked; npm is added.
+        #expect(model.selectedIDs == ["npm cache", "yarn cache"])
+        // And unticking only takes back what is listed.
+        model.selectAllSafe()
+        #expect(model.selectedIDs == ["yarn cache"])
+    }
+
+    @Test func theFooterCountsSelectedRowsTheFilterIsHiding() {
+        let model = model([item("npm cache"), item("yarn cache")])
+        model.selectedIDs = ["npm cache", "yarn cache"]
+
+        model.filterText = "npm"
+
+        #expect(model.selectedHiddenByFilterCount == 1)
+        #expect(model.selectedItems.count == 2, "the batch still holds both")
+    }
+
+    @Test func nothingIsHiddenWithoutAFilter() {
+        let model = model([item("npm cache"), item("yarn cache")])
+        model.selectedIDs = ["npm cache", "yarn cache"]
+
+        #expect(model.selectedHiddenByFilterCount == 0)
+    }
+
     @Test func collapsingACategoryDropsItsSelection() {
         let model = model([item("npm cache"), item("Xcode archives", category: .xcode)])
         model.selectedIDs = ["npm cache", "Xcode archives"]

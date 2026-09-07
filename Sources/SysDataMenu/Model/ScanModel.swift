@@ -28,14 +28,18 @@ final class ScanModel {
     /// Items the user chose not to see again. Persisted; ids are path-based.
     private(set) var hiddenIDs: Set<String>
     var selectedIDs: Set<String> = []
-    /// Narrows the list to matching items. Clearing the selection on every
-    /// change is deliberate: a selection made before a filter would otherwise
-    /// still be deleted by "Delete N selected" while the user can no longer
-    /// see what is in it.
+    /// Narrows the list to matching items. The selection survives it: ticking
+    /// "Select safe" and then typing a filter to untick two of them is the
+    /// obvious way to use the two together, and dropping the selection on the
+    /// first keystroke made that impossible.
+    ///
+    /// What the selection must never do is act on rows nobody can see, so the
+    /// footer says how many of them the filter is hiding instead
+    /// (`selectedHiddenByFilterCount`). The shift-click anchor is dropped,
+    /// because the row it measures from may no longer be listed.
     var filterText = "" {
         didSet {
             guard filterText != oldValue else { return }
-            selectedIDs = []
             selectionAnchorID = nil
         }
     }
@@ -221,11 +225,35 @@ final class ScanModel {
         listedItems.filter { $0.category == category && !$0.action.isManual }
     }
 
-    /// Only what is on screen: ticking rows the filter is hiding would put
-    /// them in the next batch delete unseen.
+    /// Ticks every listed Safe row, and unticks them when they are all ticked
+    /// already, so the button undoes itself rather than needing Clear.
+    ///
+    /// It only ever adds to or removes from what is listed: rows the filter is
+    /// hiding are neither ticked behind the person's back nor dropped from a
+    /// selection they made before they started typing.
     func selectAllSafe() {
-        selectedIDs = Set(listedItems.filter { $0.safety == .safe && !$0.action.isManual }.map(\.id))
+        let listedSafeIDs = Set(listedItems.filter { $0.safety == .safe && !$0.action.isManual }.map(\.id))
+        guard !listedSafeIDs.isEmpty else { return }
+        if listedSafeIDs.isSubset(of: selectedIDs) {
+            selectedIDs.subtract(listedSafeIDs)
+        } else {
+            selectedIDs.formUnion(listedSafeIDs)
+        }
         selectionAnchorID = nil
+    }
+
+    /// True when another press of "Select safe" would untick rather than tick.
+    var everyListedSafeItemIsSelected: Bool {
+        let listedSafeIDs = Set(listedItems.filter { $0.safety == .safe && !$0.action.isManual }.map(\.id))
+        return !listedSafeIDs.isEmpty && listedSafeIDs.isSubset(of: selectedIDs)
+    }
+
+    /// Selected rows the filter is currently hiding. They are still in the
+    /// batch, so the footer has to say so; a delete that reaches further than
+    /// the window is the one thing the filter must not make possible quietly.
+    var selectedHiddenByFilterCount: Int {
+        let listedIDs = Set(listedItems.map(\.id))
+        return selectedItems.filter { !listedIDs.contains($0.id) }.count
     }
 
     func clearSelection() {

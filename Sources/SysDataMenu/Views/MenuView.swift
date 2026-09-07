@@ -249,7 +249,9 @@ struct MenuView: View {
                     .fixedSize()
                     .help(L("Order rows by size, or by how long they have sat untouched"))
 
-                    Button(L("Select safe")) {
+                    Button(model.everyListedSafeItemIsSelected
+                           ? L("Deselect safe")
+                           : L("Select safe")) {
                         model.selectAllSafe()
                     }
                     .controlSize(.small)
@@ -556,6 +558,14 @@ struct MenuView: View {
                     }
                     .controlSize(.small)
                     .disabled(!model.busyItemIDs.isEmpty)
+                    if model.selectedHiddenByFilterCount > 0 {
+                        // The batch reaches further than the window does. Say
+                        // so, rather than deleting rows nobody can see.
+                        Text(L("%lld hidden by the filter", model.selectedHiddenByFilterCount))
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                            .monospacedDigit()
+                    }
                     Button(L("Clear")) {
                         model.clearSelection()
                     }

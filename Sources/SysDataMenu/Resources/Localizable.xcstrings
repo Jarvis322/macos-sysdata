@@ -42,6 +42,16 @@
         }
       }
     },
+    "%lld hidden by the filter": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld filtre tarafından gizli"
+          }
+        }
+      }
+    },
     "%lld items need root; the password is asked once.": {
       "localizations": {
         "tr": {
@@ -372,6 +382,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "%@ tarihinde silindi, %@ tarihinde geri geldi"
+          }
+        }
+      }
+    },
+    "Deselect safe": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Güvenlilerin seçimini kaldır"
           }
         }
       }
