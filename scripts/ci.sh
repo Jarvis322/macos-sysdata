@@ -14,6 +14,13 @@ cd "$root"
 
 step() { printf '\n\033[1m==> %s\033[0m\n' "$1"; }
 
+# Snapshot the compiled string tables before anything regenerates them.
+# build-app.sh below runs compile-strings.sh itself, so a check placed after
+# it can never fail — which is what this one used to do.
+strings_before=$(mktemp -d)
+trap 'rm -rf "$strings_before"' EXIT
+cp -R Sources/SysDataMenu/Resources/*.lproj "$strings_before/"
+
 step "Toolchain"
 swift --version
 
@@ -50,10 +57,16 @@ esac
 
 step "Check the compiled strings are up to date"
 # compile-strings.sh regenerates the .strings tables from the catalogue; a
-# catalogue edit committed without them shows up here rather than as a
+# catalogue edit saved without them shows up here rather than as a
 # half-translated menu at runtime.
-scripts/compile-strings.sh >/dev/null
-git diff --exit-code -- Sources/SysDataMenu/Resources \
-  || { echo "the compiled strings are stale; commit the regenerated files" >&2; exit 1; }
+#
+# The comparison is against the snapshot taken at the top of this script, not
+# against git: asking git would fail on any uncommitted resource change, which
+# is exactly the state this script is meant to be run in.
+for table in "$strings_before"/*.lproj/Localizable.strings; do
+  language=$(basename "$(dirname "$table")")
+  cmp -s "$table" "Sources/SysDataMenu/Resources/$language/Localizable.strings" \
+    || { echo "$language/Localizable.strings is stale; run scripts/compile-strings.sh" >&2; exit 1; }
+done
 
 printf '\n\033[1;32m==> everything passed\033[0m\n'
