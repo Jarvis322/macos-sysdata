@@ -302,6 +302,7 @@ final class ScanModel {
             }.value
             history = ScanHistory.load()
         }
+        await LowSpaceAlert.check(freeBytes: freeBytes, reclaimable: safeBytes)
     }
 
     /// How much this item grew or shrank since the previous scan, or nil when

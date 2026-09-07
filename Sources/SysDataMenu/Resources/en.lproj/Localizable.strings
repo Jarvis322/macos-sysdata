@@ -65,6 +65,7 @@
 "Nothing to compare yet" = "Nothing to compare yet";
 "Nothing to reclaim" = "Nothing to reclaim";
 "Open Settings" = "Open Settings";
+"Open System Data to see what is taking up room." = "Open System Data to see what is taking up room.";
 "Open x.com/yigitech" = "Open x.com/yigitech";
 "Order rows by size, or by how long they have sat untouched" = "Order rows by size, or by how long they have sat untouched";
 "Other large folders" = "Other large folders";
@@ -95,6 +96,7 @@
 "System" = "System";
 "System Data" = "System Data";
 "System Data found: %@" = "System Data found: %@";
+"System Data holds %@ that is safe to free." = "System Data holds %@ that is safe to free.";
 "Temporary files" = "Temporary files";
 "The app could not be replaced: %@" = "The app could not be replaced: %@";
 "The download did not finish. Nothing was installed." = "The download did not finish. Nothing was installed.";
@@ -108,8 +110,11 @@
 "Update" = "Update";
 "Version %@ is available." = "Version %@ is available.";
 "Virtual machines" = "Virtual machines";
+"Warn below" = "Warn below";
+"Warn when free space runs low" = "Warn when free space runs low";
 "What grew, and what came back" = "What grew, and what came back";
 "Without it macOS asks for every protected folder and hides Mail, Safari and Time Machine data. Add System Data in the settings pane, then reopen the app." = "Without it macOS asks for every protected folder and hides Mail, Safari and Time Machine data. Add System Data in the settings pane, then reopen the app.";
 "Xcode" = "Xcode";
 "different developer" = "different developer";
 "iOS device backups" = "iOS device backups";
+"macOS is not allowing notifications from this app. Turn them on in System Settings > Notifications." = "macOS is not allowing notifications from this app. Turn them on in System Settings > Notifications.";

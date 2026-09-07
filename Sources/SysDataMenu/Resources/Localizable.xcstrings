@@ -677,6 +677,16 @@
         }
       }
     },
+    "Open System Data to see what is taking up room.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Neyin yer kapladığını görmek için Sistem Verileri'ni aç."
+          }
+        }
+      }
+    },
     "Open x.com/yigitech": {
       "localizations": {
         "tr": {
@@ -977,6 +987,16 @@
         }
       }
     },
+    "System Data holds %@ that is safe to free.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sistem Verileri içinde güvenle boşaltılabilir %@ var."
+          }
+        }
+      }
+    },
     "Temporary files": {
       "localizations": {
         "tr": {
@@ -1115,6 +1135,26 @@
         }
       }
     },
+    "Warn below": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Şunun altında uyar"
+          }
+        }
+      }
+    },
+    "Warn when free space runs low": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Boş alan azalınca uyar"
+          }
+        }
+      }
+    },
     "What grew, and what came back": {
       "localizations": {
         "tr": {
@@ -1162,6 +1202,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "iOS aygıt yedekleri"
+          }
+        }
+      }
+    },
+    "macOS is not allowing notifications from this app. Turn them on in System Settings > Notifications.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "macOS bu uygulamanın bildirimlerine izin vermiyor. Sistem Ayarları > Bildirimler'den açabilirsin."
           }
         }
       }

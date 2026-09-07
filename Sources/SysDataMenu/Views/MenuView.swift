@@ -9,6 +9,9 @@ struct MenuView: View {
     @State private var confirmsBatch = false
     @State private var collapsedCategories: Set<StorageCategory> = []
     @State private var showsHistory = false
+    @State private var warnsAboutLowSpace = LowSpaceAlert.isEnabled
+    @State private var lowSpaceThreshold = LowSpaceAlert.threshold
+    @State private var notificationsRefused = false
 
     private static let fullDiskAccessPane = URL(
         string: "x-apple.systempreferences:com.apple.preference.security?Privacy_AllFiles"
@@ -29,6 +32,13 @@ struct MenuView: View {
             }
             if let version = updates.newVersion {
                 updateBanner(version)
+                Divider()
+            }
+            if notificationsRefused {
+                feedbackRow(
+                    L("macOS is not allowing notifications from this app. Turn them on in System Settings > Notifications."),
+                    symbol: "bell.slash", tint: .orange
+                ) { notificationsRefused = false }
                 Divider()
             }
             if let failure = updates.installError {
@@ -400,6 +410,31 @@ struct MenuView: View {
                 get: { model.keepsHistory },
                 set: { model.keepsHistory = $0; if !$0 { showsHistory = false } }
             ))
+            Toggle(L("Warn when free space runs low"), isOn: Binding(
+                get: { warnsAboutLowSpace },
+                set: { wanted in
+                    guard wanted else { LowSpaceAlert.isEnabled = false; warnsAboutLowSpace = false; return }
+                    Task {
+                        // The switch reflects what macOS allowed, not what was
+                        // asked for: left on after a refusal it would promise
+                        // a notification that can never arrive.
+                        let granted = await LowSpaceAlert.requestPermission()
+                        LowSpaceAlert.isEnabled = granted
+                        warnsAboutLowSpace = granted
+                        if !granted { notificationsRefused = true }
+                    }
+                }
+            ))
+            if warnsAboutLowSpace {
+                Picker(L("Warn below"), selection: Binding(
+                    get: { lowSpaceThreshold },
+                    set: { lowSpaceThreshold = $0; LowSpaceAlert.threshold = $0 }
+                )) {
+                    ForEach(LowSpaceAlert.choices, id: \.self) { bytes in
+                        Text(bytes.byteString).tag(bytes)
+                    }
+                }
+            }
             Toggle(L("Shut down simulators at power off"), isOn: Binding(
                 get: { model.shutsDownSimulatorsAtPowerOff },
                 set: { model.shutsDownSimulatorsAtPowerOff = $0 }
