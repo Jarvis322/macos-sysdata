@@ -12,6 +12,7 @@ struct MenuView: View {
     @State private var lowSpaceThreshold = LowSpaceAlert.threshold
     @State private var notificationsRefused = false
     @State private var showsPlan = false
+    @State private var copiedPlan = false
 
     /// What the pending delete will actually do, whether it is one row or a
     /// whole selection.
@@ -21,6 +22,19 @@ struct MenuView: View {
 
     private var plannedOperations: [String] {
         pendingItems.flatMap(\.action.plan)
+    }
+
+    /// Puts the whole plan on the pasteboard, one operation per line, and says
+    /// so for a moment: a copy that looks like nothing happened gets pressed
+    /// twice.
+    private func copyPlan() {
+        NSPasteboard.general.clearContents()
+        NSPasteboard.general.setString(plannedOperations.joined(separator: "\n"), forType: .string)
+        copiedPlan = true
+        Task {
+            try? await Task.sleep(for: .seconds(2))
+            copiedPlan = false
+        }
     }
 
     private var needsAdministrator: Bool {
@@ -142,10 +156,27 @@ struct MenuView: View {
                     }
                     .frame(maxHeight: 120)
                 } label: {
-                    Text(needsAdministrator
-                         ? L("Show the commands that run as administrator")
-                         : L("Show exactly what runs"))
-                        .font(.caption)
+                    HStack(spacing: 6) {
+                        Text(needsAdministrator
+                             ? L("Show the commands that run as administrator")
+                             : L("Show exactly what runs"))
+                            .font(.caption)
+                        if showsPlan {
+                            Spacer()
+                            // The list scrolls inside 120pt and paths are long,
+                            // so reading the whole plan often means taking it
+                            // somewhere else. Selecting 58 lines by hand inside
+                            // a scroll view is not that.
+                            Button(action: copyPlan) {
+                                Label(copiedPlan ? L("Copied") : L("Copy"),
+                                      systemImage: copiedPlan ? "checkmark" : "doc.on.doc")
+                                    .font(.caption)
+                            }
+                            .buttonStyle(.borderless)
+                            .foregroundStyle(copiedPlan ? Color.green : Color.accentColor)
+                            .accessibilityLabel(L("Copy the plan"))
+                        }
+                    }
                 }
                 .font(.caption)
             }
@@ -155,6 +186,7 @@ struct MenuView: View {
                     pendingDeletion = nil
                     confirmsBatch = false
                     showsPlan = false
+                    copiedPlan = false
                 }
                 .keyboardShortcut(.cancelAction)
                 Button(role: .destructive) {
@@ -166,6 +198,7 @@ struct MenuView: View {
                     pendingDeletion = nil
                     confirmsBatch = false
                     showsPlan = false
+                    copiedPlan = false
                 } label: {
                     Text(pendingDeletion != nil ? L("Delete") : L("Delete %lld items", model.selectedItems.count))
                 }

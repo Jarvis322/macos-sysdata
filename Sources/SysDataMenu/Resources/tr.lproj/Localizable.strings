@@ -24,7 +24,9 @@
 "Check for updates" = "Güncellemeleri denetle";
 "Clear" = "Temizle";
 "Collapse %@" = "%@ kategorisini daralt";
+"Copied" = "Kopyalandı";
 "Copy" = "Kopyala";
+"Copy the plan" = "Planı kopyala";
 "Delete" = "Sil";
 "Delete %@" = "%@ silinir";
 "Delete %@?" = "%@ silinsin mi?";
