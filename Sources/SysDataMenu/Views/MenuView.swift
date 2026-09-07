@@ -271,7 +271,7 @@ struct MenuView: View {
         } else {
             List {
                 ForEach(model.categories, id: \.category) { group in
-                    categoryHeader(group.category, total: group.total)
+                    categoryHeader(group.category, total: group.total, items: group.items)
                     if !collapsedCategories.contains(group.category) {
                         ForEach(group.items) { item in
                             ItemRow(
@@ -298,7 +298,7 @@ struct MenuView: View {
         }
     }
 
-    private func categoryHeader(_ category: StorageCategory, total: Int64) -> some View {
+    private func categoryHeader(_ category: StorageCategory, total: Int64, items: [StorageItem]) -> some View {
         HStack {
             Button {
                 withAnimation {
@@ -336,8 +336,13 @@ struct MenuView: View {
             .controlSize(.small)
             .disabled(!model.categoryHasSelectableItems(category))
             Spacer()
-            Text(total.byteString)
+            // A category whose sizes are all unmeasurable — APFS never reports
+            // a snapshot's size — summed to zero and displayed "0 bytes", which
+            // reads as "nothing here" for the one group where the app does not
+            // know. The rows already say "—"; the header now agrees with them.
+            Text(items.allSatisfy { $0.sizeBytes == nil } ? "—" : total.byteString)
                 .monospacedDigit()
+                .foregroundStyle(items.allSatisfy { $0.sizeBytes == nil } ? .secondary : .primary)
         }
     }
 
