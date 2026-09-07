@@ -47,6 +47,14 @@ struct PackageProbe: StorageProbe {
             let path = result.output.trimmingCharacters(in: .whitespacesAndNewlines)
             caches.append(Cache(id: "pnpm", name: "pnpm store", url: URL(fileURLWithPath: path),
                                 tool: "pnpm", arguments: ["store", "prune"], detail: "Unreferenced packages in the content-addressable store."))
+        } else if let store = Self.abandonedPnpmStore {
+            // Asking pnpm is the only way to find a store in a custom location,
+            // but it is also the one case where pnpm cannot be asked:
+            // uninstalling it leaves the store on disk, and from then on
+            // nothing references it and nothing reports it. This machine kept
+            // 1.6 GB that way.
+            caches.append(Cache(id: "pnpm", name: "pnpm store", url: store, tool: nil, arguments: [],
+                                detail: "Left behind: pnpm is not installed, so nothing uses this store."))
         }
 
         var items: [StorageItem] = []
@@ -82,5 +90,13 @@ struct PackageProbe: StorageProbe {
         }
 
         return items.sorted { ($0.sizeBytes ?? 0) > ($1.sizeBytes ?? 0) }
+    }
+
+    /// pnpm's default store directories, in the order pnpm itself prefers them.
+    /// Only consulted when the command is gone; an installed pnpm is always
+    /// asked, because the store can be configured anywhere.
+    private static var abandonedPnpmStore: URL? {
+        [URL.home("Library/pnpm/store"), URL.home(".local/share/pnpm/store"), URL.home(".pnpm-store")]
+            .first { $0.exists }
     }
 }
