@@ -174,7 +174,12 @@ struct LargeFolderProbe: StorageProbe {
         ])).map(\.path)
 
         return await withTaskGroup(of: [StorageItem].self) { group in
-            for root in Self.roots where root.exists {
+            // Boot volume only. A root that resolves onto an external drive —
+            // a home folder relocated to a 10 TB disk, say — is not System
+            // Data, and walking it is what left one machine's scan running for
+            // over a day. The targeted probes still measure known caches there
+            // by their own paths; this safety net does not walk the disk.
+            for root in Self.roots where root.exists && DiskSize.isOnBootVolume(root) {
                 group.addTask {
                     await Task.detached(priority: .utility) {
                         // Nothing under a claimed or excluded directory can ever

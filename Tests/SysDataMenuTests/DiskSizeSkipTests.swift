@@ -57,4 +57,19 @@ import Testing
         #expect(DiskSize.directorySizes(under: root, maxDepth: 4)
                 == DiskSize.directorySizes(under: root, maxDepth: 4, skipping: []))
     }
+
+    /// The catch-all now walks the boot volume only, so a home or root on an
+    /// external drive is not crawled — the fix for a scan that ran for over a
+    /// day on a Mac mini with a 10 TB disk and a Time Machine volume. The
+    /// danger in that guard is the opposite mistake: firmlinks put `/` and the
+    /// home folder on separate APFS volumes within one group, and if those read
+    /// as different volumes the guard would skip home on every Mac and break
+    /// the scan for everyone. This pins that they do not.
+    @Test func theStartupPathsAllCountAsBootVolume() {
+        #expect(DiskSize.isOnBootVolume(URL(fileURLWithPath: "/")))
+        #expect(DiskSize.isOnBootVolume(.home))
+        for path in ["/private/var", "/Library", "/Users/Shared"] where URL(fileURLWithPath: path).exists {
+            #expect(DiskSize.isOnBootVolume(URL(fileURLWithPath: path)), "\(path) is on the startup volume")
+        }
+    }
 }

@@ -83,9 +83,18 @@ enum DiskSize {
         // relative path would be cut inside a directory name.
         let rootPath = realPath(root.path)
         let skipped = Set(skipping.map(realPath))
-        let keys: Set<URLResourceKey> = [.totalFileAllocatedSizeKey, .isRegularFileKey]
+        let keys: Set<URLResourceKey> = [
+            .totalFileAllocatedSizeKey, .isRegularFileKey, .volumeIdentifierKey,
+        ]
+        let rootURL = URL(fileURLWithPath: rootPath)
+        // The walk stays on the volume it started on. A directory on another
+        // volume — an external drive, a network share, a Time Machine backup —
+        // is not System Data, and a backup volume alone holds enough
+        // hard-linked files to turn one walk into a multi-day crawl. Nil means
+        // the volume could not be read; measure rather than silently skip.
+        let rootVolume = (try? rootURL.resourceValues(forKeys: [.volumeIdentifierKey]))?.volumeIdentifier
         guard let enumerator = FileManager.default.enumerator(
-            at: URL(fileURLWithPath: rootPath),
+            at: rootURL,
             includingPropertiesForKeys: Array(keys),
             options: [],
             errorHandler: { _, _ in true }
@@ -95,6 +104,10 @@ enum DiskSize {
         for case let file as URL in enumerator {
             guard let values = try? file.resourceValues(forKeys: keys) else { continue }
             guard values.isRegularFile == true else {
+                if let rootVolume, let volume = values.volumeIdentifier, !volume.isEqual(rootVolume) {
+                    enumerator.skipDescendants()
+                    continue
+                }
                 if !skipped.isEmpty, skipped.contains(file.path) {
                     enumerator.skipDescendants()
                 }
@@ -126,6 +139,20 @@ enum DiskSize {
             if modified > (newest ?? .distantPast) { newest = modified }
         }
         return newest
+    }
+
+    /// Whether `url` lives on the same volume as the startup disk. A home
+    /// folder relocated onto an external drive — common on a Mac mini with a
+    /// small internal SSD — is the case the catch-all must not start walking:
+    /// the disk can be tens of terabytes, and none of it is System Data.
+    /// Returns true when a volume cannot be read, so an unreadable case is
+    /// measured rather than silently dropped.
+    static func isOnBootVolume(_ url: URL) -> Bool {
+        let keys: Set<URLResourceKey> = [.volumeIdentifierKey]
+        guard let boot = (try? URL(fileURLWithPath: "/").resourceValues(forKeys: keys))?.volumeIdentifier,
+              let volume = (try? url.resourceValues(forKeys: keys))?.volumeIdentifier
+        else { return true }
+        return volume.isEqual(boot)
     }
 
     /// The path with every symlink resolved, as realpath(3) reports it and as
