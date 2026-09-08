@@ -39,6 +39,7 @@
 "Delete the history file" = "删除历史记录文件";
 "Deleted" = "已删除";
 "Deleted %@, back by %@" = "于 %@ 删除，截至 %@ 已重新出现";
+"Deselect" = "取消选择";
 "Deselect safe" = "取消选择可安全清理的项目";
 "Developer tool data" = "开发者工具数据";
 "Dismiss" = "关闭";

@@ -39,6 +39,7 @@
 "Delete the history file" = "Geçmiş dosyasını sil";
 "Deleted" = "Silinen";
 "Deleted %@, back by %@" = "%@ tarihinde silindi, %@ tarihinde geri geldi";
+"Deselect" = "Seçimi kaldır";
 "Deselect safe" = "Güvenlileri bırak";
 "Developer tool data" = "Geliştirici araç verileri";
 "Dismiss" = "Kapat";

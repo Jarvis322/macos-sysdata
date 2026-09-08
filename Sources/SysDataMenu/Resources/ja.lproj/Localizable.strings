@@ -39,6 +39,7 @@
 "Delete the history file" = "履歴ファイルを削除";
 "Deleted" = "削除済み";
 "Deleted %@, back by %@" = "%@ に削除、%@ までに復活";
+"Deselect" = "選択を解除";
 "Deselect safe" = "安全な項目の選択を解除";
 "Developer tool data" = "開発ツールのデータ";
 "Dismiss" = "閉じる";

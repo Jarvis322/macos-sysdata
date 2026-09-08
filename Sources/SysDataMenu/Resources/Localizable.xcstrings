@@ -908,6 +908,28 @@
         }
       }
     },
+    "Deselect": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "取消选择"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "選択を解除"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seçimi kaldır"
+          }
+        }
+      }
+    },
     "Deselect safe": {
       "localizations": {
         "zh-Hans": {

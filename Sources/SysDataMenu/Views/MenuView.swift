@@ -602,10 +602,15 @@ struct MenuView: View {
                             .foregroundStyle(.secondary)
                             .monospacedDigit()
                     }
-                    Button(L("Clear")) {
+                    // "Deselect", not "Clear": in a cleaner the word "Clear"
+                    // reads as the app's own verb — free space now — so people
+                    // pressed it expecting a delete and reported that nothing
+                    // happened. This only ever unticks the selection.
+                    Button(L("Deselect")) {
                         model.clearSelection()
                     }
                     .controlSize(.small)
+                    .help(L("Untick the selected items. It deletes nothing."))
                 }
                 if model.hiddenCount > 0 {
                     Button(L("%lld hidden", model.hiddenCount)) {
