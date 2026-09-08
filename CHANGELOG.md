@@ -5,6 +5,13 @@ What changed in each release, and where it is worth saying, why.
 Versions up to and including v0.3.7 were released under the MIT License; see
 [LICENSE](LICENSE).
 
+## v0.5.1 — 2026-09-08
+
+- The footer button beside **Delete N selected** was called **Clear**, which
+  in a cleaner reads as the app's own verb rather than "untick the selection".
+  It is now **Deselect**, in all four languages, with a tooltip saying it
+  deletes nothing. The button that frees space is, and always was, the red one.
+
 ## v0.5.0 — 2026-09-08
 
 - **Simplified Chinese and Japanese.** The app now ships in four languages —
