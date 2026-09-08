@@ -5,6 +5,17 @@ What changed in each release, and where it is worth saying, why.
 Versions up to and including v0.3.7 were released under the MIT License; see
 [LICENSE](LICENSE).
 
+## v0.5.2 — 2026-09-08
+
+- **The "over 500 MB" scan could run for a day and never finish.** The
+  catch-all walked every mounted volume it could reach — an external drive, a
+  Time Machine backup with millions of hard-linked files, a home folder
+  relocated onto a large disk. On a Mac mini with a 10 TB HDD and a Time
+  Machine volume it ran 24+ hours, and until it finished the list and its
+  controls never became usable. It now stays on the startup volume: a root
+  that lives on another disk is skipped, and the walk never crosses onto one.
+  The targeted probes still measure known caches wherever they are.
+
 ## v0.5.1 — 2026-09-08
 
 - The footer button beside **Delete N selected** was called **Clear**, which
