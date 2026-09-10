@@ -5,6 +5,9 @@ struct ItemRow: View {
     let item: StorageItem
     /// Growth since the previous scan, when there is one to compare against.
     let change: Int64?
+    /// This item's size over the recent scans, for the sparkline. Fewer than
+    /// three points is not a trend and draws nothing.
+    var trend: [Int64] = []
     let isBusy: Bool
     let isSelected: Bool
     let onToggle: (Bool) -> Void
@@ -104,6 +107,12 @@ struct ItemRow: View {
                     .font(.caption2)
                     .monospacedDigit()
                     .foregroundStyle(change > 0 ? Color.orange : Color.secondary)
+            }
+            if trend.count >= 3, trend.min() != trend.max() {
+                Sparkline(values: trend)
+                    .frame(width: 46, height: 12)
+                    .foregroundStyle(.tertiary)
+                    .accessibilityLabel(L("Size trend over recent scans"))
             }
         }
         .frame(minWidth: 68, alignment: .trailing)

@@ -38,19 +38,32 @@ struct SysDataMenuApp: App {
         .menuBarExtraStyle(.window)
     }
 
-    /// Drive glyph plus the size of everything the scan found, the same
-    /// number Storage settings calls "System Data".
+    /// The drive glyph, and beside it whichever number the person chose to
+    /// keep an eye on. System Data is the default because it is the figure the
+    /// app exists to surface; free space and icon-only are the alternatives.
     @ViewBuilder
     private var menuBarLabel: some View {
-        if model.measuredBytes >= 100 * ProbeSupport.megabyte {
-            HStack(spacing: 3) {
+        switch model.menuBarContent {
+        case .systemData:
+            if model.measuredBytes >= 100 * ProbeSupport.megabyte {
+                labelWithValue(model.measuredBytes.byteString,
+                               help: L("System Data found: %@", model.measuredBytes.byteString))
+            } else {
                 Image(systemName: "internaldrive")
-                Text(model.measuredBytes.byteString)
-                    .monospacedDigit()
             }
-            .help(L("System Data found: %@", model.measuredBytes.byteString))
-        } else {
+        case .freeSpace:
+            labelWithValue(model.freeBytes.byteString,
+                           help: L("%@ free on disk", model.freeBytes.byteString))
+        case .iconOnly:
             Image(systemName: "internaldrive")
         }
+    }
+
+    private func labelWithValue(_ value: String, help: String) -> some View {
+        HStack(spacing: 3) {
+            Image(systemName: "internaldrive")
+            Text(value).monospacedDigit()
+        }
+        .help(help)
     }
 }

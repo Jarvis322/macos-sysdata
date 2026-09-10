@@ -110,6 +110,25 @@ enum ScanHistory {
         return now - before
     }
 
+    /// An item's size across the most recent scans that recorded it, oldest to
+    /// newest. Drives the row sparkline; a scan that did not know the item is
+    /// skipped rather than drawn as zero, so a gap does not read as a cliff.
+    static func series(forItem id: String, in log: Log, limit: Int = 12) -> [Int64] {
+        log.scans.suffix(limit).compactMap { $0.sizes[id] }
+    }
+
+    /// The change in total System Data since the newest scan on file that is at
+    /// least `days` old, for the weekly summary. Nil when the log does not yet
+    /// reach that far back, so the digest stays quiet rather than inventing a
+    /// baseline. Returns the older scan's date too, so the summary can say
+    /// "since".
+    static func totalChange(overPastDays days: Int, in log: Log) -> (delta: Int64, since: Date)? {
+        guard let current = log.scans.last else { return nil }
+        let cutoff = current.date.addingTimeInterval(-Double(days) * 24 * 60 * 60)
+        guard let baseline = log.scans.last(where: { $0.date <= cutoff }) else { return nil }
+        return (current.totalBytes - baseline.totalBytes, baseline.date)
+    }
+
     /// Items that have grown most since the earliest scan still on file that
     /// also knew them, largest growth first.
     static func fastestGrowing(in log: Log, limit: Int = 5) -> [(name: String, bytes: Int64, since: Date)] {

@@ -10,6 +10,8 @@ struct MenuView: View {
     @State private var showsHistory = false
     @State private var warnsAboutLowSpace = LowSpaceAlert.isEnabled
     @State private var lowSpaceThreshold = LowSpaceAlert.threshold
+    @State private var showsWeeklySummary = WeeklyDigest.isEnabled
+    @State private var autoCleansSafeItems = AutoClean.isEnabled
     @State private var notificationsRefused = false
     @State private var showsPlan = false
     @State private var copiedPlan = false
@@ -60,6 +62,10 @@ struct MenuView: View {
             }
             if let version = updates.newVersion {
                 updateBanner(version)
+                Divider()
+            }
+            if model.isLowOnSpace, model.safeAutoBytes > 0, !model.isScanning {
+                lowSpaceBanner
                 Divider()
             }
             if notificationsRefused {
@@ -117,6 +123,40 @@ struct MenuView: View {
         }
         .padding(.horizontal, 14)
         .padding(.vertical, 8)
+    }
+
+    /// Shown when free space is under the warning threshold. The one place the
+    /// app offers to act without a confirmation, because the set it frees is
+    /// the safe subset — caches that regenerate, nothing that needs a password
+    /// or a second thought.
+    private var lowSpaceBanner: some View {
+        HStack(spacing: 8) {
+            Image(systemName: "exclamationmark.triangle.fill")
+                .foregroundStyle(.orange)
+            VStack(alignment: .leading, spacing: 2) {
+                Text(L("Low on disk space"))
+                    .font(.callout.weight(.semibold))
+                Text(L("%@ free · %@ of safe items can go now",
+                       model.freeBytes.byteString, model.safeAutoBytes.byteString))
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                    .monospacedDigit()
+            }
+            Spacer()
+            if model.busyItemIDs.isEmpty {
+                Button(L("Free %@", model.safeAutoBytes.byteString)) {
+                    Task { await model.reclaimSafeNow() }
+                }
+                .controlSize(.small)
+                .buttonStyle(.borderedProminent)
+                .tint(.orange)
+            } else {
+                ProgressView().controlSize(.small)
+            }
+        }
+        .padding(.horizontal, 14)
+        .padding(.vertical, 8)
+        .background(.orange.opacity(0.08))
     }
 
     // MARK: Confirmation
@@ -405,14 +445,34 @@ struct MenuView: View {
             }
             .frame(maxWidth: .infinity)
         } else {
-            List {
-                ForEach(model.categories, id: \.category) { group in
+            VStack(spacing: 8) {
+                if breakdownSegments.count >= 2 {
+                    BreakdownBar(segments: breakdownSegments)
+                        .padding(.horizontal, 14)
+                        .padding(.top, 2)
+                }
+                list
+            }
+        }
+    }
+
+    private var breakdownSegments: [(category: StorageCategory, bytes: Int64)] {
+        model.categories
+            .map { ($0.category, $0.total) }
+            .filter { $0.1 > 0 }
+            .sorted { $0.1 > $1.1 }
+    }
+
+    private var list: some View {
+        List {
+            ForEach(model.categories, id: \.category) { group in
                     categoryHeader(group.category, total: group.total, items: group.items)
                     if !model.collapsedCategories.contains(group.category) {
                         ForEach(group.items) { item in
                             ItemRow(
                                 item: item,
                                 change: model.change(since: item),
+                                trend: model.series(for: item),
                                 isBusy: model.busyItemIDs.contains(item.id),
                                 isSelected: model.selectedIDs.contains(item.id),
                                 onToggle: { isSelected in
@@ -433,7 +493,6 @@ struct MenuView: View {
             .listStyle(.inset)
             .scrollContentBackground(.hidden)
         }
-    }
 
     private func categoryHeader(_ category: StorageCategory, total: Int64, items: [StorageItem]) -> some View {
         HStack {
@@ -493,6 +552,18 @@ struct MenuView: View {
             .filter { !$0.action.isManual }
     }
 
+    /// Turns a notification-backed preference on only if macOS grants
+    /// permission, so a switch never sits on above a notification that can
+    /// never arrive. The switch reflects what was allowed, not what was asked.
+    private func toggleWithNotification(_ wanted: Bool, enable: @escaping (Bool) -> Void) {
+        guard wanted else { enable(false); return }
+        Task {
+            let granted = await LowSpaceAlert.requestPermission()
+            enable(granted)
+            if !granted { notificationsRefused = true }
+        }
+    }
+
     /// The four preferences and the history view.
     ///
     /// They used to be a row of switches along the bottom. A fourth did not
@@ -513,6 +584,11 @@ struct MenuView: View {
                 set: { model.keepsHistory = $0; if !$0 { showsHistory = false } }
             ))
             .help(L("Keep a local record of each scan and deletion, so the list can show what changed"))
+            Toggle(L("Move safe items to the Trash"), isOn: Binding(
+                get: { model.movesSafeToTrash },
+                set: { model.movesSafeToTrash = $0 }
+            ))
+            .help(L("Safe items are deleted outright because they regenerate. Turn this on to send them to the Trash instead, so a delete can be undone — until you empty it, it frees no space."))
             Toggle(L("Warn when free space runs low"), isOn: Binding(
                 get: { warnsAboutLowSpace },
                 set: { wanted in
@@ -538,6 +614,26 @@ struct MenuView: View {
                     }
                 }
             }
+            Toggle(L("Weekly summary"), isOn: Binding(
+                get: { showsWeeklySummary },
+                set: { wanted in
+                    toggleWithNotification(wanted) { granted in
+                        WeeklyDigest.isEnabled = granted
+                        showsWeeklySummary = granted
+                    }
+                }
+            ))
+            .help(L("Once a week, if System Data has grown, a notification says by how much and what grew most. Nothing leaves your Mac."))
+            Toggle(L("Automatically free safe items"), isOn: Binding(
+                get: { autoCleansSafeItems },
+                set: { wanted in
+                    toggleWithNotification(wanted) { granted in
+                        AutoClean.isEnabled = granted
+                        autoCleansSafeItems = granted
+                    }
+                }
+            ))
+            .help(L("Once a week, delete the items marked Safe — the caches that regenerate — and notify you what was freed. Never anything that needs review or a password."))
             Toggle(L("Shut down simulators at power off"), isOn: Binding(
                 get: { model.shutsDownSimulatorsAtPowerOff },
                 set: { model.shutsDownSimulatorsAtPowerOff = $0 }
@@ -555,6 +651,15 @@ struct MenuView: View {
                 get: { model.launchesAtLogin },
                 set: { model.setLaunchAtLogin($0) }
             ))
+            Divider()
+            Picker(L("Menu bar shows"), selection: Binding(
+                get: { model.menuBarContent },
+                set: { model.menuBarContent = $0 }
+            )) {
+                ForEach(MenuBarContent.allCases) { content in
+                    Text(content.title).tag(content)
+                }
+            }
         } label: {
             Label(L("Settings"), systemImage: "ellipsis.circle")
                 .labelStyle(.iconOnly)

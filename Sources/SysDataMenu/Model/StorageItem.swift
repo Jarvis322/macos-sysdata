@@ -239,3 +239,20 @@ enum SortOrder: String, CaseIterable, Identifiable, Sendable {
         }
     }
 }
+
+/// What the menu bar shows at rest. The size of System Data is the default
+/// because it is the number the app exists to make visible; some people would
+/// rather watch free space, and some want neither taking up the bar.
+enum MenuBarContent: String, CaseIterable, Identifiable, Sendable {
+    case systemData, freeSpace, iconOnly
+
+    var id: String { rawValue }
+
+    var title: String {
+        switch self {
+        case .systemData: L("System Data size")
+        case .freeSpace: L("Free space")
+        case .iconOnly: L("Icon only")
+        }
+    }
+}

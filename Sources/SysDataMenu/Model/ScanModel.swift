@@ -76,6 +76,16 @@ final class ScanModel {
     var sortOrder: SortOrder = SortOrder(rawValue: UserDefaults.standard.string(forKey: ScanModel.sortKey) ?? "") ?? .size {
         didSet { UserDefaults.standard.set(sortOrder.rawValue, forKey: Self.sortKey) }
     }
+    /// What the menu bar shows at rest.
+    var menuBarContent: MenuBarContent = MenuBarContent(rawValue: UserDefaults.standard.string(forKey: ScanModel.menuBarKey) ?? "") ?? .systemData {
+        didSet { UserDefaults.standard.set(menuBarContent.rawValue, forKey: Self.menuBarKey) }
+    }
+    /// Send Safe items to the Trash instead of deleting them outright, so a
+    /// delete can be undone until the Trash is emptied. Off by default: Safe
+    /// items regenerate, and trashing them frees no space until the Trash goes.
+    var movesSafeToTrash: Bool = UserDefaults.standard.bool(forKey: ScanModel.safeToTrashKey) {
+        didSet { UserDefaults.standard.set(movesSafeToTrash, forKey: Self.safeToTrashKey) }
+    }
     var errorMessage: String?
     /// Non-error feedback, such as "moved to the Trash".
     var notice: String?
@@ -83,6 +93,8 @@ final class ScanModel {
     private static let hiddenKey = "hiddenItemIDs"
     private static let sortKey = "sortOrder"
     private static let historyKey = "keepsHistory"
+    private static let menuBarKey = "menuBarContent"
+    private static let safeToTrashKey = "movesSafeToTrash"
     private static let rescanInterval: Duration = .seconds(24 * 60 * 60)
 
     /// `scansAutomatically` is off for the headless modes, which drive the
@@ -101,8 +113,27 @@ final class ScanModel {
     private func runBackgroundScans() async {
         while !Task.isCancelled {
             await scan()
+            // These run only on the unattended scans, never on a Rescan the
+            // person is watching: the weekly note, then the optional automatic
+            // clean of the safe subset. Both are no-ops unless switched on.
+            await WeeklyDigest.check(log: history)
+            await autoCleanIfDue()
             try? await Task.sleep(for: Self.rescanInterval)
         }
+    }
+
+    /// Runs the opt-in weekly clean of the safe subset and says what it freed.
+    /// Only Safe, password-free items — the same set the one-tap button uses —
+    /// so nothing that needs review or a password is ever touched unattended.
+    private func autoCleanIfDue() async {
+        guard AutoClean.isDue() else { return }
+        let items = safeAutoItems
+        let before = DiskSize.freeSpace()
+        AutoClean.markRun()
+        guard !items.isEmpty else { return }
+        await reclaim(items)
+        let freed = max(DiskSize.freeSpace() - before, 0)
+        await AutoClean.announce(freed: freed, count: items.count)
     }
 
     var visibleItems: [StorageItem] {
@@ -169,6 +200,31 @@ final class ScanModel {
 
     var selectedBytes: Int64 {
         selectedItems.reduce(0) { $0 + ($1.sizeBytes ?? 0) }
+    }
+
+    /// The items that are safe to free without a question: regenerated
+    /// automatically, and deletable without an administrator password. This is
+    /// the only set the app ever acts on for the person — the one-tap "free
+    /// safe items" button and the optional weekly auto-clean — because it is
+    /// the set where a mistake costs nothing but a rebuild.
+    var safeAutoItems: [StorageItem] {
+        visibleItems.filter { $0.safety == .safe && !$0.action.isManual && !$0.action.needsAdministrator }
+    }
+
+    var safeAutoBytes: Int64 {
+        safeAutoItems.reduce(0) { $0 + ($1.sizeBytes ?? 0) }
+    }
+
+    /// Whether free space is under the warning threshold, so the window can
+    /// offer to act rather than leaving the person to hunt for what to delete.
+    var isLowOnSpace: Bool {
+        LowSpaceAlert.isEnabled && freeBytes < LowSpaceAlert.threshold
+    }
+
+    /// This item's size across the recent scans that knew it, oldest to newest,
+    /// for the row's sparkline. Fewer than two points is not a trend.
+    func series(for item: StorageItem) -> [Int64] {
+        ScanHistory.series(forItem: item.id, in: history)
     }
 
     /// Full Disk Access is the one grant that covers every folder the scan
@@ -370,6 +426,13 @@ final class ScanModel {
         await reclaim([item])
     }
 
+    /// Frees the safe subset in one press, for the low-space banner. No
+    /// confirmation because there is nothing to weigh: every item is
+    /// regenerated on demand and none needs a password.
+    func reclaimSafeNow() async {
+        await reclaim(safeAutoItems)
+    }
+
     /// Deletes the selection. Everything that needs root is folded into one
     /// script so the administrator password is asked for once per batch.
     func reclaimSelected() async {
@@ -438,8 +501,11 @@ final class ScanModel {
         defer { busyItemIDs.subtract(ids) }
 
         // Review items go to the Trash so a wrong click can be undone; Safe
-        // items regenerate anyway and are deleted outright.
+        // items regenerate anyway and are deleted outright — unless the person
+        // has asked for the extra safety net, in which case they go to the
+        // Trash too and free nothing until it is emptied.
         let toTrash = affected.allSatisfy { $0.safety == .review }
+            || (movesSafeToTrash && affected.allSatisfy { $0.safety == .safe })
         let before = DiskSize.freeSpace()
         do {
             let movedToTrash = try await Reclaimer.perform(action, preferTrash: toTrash)
