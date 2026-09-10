@@ -342,6 +342,12 @@ scripts/release.sh minor
 It expects `gh` to be logged in and a notarytool keychain profile (once:
 `xcrun notarytool store-credentials sysdata --key AuthKey.p8 --key-id ID --issuer ISSUER`).
 
+## Sponsor
+
+The app is free and the source is open to read. If it saved you some disk
+space and you want to say thanks, you can [sponsor the work on GitHub](https://github.com/sponsors/Jarvis322).
+Entirely optional — nothing in the app is gated behind it.
+
 ## Requirements
 
 macOS 14 or later. Xcode 16 or later to build. Xcode command line tools for
