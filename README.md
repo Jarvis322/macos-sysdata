@@ -8,7 +8,7 @@
   A menu bar app that shows what is really inside macOS "System Data" and lets you delete it, item by item.<br>
   <img src="https://img.shields.io/badge/macOS-14%2B-black" alt="macOS 14+">
   <img src="https://img.shields.io/badge/Swift-6-orange" alt="Swift 6">
-  <img src="https://img.shields.io/badge/i18n-EN%20·%20TR%20·%20ZH%20·%20JA-blue" alt="English, Turkish, Simplified Chinese, Japanese">
+  <img src="https://img.shields.io/badge/languages-9-blue" alt="Nine languages">
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-proprietary-lightgrey" alt="Proprietary"></a>
   <a href="https://github.com/sponsors/Jarvis322"><img src="https://img.shields.io/badge/sponsor-%E2%9D%A4-ec6cb9" alt="Sponsor"></a>
 </p>
@@ -30,7 +30,9 @@ one small line among fifty, and the app never deletes anything you did not
 click.
 
 Every release is listed in [CHANGELOG.md](CHANGELOG.md), including the two
-that shipped a broken updater and what to do if you are on one of them.
+that shipped a broken updater and what to do if you are on one of them. There
+is a short tour at [jarvis322.github.io/macos-sysdata](https://jarvis322.github.io/macos-sysdata/),
+and contributions are described in [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Install
 
@@ -156,10 +158,22 @@ prompt, which is why it asks each time and shows you the command first.
   pasteboard, since a list that scrolls inside 120pt often has to be read
   somewhere else.
 - **Low space warning.** Optional, off until you switch it on. The daily scan
-  knows the disk is nearly full a day before you do. It only ever tells you:
-  nothing this app could delete unattended is worth the one time it gets it
-  wrong. Fires on the way down and stays quiet until free space has been back
-  above the line.
+  knows the disk is nearly full a day before you do. Fires on the way down and
+  stays quiet until free space has been back above the line. While you are
+  under the line, the window offers to free the safe items in one press.
+- **Weekly summary.** Optional. Once a week, if System Data has grown by more
+  than 2 GB, a notification says by how much and what grew most.
+- **Trends.** Each row carries a small line showing where its size has been
+  heading over recent scans, and a bar above the list shows how the total
+  splits across categories.
+- **Automatic clean, opt-in.** Once a week, delete the items marked Safe and
+  say what was freed. The only thing the app ever does on its own, and drawn
+  as narrowly as possible: nothing marked Review, nothing that needs a
+  password, and never on a scan you are watching.
+- **Safe items to the Trash**, if you want an undo window for the items that
+  are normally deleted outright. They free nothing until the Trash is emptied.
+- **The menu bar** shows System Data's size, free space, or just the icon —
+  your choice.
 - **Hide.** The eye button removes an item from future scans (Ollama models
   you want to keep, say). A footer link brings hidden items back.
 - **Purgeable space** is shown in the header, with a tooltip saying what it
@@ -178,8 +192,11 @@ prompt, which is why it asks each time and shows you the command first.
   33,074 ms to 5,842 ms, the remaining 5 s being macOS's own service timeout.
   Check your own numbers after a restart with
   `grep "Userspace teardown took" /var/log/com.apple.xpc.launchd/launchd.log.2`.
-- **Four languages**, following the system: English, Turkish, Simplified
-  Chinese and Japanese. Every interface string is translated in all of them.
+- **Nine languages**, following the system: English, Turkish, Simplified
+  Chinese, Japanese, German, French, Spanish, Korean and Russian. Every
+  interface string is translated in all of them; the last five are
+  machine-assisted, and native-speaker corrections are welcome (see
+  [CONTRIBUTING.md](CONTRIBUTING.md)).
 - **`SysDataMenu --json`** prints the whole inventory for scripts.
 
 ## What it finds
@@ -306,8 +323,8 @@ probe and registering it in `ProbeRegistry`.
 
 Interface strings live in `Resources/Localizable.xcstrings`;
 `scripts/compile-strings.sh` turns the catalog into the `.lproj` tables
-SwiftPM ships (en, tr, zh-Hans, ja), and a test checks that every key has a
-Turkish translation. `ci.sh` fails if a hand-edited `.lproj` drifts from what
+SwiftPM ships (en, tr, zh-Hans, ja, de, fr, es, ko, ru), and a test checks
+that every key in the catalog is used by the interface. `ci.sh` fails if a hand-edited `.lproj` drifts from what
 the catalog would generate, so the catalog stays the single source of truth.
 
 ## Checks

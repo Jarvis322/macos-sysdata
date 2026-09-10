@@ -5,6 +5,34 @@ What changed in each release, and where it is worth saying, why.
 Versions up to and including v0.3.7 were released under the MIT License; see
 [LICENSE](LICENSE).
 
+## v1.0.0 — 2026-09-10
+
+The app has found what is in System Data for a while. 1.0 is about what
+happens after the first clean.
+
+- **Weekly summary.** Optional: once a week, if System Data has grown by more
+  than 2 GB, a notification says by how much and which item grew most.
+- **A trend on every row.** A small line beside the size shows where each item
+  has been heading over recent scans, drawn only once there are three points.
+- **One tap when space runs low.** Below the warning threshold the window
+  offers to free the safe items — regenerating caches that need no password —
+  in one press.
+- **Automatic clean, opt-in.** Once a week, delete the Safe items and say what
+  was freed. The narrowest exception the app allows to its rule of never
+  deleting what you did not click: nothing marked Review, nothing that needs a
+  password, never on a scan you are watching.
+- **Safe items to the Trash, if you prefer.** An undo window for the items that
+  are normally deleted outright.
+- **Choose what the menu bar shows:** System Data size, free space, or the icon
+  alone.
+- **A breakdown bar** above the list: how the total splits across categories,
+  at a glance.
+- **Nine languages.** German, French, Spanish, Korean and Russian join English,
+  Turkish, Simplified Chinese and Japanese. The five new ones are
+  machine-assisted; native corrections are welcome.
+- A [website](https://jarvis322.github.io/macos-sysdata/), a contributing
+  guide, and issue and pull request templates.
+
 ## v0.5.2 — 2026-09-08
 
 - **The "over 500 MB" scan could run for a day and never finish.** The
