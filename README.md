@@ -10,6 +10,7 @@
   <img src="https://img.shields.io/badge/Swift-6-orange" alt="Swift 6">
   <img src="https://img.shields.io/badge/i18n-EN%20·%20TR%20·%20ZH%20·%20JA-blue" alt="English, Turkish, Simplified Chinese, Japanese">
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-proprietary-lightgrey" alt="Proprietary"></a>
+  <a href="https://github.com/sponsors/Jarvis322"><img src="https://img.shields.io/badge/sponsor-%E2%9D%A4-ec6cb9" alt="Sponsor"></a>
 </p>
 
 <p align="center">
@@ -344,9 +345,18 @@ It expects `gh` to be logged in and a notarytool keychain profile (once:
 
 ## Sponsor
 
-The app is free and the source is open to read. If it saved you some disk
-space and you want to say thanks, you can [sponsor the work on GitHub](https://github.com/sponsors/Jarvis322).
-Entirely optional — nothing in the app is gated behind it.
+The app is free, and the source is open to read. If it cleared some room on
+your Mac and you want to say thanks, you can
+[sponsor the work on GitHub](https://github.com/sponsors/Jarvis322).
+
+It helps cover the Apple Developer Program membership and notarization every
+release goes through, and the time that goes into new probes, the four
+languages, and reviewing the community pull requests that keep landing. None
+of it is required: every feature is in the free app, nothing is gated behind a
+sponsorship, and the app stays exactly as capable whether you sponsor or not.
+
+There is a **Sponsor** button at the top of this repository too, next to the
+Star button.
 
 ## Requirements
 
