@@ -65,14 +65,15 @@ for artefact in "$archive" "$image"; do
 done
 spctl --assess --type execute "build/SysDataMenu.app"
 
-# Release notes: this version's section of the changelog.
+# Release notes: this version's section of the changelog, unwrapped, because
+# GitHub turns each newline in a release body into a visible line break.
 notes=$(mktemp)
 {
   awk -v tag="## $tag " '
     index($0, tag) == 1 { inside = 1; next }
     inside && /^## v/ { exit }
     inside { print }
-  ' CHANGELOG.md
+  ' CHANGELOG.md | awk -f scripts/unwrap-markdown.awk
   echo
   echo "## Install"
   echo '```bash'
