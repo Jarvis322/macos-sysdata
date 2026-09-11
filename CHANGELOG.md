@@ -5,6 +5,19 @@ What changed in each release, and where it is worth saying, why.
 Versions up to and including v0.3.7 were released under the MIT License; see
 [LICENSE](LICENSE).
 
+## v1.0.1 — 2026-09-11
+
+- **Apple's own app data is no longer offered for deletion.** With Full Disk
+  Access, the scan listed every folder in `~/Library/Containers` and
+  `~/Library/Group Containers` with a Review badge, Apple's included — and
+  those hold the local copy of what syncs with iCloud: Notes, Reminders,
+  Messages. A user noticed their iCloud data in the list. Apple's containers
+  are now shown with their size but marked Manual: the app will not delete
+  them, and says to clear them from the app that owns them.
+- The "anything over 500 MB" scan no longer walks `~/Library/CloudStorage`,
+  where Dropbox, OneDrive, Google Drive and other sync services keep their
+  files. A delete there is a delete in the cloud account too.
+
 ## v1.0.0 — 2026-09-10
 
 The app has found what is in System Data for a while. 1.0 is about what
