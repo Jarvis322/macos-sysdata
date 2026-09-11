@@ -14,7 +14,7 @@
 </p>
 
 <p align="center">
-  <img src="assets/screenshot.png" width="460" alt="The System Data window: a header with the total, a sort control and a settings menu, a filter field, then simulator devices and runtimes listed with their sizes and safety badges">
+  <img src="assets/screenshot.png" width="460" alt="The System Data Unpacked window: the header and filter, a line with System Data, free space and weekly change, then the categories listed largest first, each with a bar split into safe, review and manual">
 </p>
 
 ---
