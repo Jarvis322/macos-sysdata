@@ -1,8 +1,8 @@
 <p align="center">
-  <img src="assets/icon.png" width="128" alt="System Data app icon">
+  <img src="assets/icon.png" width="128" alt="System Data Unpacked app icon">
 </p>
 
-<h1 align="center">System Data</h1>
+<h1 align="center">System Data Unpacked</h1>
 
 <p align="center">
   A menu bar app that shows what is really inside macOS "System Data" and lets you delete it, item by item.<br>
@@ -34,6 +34,10 @@ that shipped a broken updater and what to do if you are on one of them. There
 is a short tour at [jarvis322.github.io/macos-sysdata](https://jarvis322.github.io/macos-sysdata/),
 and contributions are described in [CONTRIBUTING.md](CONTRIBUTING.md).
 
+Up to 1.0.4 the app was called SysDataMenu. The bundle identifier, the
+Homebrew cask and the command-line binary kept their names, so Full Disk
+Access, your settings and any scripts carry over without reinstalling.
+
 ## Install
 
 ```bash
@@ -44,6 +48,14 @@ Or download `SysDataMenu-<version>.dmg` from the
 [latest release](https://github.com/Jarvis322/macos-sysdata/releases/latest),
 open it and drag the app onto Applications. A `.zip` of the same app is
 attached to every release for anyone scripting the download.
+
+If the app is already in Applications from the disk image, `brew install`
+stops with "It seems there is already an App". Hand the existing copy to
+Homebrew instead:
+
+```bash
+brew install --cask --adopt Jarvis322/tap/sysdata
+```
 
 Releases from 0.3.2 on are signed with a Developer ID and notarized by
 Apple, so the app opens without a Gatekeeper prompt. From 0.3.7 the binary
@@ -56,7 +68,7 @@ Build from source (Xcode 16 or later):
 git clone https://github.com/Jarvis322/macos-sysdata.git
 cd macos-sysdata
 scripts/build-app.sh
-open build/SysDataMenu.app
+open "build/System Data Unpacked.app"
 ```
 
 The app has a **Launch at login** switch in its footer.
@@ -281,7 +293,7 @@ Two things can prompt, and both can be settled one time:
 ## Scripting
 
 ```bash
-/Applications/SysDataMenu.app/Contents/MacOS/SysDataMenu --json > inventory.json
+"/Applications/System Data Unpacked.app/Contents/MacOS/SysDataMenu" --json > inventory.json
 jq '.items[] | select(.safety == "safe") | [.name, .sizeBytes]' inventory.json
 ```
 
