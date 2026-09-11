@@ -269,6 +269,21 @@ struct SystemProbe: StorageProbe {
             items.append(item)
         }
 
+        // Containers for macOS's own background services, named by UUID. The
+        // catch-all used to list the folder with a Review badge; like Apple's
+        // app containers, it is shown here with its size and never offered.
+        // Listing it also claims it, so the catch-all skips it on its own. The
+        // floor matches the catch-all's, so it is never listed twice.
+        if let item = await ProbeSupport.directoryItem(
+            id: "sys-daemon-containers", category: .system, name: "macOS service data",
+            detail: "Containers for macOS's own background services. Not deleted by this app.",
+            url: URL.home("Library/Daemon Containers"), safety: .manual,
+            action: .manual("macOS manages these itself. If one grows without stopping, restarting the Mac or updating macOS is the safe fix; deleting them can break the service that owns them."),
+            minimumBytes: 500 * ProbeSupport.megabyte
+        ) {
+            items.append(item)
+        }
+
         return items
     }
 }
