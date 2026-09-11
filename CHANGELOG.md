@@ -5,6 +5,20 @@ What changed in each release, and where it is worth saying, why.
 Versions up to and including v0.3.7 were released under the MIT License; see
 [LICENSE](LICENSE).
 
+## v1.0.3 — 2026-09-11
+
+- **A batch now reports every item that failed, not only the last.** Two
+  simulators failed to erase in a batch that otherwise worked; the footer
+  showed at most one of them, and both came back on the next scan as if the
+  click had been ignored.
+- **Erasing a simulator shuts down only that device**, then erases it, and
+  retries once if it was booted again in between. When it still refuses, the
+  message says the simulator is running and to quit Simulator and Xcode.
+  Before, every open simulator was shut down for each erase.
+- An erased simulator no longer comes back as a row. Erasing keeps the device
+  at a few megabytes, which read as a delete that had not happened; devices
+  under 100 MB are no longer listed.
+
 ## v1.0.2 — 2026-09-11
 
 - `~/Library/Daemon Containers`, where macOS's own background services keep
