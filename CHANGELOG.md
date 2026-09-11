@@ -5,6 +5,13 @@ What changed in each release, and where it is worth saying, why.
 Versions up to and including v0.3.7 were released under the MIT License; see
 [LICENSE](LICENSE).
 
+## v1.0.2 — 2026-09-11
+
+- `~/Library/Daemon Containers`, where macOS's own background services keep
+  their data, was listed by the catch-all with a Review badge. It is now a
+  named System row, "macOS service data", shown with its size and marked
+  Manual, the same as Apple's app containers since 1.0.1.
+
 ## v1.0.1 — 2026-09-11
 
 - **Apple's own app data is no longer offered for deletion.** With Full Disk
