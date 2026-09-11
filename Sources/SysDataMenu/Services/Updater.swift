@@ -98,6 +98,24 @@ enum Updater {
             ?? matches.first
     }
 
+    /// Clears the Finder hidden flag on a bundle, returning whether it was set.
+    ///
+    /// Updaters up to 1.0.4 install by copying SysDataMenu.app out of the
+    /// image, and the copy kept there for them is hidden so the image shows a
+    /// single app. The flag came along with the copy, so an update left the app
+    /// running but gone from Applications, Launchpad and Spotlight. Run on
+    /// every launch, this puts it back.
+    @discardableResult
+    static func unhide(_ bundle: URL) -> Bool {
+        guard (try? bundle.resourceValues(forKeys: [.isHiddenKey]).isHidden) == true else { return false }
+        var values = URLResourceValues()
+        values.isHidden = false
+        var bundle = bundle
+        // Failing leaves the app exactly as it was before this ran; there is
+        // nothing more useful to do than try again on the next launch.
+        return (try? bundle.setResourceValues(values)) != nil
+    }
+
     /// Not private: the redirect check below is the one guard that cannot be
     /// exercised without a real release, and shipping it broken is exactly
     /// what happened in 0.3.10, so the release test reaches it directly.

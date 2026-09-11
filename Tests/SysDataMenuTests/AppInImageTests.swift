@@ -37,6 +37,17 @@ import Testing
         #expect(found.lastPathComponent == "System Data Unpacked.app")
     }
 
+    /// The copy an old updater installs from the image arrives hidden, and the
+    /// app unhides itself on launch rather than staying out of Finder.
+    @Test func aHiddenInstallIsUnhidden() throws {
+        let image = try makeImage()
+        defer { try? FileManager.default.removeItem(at: image) }
+        let legacy = image.appending(path: "SysDataMenu.app")
+        #expect(Updater.unhide(legacy), "the hidden copy should have been changed")
+        #expect(try legacy.resourceValues(forKeys: [.isHiddenKey]).isHidden == false)
+        #expect(!Updater.unhide(legacy), "a visible bundle is left alone")
+    }
+
     @Test func ignoresAppsFromAnotherIdentifier() throws {
         let image = try makeImage()
         defer { try? FileManager.default.removeItem(at: image) }

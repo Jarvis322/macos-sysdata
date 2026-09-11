@@ -26,6 +26,7 @@ struct SysDataMenuApp: App {
     init() {
         // Menu bar only: no Dock icon, no main window.
         NSApplication.shared.setActivationPolicy(.accessory)
+        Updater.unhide(Bundle.main.bundleURL)
     }
 
     var body: some Scene {

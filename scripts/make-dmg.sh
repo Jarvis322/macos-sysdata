@@ -28,7 +28,9 @@ ln -s /Applications "$staging/Applications"
 # name, SysDataMenu.app. A hidden copy under that name lets those versions
 # still update; the next update from the new version moves the install to the
 # new name. The copy is the same signed bundle, so nothing about the checks
-# changes, and Finder does not show it.
+# changes, and Finder does not show it. Those updaters copy the hidden flag
+# along with it, so the app clears the flag on its own bundle at launch
+# (Updater.unhide); without that, an update left it missing from Finder.
 cp -R "$app" "$staging/$name.app"
 chflags hidden "$staging/$name.app"
 
