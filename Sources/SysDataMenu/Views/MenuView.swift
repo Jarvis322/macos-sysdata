@@ -463,36 +463,58 @@ struct MenuView: View {
             .sorted { $0.1 > $1.1 }
     }
 
+    /// A scroll view of stacked rows, not a `List`.
+    ///
+    /// On macOS a `List` is an NSTableView whose rows size themselves, and a
+    /// row here can change height inside the table's own constraint pass — its
+    /// detail wraps to the panel's width, and during a scan rows keep arriving
+    /// while the person scrolls. On macOS 26.5 that sent the window into
+    /// constraint pass after constraint pass until AppKit threw
+    /// NSGenericException and the app quit (the report and stack are in #18).
+    /// A stack has no table to fall into that loop, and `LazyVStack` still
+    /// builds rows only as they scroll into view.
     private var list: some View {
-        List {
-            ForEach(model.categories, id: \.category) { group in
+        ScrollView {
+            LazyVStack(alignment: .leading, spacing: 0) {
+                ForEach(model.categories, id: \.category) { group in
                     categoryHeader(group.category, total: group.total, items: group.items)
+                        .padding(.vertical, 6)
+                    // The separators a List drew on its own.
+                    Divider()
                     if !model.collapsedCategories.contains(group.category) {
                         ForEach(group.items) { item in
-                            ItemRow(
-                                item: item,
-                                change: model.change(since: item),
-                                trend: model.series(for: item),
-                                isBusy: model.busyItemIDs.contains(item.id),
-                                isSelected: model.selectedIDs.contains(item.id),
-                                onToggle: { isSelected in
-                                    model.setSelection(
-                                        item,
-                                        selected: isSelected,
-                                        extendingRange: NSEvent.modifierFlags.contains(.shift),
-                                        selectableItems: rangeSelectableItems
-                                    )
-                                },
-                                onDelete: { pendingDeletion = item },
-                                onHide: { model.hide(item) }
-                            )
+                            itemRow(item)
+                                .padding(.vertical, 4)
+                            Divider()
                         }
                     }
                 }
             }
-            .listStyle(.inset)
-            .scrollContentBackground(.hidden)
+            // The insets the inset List style used to add.
+            .padding(.horizontal, 16)
+            .padding(.vertical, 8)
         }
+    }
+
+    private func itemRow(_ item: StorageItem) -> some View {
+        ItemRow(
+            item: item,
+            change: model.change(since: item),
+            trend: model.series(for: item),
+            isBusy: model.busyItemIDs.contains(item.id),
+            isSelected: model.selectedIDs.contains(item.id),
+            onToggle: { isSelected in
+                model.setSelection(
+                    item,
+                    selected: isSelected,
+                    extendingRange: NSEvent.modifierFlags.contains(.shift),
+                    selectableItems: rangeSelectableItems
+                )
+            },
+            onDelete: { pendingDeletion = item },
+            onHide: { model.hide(item) }
+        )
+    }
 
     private func categoryHeader(_ category: StorageCategory, total: Int64, items: [StorageItem]) -> some View {
         HStack {
