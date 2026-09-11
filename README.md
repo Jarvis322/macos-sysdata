@@ -175,9 +175,17 @@ prompt, which is why it asks each time and shows you the command first.
   under the line, the window offers to free the safe items in one press.
 - **Weekly summary.** Optional. Once a week, if System Data has grown by more
   than 2 GB, a notification says by how much and what grew most.
+- **Unusual growth.** Optional. After the daily scan, a notification when a
+  category is at least 50% and 2 GB above its median over its last 14 scans.
+  It waits for another 2 GB before the same category speaks again.
 - **Trends.** Each row carries a small line showing where its size has been
-  heading over recent scans, and a bar above the list shows how the total
-  splits across categories.
+  heading over recent scans.
+- **A map of the disk.** Categories start folded and are listed largest
+  first, so the folded list reads as a map. Each header carries a bar: the
+  category's size next to the largest one, split into what is Safe, what
+  needs Review and what is Manual. A category that has grown well past its
+  recent size is marked in amber. One line above the list sums it up:
+  System Data, free space, and the change over the past week.
 - **Automatic clean, opt-in.** Once a week, delete the items marked Safe and
   say what was freed. The only thing the app ever does on its own, and drawn
   as narrowly as possible: nothing marked Review, nothing that needs a

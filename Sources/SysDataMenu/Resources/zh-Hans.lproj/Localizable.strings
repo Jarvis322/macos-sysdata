@@ -1,6 +1,10 @@
+"%@ System Data · %@ free" = "%@ 系统数据 · %@ 可用";
+"%@ System Data · %@ free · %@ this week" = "%@ 系统数据 · %@ 可用 · 本周 %@";
 "%@ free on disk" = "磁盘可用空间：%@";
 "%@ free · %@ of safe items can go now" = "%@ 可用 · 现在可清理 %@ 可安全清理的项目";
+"%@ grew %@ beyond its recent size." = "%@ 比近期大小增加了 %@。";
 "%@ safe to free now · %@ free on disk · %@ purgeable" = "当前可安全释放 %@ · 磁盘可用空间 %@ · 可清除空间 %@";
+"%@ safe · %@ to review · %@ manual" = "%@ 可安全清理 · %@ 需检查 · %@ 需手动处理";
 "%@: the simulator is still running. Quit Simulator and Xcode, then try again." = "%@：模拟器仍在运行。请退出 Simulator 和 Xcode 后重试。";
 "%lld days idle" = "%lld 天未变动";
 "%lld hidden" = "已隐藏 %lld 项";
@@ -21,7 +25,6 @@
 "Automatically free safe items" = "自动清理可安全清理的项目";
 "Back to the list" = "返回列表";
 "Booted simulators ignore the quit request and hold the shutdown for 33 seconds. This shuts them down first." = "已启动的模拟器会忽略退出请求，导致关机延迟 33 秒。此选项会先关闭模拟器。";
-"Breakdown by category" = "按类别细分";
 "Came back" = "重新出现";
 "Cancel" = "取消";
 "Cancelled. %d already deleted, the rest left alone." = "已取消。已删除 %d 项，其余项目未作更改。";
@@ -30,6 +33,7 @@
 "Clear" = "清除";
 "Cleared %lld safe items that had built back up." = "已清理 %lld 个重新积累的可安全清理项目。";
 "Collapse %@" = "折叠%@";
+"Collapse all" = "全部折叠";
 "Copied" = "已复制";
 "Copy" = "复制";
 "Copy the plan" = "复制操作计划";
@@ -53,6 +57,7 @@
 "Download" = "下载";
 "Empty folder" = "空文件夹";
 "Expand %@" = "展开%@";
+"Expand all" = "全部展开";
 "Filter" = "筛选";
 "Forget everything" = "清除所有记录";
 "Free %@" = "清理 %@";
@@ -88,6 +93,8 @@
 "No item matches" = "没有匹配的项目";
 "Nothing to compare yet" = "暂无可比较的记录";
 "Nothing to reclaim" = "没有可释放的空间";
+"Notify about unusual growth" = "异常增长通知";
+"Once a day, alert you when a storage category has grown far beyond its recent size. Nothing leaves your Mac." = "当存储分类远高于近期大小时，每天提醒一次。数据不会离开您的 Mac。";
 "Once a week, delete the items marked Safe — the caches that regenerate — and notify you what was freed. Never anything that needs review or a password." = "每周一次，删除标记为“可安全清理”的项目（会自动重建的缓存），并通知你清理了多少。绝不触碰任何需要检查或密码的内容。";
 "Once a week, if System Data has grown, a notification says by how much and what grew most. Nothing leaves your Mac." = "每周一次，如果系统数据增长了，通知会告诉你增长了多少以及增长最多的是什么。任何数据都不会离开你的 Mac。";
 "One grant covers everything. Until then this scan leaves the protected places alone — app containers, Desktop, Documents, Music, Photos — rather than asking about them one app at a time, so what you see below is incomplete. Add System Data Unpacked in the settings pane, then reopen the app." = "一次授权即可涵盖所有位置。在授权前，扫描会跳过受保护的位置（应用容器、桌面、文稿、音乐、照片），而不会逐个应用请求权限，因此下方结果并不完整。请在“完全磁盘访问权限”设置中添加“System Data Unpacked”，然后重新打开应用。";
@@ -145,6 +152,7 @@
 "Time Machine snapshots" = "时间机器快照";
 "Trash" = "废纸篓";
 "Untick the selected items. It deletes nothing." = "取消选中所选项目。不会删除任何内容。";
+"Unusual storage growth" = "存储空间异常增长";
 "Update" = "更新";
 "Version %@ is available." = "版本 %@ 现已可用。";
 "Virtual machines" = "虚拟机";

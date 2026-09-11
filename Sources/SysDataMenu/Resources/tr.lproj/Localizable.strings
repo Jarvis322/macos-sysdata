@@ -1,6 +1,10 @@
+"%@ System Data · %@ free" = "%@ Sistem Verileri · %@ boş";
+"%@ System Data · %@ free · %@ this week" = "%@ Sistem Verileri · %@ boş · bu hafta %@";
 "%@ free on disk" = "diskte %@ boş";
 "%@ free · %@ of safe items can go now" = "%@ boş · %@ güvenli öğe şimdi silinebilir";
+"%@ grew %@ beyond its recent size." = "%@ son dönem boyutunun %@ üstüne çıktı.";
 "%@ safe to free now · %@ free on disk · %@ purgeable" = "%@ güvenle boşaltılabilir · diskte %@ boş · %@ temizlenebilir";
+"%@ safe · %@ to review · %@ manual" = "%@ güvenli · %@ incelenecek · %@ manuel";
 "%@: the simulator is still running. Quit Simulator and Xcode, then try again." = "%@: simülatör hâlâ çalışıyor. Simulator'ı ve Xcode'u kapatıp tekrar dene.";
 "%lld days idle" = "%lld gündür boşta";
 "%lld hidden" = "%lld gizli";
@@ -21,7 +25,6 @@
 "Automatically free safe items" = "Güvenli öğeleri otomatik boşalt";
 "Back to the list" = "Listeye dön";
 "Booted simulators ignore the quit request and hold the shutdown for 33 seconds. This shuts them down first." = "Açık simülatörler çıkış isteğini yok sayar ve kapanışı 33 saniye bekletir. Bu seçenek önce onları kapatır.";
-"Breakdown by category" = "Kategoriye göre dağılım";
 "Came back" = "Geri geldi";
 "Cancel" = "Vazgeç";
 "Cancelled. %d already deleted, the rest left alone." = "İptal edildi. %d tanesi silinmişti, kalanlara dokunulmadı.";
@@ -30,6 +33,7 @@
 "Clear" = "Temizle";
 "Cleared %lld safe items that had built back up." = "Yeniden birikmiş %lld güvenli öğe temizlendi.";
 "Collapse %@" = "%@ kategorisini daralt";
+"Collapse all" = "Tümünü daralt";
 "Copied" = "Kopyalandı";
 "Copy" = "Kopyala";
 "Copy the plan" = "Planı kopyala";
@@ -53,6 +57,7 @@
 "Download" = "İndir";
 "Empty folder" = "Boş klasör";
 "Expand %@" = "%@ kategorisini genişlet";
+"Expand all" = "Tümünü genişlet";
 "Filter" = "Filtrele";
 "Forget everything" = "Hepsini unut";
 "Free %@" = "%@ boşalt";
@@ -88,6 +93,8 @@
 "No item matches" = "Eşleşen öğe yok";
 "Nothing to compare yet" = "Henüz karşılaştıracak bir şey yok";
 "Nothing to reclaim" = "Geri kazanılacak bir şey yok";
+"Notify about unusual growth" = "Olağandışı büyüme için bildirim gönder";
+"Once a day, alert you when a storage category has grown far beyond its recent size. Nothing leaves your Mac." = "Bir depolama kategorisi son dönem boyutunun çok üstüne çıktığında günde bir kez bildir. Hiçbir veri Mac'inizden ayrılmaz.";
 "Once a week, delete the items marked Safe — the caches that regenerate — and notify you what was freed. Never anything that needs review or a password." = "Haftada bir, Güvenli işaretli öğeleri — yeniden oluşan önbellekleri — siler ve neyin boşaltıldığını bildirir. İncelenmesi gereken veya parola isteyen hiçbir şeye asla dokunmaz.";
 "Once a week, if System Data has grown, a notification says by how much and what grew most. Nothing leaves your Mac." = "Haftada bir, Sistem Verileri büyüdüyse ne kadar ve en çok neyin büyüdüğünü bir bildirim söyler. Hiçbir şey Mac'inden çıkmaz.";
 "One grant covers everything. Until then this scan leaves the protected places alone — app containers, Desktop, Documents, Music, Photos — rather than asking about them one app at a time, so what you see below is incomplete. Add System Data Unpacked in the settings pane, then reopen the app." = "Tek izin hepsini kapsar. O zamana kadar bu tarama korumalı yerlere dokunmuyor — uygulama konteynerleri, Masaüstü, Belgeler, Müzik, Fotoğraflar — tek tek izin sormaktansa; yani aşağıda gördüğün eksik. Ayarlar bölmesinden System Data Unpacked'ı ekle, sonra uygulamayı yeniden aç.";
@@ -145,6 +152,7 @@
 "Time Machine snapshots" = "Time Machine anlık görüntüleri";
 "Trash" = "Çöp Sepeti";
 "Untick the selected items. It deletes nothing." = "Seçili öğelerin işaretini kaldırır. Hiçbir şey silmez.";
+"Unusual storage growth" = "Olağandışı depolama büyümesi";
 "Update" = "Güncelle";
 "Version %@ is available." = "%@ sürümü yayınlandı.";
 "Virtual machines" = "Sanal makineler";

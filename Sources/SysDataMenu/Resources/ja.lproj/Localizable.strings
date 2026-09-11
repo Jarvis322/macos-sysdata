@@ -1,6 +1,10 @@
+"%@ System Data · %@ free" = "システムデータ %@ · 空き %@";
+"%@ System Data · %@ free · %@ this week" = "システムデータ %@ · 空き %@ · 今週 %@";
 "%@ free on disk" = "ディスクの空き容量：%@";
 "%@ free · %@ of safe items can go now" = "%@ の空き · 安全な項目 %@ を今すぐ削除できます";
+"%@ grew %@ beyond its recent size." = "%@ は最近のサイズより %@ 増えました。";
 "%@ safe to free now · %@ free on disk · %@ purgeable" = "今すぐ安全に解放：%@ · ディスクの空き：%@ · パージ可能：%@";
+"%@ safe · %@ to review · %@ manual" = "安全 %@ · 要確認 %@ · 手動 %@";
 "%@: the simulator is still running. Quit Simulator and Xcode, then try again." = "%@：シミュレータがまだ実行中です。Simulator と Xcode を終了してから、もう一度お試しください。";
 "%lld days idle" = "%lld 日未使用";
 "%lld hidden" = "%lld 件非表示";
@@ -21,7 +25,6 @@
 "Automatically free safe items" = "安全な項目を自動的に削除";
 "Back to the list" = "リストに戻る";
 "Booted simulators ignore the quit request and hold the shutdown for 33 seconds. This shuts them down first." = "起動中のシミュレータは終了要求を無視し、シャットダウンを 33 秒間止めます。これは先にシミュレータを終了させます。";
-"Breakdown by category" = "カテゴリ別の内訳";
 "Came back" = "戻ってきた";
 "Cancel" = "キャンセル";
 "Cancelled. %d already deleted, the rest left alone." = "キャンセルしました。%d 件は削除済み、残りはそのままです。";
@@ -30,6 +33,7 @@
 "Clear" = "クリア";
 "Cleared %lld safe items that had built back up." = "再び蓄積した安全な項目を %lld 件削除しました。";
 "Collapse %@" = "%@ を折りたたむ";
+"Collapse all" = "すべて折りたたむ";
 "Copied" = "コピーしました";
 "Copy" = "コピー";
 "Copy the plan" = "実行内容をコピー";
@@ -53,6 +57,7 @@
 "Download" = "ダウンロード";
 "Empty folder" = "空のフォルダ";
 "Expand %@" = "%@ を展開";
+"Expand all" = "すべて展開";
 "Filter" = "フィルタ";
 "Forget everything" = "すべて消去";
 "Free %@" = "%@ を解放";
@@ -88,6 +93,8 @@
 "No item matches" = "一致する項目がありません";
 "Nothing to compare yet" = "まだ比較できるものがありません";
 "Nothing to reclaim" = "解放できるものがありません";
+"Notify about unusual growth" = "異常な増加を通知";
+"Once a day, alert you when a storage category has grown far beyond its recent size. Nothing leaves your Mac." = "ストレージカテゴリが最近のサイズを大きく超えたとき、1日1回通知します。データがMacから送信されることはありません。";
 "Once a week, delete the items marked Safe — the caches that regenerate — and notify you what was freed. Never anything that needs review or a password." = "週に一度、「安全」と記された項目（再生成されるキャッシュ）を削除し、解放した容量を通知します。確認やパスワードが必要なものには一切触れません。";
 "Once a week, if System Data has grown, a notification says by how much and what grew most. Nothing leaves your Mac." = "週に一度、システムデータが増えていれば、どれだけ、何が最も増えたかを通知でお知らせします。データが Mac の外に出ることはありません。";
 "One grant covers everything. Until then this scan leaves the protected places alone — app containers, Desktop, Documents, Music, Photos — rather than asking about them one app at a time, so what you see below is incomplete. Add System Data Unpacked in the settings pane, then reopen the app." = "1 回の許可ですべてに対応できます。それまでこのスキャンは保護された場所——Appコンテナ、デスクトップ、書類、ミュージック、写真——には触れず、Appごとに個別に確認を求めることもしません。そのため下に表示される内容は不完全です。設定パネルで「System Data Unpacked」を追加してから、Appを開き直してください。";
@@ -145,6 +152,7 @@
 "Time Machine snapshots" = "Time Machine スナップショット";
 "Trash" = "ゴミ箱";
 "Untick the selected items. It deletes nothing." = "選択した項目のチェックを外します。何も削除しません。";
+"Unusual storage growth" = "ストレージの異常な増加";
 "Update" = "アップデート";
 "Version %@ is available." = "バージョン %@ が利用可能です。";
 "Virtual machines" = "仮想マシン";

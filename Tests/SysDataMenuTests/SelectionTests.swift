@@ -110,14 +110,30 @@ import Testing
         #expect(model.selectedItems.count == 2)
     }
 
-    @Test func selectSafeLeavesAFoldedCategoryAlone() {
+    @Test func selectSafeExpandsAndSelectsFoldedCategories() {
         let model = model([item("npm cache"), item("Xcode archives", category: .xcode)])
         model.collapsedCategories = [.xcode]
 
         model.selectAllSafe()
 
-        #expect(model.selectedIDs == ["npm cache"], "a folded row is not ticked behind the person's back")
+        #expect(model.selectedIDs == ["npm cache", "Xcode archives"])
+        #expect(!model.collapsedCategories.contains(.xcode))
         #expect(model.selectedOffScreenCount == 0)
+    }
+
+    @Test func collapseAndExpandAllCategoriesAffectEveryListedCategory() {
+        let model = model([item("npm cache"), item("Xcode archives", category: .xcode)])
+
+        model.collapseAllCategories()
+
+        #expect(model.areAllListedCategoriesCollapsed)
+        #expect(model.collapsedCategories.contains(.tools))
+        #expect(model.collapsedCategories.contains(.xcode))
+
+        model.expandAllCategories()
+
+        #expect(!model.areAllListedCategoriesCollapsed)
+        #expect(model.collapsedCategories.isEmpty)
     }
 
     @Test func unfoldingBringsTheCountBackToZero() {

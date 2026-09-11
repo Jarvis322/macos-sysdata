@@ -11,6 +11,7 @@ struct MenuView: View {
     @State private var warnsAboutLowSpace = LowSpaceAlert.isEnabled
     @State private var lowSpaceThreshold = LowSpaceAlert.threshold
     @State private var showsWeeklySummary = WeeklyDigest.isEnabled
+    @State private var warnsAboutUnusualGrowth = GrowthAlert.isEnabled
     @State private var autoCleansSafeItems = AutoClean.isEnabled
     @State private var notificationsRefused = false
     @State private var showsPlan = false
@@ -321,6 +322,32 @@ struct MenuView: View {
                     .fixedSize()
                     .help(L("Order rows by size, or by how long they have sat untouched"))
 
+                    Button {
+                        withAnimation {
+                            if model.areAllListedCategoriesCollapsed {
+                                model.expandAllCategories()
+                            } else {
+                                model.collapseAllCategories()
+                            }
+                        }
+                    } label: {
+                        Label(
+                            model.areAllListedCategoriesCollapsed ? L("Expand all") : L("Collapse all"),
+                            systemImage: model.areAllListedCategoriesCollapsed
+                                ? "rectangle.expand.vertical"
+                                : "rectangle.compress.vertical"
+                        )
+                        .labelStyle(.iconOnly)
+                    }
+                    // Borderless, like the sort control beside it: two icons in
+                    // a row should not look like two different kinds of thing.
+                    .buttonStyle(.borderless)
+                    .controlSize(.small)
+                    .accessibilityLabel(
+                        model.areAllListedCategoriesCollapsed ? L("Expand all") : L("Collapse all")
+                    )
+                    .help(model.areAllListedCategoriesCollapsed ? L("Expand all") : L("Collapse all"))
+
                     Button(model.everyListedSafeItemIsSelected
                            ? L("Deselect safe")
                            : L("Select safe")) {
@@ -445,22 +472,40 @@ struct MenuView: View {
             }
             .frame(maxWidth: .infinity)
         } else {
-            VStack(spacing: 8) {
-                if breakdownSegments.count >= 2 {
-                    BreakdownBar(segments: breakdownSegments)
-                        .padding(.horizontal, 14)
-                        .padding(.top, 2)
-                }
+            VStack(spacing: 6) {
+                pulse
+                    .padding(.horizontal, 16)
+                    .padding(.top, 2)
                 list
             }
         }
     }
 
-    private var breakdownSegments: [(category: StorageCategory, bytes: Int64)] {
-        model.categories
-            .map { ($0.category, $0.total) }
-            .filter { $0.1 > 0 }
-            .sorted { $0.1 > $1.1 }
+    /// One line for "now": how big System Data is, how much room is left and,
+    /// once the history reaches back a week, which way it went. A rise large
+    /// enough to earn the weekly summary gets the amber arrow.
+    private var pulse: some View {
+        HStack(spacing: 4) {
+            if let change = model.weeklyChange, change >= WeeklyDigest.floor {
+                Image(systemName: "arrow.up.right")
+                    .foregroundStyle(.orange)
+                    .accessibilityHidden(true)
+            }
+            Text(pulseText)
+            Spacer(minLength: 0)
+        }
+        .font(.caption)
+        .foregroundStyle(.secondary)
+        .monospacedDigit()
+        .lineLimit(1)
+    }
+
+    private var pulseText: String {
+        let size = model.measuredBytes.byteString
+        let free = model.freeBytes.byteString
+        guard let change = model.weeklyChange else { return L("%@ System Data · %@ free", size, free) }
+        let signed = change < 0 ? "−" + abs(change).byteString : "+" + change.byteString
+        return L("%@ System Data · %@ free · %@ this week", size, free, signed)
     }
 
     /// A scroll view of stacked rows, not a `List`.
@@ -474,11 +519,19 @@ struct MenuView: View {
     /// A stack has no table to fall into that loop, and `LazyVStack` still
     /// builds rows only as they scroll into view.
     private var list: some View {
-        ScrollView {
+        // Read once per redraw rather than once per header: both walk the
+        // history or every item.
+        let growth = model.unusualGrowth
+        let groups = model.categories
+        let scale = groups.map(\.total).max() ?? 0
+        return ScrollView {
             LazyVStack(alignment: .leading, spacing: 0) {
-                ForEach(model.categories, id: \.category) { group in
+                ForEach(groups, id: \.category) { group in
                     categoryHeader(group.category, total: group.total, items: group.items)
-                        .padding(.vertical, 6)
+                        .padding(.top, 6)
+                    atlasRow(group.category, items: group.items, scale: scale, growth: growth[group.category])
+                        .padding(.top, 3)
+                        .padding(.bottom, 6)
                     // The separators a List drew on its own.
                     Divider()
                     if !model.collapsedCategories.contains(group.category) {
@@ -494,6 +547,26 @@ struct MenuView: View {
             .padding(.horizontal, 16)
             .padding(.vertical, 8)
         }
+    }
+
+    /// The category's bar, and an amber mark when it has grown well past its
+    /// recent size.
+    private func atlasRow(_ category: StorageCategory, items: [StorageItem], scale: Int64, growth: Int64?) -> some View {
+        func bytes(_ safety: Safety) -> Int64 {
+            items.filter { $0.safety == safety }.reduce(0) { $0 + ($1.sizeBytes ?? 0) }
+        }
+        return HStack(spacing: 8) {
+            AtlasBar(safe: bytes(.safe), review: bytes(.review), manual: bytes(.manual), scale: scale)
+            if let growth {
+                Text(verbatim: "+" + growth.byteString)
+                    .font(.caption2.weight(.semibold))
+                    .monospacedDigit()
+                    .foregroundStyle(.orange)
+                    .help(L("%@ grew %@ beyond its recent size.", category.title, growth.byteString))
+            }
+        }
+        // Starts under the category name, past the chevron and the checkbox.
+        .padding(.leading, 38)
     }
 
     private func itemRow(_ item: StorageItem) -> some View {
@@ -586,7 +659,7 @@ struct MenuView: View {
         }
     }
 
-    /// The four preferences and the history view.
+    /// The preferences and history view.
     ///
     /// They used to be a row of switches along the bottom. A fourth did not
     /// fit: at this panel width the labels wrapped mid-word and pushed the
@@ -646,6 +719,16 @@ struct MenuView: View {
                 }
             ))
             .help(L("Once a week, if System Data has grown, a notification says by how much and what grew most. Nothing leaves your Mac."))
+            Toggle(L("Notify about unusual growth"), isOn: Binding(
+                get: { warnsAboutUnusualGrowth },
+                set: { wanted in
+                    toggleWithNotification(wanted) { granted in
+                        GrowthAlert.isEnabled = granted
+                        warnsAboutUnusualGrowth = granted
+                    }
+                }
+            ))
+            .help(L("Once a day, alert you when a storage category has grown far beyond its recent size. Nothing leaves your Mac."))
             Toggle(L("Automatically free safe items"), isOn: Binding(
                 get: { autoCleansSafeItems },
                 set: { wanted in

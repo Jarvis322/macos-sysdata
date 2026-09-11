@@ -1,6 +1,10 @@
+"%@ System Data · %@ free" = "%@ Systemdaten · %@ frei";
+"%@ System Data · %@ free · %@ this week" = "%@ Systemdaten · %@ frei · %@ diese Woche";
 "%@ free on disk" = "%@ frei auf der Festplatte";
 "%@ free · %@ of safe items can go now" = "%@ frei · %@ an sicheren Elementen können jetzt entfernt werden";
+"%@ grew %@ beyond its recent size." = "%@ ist um %@ über seine jüngste Größe gewachsen.";
 "%@ safe to free now · %@ free on disk · %@ purgeable" = "%@ sicher freizugeben · %@ frei auf der Festplatte · %@ löschbar";
+"%@ safe · %@ to review · %@ manual" = "%@ sicher · %@ zu prüfen · %@ manuell";
 "%@: the simulator is still running. Quit Simulator and Xcode, then try again." = "%@: Der Simulator läuft noch. Beende Simulator und Xcode und versuche es erneut.";
 "%lld days idle" = "%lld Tage inaktiv";
 "%lld hidden" = "%lld ausgeblendet";
@@ -21,7 +25,6 @@
 "Automatically free safe items" = "Sichere Elemente automatisch freigeben";
 "Back to the list" = "Zurück zur Liste";
 "Booted simulators ignore the quit request and hold the shutdown for 33 seconds. This shuts them down first." = "Gestartete Simulatoren ignorieren die Beenden-Anfrage und verzögern das Herunterfahren um 33 Sekunden. Dies fährt sie zuerst herunter.";
-"Breakdown by category" = "Aufschlüsselung nach Kategorie";
 "Came back" = "Zurückgekommen";
 "Cancel" = "Abbrechen";
 "Cancelled. %d already deleted, the rest left alone." = "Abgebrochen. %d bereits gelöscht, der Rest wurde nicht angetastet.";
@@ -30,6 +33,7 @@
 "Clear" = "Leeren";
 "Cleared %lld safe items that had built back up." = "%lld sichere Elemente entfernt, die sich wieder angesammelt hatten.";
 "Collapse %@" = "%@ einklappen";
+"Collapse all" = "Alle einklappen";
 "Copied" = "Kopiert";
 "Copy" = "Kopieren";
 "Copy the plan" = "Plan kopieren";
@@ -53,6 +57,7 @@
 "Download" = "Herunterladen";
 "Empty folder" = "Leerer Ordner";
 "Expand %@" = "%@ ausklappen";
+"Expand all" = "Alle ausklappen";
 "Filter" = "Filter";
 "Forget everything" = "Alles vergessen";
 "Free %@" = "%@ freigeben";
@@ -88,6 +93,8 @@
 "No item matches" = "Keine Übereinstimmung";
 "Nothing to compare yet" = "Noch nichts zum Vergleichen";
 "Nothing to reclaim" = "Nichts freizugeben";
+"Notify about unusual growth" = "Über ungewöhnliches Wachstum informieren";
+"Once a day, alert you when a storage category has grown far beyond its recent size. Nothing leaves your Mac." = "Einmal täglich informieren, wenn eine Speicherkategorie deutlich über ihre jüngste Größe wächst. Keine Daten verlassen deinen Mac.";
 "Once a week, delete the items marked Safe — the caches that regenerate — and notify you what was freed. Never anything that needs review or a password." = "Einmal pro Woche werden die als „Sicher“ markierten Elemente – die Caches, die sich von selbst neu aufbauen – gelöscht, und du wirst benachrichtigt, wie viel freigegeben wurde. Nie etwas, das eine Überprüfung oder ein Passwort erfordert.";
 "Once a week, if System Data has grown, a notification says by how much and what grew most. Nothing leaves your Mac." = "Einmal pro Woche wird dir, falls die Systemdaten gewachsen sind, per Benachrichtigung mitgeteilt, um wie viel und was am meisten gewachsen ist. Nichts verlässt deinen Mac.";
 "One grant covers everything. Until then this scan leaves the protected places alone — app containers, Desktop, Documents, Music, Photos — rather than asking about them one app at a time, so what you see below is incomplete. Add System Data Unpacked in the settings pane, then reopen the app." = "Eine einzige Freigabe deckt alles ab. Bis dahin lässt dieser Scan die geschützten Orte unangetastet — App-Container, Schreibtisch, Dokumente, Musik, Fotos — anstatt einzeln pro App nachzufragen. Was du unten siehst, ist deshalb unvollständig. Füge „System Data Unpacked“ im Einstellungsbereich hinzu und öffne die App danach erneut.";
@@ -145,6 +152,7 @@
 "Time Machine snapshots" = "Time Machine-Snapshots";
 "Trash" = "Papierkorb";
 "Untick the selected items. It deletes nothing." = "Deaktiviere die Häkchen bei den ausgewählten Elementen. Dabei wird nichts gelöscht.";
+"Unusual storage growth" = "Ungewöhnliches Speicherwachstum";
 "Update" = "Aktualisieren";
 "Version %@ is available." = "Version %@ ist verfügbar.";
 "Virtual machines" = "Virtuelle Maschinen";

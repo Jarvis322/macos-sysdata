@@ -1,6 +1,10 @@
+"%@ System Data · %@ free" = "시스템 데이터 %@ · 여유 공간 %@";
+"%@ System Data · %@ free · %@ this week" = "시스템 데이터 %@ · 여유 공간 %@ · 이번 주 %@";
 "%@ free on disk" = "디스크에 %@ 여유 공간";
 "%@ free · %@ of safe items can go now" = "%@ 여유 공간 · 안전 항목 %@ 삭제 가능";
+"%@ grew %@ beyond its recent size." = "%@이(가) 최근 크기보다 %@ 늘었습니다.";
 "%@ safe to free now · %@ free on disk · %@ purgeable" = "지금 안전하게 확보할 수 있는 %@ · 디스크 여유 공간 %@ · 제거 가능한 공간 %@";
+"%@ safe · %@ to review · %@ manual" = "안전 %@ · 검토 필요 %@ · 수동 %@";
 "%@: the simulator is still running. Quit Simulator and Xcode, then try again." = "%@: 시뮬레이터가 아직 실행 중입니다. Simulator와 Xcode를 종료한 후 다시 시도하세요.";
 "%lld days idle" = "%lld일간 미사용";
 "%lld hidden" = "%lld개 숨김";
@@ -21,7 +25,6 @@
 "Automatically free safe items" = "안전 항목 자동으로 비우기";
 "Back to the list" = "목록으로 돌아가기";
 "Booted simulators ignore the quit request and hold the shutdown for 33 seconds. This shuts them down first." = "부팅된 시뮬레이터는 종료 요청을 무시하고 33초 동안 종료를 지연시킵니다. 이 기능은 먼저 시뮬레이터를 종료합니다.";
-"Breakdown by category" = "카테고리별 세부 정보";
 "Came back" = "다시 생김";
 "Cancel" = "취소";
 "Cancelled. %d already deleted, the rest left alone." = "취소됨. 이미 %d개가 삭제되었고, 나머지는 그대로 유지됩니다.";
@@ -30,6 +33,7 @@
 "Clear" = "지우기";
 "Cleared %lld safe items that had built back up." = "다시 쌓인 안전 항목 %lld개를 삭제했습니다.";
 "Collapse %@" = "%@ 접기";
+"Collapse all" = "모두 접기";
 "Copied" = "복사됨";
 "Copy" = "복사";
 "Copy the plan" = "계획 복사";
@@ -53,6 +57,7 @@
 "Download" = "다운로드";
 "Empty folder" = "빈 폴더";
 "Expand %@" = "%@ 펼치기";
+"Expand all" = "모두 펼치기";
 "Filter" = "필터";
 "Forget everything" = "모든 기록 지우기";
 "Free %@" = "%@ 비우기";
@@ -88,6 +93,8 @@
 "No item matches" = "일치하는 항목 없음";
 "Nothing to compare yet" = "아직 비교할 항목 없음";
 "Nothing to reclaim" = "확보할 공간 없음";
+"Notify about unusual growth" = "비정상적인 증가 알림";
+"Once a day, alert you when a storage category has grown far beyond its recent size. Nothing leaves your Mac." = "저장 공간 카테고리가 최근 크기를 크게 넘어서면 하루에 한 번 알립니다. 데이터는 Mac을 떠나지 않습니다.";
 "Once a week, delete the items marked Safe — the caches that regenerate — and notify you what was freed. Never anything that needs review or a password." = "일주일에 한 번, '안전'으로 표시된 항목(다시 생성되는 캐시)을 삭제하고 얼마나 비웠는지 알려줍니다. 검토가 필요하거나 암호가 필요한 항목은 절대 삭제하지 않습니다.";
 "Once a week, if System Data has grown, a notification says by how much and what grew most. Nothing leaves your Mac." = "일주일에 한 번, 시스템 데이터가 늘어났다면 얼마나 늘었는지, 무엇이 가장 많이 늘었는지 알림으로 알려줍니다. Mac에서 아무것도 삭제되지 않습니다.";
 "One grant covers everything. Until then this scan leaves the protected places alone — app containers, Desktop, Documents, Music, Photos — rather than asking about them one app at a time, so what you see below is incomplete. Add System Data Unpacked in the settings pane, then reopen the app." = "한 번만 허용하면 모든 항목에 적용됩니다. 허용하기 전까지 이 검사는 앱 컨테이너, 데스크탑, 문서, 음악, 사진 같은 보호된 위치는 앱마다 개별적으로 묻는 대신 그대로 건너뛰므로, 아래 목록은 완전하지 않습니다. 설정 화면에서 System Data Unpacked를 추가한 다음 앱을 다시 여세요.";
@@ -145,6 +152,7 @@
 "Time Machine snapshots" = "Time Machine 스냅샷";
 "Trash" = "휴지통";
 "Untick the selected items. It deletes nothing." = "선택한 항목의 체크를 해제합니다. 아무것도 삭제되지 않습니다.";
+"Unusual storage growth" = "비정상적인 저장 공간 증가";
 "Update" = "업데이트";
 "Version %@ is available." = "버전 %@을(를) 사용할 수 있습니다.";
 "Virtual machines" = "가상 머신";

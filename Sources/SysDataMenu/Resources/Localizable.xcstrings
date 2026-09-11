@@ -2,6 +2,110 @@
   "sourceLanguage": "en",
   "version": "1.0",
   "strings": {
+    "%@ System Data · %@ free": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ Sistem Verileri · %@ boş"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ 系统数据 · %@ 可用"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "システムデータ %@ · 空き %@"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ Systemdaten · %@ frei"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ de données système · %@ libres"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ de datos del sistema · %@ libres"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "시스템 데이터 %@ · 여유 공간 %@"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Данные системы: %@ · свободно %@"
+          }
+        }
+      }
+    },
+    "%@ System Data · %@ free · %@ this week": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ Sistem Verileri · %@ boş · bu hafta %@"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ 系统数据 · %@ 可用 · 本周 %@"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "システムデータ %@ · 空き %@ · 今週 %@"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ Systemdaten · %@ frei · %@ diese Woche"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ de données système · %@ libres · %@ cette semaine"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ de datos del sistema · %@ libres · %@ esta semana"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "시스템 데이터 %@ · 여유 공간 %@ · 이번 주 %@"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Данные системы: %@ · свободно %@ · за неделю %@"
+          }
+        }
+      }
+    },
     "%@ free on disk": {
       "localizations": {
         "zh-Hans": {
@@ -106,6 +210,58 @@
         }
       }
     },
+    "%@ grew %@ beyond its recent size.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ 比近期大小增加了 %@。"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ son dönem boyutunun %@ üstüne çıktı."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ は最近のサイズより %@ 増えました。"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ ist um %@ über seine jüngste Größe gewachsen."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ a augmenté de %@ au-delà de sa taille récente."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ creció %@ por encima de su tamaño reciente."
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@이(가) 최근 크기보다 %@ 늘었습니다."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ вырос на %@ по сравнению с недавним размером."
+          }
+        }
+      }
+    },
     "%@ safe to free now · %@ free on disk · %@ purgeable": {
       "localizations": {
         "zh-Hans": {
@@ -154,6 +310,58 @@
           "stringUnit": {
             "state": "translated",
             "value": "%@ можно безопасно освободить сейчас · %@ свободно на диске · %@ вытесняемых данных"
+          }
+        }
+      }
+    },
+    "%@ safe · %@ to review · %@ manual": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ güvenli · %@ incelenecek · %@ manuel"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ 可安全清理 · %@ 需检查 · %@ 需手动处理"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "安全 %@ · 要確認 %@ · 手動 %@"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ sicher · %@ zu prüfen · %@ manuell"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ sûr · %@ à vérifier · %@ manuel"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ seguro · %@ por revisar · %@ manual"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "안전 %@ · 검토 필요 %@ · 수동 %@"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "безопасно: %@ · проверить: %@ · вручную: %@"
           }
         }
       }
@@ -1199,58 +1407,6 @@
         }
       }
     },
-    "Breakdown by category": {
-      "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Kategoriye göre dağılım"
-          }
-        },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "按类别细分"
-          }
-        },
-        "ja": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "カテゴリ別の内訳"
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Aufschlüsselung nach Kategorie"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Répartition par catégorie"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Desglose por categoría"
-          }
-        },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "카테고리별 세부 정보"
-          }
-        },
-        "ru": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Разбивка по категориям"
-          }
-        }
-      }
-    },
     "Came back": {
       "localizations": {
         "zh-Hans": {
@@ -1666,6 +1822,58 @@
           "stringUnit": {
             "state": "translated",
             "value": "Свернуть %@"
+          }
+        }
+      }
+    },
+    "Collapse all": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "全部折叠"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tümünü daralt"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "すべて折りたたむ"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alle einklappen"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tout réduire"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Contraer todo"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "모두 접기"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Свернуть все"
           }
         }
       }
@@ -2863,6 +3071,58 @@
           "stringUnit": {
             "state": "translated",
             "value": "Развернуть %@"
+          }
+        }
+      }
+    },
+    "Expand all": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "全部展开"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tümünü genişlet"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "すべて展開"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alle ausklappen"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tout développer"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Expandir todo"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "모두 펼치기"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Развернуть все"
           }
         }
       }
@@ -4683,6 +4943,110 @@
           "stringUnit": {
             "state": "translated",
             "value": "Нечего освобождать"
+          }
+        }
+      }
+    },
+    "Notify about unusual growth": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "异常增长通知"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Olağandışı büyüme için bildirim gönder"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "異常な増加を通知"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Über ungewöhnliches Wachstum informieren"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Notifier une croissance inhabituelle"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Notificar un crecimiento inusual"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "비정상적인 증가 알림"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Уведомлять о необычном росте"
+          }
+        }
+      }
+    },
+    "Once a day, alert you when a storage category has grown far beyond its recent size. Nothing leaves your Mac.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "当存储分类远高于近期大小时，每天提醒一次。数据不会离开您的 Mac。"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bir depolama kategorisi son dönem boyutunun çok üstüne çıktığında günde bir kez bildir. Hiçbir veri Mac'inizden ayrılmaz."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ストレージカテゴリが最近のサイズを大きく超えたとき、1日1回通知します。データがMacから送信されることはありません。"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Einmal täglich informieren, wenn eine Speicherkategorie deutlich über ihre jüngste Größe wächst. Keine Daten verlassen deinen Mac."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vous alerte une fois par jour lorsqu'une catégorie de stockage dépasse largement sa taille récente. Aucune donnée ne quitte votre Mac."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Te avisa una vez al día cuando una categoría de almacenamiento supera ampliamente su tamaño reciente. No sale ningún dato de tu Mac."
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "저장 공간 카테고리가 최근 크기를 크게 넘어서면 하루에 한 번 알립니다. 데이터는 Mac을 떠나지 않습니다."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Раз в день уведомляет, если категория хранилища сильно превысила недавний размер. Данные не покидают ваш Mac."
           }
         }
       }
@@ -7653,6 +8017,58 @@
           "stringUnit": {
             "state": "translated",
             "value": "Снимите отметки с выбранных элементов. Это ничего не удаляет."
+          }
+        }
+      }
+    },
+    "Unusual storage growth": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "存储空间异常增长"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Olağandışı depolama büyümesi"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ストレージの異常な増加"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ungewöhnliches Speicherwachstum"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Croissance inhabituelle du stockage"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Crecimiento inusual del almacenamiento"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "비정상적인 저장 공간 증가"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Необычный рост хранилища"
           }
         }
       }

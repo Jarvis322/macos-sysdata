@@ -1,6 +1,10 @@
+"%@ System Data · %@ free" = "%@ System Data · %@ free";
+"%@ System Data · %@ free · %@ this week" = "%@ System Data · %@ free · %@ this week";
 "%@ free on disk" = "%@ free on disk";
 "%@ free · %@ of safe items can go now" = "%@ free · %@ of safe items can go now";
+"%@ grew %@ beyond its recent size." = "%@ grew %@ beyond its recent size.";
 "%@ safe to free now · %@ free on disk · %@ purgeable" = "%@ safe to free now · %@ free on disk · %@ purgeable";
+"%@ safe · %@ to review · %@ manual" = "%@ safe · %@ to review · %@ manual";
 "%@: the simulator is still running. Quit Simulator and Xcode, then try again." = "%@: the simulator is still running. Quit Simulator and Xcode, then try again.";
 "%lld days idle" = "%lld days idle";
 "%lld hidden" = "%lld hidden";
@@ -21,7 +25,6 @@
 "Automatically free safe items" = "Automatically free safe items";
 "Back to the list" = "Back to the list";
 "Booted simulators ignore the quit request and hold the shutdown for 33 seconds. This shuts them down first." = "Booted simulators ignore the quit request and hold the shutdown for 33 seconds. This shuts them down first.";
-"Breakdown by category" = "Breakdown by category";
 "Came back" = "Came back";
 "Cancel" = "Cancel";
 "Cancelled. %d already deleted, the rest left alone." = "Cancelled. %d already deleted, the rest left alone.";
@@ -30,6 +33,7 @@
 "Clear" = "Clear";
 "Cleared %lld safe items that had built back up." = "Cleared %lld safe items that had built back up.";
 "Collapse %@" = "Collapse %@";
+"Collapse all" = "Collapse all";
 "Copied" = "Copied";
 "Copy" = "Copy";
 "Copy the plan" = "Copy the plan";
@@ -53,6 +57,7 @@
 "Download" = "Download";
 "Empty folder" = "Empty folder";
 "Expand %@" = "Expand %@";
+"Expand all" = "Expand all";
 "Filter" = "Filter";
 "Forget everything" = "Forget everything";
 "Free %@" = "Free %@";
@@ -88,6 +93,8 @@
 "No item matches" = "No item matches";
 "Nothing to compare yet" = "Nothing to compare yet";
 "Nothing to reclaim" = "Nothing to reclaim";
+"Notify about unusual growth" = "Notify about unusual growth";
+"Once a day, alert you when a storage category has grown far beyond its recent size. Nothing leaves your Mac." = "Once a day, alert you when a storage category has grown far beyond its recent size. Nothing leaves your Mac.";
 "Once a week, delete the items marked Safe — the caches that regenerate — and notify you what was freed. Never anything that needs review or a password." = "Once a week, delete the items marked Safe — the caches that regenerate — and notify you what was freed. Never anything that needs review or a password.";
 "Once a week, if System Data has grown, a notification says by how much and what grew most. Nothing leaves your Mac." = "Once a week, if System Data has grown, a notification says by how much and what grew most. Nothing leaves your Mac.";
 "One grant covers everything. Until then this scan leaves the protected places alone — app containers, Desktop, Documents, Music, Photos — rather than asking about them one app at a time, so what you see below is incomplete. Add System Data Unpacked in the settings pane, then reopen the app." = "One grant covers everything. Until then this scan leaves the protected places alone — app containers, Desktop, Documents, Music, Photos — rather than asking about them one app at a time, so what you see below is incomplete. Add System Data Unpacked in the settings pane, then reopen the app.";
@@ -145,6 +152,7 @@
 "Time Machine snapshots" = "Time Machine snapshots";
 "Trash" = "Trash";
 "Untick the selected items. It deletes nothing." = "Untick the selected items. It deletes nothing.";
+"Unusual storage growth" = "Unusual storage growth";
 "Update" = "Update";
 "Version %@ is available." = "Version %@ is available.";
 "Virtual machines" = "Virtual machines";

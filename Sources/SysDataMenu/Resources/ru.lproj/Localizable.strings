@@ -1,6 +1,10 @@
+"%@ System Data · %@ free" = "Данные системы: %@ · свободно %@";
+"%@ System Data · %@ free · %@ this week" = "Данные системы: %@ · свободно %@ · за неделю %@";
 "%@ free on disk" = "%@ свободно на диске";
 "%@ free · %@ of safe items can go now" = "%@ свободно · %@ безопасных элементов можно освободить прямо сейчас";
+"%@ grew %@ beyond its recent size." = "%@ вырос на %@ по сравнению с недавним размером.";
 "%@ safe to free now · %@ free on disk · %@ purgeable" = "%@ можно безопасно освободить сейчас · %@ свободно на диске · %@ вытесняемых данных";
+"%@ safe · %@ to review · %@ manual" = "безопасно: %@ · проверить: %@ · вручную: %@";
 "%@: the simulator is still running. Quit Simulator and Xcode, then try again." = "%@: симулятор всё ещё запущен. Закройте Simulator и Xcode и повторите попытку.";
 "%lld days idle" = "%lld дн. без использования";
 "%lld hidden" = "%lld скрыто";
@@ -21,7 +25,6 @@
 "Automatically free safe items" = "Автоматически освобождать безопасные элементы";
 "Back to the list" = "Назад к списку";
 "Booted simulators ignore the quit request and hold the shutdown for 33 seconds. This shuts them down first." = "Запущенные симуляторы игнорируют запрос на завершение и задерживают выключение на 33 секунды. Сначала это выключит их.";
-"Breakdown by category" = "Разбивка по категориям";
 "Came back" = "Появилось снова";
 "Cancel" = "Отмена";
 "Cancelled. %d already deleted, the rest left alone." = "Отменено. %d уже удалено, остальное не тронуто.";
@@ -30,6 +33,7 @@
 "Clear" = "Очистить";
 "Cleared %lld safe items that had built back up." = "Очищено %lld безопасных элементов, которые снова накопились.";
 "Collapse %@" = "Свернуть %@";
+"Collapse all" = "Свернуть все";
 "Copied" = "Скопировано";
 "Copy" = "Копировать";
 "Copy the plan" = "Скопировать план";
@@ -53,6 +57,7 @@
 "Download" = "Загрузить";
 "Empty folder" = "Пустая папка";
 "Expand %@" = "Развернуть %@";
+"Expand all" = "Развернуть все";
 "Filter" = "Фильтр";
 "Forget everything" = "Забыть всё";
 "Free %@" = "Освободить %@";
@@ -88,6 +93,8 @@
 "No item matches" = "Нет совпадений";
 "Nothing to compare yet" = "Пока нечего сравнивать";
 "Nothing to reclaim" = "Нечего освобождать";
+"Notify about unusual growth" = "Уведомлять о необычном росте";
+"Once a day, alert you when a storage category has grown far beyond its recent size. Nothing leaves your Mac." = "Раз в день уведомляет, если категория хранилища сильно превысила недавний размер. Данные не покидают ваш Mac.";
 "Once a week, delete the items marked Safe — the caches that regenerate — and notify you what was freed. Never anything that needs review or a password." = "Раз в неделю удалять элементы с пометкой «Безопасно» — кеши, которые восстанавливаются заново, — и уведомлять о том, сколько места было освобождено. Никогда ничего, что требует проверки или пароля.";
 "Once a week, if System Data has grown, a notification says by how much and what grew most. Nothing leaves your Mac." = "Раз в неделю, если объём «Данных системы» увеличился, приходит уведомление о том, насколько и что выросло больше всего. Ничего не покидает ваш Mac.";
 "One grant covers everything. Until then this scan leaves the protected places alone — app containers, Desktop, Documents, Music, Photos — rather than asking about them one app at a time, so what you see below is incomplete. Add System Data Unpacked in the settings pane, then reopen the app." = "Одного разрешения достаточно для всего. До этого момента сканирование не затрагивает защищённые места — контейнеры приложений, Рабочий стол, Документы, Музыку, Фото, — вместо того чтобы запрашивать доступ для каждого приложения по отдельности, поэтому список ниже неполон. Добавьте «System Data Unpacked» в настройках, затем откройте приложение заново.";
@@ -145,6 +152,7 @@
 "Time Machine snapshots" = "Снимки Time Machine";
 "Trash" = "Корзина";
 "Untick the selected items. It deletes nothing." = "Снимите отметки с выбранных элементов. Это ничего не удаляет.";
+"Unusual storage growth" = "Необычный рост хранилища";
 "Update" = "Обновить";
 "Version %@ is available." = "Доступна версия %@.";
 "Virtual machines" = "Виртуальные машины";

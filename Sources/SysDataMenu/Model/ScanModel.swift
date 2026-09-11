@@ -119,6 +119,7 @@ final class ScanModel {
             // person is watching: the weekly note, then the optional automatic
             // clean of the safe subset. Both are no-ops unless switched on.
             await WeeklyDigest.check(log: history)
+            await GrowthAlert.check(log: history)
             await autoCleanIfDue()
             try? await Task.sleep(for: Self.rescanInterval)
         }
@@ -291,27 +292,44 @@ final class ScanModel {
         listedItems.filter { $0.category == category && !$0.action.isManual }
     }
 
-    /// Ticks every listed Safe row, and unticks them when they are all ticked
-    /// already, so the button undoes itself rather than needing Clear.
+    /// Ticks every listed Safe row, revealing the categories that contain
+    /// them. A person should never have to hunt through folded sections for a
+    /// selection the app just made. A second press undoes that selection.
     ///
     /// It only ever adds to or removes from what is listed: rows the filter is
     /// hiding are neither ticked behind the person's back nor dropped from a
     /// selection they made before they started typing.
     func selectAllSafe() {
-        let listedSafeIDs = Set(onScreenItems.filter { $0.safety == .safe && !$0.action.isManual }.map(\.id))
+        let listedSafeItems = listedItems.filter { $0.safety == .safe && !$0.action.isManual }
+        let listedSafeIDs = Set(listedSafeItems.map(\.id))
         guard !listedSafeIDs.isEmpty else { return }
         if listedSafeIDs.isSubset(of: selectedIDs) {
             selectedIDs.subtract(listedSafeIDs)
         } else {
             selectedIDs.formUnion(listedSafeIDs)
+            collapsedCategories.subtract(Set(listedSafeItems.map(\.category)))
         }
         selectionAnchorID = nil
     }
 
     /// True when another press of "Select safe" would untick rather than tick.
     var everyListedSafeItemIsSelected: Bool {
-        let listedSafeIDs = Set(onScreenItems.filter { $0.safety == .safe && !$0.action.isManual }.map(\.id))
+        let listedSafeIDs = Set(listedItems.filter { $0.safety == .safe && !$0.action.isManual }.map(\.id))
         return !listedSafeIDs.isEmpty && listedSafeIDs.isSubset(of: selectedIDs)
+    }
+
+    /// Folds every category, including categories that a scan has not yielded
+    /// yet. That keeps the default folded state intact while results stream in.
+    func collapseAllCategories() {
+        collapsedCategories = Set(StorageCategory.allCases)
+    }
+
+    func expandAllCategories() {
+        collapsedCategories = []
+    }
+
+    var areAllListedCategoriesCollapsed: Bool {
+        !categories.isEmpty && categories.allSatisfy { collapsedCategories.contains($0.category) }
     }
 
     /// Selected rows that are not on screen, whether a filter or a folded
@@ -328,13 +346,36 @@ final class ScanModel {
         selectionAnchorID = nil
     }
 
+    /// Categories, largest first once the scan has finished. While results are
+    /// still arriving they keep their fixed order, so headers do not jump
+    /// around under the pointer as totals change.
     var categories: [(category: StorageCategory, items: [StorageItem], total: Int64)] {
         let visible = listedItems
-        return StorageCategory.allCases.compactMap { category in
+        let groups = StorageCategory.allCases.compactMap { category -> (category: StorageCategory, items: [StorageItem], total: Int64)? in
             let members = visible.filter { $0.category == category }
             guard !members.isEmpty else { return nil }
             return (category, sorted(members), members.reduce(0) { $0 + ($1.sizeBytes ?? 0) })
         }
+        guard !isScanning else { return groups }
+        // Ties keep the fixed order, so equal totals do not swap on redraw.
+        return groups.enumerated()
+            .sorted { $0.element.total != $1.element.total ? $0.element.total > $1.element.total : $0.offset < $1.offset }
+            .map(\.element)
+    }
+
+    /// Categories that have grown well past their recent size, and by how much.
+    /// The same test the growth notification uses, so the list and the
+    /// notification never disagree about what is unusual.
+    var unusualGrowth: [StorageCategory: Int64] {
+        Dictionary(uniqueKeysWithValues: ScanHistory.unusualCategoryGrowth(in: history).map {
+            ($0.category, $0.growthBytes)
+        })
+    }
+
+    /// How much System Data changed since a scan about a week old, or nil when
+    /// the history does not reach back that far.
+    var weeklyChange: Int64? {
+        ScanHistory.totalChange(overPastDays: 7, in: history)?.delta
     }
 
     private func sorted(_ items: [StorageItem]) -> [StorageItem] {
@@ -362,7 +403,10 @@ final class ScanModel {
         errorMessage = nil
         selectedIDs = []
         filterText = ""
-        collapsedCategories = []
+        // Folded on the first scan only. Folding on every scan would close
+        // whatever the person had opened each time the daily background scan
+        // ran with the window up.
+        if !hasScanned { collapseAllCategories() }
         selectionAnchorID = nil
         refreshAccess()
         phase = L("Measuring known locations…")
