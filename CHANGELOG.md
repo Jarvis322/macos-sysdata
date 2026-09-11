@@ -5,6 +5,18 @@ What changed in each release, and where it is worth saying, why.
 Versions up to and including v0.3.7 were released under the MIT License; see
 [LICENSE](LICENSE).
 
+## v1.0.4 — 2026-09-11
+
+- **A crash when scrolling the list during a scan.** On macOS 26.5.2 the panel
+  could quit with `NSGenericException` while rows were still arriving: a
+  reproduction and the original crash report in
+  [#18](https://github.com/Jarvis322/macos-sysdata/pull/18) by @dzy1997 showed
+  SwiftUI's `List`, an NSTableView underneath, re-measuring its rows inside the
+  window's constraint pass until AppKit gave up. The list is now built from a
+  lazy stack with the same insets and separators, so that table path is gone.
+  It could not be reproduced on macOS 26.6 or later, so the fix is not yet
+  confirmed on an affected machine.
+
 ## v1.0.3 — 2026-09-11
 
 - **A batch now reports every item that failed, not only the last.** Two
