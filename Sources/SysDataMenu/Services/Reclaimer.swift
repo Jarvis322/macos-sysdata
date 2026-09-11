@@ -44,6 +44,23 @@ enum Reclaimer {
             _ = try? await Shell.run("/usr/bin/xcrun", ["simctl", "shutdown", "all"])
             return false
 
+        case .eraseSimulator(let udid):
+            // A booted simulator refuses to erase. Shutting it down is allowed
+            // to fail — an already shut-down one refuses that too — and a
+            // refusal is retried once after shutting everything down, for when
+            // something booted it again in between.
+            let xcrun = "/usr/bin/xcrun"
+            _ = try? await Shell.run(xcrun, ["simctl", "shutdown", udid])
+            var result = try await Shell.run(xcrun, ["simctl", "erase", udid])
+            if !result.succeeded {
+                _ = try? await Shell.run(xcrun, ["simctl", "shutdown", "all"])
+                result = try await Shell.run(xcrun, ["simctl", "erase", udid])
+            }
+            guard result.succeeded else {
+                throw CommandError(command: "\(xcrun) simctl erase \(udid)", result: result)
+            }
+            return false
+
         case .steps(let actions):
             var trashed = false
             for action in actions {

@@ -158,6 +158,58 @@
         }
       }
     },
+    "%@: the simulator is still running. Quit Simulator and Xcode, then try again.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@: simülatör hâlâ çalışıyor. Simulator'ı ve Xcode'u kapatıp tekrar dene."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@：模拟器仍在运行。请退出 Simulator 和 Xcode 后重试。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@：シミュレータがまだ実行中です。Simulator と Xcode を終了してから、もう一度お試しください。"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@: Der Simulator läuft noch. Beende Simulator und Xcode und versuche es erneut."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ : le simulateur est toujours en cours d’exécution. Quittez Simulator et Xcode, puis réessayez."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@: el simulador sigue en ejecución. Cierra Simulator y Xcode e inténtalo de nuevo."
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@: 시뮬레이터가 아직 실행 중입니다. Simulator와 Xcode를 종료한 후 다시 시도하세요."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@: симулятор всё ещё запущен. Закройте Simulator и Xcode и повторите попытку."
+          }
+        }
+      }
+    },
     "%lld days idle": {
       "localizations": {
         "zh-Hans": {

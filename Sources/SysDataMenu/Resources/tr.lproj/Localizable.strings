@@ -1,6 +1,7 @@
 "%@ free on disk" = "diskte %@ boş";
 "%@ free · %@ of safe items can go now" = "%@ boş · %@ güvenli öğe şimdi silinebilir";
 "%@ safe to free now · %@ free on disk · %@ purgeable" = "%@ güvenle boşaltılabilir · diskte %@ boş · %@ temizlenebilir";
+"%@: the simulator is still running. Quit Simulator and Xcode, then try again." = "%@: simülatör hâlâ çalışıyor. Simulator'ı ve Xcode'u kapatıp tekrar dene.";
 "%lld days idle" = "%lld gündür boşta";
 "%lld hidden" = "%lld gizli";
 "%lld items need root; the password is asked once." = "%lld kalem yönetici yetkisi istiyor; parola bir kez sorulur.";

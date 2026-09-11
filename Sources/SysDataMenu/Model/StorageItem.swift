@@ -58,6 +58,9 @@ enum ReclaimAction: Sendable {
     /// Shuts every simulator down, ignoring the result. Files a booted
     /// simulator has mapped cannot be deleted, not even by root.
     case shutdownSimulators
+    /// Resets one simulator to factory state. It is shut down first, and a
+    /// refusal is retried once, because a booted device will not erase.
+    case eraseSimulator(udid: String)
     /// Runs several actions in order, stopping at the first failure.
     indirect case steps([ReclaimAction])
     case manual(String)
@@ -92,6 +95,8 @@ enum ReclaimAction: Sendable {
             [L("As administrator: %@", script)]
         case .shutdownSimulators:
             [L("Shut every simulator down first")]
+        case .eraseSimulator(let udid):
+            ["/usr/bin/xcrun simctl shutdown \(udid)", "/usr/bin/xcrun simctl erase \(udid)"]
         case .steps(let actions):
             actions.flatMap(\.plan)
         case .manual:
@@ -137,7 +142,7 @@ enum ReclaimAction: Sendable {
         case .removePaths(let urls), .emptyDirectories(let urls): urls
         case .pruneOlderThan(let url, _): [url]
         case .steps(let actions): actions.flatMap(\.paths)
-        case .command, .privilegedScript, .shutdownSimulators, .manual: []
+        case .command, .privilegedScript, .shutdownSimulators, .eraseSimulator, .manual: []
         }
     }
 }

@@ -1,6 +1,7 @@
 "%@ free on disk" = "%@ free on disk";
 "%@ free · %@ of safe items can go now" = "%@ free · %@ of safe items can go now";
 "%@ safe to free now · %@ free on disk · %@ purgeable" = "%@ safe to free now · %@ free on disk · %@ purgeable";
+"%@: the simulator is still running. Quit Simulator and Xcode, then try again." = "%@: the simulator is still running. Quit Simulator and Xcode, then try again.";
 "%lld days idle" = "%lld days idle";
 "%lld hidden" = "%lld hidden";
 "%lld items need root; the password is asked once." = "%lld items need root; the password is asked once.";

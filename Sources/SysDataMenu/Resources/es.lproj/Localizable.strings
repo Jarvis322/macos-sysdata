@@ -1,6 +1,7 @@
 "%@ free on disk" = "%@ libres en el disco";
 "%@ free · %@ of safe items can go now" = "%@ libres · %@ de elementos seguros se pueden liberar ahora";
 "%@ safe to free now · %@ free on disk · %@ purgeable" = "%@ seguro para liberar ahora · %@ libres en el disco · %@ purgable";
+"%@: the simulator is still running. Quit Simulator and Xcode, then try again." = "%@: el simulador sigue en ejecución. Cierra Simulator y Xcode e inténtalo de nuevo.";
 "%lld days idle" = "%lld días inactivo";
 "%lld hidden" = "%lld ocultos";
 "%lld items need root; the password is asked once." = "%lld elementos requieren acceso de administrador; se pedirá la contraseña una sola vez.";

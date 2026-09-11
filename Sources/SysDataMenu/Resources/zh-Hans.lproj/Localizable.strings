@@ -1,6 +1,7 @@
 "%@ free on disk" = "磁盘可用空间：%@";
 "%@ free · %@ of safe items can go now" = "%@ 可用 · 现在可清理 %@ 可安全清理的项目";
 "%@ safe to free now · %@ free on disk · %@ purgeable" = "当前可安全释放 %@ · 磁盘可用空间 %@ · 可清除空间 %@";
+"%@: the simulator is still running. Quit Simulator and Xcode, then try again." = "%@：模拟器仍在运行。请退出 Simulator 和 Xcode 后重试。";
 "%lld days idle" = "%lld 天未变动";
 "%lld hidden" = "已隐藏 %lld 项";
 "%lld items need root; the password is asked once." = "%lld 个项目需要 root 权限；只需输入一次密码。";

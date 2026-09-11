@@ -1,6 +1,7 @@
 "%@ free on disk" = "ディスクの空き容量：%@";
 "%@ free · %@ of safe items can go now" = "%@ の空き · 安全な項目 %@ を今すぐ削除できます";
 "%@ safe to free now · %@ free on disk · %@ purgeable" = "今すぐ安全に解放：%@ · ディスクの空き：%@ · パージ可能：%@";
+"%@: the simulator is still running. Quit Simulator and Xcode, then try again." = "%@：シミュレータがまだ実行中です。Simulator と Xcode を終了してから、もう一度お試しください。";
 "%lld days idle" = "%lld 日未使用";
 "%lld hidden" = "%lld 件非表示";
 "%lld items need root; the password is asked once." = "%lld 項目に管理者権限が必要です。パスワードは一度だけ求められます。";

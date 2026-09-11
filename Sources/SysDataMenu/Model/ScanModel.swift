@@ -87,6 +87,8 @@ final class ScanModel {
         didSet { UserDefaults.standard.set(movesSafeToTrash, forKey: Self.safeToTrashKey) }
     }
     var errorMessage: String?
+    /// Failures collected during one batch, shown together when it ends.
+    @ObservationIgnored private var failures: [String] = []
     /// Non-error feedback, such as "moved to the Trash".
     var notice: String?
 
@@ -446,6 +448,9 @@ final class ScanModel {
         let runnable = batch.filter { !busyItemIDs.contains($0.id) && !$0.action.isManual }
         errorMessage = nil
         notice = nil
+        failures = []
+        // Every failure in the batch, one per line, once it is over.
+        defer { if !failures.isEmpty { errorMessage = failures.joined(separator: "\n") } }
 
         var privileged: [(item: StorageItem, script: String)] = []
         var direct: [StorageItem] = []
@@ -534,7 +539,14 @@ final class ScanModel {
         } catch {
             if let command = error as? CommandError, command.wasCancelled { return false }
             let names = affected.map(\.name).joined(separator: ", ")
-            errorMessage = "\(names): \(error.localizedDescription)"
+            // Collected rather than assigned: a batch used to show only its
+            // last failure, so an erase that failed early looked like it worked.
+            if let command = error as? CommandError,
+               command.command.contains("simctl erase"), command.result.output.contains("Booted") {
+                failures.append(L("%@: the simulator is still running. Quit Simulator and Xcode, then try again.", names))
+            } else {
+                failures.append("\(names): \(error.localizedDescription)")
+            }
         }
         return true
     }

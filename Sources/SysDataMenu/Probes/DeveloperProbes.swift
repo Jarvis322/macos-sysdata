@@ -67,6 +67,11 @@ struct SimulatorProbe: StorageProbe {
                     cacheDirectories += [data.appending(path: "Library/Caches"), data.appending(path: "tmp")]
                         .filter(\.exists)
 
+                    // Erasing keeps the device, so an erased one comes back on
+                    // the next scan at a few megabytes and reads as a delete
+                    // that did not happen. Below this there is nothing to reset.
+                    if let dataSize, dataSize < 100 * ProbeSupport.megabyte { continue }
+
                     items.append(StorageItem(
                         id: "sim-erase-\(udid)",
                         category: .simulators,
@@ -74,7 +79,7 @@ struct SimulatorProbe: StorageProbe {
                         detail: "Resets this \(runtimeName) simulator to factory state. Installed apps and their data are lost.",
                         sizeBytes: dataSize,
                         safety: .review,
-                        action: .steps([.shutdownSimulators, .command(executable: xcrun, arguments: ["simctl", "erase", udid])]),
+                        action: .eraseSimulator(udid: udid),
                         revealURL: data
                     ))
                 }

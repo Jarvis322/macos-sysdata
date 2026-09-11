@@ -1,6 +1,7 @@
 "%@ free on disk" = "디스크에 %@ 여유 공간";
 "%@ free · %@ of safe items can go now" = "%@ 여유 공간 · 안전 항목 %@ 삭제 가능";
 "%@ safe to free now · %@ free on disk · %@ purgeable" = "지금 안전하게 확보할 수 있는 %@ · 디스크 여유 공간 %@ · 제거 가능한 공간 %@";
+"%@: the simulator is still running. Quit Simulator and Xcode, then try again." = "%@: 시뮬레이터가 아직 실행 중입니다. Simulator와 Xcode를 종료한 후 다시 시도하세요.";
 "%lld days idle" = "%lld일간 미사용";
 "%lld hidden" = "%lld개 숨김";
 "%lld items need root; the password is asked once." = "%lld개 항목에 관리자 권한이 필요합니다. 암호는 한 번만 요청됩니다.";

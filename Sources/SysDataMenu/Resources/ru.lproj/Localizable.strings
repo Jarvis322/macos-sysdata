@@ -1,6 +1,7 @@
 "%@ free on disk" = "%@ свободно на диске";
 "%@ free · %@ of safe items can go now" = "%@ свободно · %@ безопасных элементов можно освободить прямо сейчас";
 "%@ safe to free now · %@ free on disk · %@ purgeable" = "%@ можно безопасно освободить сейчас · %@ свободно на диске · %@ вытесняемых данных";
+"%@: the simulator is still running. Quit Simulator and Xcode, then try again." = "%@: симулятор всё ещё запущен. Закройте Simulator и Xcode и повторите попытку.";
 "%lld days idle" = "%lld дн. без использования";
 "%lld hidden" = "%lld скрыто";
 "%lld items need root; the password is asked once." = "Для %lld объектов нужны права root; пароль будет запрошен один раз.";
