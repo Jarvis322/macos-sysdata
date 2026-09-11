@@ -5,6 +5,21 @@ What changed in each release, and where it is worth saying, why.
 Versions up to and including v0.3.7 were released under the MIT License; see
 [LICENSE](LICENSE).
 
+## v1.0.5 — 2026-09-11
+
+- **The app is now called System Data Unpacked**, Unpacked for short.
+  "SysDataMenu" was a working name that stuck. The bundle identifier, the
+  Homebrew cask (`jarvis322/tap/sysdata`) and the `SysDataMenu` command-line
+  binary are unchanged, so Full Disk Access, settings, history and scripts
+  carry over. `brew upgrade` swaps the old app for the new one.
+- The updater finds the app in a downloaded image by bundle identifier rather
+  than by its own file name, and installs it under the new name. Versions up
+  to 1.0.4 still look for `SysDataMenu.app`, so the image carries a hidden copy
+  under that name for them; their next update after this one moves them to the
+  new name.
+- The README says how to fix `brew install` stopping with "It seems there is
+  already an App" after a disk-image install: `--adopt`.
+
 ## v1.0.4 — 2026-09-11
 
 - **A crash when scrolling the list during a scan.** On macOS 26.5.2 the panel
