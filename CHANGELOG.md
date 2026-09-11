@@ -5,6 +5,17 @@ What changed in each release, and where it is worth saying, why.
 Versions up to and including v0.3.7 were released under the MIT License; see
 [LICENSE](LICENSE).
 
+## v1.0.6 — 2026-09-11
+
+- **Updating from 1.0.4 or earlier left the app hidden.** The 1.0.5 image
+  carries a hidden copy under the old name for updaters from before the
+  rename, and those updaters copied the hidden flag along with it: the app
+  relaunched, but no longer appeared in Applications, Launchpad or Spotlight,
+  and once quit it looked like it would not open. The app now clears the flag
+  on itself at launch. An install already hidden by 1.0.5 is replaced by a
+  visible one on its next update. To fix one now:
+  `chflags nohidden /Applications/SysDataMenu.app`.
+
 ## v1.0.5 — 2026-09-11
 
 - **The app is now called System Data Unpacked**, Unpacked for short.
