@@ -206,12 +206,12 @@ struct AppDataProbe: StorageProbe {
         items += await scan(
             URL.home("Library/Containers"), prefix: "app-container", label: "Sandboxed app data",
             detail: "Deleting resets that app.", safety: .review, threshold: Self.threshold,
-            skipping: Self.coveredContainers
+            skipping: Self.coveredContainers, protectsAppleData: true
         )
         items += await scan(
             URL.home("Library/Group Containers"), prefix: "app-group", label: "App group data",
             detail: "Shared between an app and its extensions. Deleting resets them.", safety: .review,
-            threshold: Self.threshold, skipping: []
+            threshold: Self.threshold, skipping: [], protectsAppleData: true
         )
         }
         items += await scan(
@@ -233,22 +233,43 @@ struct AppDataProbe: StorageProbe {
         return items.sorted { ($0.sizeBytes ?? 0) > ($1.sizeBytes ?? 0) }
     }
 
+    /// `protectsAppleData` lists Apple's own containers with their size but
+    /// never offers to delete them: they hold the local copy of what syncs
+    /// with iCloud — Notes, Reminders, Messages — and a delete there can take
+    /// data that has not reached the cloud yet.
     private func scan(
         _ root: URL, prefix: String, label: String, detail: String, safety: Safety,
-        threshold: Int64, skipping: Set<String>
+        threshold: Int64, skipping: Set<String>, protectsAppleData: Bool = false
     ) async -> [StorageItem] {
         var items: [StorageItem] = []
         for entry in root.children() where entry.isDirectory && !skipping.contains(entry.lastPathComponent) {
+            let isProtected = protectsAppleData && Self.isAppleOwned(entry.lastPathComponent)
             if let item = await ProbeSupport.directoryItem(
                 id: "\(prefix)-\(entry.lastPathComponent)", category: .apps,
-                name: "\(label): \(entry.lastPathComponent)", detail: detail,
-                url: entry, safety: safety, action: .removePaths([entry]), minimumBytes: threshold
+                name: "\(label): \(entry.lastPathComponent)",
+                detail: isProtected ? "Apple app data, some of it synced with iCloud. Not deleted by this app." : detail,
+                url: entry,
+                safety: isProtected ? .manual : safety,
+                action: isProtected ? .manual(Self.appleDataInstructions) : .removePaths([entry]),
+                minimumBytes: threshold
             ) {
                 items.append(item)
             }
         }
         return items
     }
+
+    /// Whether a container or group container belongs to Apple, by the bundle
+    /// or group identifier macOS names it after.
+    static func isAppleOwned(_ name: String) -> Bool {
+        name.hasPrefix("com.apple.") || name.hasPrefix("group.com.apple.")
+    }
+
+    private static let appleDataInstructions = """
+        This is Apple's own app data. Part of it is the local copy of what syncs \
+        with iCloud, so this app will not delete it. Clear it from the app that \
+        owns it, or see System Settings > General > Storage.
+        """
 }
 
 // MARK: - Project build folders

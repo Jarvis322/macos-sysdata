@@ -159,6 +159,10 @@ struct LargeFolderProbe: StorageProbe {
         .home("Desktop"), .home("Documents"), .home("Downloads"),
         .home("Library/Messages"), .home("Library/Mail"), .home("Library/Containers/com.apple.mail"),
         .home("Library/Mobile Documents"), .home("Applications"),
+        // Dropbox, OneDrive, Google Drive and every other File Provider sync
+        // root. What is in them lives in someone's cloud account too, and a
+        // delete here is a delete there.
+        .home("Library/CloudStorage"),
     ]
 
     private static let threshold = 500 * ProbeSupport.megabyte
