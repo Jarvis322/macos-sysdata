@@ -22,6 +22,42 @@ enum ScanHistory {
         /// Names are kept so a row deleted long ago can still be described
         /// without the item existing any more.
         var names: [String: String]
+        /// The category each measured item belonged to at scan time. Kept
+        /// beside the size so category-level trends remain meaningful if an
+        /// item later moves or is removed.
+        var categories: [String: String]
+
+        init(
+            date: Date,
+            totalBytes: Int64,
+            freeBytes: Int64,
+            sizes: [String: Int64],
+            names: [String: String],
+            categories: [String: String] = [:]
+        ) {
+            self.date = date
+            self.totalBytes = totalBytes
+            self.freeBytes = freeBytes
+            self.sizes = sizes
+            self.names = names
+            self.categories = categories
+        }
+
+        private enum CodingKeys: String, CodingKey {
+            case date, totalBytes, freeBytes, sizes, names, categories
+        }
+
+        init(from decoder: any Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            date = try container.decode(Date.self, forKey: .date)
+            totalBytes = try container.decode(Int64.self, forKey: .totalBytes)
+            freeBytes = try container.decode(Int64.self, forKey: .freeBytes)
+            sizes = try container.decode([String: Int64].self, forKey: .sizes)
+            names = try container.decode([String: String].self, forKey: .names)
+            // Scans written before category trends existed remain valid. They
+            // simply do not contribute to this feature's initial baseline.
+            categories = try container.decodeIfPresent([String: String].self, forKey: .categories) ?? [:]
+        }
     }
 
     /// One reclaim. `rm -rf` cannot be undone; this is the record that it
@@ -38,6 +74,14 @@ enum ScanHistory {
     struct Log: Codable, Sendable {
         var scans: [Scan] = []
         var deletions: [Deletion] = []
+    }
+
+    struct CategoryGrowth: Equatable, Sendable {
+        let category: StorageCategory
+        let currentBytes: Int64
+        let baselineBytes: Int64
+
+        var growthBytes: Int64 { currentBytes - baselineBytes }
     }
 
     /// Kept long enough to see a month-over-month trend, capped so the file
@@ -65,17 +109,20 @@ enum ScanHistory {
         var log = load()
         var sizes: [String: Int64] = [:]
         var names: [String: String] = [:]
+        var categories: [String: String] = [:]
         for item in items {
             guard let bytes = item.sizeBytes else { continue }
             sizes[item.id] = bytes
             names[item.id] = item.name
+            categories[item.id] = item.category.rawValue
         }
         log.scans.append(Scan(
             date: date,
             totalBytes: sizes.values.reduce(0, +),
             freeBytes: freeBytes,
             sizes: sizes,
-            names: names
+            names: names,
+            categories: categories
         ))
         save(prune(log, now: date))
     }
@@ -144,6 +191,42 @@ enum ScanHistory {
         return growth.sorted { $0.bytes > $1.bytes }.prefix(limit).map { $0 }
     }
 
+    /// How many earlier scans the growth baseline is taken from.
+    ///
+    /// "Recent" has to mean recent. Against the whole 180-day history, a
+    /// category that grew for good a month ago would read as a fresh jump on
+    /// every scan, long after it had become simply its size.
+    static let baselineScans = 14
+
+    /// Categories whose current size is at least 50% and 2 GB above their
+    /// median over the last `baselineScans` scans that measured them. Three
+    /// such scans are required, so a one-off measurement wobble does not
+    /// become a notification.
+    static func unusualCategoryGrowth(in log: Log) -> [CategoryGrowth] {
+        guard let current = log.scans.last else { return [] }
+        let earlierScans = log.scans.dropLast()
+
+        return StorageCategory.allCases.compactMap { category in
+            guard let currentBytes = categoryBytes(category, in: current) else { return nil }
+            let priorBytes = earlierScans.compactMap { categoryBytes(category, in: $0) }.suffix(baselineScans)
+            guard priorBytes.count >= 3 else { return nil }
+
+            let sorted = priorBytes.sorted()
+            let baselineBytes = sorted[sorted.count / 2]
+            let growthBytes = currentBytes - baselineBytes
+            guard growthBytes >= 2 * 1_073_741_824,
+                  baselineBytes > 0,
+                  Double(growthBytes) / Double(baselineBytes) >= 0.5 else { return nil }
+
+            return CategoryGrowth(
+                category: category,
+                currentBytes: currentBytes,
+                baselineBytes: baselineBytes
+            )
+        }
+        .sorted { $0.growthBytes > $1.growthBytes }
+    }
+
     /// Things deleted that a later scan found again, and how much of them.
     ///
     /// This is the log's most useful answer. A cache you cleared on Monday
@@ -192,5 +275,11 @@ enum ScanHistory {
         // Atomic: a crash mid-write must not leave a file that parses as an
         // empty history and silently loses months of it.
         try? data.write(to: fileURL, options: .atomic)
+    }
+
+    private static func categoryBytes(_ category: StorageCategory, in scan: Scan) -> Int64? {
+        let categoryItems = scan.sizes.filter { scan.categories[$0.key] == category.rawValue }
+        guard !categoryItems.isEmpty else { return nil }
+        return categoryItems.values.reduce(0, +)
     }
 }

@@ -21,10 +21,16 @@ import Testing
         ScanHistory.Log(scans: scans, deletions: deletions)
     }
 
-    private func scan(_ date: Date, _ sizes: [String: Int64]) -> ScanHistory.Scan {
+    private func scan(
+        _ date: Date,
+        _ sizes: [String: Int64],
+        categories: [String: String] = [:]
+    ) -> ScanHistory.Scan {
         ScanHistory.Scan(
             date: date, totalBytes: sizes.values.reduce(0, +), freeBytes: 0,
-            sizes: sizes, names: sizes.keys.reduce(into: [:]) { $0[$1] = $1.capitalized }
+            sizes: sizes,
+            names: sizes.keys.reduce(into: [:]) { $0[$1] = $1.capitalized },
+            categories: categories
         )
     }
 
@@ -60,6 +66,46 @@ import Testing
     @Test func thingsThatShrankAreNotGrowth() {
         let history = log([scan(day(0), ["npm": 900]), scan(day(1), ["npm": 100])])
         #expect(ScanHistory.fastestGrowing(in: history).isEmpty)
+    }
+
+    @Test func unusualCategoryGrowthNeedsAStableLargeIncrease() {
+        let gigabyte: Int64 = 1_073_741_824
+        let categories = ["derived": StorageCategory.xcode.rawValue]
+        let history = log([
+            scan(day(0), ["derived": 4 * gigabyte], categories: categories),
+            scan(day(1), ["derived": 4 * gigabyte], categories: categories),
+            scan(day(2), ["derived": 5 * gigabyte], categories: categories),
+            scan(day(3), ["derived": 12 * gigabyte], categories: categories),
+        ])
+
+        let anomaly = ScanHistory.unusualCategoryGrowth(in: history).first
+
+        #expect(anomaly?.category == .xcode)
+        #expect(anomaly?.growthBytes == 8 * gigabyte)
+    }
+
+    @Test func unusualCategoryGrowthIgnoresOlderScansWithoutCategories() {
+        let gigabyte: Int64 = 1_073_741_824
+        let history = log([
+            scan(day(0), ["derived": 4 * gigabyte]),
+            scan(day(1), ["derived": 4 * gigabyte]),
+            scan(day(2), ["derived": 4 * gigabyte]),
+            scan(day(3), ["derived": 12 * gigabyte], categories: ["derived": StorageCategory.xcode.rawValue]),
+        ])
+
+        #expect(ScanHistory.unusualCategoryGrowth(in: history).isEmpty)
+    }
+
+    @Test func earlierHistoryWithoutCategoriesStillDecodes() throws {
+        let legacyHistory = """
+        {"scans":[{"date":"2023-11-14T22:13:20Z","totalBytes":1,"freeBytes":2,"sizes":{"npm":1},"names":{"npm":"Npm"}}],"deletions":[]}
+        """
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .iso8601
+
+        let history = try decoder.decode(ScanHistory.Log.self, from: Data(legacyHistory.utf8))
+
+        #expect(history.scans.first?.categories.isEmpty == true)
     }
 
     /// The log's most useful answer: a cache cleared on Monday that is back by
