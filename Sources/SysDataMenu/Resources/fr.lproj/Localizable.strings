@@ -90,10 +90,10 @@
 "Nothing to reclaim" = "Rien à récupérer";
 "Once a week, delete the items marked Safe — the caches that regenerate — and notify you what was freed. Never anything that needs review or a password." = "Une fois par semaine, supprime les éléments marqués Sûr — les caches qui se régénèrent — et vous informe de l'espace libéré. Jamais un élément nécessitant une vérification ou un mot de passe.";
 "Once a week, if System Data has grown, a notification says by how much and what grew most. Nothing leaves your Mac." = "Une fois par semaine, si Données système a augmenté, une notification indique de combien et ce qui a le plus augmenté. Rien ne quitte votre Mac.";
-"One grant covers everything. Until then this scan leaves the protected places alone — app containers, Desktop, Documents, Music, Photos — rather than asking about them one app at a time, so what you see below is incomplete. Add System Data in the settings pane, then reopen the app." = "Une seule autorisation suffit pour tout. En attendant, cette analyse laisse les emplacements protégés de côté — conteneurs d'apps, Bureau, Documents, Musique, Photos — plutôt que de vous les demander un par un ; ce que vous voyez ci-dessous est donc incomplet. Ajoutez Données système dans le volet des réglages, puis rouvrez l'app.";
+"One grant covers everything. Until then this scan leaves the protected places alone — app containers, Desktop, Documents, Music, Photos — rather than asking about them one app at a time, so what you see below is incomplete. Add System Data Unpacked in the settings pane, then reopen the app." = "Une seule autorisation suffit pour tout. En attendant, cette analyse laisse les emplacements protégés de côté — conteneurs d'apps, Bureau, Documents, Musique, Photos — plutôt que de vous les demander un par un ; ce que vous voyez ci-dessous est donc incomplet. Ajoutez System Data Unpacked dans le volet des réglages, puis rouvrez l'app.";
 "Open Settings" = "Ouvrir les réglages";
-"Open System Data to see what grew." = "Ouvrez Données système pour voir ce qui a augmenté.";
-"Open System Data to see what is taking up room." = "Ouvrez Données système pour voir ce qui prend de la place.";
+"Open Unpacked to see what grew." = "Ouvrez Unpacked pour voir ce qui a augmenté.";
+"Open Unpacked to see what is taking up room." = "Ouvrez Unpacked pour voir ce qui prend de la place.";
 "Open x.com/yigitech" = "Ouvrir x.com/yigitech";
 "Order rows by size, or by how long they have sat untouched" = "Trier les lignes par taille, ou par durée d'inactivité";
 "Other large folders" = "Autres dossiers volumineux";

@@ -90,10 +90,10 @@
 "Nothing to reclaim" = "Nothing to reclaim";
 "Once a week, delete the items marked Safe — the caches that regenerate — and notify you what was freed. Never anything that needs review or a password." = "Once a week, delete the items marked Safe — the caches that regenerate — and notify you what was freed. Never anything that needs review or a password.";
 "Once a week, if System Data has grown, a notification says by how much and what grew most. Nothing leaves your Mac." = "Once a week, if System Data has grown, a notification says by how much and what grew most. Nothing leaves your Mac.";
-"One grant covers everything. Until then this scan leaves the protected places alone — app containers, Desktop, Documents, Music, Photos — rather than asking about them one app at a time, so what you see below is incomplete. Add System Data in the settings pane, then reopen the app." = "One grant covers everything. Until then this scan leaves the protected places alone — app containers, Desktop, Documents, Music, Photos — rather than asking about them one app at a time, so what you see below is incomplete. Add System Data in the settings pane, then reopen the app.";
+"One grant covers everything. Until then this scan leaves the protected places alone — app containers, Desktop, Documents, Music, Photos — rather than asking about them one app at a time, so what you see below is incomplete. Add System Data Unpacked in the settings pane, then reopen the app." = "One grant covers everything. Until then this scan leaves the protected places alone — app containers, Desktop, Documents, Music, Photos — rather than asking about them one app at a time, so what you see below is incomplete. Add System Data Unpacked in the settings pane, then reopen the app.";
 "Open Settings" = "Open Settings";
-"Open System Data to see what grew." = "Open System Data to see what grew.";
-"Open System Data to see what is taking up room." = "Open System Data to see what is taking up room.";
+"Open Unpacked to see what grew." = "Open Unpacked to see what grew.";
+"Open Unpacked to see what is taking up room." = "Open Unpacked to see what is taking up room.";
 "Open x.com/yigitech" = "Open x.com/yigitech";
 "Order rows by size, or by how long they have sat untouched" = "Order rows by size, or by how long they have sat untouched";
 "Other large folders" = "Other large folders";

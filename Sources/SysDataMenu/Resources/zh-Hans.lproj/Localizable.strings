@@ -90,10 +90,10 @@
 "Nothing to reclaim" = "没有可释放的空间";
 "Once a week, delete the items marked Safe — the caches that regenerate — and notify you what was freed. Never anything that needs review or a password." = "每周一次，删除标记为“可安全清理”的项目（会自动重建的缓存），并通知你清理了多少。绝不触碰任何需要检查或密码的内容。";
 "Once a week, if System Data has grown, a notification says by how much and what grew most. Nothing leaves your Mac." = "每周一次，如果系统数据增长了，通知会告诉你增长了多少以及增长最多的是什么。任何数据都不会离开你的 Mac。";
-"One grant covers everything. Until then this scan leaves the protected places alone — app containers, Desktop, Documents, Music, Photos — rather than asking about them one app at a time, so what you see below is incomplete. Add System Data in the settings pane, then reopen the app." = "一次授权即可涵盖所有位置。在授权前，扫描会跳过受保护的位置（应用容器、桌面、文稿、音乐、照片），而不会逐个应用请求权限，因此下方结果并不完整。请在“完全磁盘访问权限”设置中添加“System Data”，然后重新打开应用。";
+"One grant covers everything. Until then this scan leaves the protected places alone — app containers, Desktop, Documents, Music, Photos — rather than asking about them one app at a time, so what you see below is incomplete. Add System Data Unpacked in the settings pane, then reopen the app." = "一次授权即可涵盖所有位置。在授权前，扫描会跳过受保护的位置（应用容器、桌面、文稿、音乐、照片），而不会逐个应用请求权限，因此下方结果并不完整。请在“完全磁盘访问权限”设置中添加“System Data Unpacked”，然后重新打开应用。";
 "Open Settings" = "打开设置";
-"Open System Data to see what grew." = "打开“系统数据”查看增长了什么。";
-"Open System Data to see what is taking up room." = "打开“系统数据”以查看哪些内容占用了空间。";
+"Open Unpacked to see what grew." = "打开 Unpacked 查看增长了什么。";
+"Open Unpacked to see what is taking up room." = "打开 Unpacked 以查看哪些内容占用了空间。";
 "Open x.com/yigitech" = "打开 x.com/yigitech";
 "Order rows by size, or by how long they have sat untouched" = "按大小或未变动的时长排列项目";
 "Other large folders" = "其他大型文件夹";

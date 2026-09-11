@@ -42,7 +42,7 @@ step "Assemble the app bundle"
 scripts/build-app.sh
 
 step "Check the bundle is complete"
-app="build/SysDataMenu.app"
+app="build/System Data Unpacked.app"
 test -x "$app/Contents/MacOS/SysDataMenu"
 test -f "$app/Contents/Info.plist"
 # Bundle.module reads this; without it the app aborts on its first localized

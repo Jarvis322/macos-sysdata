@@ -59,7 +59,7 @@ enum LowSpaceAlert {
         content.title = L("%@ free on disk", freeBytes.byteString)
         content.body = reclaimable > 0
             ? L("System Data holds %@ that is safe to free.", reclaimable.byteString)
-            : L("Open System Data to see what is taking up room.")
+            : L("Open Unpacked to see what is taking up room.")
         content.sound = .default
 
         let request = UNNotificationRequest(

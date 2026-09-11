@@ -74,12 +74,28 @@ enum Updater {
         let mount = try await attach(image)
         defer { Task { _ = try? await Shell.run("/usr/bin/hdiutil", ["detach", mount.path, "-quiet"]) } }
 
-        let candidate = mount.appending(path: Bundle.main.bundleURL.lastPathComponent)
-        guard FileManager.default.fileExists(atPath: candidate.path) else { throw Failure.noAppInImage }
+        guard let candidate = app(in: mount) else { throw Failure.noAppInImage }
 
         try await verify(candidate)
-        try replace(with: candidate)
-        relaunch()
+        let installed = try replace(with: candidate)
+        relaunch(installed)
+    }
+
+    /// The app inside a mounted image, found by bundle identifier rather than
+    /// by file name. The app was renamed in 1.0.5, so looking for this copy's
+    /// own file name finds nothing in a newer image. The image also carries a
+    /// hidden copy under the old name, for updaters from before the rename;
+    /// the visible one wins when both are there.
+    static func app(in mount: URL, identifier: String? = Bundle.main.bundleIdentifier) -> URL? {
+        guard let identifier else { return nil }
+        let entries = (try? FileManager.default.contentsOfDirectory(
+            at: mount, includingPropertiesForKeys: [.isHiddenKey]
+        )) ?? []
+        let matches = entries.filter {
+            $0.pathExtension == "app" && Bundle(url: $0)?.bundleIdentifier == identifier
+        }
+        return matches.first { (try? $0.resourceValues(forKeys: [.isHiddenKey]).isHidden) != true }
+            ?? matches.first
     }
 
     /// Not private: the redirect check below is the one guard that cannot be
@@ -149,28 +165,42 @@ enum Updater {
         await Task.detached { teamIdentifier(of: app) }.value
     }
 
-    private static func replace(with candidate: URL) throws {
+    /// Installs the candidate beside the running copy under the candidate's own
+    /// name, and returns where it went. When that name differs from the running
+    /// copy's — an install from before the rename — the old copy is removed
+    /// once the new one is in place, so the folder holds one app, not two.
+    private static func replace(with candidate: URL) throws -> URL {
         let installed = Bundle.main.bundleURL
         let manager = FileManager.default
-        let staging = installed.deletingLastPathComponent()
-            .appending(path: ".\(installed.lastPathComponent).incoming")
+        let folder = installed.deletingLastPathComponent()
+        let destination = folder.appending(path: candidate.lastPathComponent)
+        let staging = folder.appending(path: ".\(candidate.lastPathComponent).incoming")
 
         do {
             try? manager.removeItem(at: staging)
             // Copy beside the installed app first, so a failure part-way
             // through leaves the working copy untouched.
             try manager.copyItem(at: candidate, to: staging)
-            _ = try manager.replaceItemAt(installed, withItemAt: staging)
+            if manager.fileExists(atPath: destination.path) {
+                _ = try manager.replaceItemAt(destination, withItemAt: staging)
+            } else {
+                try manager.moveItem(at: staging, to: destination)
+            }
         } catch {
             try? manager.removeItem(at: staging)
             throw Failure.cannotReplace(error.localizedDescription)
         }
+
+        if destination.standardizedFileURL.path != installed.standardizedFileURL.path {
+            try? manager.removeItem(at: installed)
+        }
+        return destination
     }
 
-    private static func relaunch() {
+    private static func relaunch(_ app: URL) {
         let configuration = NSWorkspace.OpenConfiguration()
         configuration.createsNewApplicationInstance = true
-        NSWorkspace.shared.openApplication(at: Bundle.main.bundleURL, configuration: configuration) { _, _ in
+        NSWorkspace.shared.openApplication(at: app, configuration: configuration) { _, _ in
             Task { @MainActor in NSApplication.shared.terminate(nil) }
         }
     }

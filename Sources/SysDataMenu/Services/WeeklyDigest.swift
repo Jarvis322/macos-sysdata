@@ -36,7 +36,7 @@ enum WeeklyDigest {
         if let top = ScanHistory.fastestGrowing(in: log, limit: 1).first {
             content.body = L("Mostly %@, up %@.", top.name, top.bytes.byteString)
         } else {
-            content.body = L("Open System Data to see what grew.")
+            content.body = L("Open Unpacked to see what grew.")
         }
         content.sound = .default
 

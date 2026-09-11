@@ -63,7 +63,7 @@ image="build/SysDataMenu-$version.dmg"
 for artefact in "$archive" "$image"; do
   [ -f "$artefact" ] || { echo "missing $artefact" >&2; exit 1; }
 done
-spctl --assess --type execute "build/SysDataMenu.app"
+spctl --assess --type execute "build/System Data Unpacked.app"
 
 # Release notes: this version's section of the changelog, unwrapped, because
 # GitHub turns each newline in a release body into a visible line break.
@@ -98,6 +98,8 @@ sed -i '' \
   -e "s/version \"[0-9.]*\"/version \"$version\"/" \
   -e "s/sha256 \"[0-9a-f]*\"/sha256 \"$sha\"/" \
   -e 's/SysDataMenu-#{version}\.zip/SysDataMenu-#{version}.dmg/' \
+  -e 's/app "SysDataMenu.app"/app "System Data Unpacked.app"/' \
+  -e 's/name "System Data"$/name "System Data Unpacked"/' \
   "$tap_dir/Casks/$cask.rb"
 # The checksum is the image's, so the cask must be pointing at the image.
 grep -q 'SysDataMenu-#{version}.dmg' "$tap_dir/Casks/$cask.rb" \

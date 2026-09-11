@@ -4791,54 +4791,54 @@
         }
       }
     },
-    "One grant covers everything. Until then this scan leaves the protected places alone — app containers, Desktop, Documents, Music, Photos — rather than asking about them one app at a time, so what you see below is incomplete. Add System Data in the settings pane, then reopen the app.": {
+    "One grant covers everything. Until then this scan leaves the protected places alone — app containers, Desktop, Documents, Music, Photos — rather than asking about them one app at a time, so what you see below is incomplete. Add System Data Unpacked in the settings pane, then reopen the app.": {
       "localizations": {
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "一次授权即可涵盖所有位置。在授权前，扫描会跳过受保护的位置（应用容器、桌面、文稿、音乐、照片），而不会逐个应用请求权限，因此下方结果并不完整。请在“完全磁盘访问权限”设置中添加“System Data”，然后重新打开应用。"
+            "value": "一次授权即可涵盖所有位置。在授权前，扫描会跳过受保护的位置（应用容器、桌面、文稿、音乐、照片），而不会逐个应用请求权限，因此下方结果并不完整。请在“完全磁盘访问权限”设置中添加“System Data Unpacked”，然后重新打开应用。"
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Tek izin hepsini kapsar. O zamana kadar bu tarama korumalı yerlere dokunmuyor — uygulama konteynerleri, Masaüstü, Belgeler, Müzik, Fotoğraflar — tek tek izin sormaktansa; yani aşağıda gördüğün eksik. Ayarlar bölmesinden Sistem Verileri'ni ekle, sonra uygulamayı yeniden aç."
+            "value": "Tek izin hepsini kapsar. O zamana kadar bu tarama korumalı yerlere dokunmuyor — uygulama konteynerleri, Masaüstü, Belgeler, Müzik, Fotoğraflar — tek tek izin sormaktansa; yani aşağıda gördüğün eksik. Ayarlar bölmesinden System Data Unpacked'ı ekle, sonra uygulamayı yeniden aç."
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "1 回の許可ですべてに対応できます。それまでこのスキャンは保護された場所——Appコンテナ、デスクトップ、書類、ミュージック、写真——には触れず、Appごとに個別に確認を求めることもしません。そのため下に表示される内容は不完全です。設定パネルで「システムデータ」を追加してから、Appを開き直してください。"
+            "value": "1 回の許可ですべてに対応できます。それまでこのスキャンは保護された場所——Appコンテナ、デスクトップ、書類、ミュージック、写真——には触れず、Appごとに個別に確認を求めることもしません。そのため下に表示される内容は不完全です。設定パネルで「System Data Unpacked」を追加してから、Appを開き直してください。"
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Eine einzige Freigabe deckt alles ab. Bis dahin lässt dieser Scan die geschützten Orte unangetastet — App-Container, Schreibtisch, Dokumente, Musik, Fotos — anstatt einzeln pro App nachzufragen. Was du unten siehst, ist deshalb unvollständig. Füge „Systemdaten“ im Einstellungsbereich hinzu und öffne die App danach erneut."
+            "value": "Eine einzige Freigabe deckt alles ab. Bis dahin lässt dieser Scan die geschützten Orte unangetastet — App-Container, Schreibtisch, Dokumente, Musik, Fotos — anstatt einzeln pro App nachzufragen. Was du unten siehst, ist deshalb unvollständig. Füge „System Data Unpacked“ im Einstellungsbereich hinzu und öffne die App danach erneut."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Une seule autorisation suffit pour tout. En attendant, cette analyse laisse les emplacements protégés de côté — conteneurs d'apps, Bureau, Documents, Musique, Photos — plutôt que de vous les demander un par un ; ce que vous voyez ci-dessous est donc incomplet. Ajoutez Données système dans le volet des réglages, puis rouvrez l'app."
+            "value": "Une seule autorisation suffit pour tout. En attendant, cette analyse laisse les emplacements protégés de côté — conteneurs d'apps, Bureau, Documents, Musique, Photos — plutôt que de vous les demander un par un ; ce que vous voyez ci-dessous est donc incomplet. Ajoutez System Data Unpacked dans le volet des réglages, puis rouvrez l'app."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Un solo permiso lo cubre todo. Hasta entonces, este análisis no toca los lugares protegidos —contenedores de apps, Escritorio, Documentos, Música, Fotos— en lugar de preguntar por cada app una por una, así que lo que ves a continuación está incompleto. Añade Datos del sistema en el panel de ajustes y vuelve a abrir la app."
+            "value": "Un solo permiso lo cubre todo. Hasta entonces, este análisis no toca los lugares protegidos —contenedores de apps, Escritorio, Documentos, Música, Fotos— en lugar de preguntar por cada app una por una, así que lo que ves a continuación está incompleto. Añade System Data Unpacked en el panel de ajustes y vuelve a abrir la app."
           }
         },
         "ko": {
           "stringUnit": {
             "state": "translated",
-            "value": "한 번만 허용하면 모든 항목에 적용됩니다. 허용하기 전까지 이 검사는 앱 컨테이너, 데스크탑, 문서, 음악, 사진 같은 보호된 위치는 앱마다 개별적으로 묻는 대신 그대로 건너뛰므로, 아래 목록은 완전하지 않습니다. 설정 화면에서 시스템 데이터를 추가한 다음 앱을 다시 여세요."
+            "value": "한 번만 허용하면 모든 항목에 적용됩니다. 허용하기 전까지 이 검사는 앱 컨테이너, 데스크탑, 문서, 음악, 사진 같은 보호된 위치는 앱마다 개별적으로 묻는 대신 그대로 건너뛰므로, 아래 목록은 완전하지 않습니다. 설정 화면에서 System Data Unpacked를 추가한 다음 앱을 다시 여세요."
           }
         },
         "ru": {
           "stringUnit": {
             "state": "translated",
-            "value": "Одного разрешения достаточно для всего. До этого момента сканирование не затрагивает защищённые места — контейнеры приложений, Рабочий стол, Документы, Музыку, Фото, — вместо того чтобы запрашивать доступ для каждого приложения по отдельности, поэтому список ниже неполон. Добавьте «Данные системы» в настройках, затем откройте приложение заново."
+            "value": "Одного разрешения достаточно для всего. До этого момента сканирование не затрагивает защищённые места — контейнеры приложений, Рабочий стол, Документы, Музыку, Фото, — вместо того чтобы запрашивать доступ для каждого приложения по отдельности, поэтому список ниже неполон. Добавьте «System Data Unpacked» в настройках, затем откройте приложение заново."
           }
         }
       }
@@ -4895,106 +4895,106 @@
         }
       }
     },
-    "Open System Data to see what grew.": {
+    "Open Unpacked to see what grew.": {
       "localizations": {
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Neyin büyüdüğünü görmek için Sistem Verileri'ni aç."
+            "value": "Neyin büyüdüğünü görmek için Unpacked'ı aç."
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "打开“系统数据”查看增长了什么。"
+            "value": "打开 Unpacked 查看增长了什么。"
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "何が増えたかを確認するにはシステムデータを開いてください。"
+            "value": "何が増えたかを確認するには Unpacked を開いてください。"
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Öffne Systemdaten, um zu sehen, was gewachsen ist."
+            "value": "Öffne Unpacked, um zu sehen, was gewachsen ist."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ouvrez Données système pour voir ce qui a augmenté."
+            "value": "Ouvrez Unpacked pour voir ce qui a augmenté."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Abre Datos del sistema para ver qué creció."
+            "value": "Abre Unpacked para ver qué creció."
           }
         },
         "ko": {
           "stringUnit": {
             "state": "translated",
-            "value": "시스템 데이터를 열어 무엇이 늘었는지 확인하세요."
+            "value": "Unpacked를 열어 무엇이 늘었는지 확인하세요."
           }
         },
         "ru": {
           "stringUnit": {
             "state": "translated",
-            "value": "Откройте «Данные системы», чтобы увидеть, что выросло."
+            "value": "Откройте Unpacked, чтобы увидеть, что выросло."
           }
         }
       }
     },
-    "Open System Data to see what is taking up room.": {
+    "Open Unpacked to see what is taking up room.": {
       "localizations": {
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "打开“系统数据”以查看哪些内容占用了空间。"
-          }
-        },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Neyin yer kapladığını görmek için Sistem Verileri'ni aç."
+            "value": "Neyin yer kapladığını görmek için Unpacked'ı aç."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "打开 Unpacked 以查看哪些内容占用了空间。"
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "何が容量を使っているかを見るには、システムデータを開いてください。"
+            "value": "何が容量を使っているかを見るには、Unpacked を開いてください。"
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Öffne „Systemdaten“, um zu sehen, was Platz beansprucht."
+            "value": "Öffne Unpacked, um zu sehen, was Platz beansprucht."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ouvrez Données système pour voir ce qui prend de la place."
+            "value": "Ouvrez Unpacked pour voir ce qui prend de la place."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Abre Datos del sistema para ver qué ocupa espacio."
+            "value": "Abre Unpacked para ver qué ocupa espacio."
           }
         },
         "ko": {
           "stringUnit": {
             "state": "translated",
-            "value": "시스템 데이터를 열어 공간을 차지하는 항목을 확인하세요."
+            "value": "Unpacked를 열어 공간을 차지하는 항목을 확인하세요."
           }
         },
         "ru": {
           "stringUnit": {
             "state": "translated",
-            "value": "Откройте «Данные системы», чтобы увидеть, что занимает место."
+            "value": "Откройте Unpacked, чтобы увидеть, что занимает место."
           }
         }
       }

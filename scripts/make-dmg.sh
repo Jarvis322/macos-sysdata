@@ -9,10 +9,13 @@ set -euo pipefail
 
 root=$(cd "$(dirname "$0")/.." && pwd)
 name="SysDataMenu"
+app_name="System Data Unpacked"
 version=$(tr -d "[:space:]" < "$root/VERSION")
-app="$root/build/$name.app"
+app="$root/build/$app_name.app"
+# The image keeps its old file name: release pages, the cask and anyone's
+# download script already point at it.
 dmg="$root/build/$name-$version.dmg"
-volume="System Data $version"
+volume="$app_name $version"
 
 [ -d "$app" ] || { echo "missing $app; run scripts/build-app.sh first" >&2; exit 1; }
 
@@ -20,6 +23,14 @@ staging=$(mktemp -d)
 trap 'rm -rf "$staging"' EXIT
 cp -R "$app" "$staging/"
 ln -s /Applications "$staging/Applications"
+
+# Until 1.0.4 the in-app updater looked inside the image for its own file
+# name, SysDataMenu.app. A hidden copy under that name lets those versions
+# still update; the next update from the new version moves the install to the
+# new name. The copy is the same signed bundle, so nothing about the checks
+# changes, and Finder does not show it.
+cp -R "$app" "$staging/$name.app"
+chflags hidden "$staging/$name.app"
 
 # The volume takes the app's own icon, so the mounted disk is recognisable in
 # the Finder sidebar rather than a generic white drive.

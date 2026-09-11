@@ -395,7 +395,7 @@ struct MenuView: View {
             VStack(alignment: .leading, spacing: 2) {
                 Text(L("Grant Full Disk Access once"))
                     .font(.caption.weight(.semibold))
-                Text(L("One grant covers everything. Until then this scan leaves the protected places alone — app containers, Desktop, Documents, Music, Photos — rather than asking about them one app at a time, so what you see below is incomplete. Add System Data in the settings pane, then reopen the app."))
+                Text(L("One grant covers everything. Until then this scan leaves the protected places alone — app containers, Desktop, Documents, Music, Photos — rather than asking about them one app at a time, so what you see below is incomplete. Add System Data Unpacked in the settings pane, then reopen the app."))
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }

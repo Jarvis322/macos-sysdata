@@ -4,9 +4,13 @@
 set -euo pipefail
 
 root=$(cd "$(dirname "$0")/.." && pwd)
+# The SwiftPM product and the executable inside the bundle keep the original
+# name, so `SysDataMenu --json` in anyone's scripts still works. The bundle
+# itself carries the app's name, which is what Finder and Spotlight show.
 name="SysDataMenu"
+app_name="System Data Unpacked"
 version=$(tr -d "[:space:]" < "$root/VERSION")
-bundle="$root/build/$name.app"
+bundle="$root/build/$app_name.app"
 archive="$root/build/$name-$version.zip"
 
 "$root/scripts/compile-strings.sh"
@@ -32,6 +36,8 @@ cp -R "$bin_path/${name}_${name}.bundle" "$bundle/Contents/Resources/"
 [ -f "$root/assets/AppIcon.icns" ] || "$root/scripts/make-icon.sh"
 cp "$root/assets/AppIcon.icns" "$bundle/Contents/Resources/AppIcon.icns"
 
+# The bundle identifier never changes: macOS keys Full Disk Access, the
+# preferences and the login item to it, and a new one would reset all three.
 cat > "$bundle/Contents/Info.plist" <<EOF
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
@@ -44,7 +50,9 @@ cat > "$bundle/Contents/Info.plist" <<EOF
 	<key>CFBundleIdentifier</key>
 	<string>local.sysdata.menu</string>
 	<key>CFBundleName</key>
-	<string>System Data</string>
+	<string>Unpacked</string>
+	<key>CFBundleDisplayName</key>
+	<string>$app_name</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
