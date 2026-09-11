@@ -5,6 +5,25 @@ What changed in each release, and where it is worth saying, why.
 Versions up to and including v0.3.7 were released under the MIT License; see
 [LICENSE](LICENSE).
 
+## v1.1.0 — 2026-09-12
+
+- **The folded list is now a map of the disk.** Categories start folded and,
+  once a scan finishes, are listed largest first. Each header carries a bar:
+  the category's size next to the largest one, split into Safe, Review and
+  Manual in the badges' own colours. A category that has grown well past its
+  recent size gets an amber mark with the amount. A single line above the list
+  sums up System Data, free space and the change over the past week. This
+  replaces the multicoloured bar from 1.0, whose colours meant nothing beyond
+  telling categories apart.
+- **Unusual growth notification**, optional: after the daily scan, a
+  notification when a category is at least 50% and 2 GB above its median over
+  its last 14 scans, and not again for that category until it has grown another
+  2 GB.
+- **Expand all / Collapse all** beside the sort control. Categories fold shut
+  on the first scan only, so a background scan never closes what you opened.
+- **Select safe** opens the categories it selects in, rather than ticking rows
+  inside folded groups where nobody can see them.
+
 ## v1.0.6 — 2026-09-11
 
 - **Updating from 1.0.4 or earlier left the app hidden.** The 1.0.5 image
