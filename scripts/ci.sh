@@ -69,4 +69,9 @@ for table in "$strings_before"/*.lproj/Localizable.strings; do
     || { echo "$language/Localizable.strings is stale; run scripts/compile-strings.sh" >&2; exit 1; }
 done
 
+step "Check the site's llms files are up to date"
+# docs/llms.txt and docs/llms-full.txt are generated from README.md, so a
+# README edit without a regeneration ships a stale description of the app.
+scripts/make-llms.sh --check
+
 printf '\n\033[1;32m==> everything passed\033[0m\n'

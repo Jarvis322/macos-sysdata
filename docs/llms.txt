@@ -4,16 +4,16 @@
 
 System Data is what macOS calls everything Storage settings cannot file under Apps, Photos or Documents: simulator runtimes, Xcode caches, package-manager stores, virtual machine disks, local Time Machine snapshots, logs, per-app data folders. macOS shows the total and nothing else. This app measures each item on disk, labels it Safe, Review or Manual, and deletes only what you tick.
 
-Install: `brew install --cask Jarvis322/tap/sysdata`
+Current version: 1.2.0. Install: `brew install --cask Jarvis322/tap/sysdata`
 
 ## Pages
 
 - [Home](https://macos-sysdata.yigitech.dev/): what the app does, what it finds, and what System Data actually is
-- [Full text for language models](https://macos-sysdata.yigitech.dev/llms-full.txt): the same site with every section written out
+- [Full text](https://macos-sysdata.yigitech.dev/llms-full.txt): the README in full, for a model that needs the detail
 
 ## Source and releases
 
-- [Repository](https://github.com/Jarvis322/macos-sysdata): Swift 6, SwiftUI, source published so the delete commands can be read
+- [Repository](https://github.com/Jarvis322/macos-sysdata): Swift 6 and SwiftUI, published so the delete commands can be read
 - [Latest release](https://github.com/Jarvis322/macos-sysdata/releases/latest): signed and notarized disk image, universal binary
 - [Changelog](https://github.com/Jarvis322/macos-sysdata/blob/main/CHANGELOG.md): every release, including two that shipped a broken updater and what to do about them
 - [Purgeable space measurement](https://github.com/Jarvis322/macos-sysdata/blob/main/docs/purgeable-measurement.md): why the purgeable figure is an estimate and not space you can plan around
