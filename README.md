@@ -192,7 +192,8 @@ prompt, which is why it asks each time and shows you the command first.
   password, and never on a scan you are watching.
 - **Safe items to the Trash**, if you want an undo window for the items that
   are normally deleted outright. They free nothing until the Trash is emptied.
-- **A window or the menu bar.** The same panel opens as a real window —
+- **A window or the menu bar.** On the first launch after 1.2.0 the app asks
+  which you want, once. The same panel opens as a real window —
   from Applications, from the Dock, or from Settings > Open in a window — and
   the menu bar icon can be switched off entirely. With the icon on, it shows
   System Data's size, free space, or just the icon.

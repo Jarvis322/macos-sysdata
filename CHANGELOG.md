@@ -11,6 +11,9 @@ Versions up to and including v0.3.7 were released under the MIT License; see
   open it from Applications or the Dock, resize it, leave it open. It is the
   same panel, with the title bar as its header, and it opens from Settings >
   Open in a window as well.
+- **It asks, once.** The first launch after this update puts one question on
+  screen: keep the menu bar icon, or use a window instead. Answering it is the
+  whole setup, and it never asks again — closing it changes nothing.
 - **The menu bar icon is now optional.** Settings > Show in menu bar turns it
   off. The app then lives in its window and appears in the Dock, so it can
   always be reached; turning the icon off opens the window first rather than
