@@ -22,6 +22,9 @@ enum Entry {
 struct SysDataMenuApp: App {
     @NSApplicationDelegateAdaptor(PowerOffGuard.self) private var powerOffGuard
     @State private var model = ScanModel()
+    /// The same preference `ScanModel` stores, read through `@AppStorage`
+    /// because that is what makes this scene re-evaluate when it changes.
+    @AppStorage(ScanModel.menuBarIconKey) private var showsMenuBarIcon = true
 
     init() {
         // No Dock icon while the app is only a menu bar item; MainWindow puts
@@ -32,10 +35,7 @@ struct SysDataMenuApp: App {
     }
 
     var body: some Scene {
-        MenuBarExtra(isInserted: Binding(
-            get: { model.showsMenuBarIcon },
-            set: { model.showsMenuBarIcon = $0; MainWindow.shared.menuBarPreferenceChanged() }
-        )) {
+        MenuBarExtra(isInserted: $showsMenuBarIcon) {
             MenuView()
                 .environment(model)
         } label: {

@@ -76,6 +76,7 @@
 "Idle longest" = "Дольше всего не используется";
 "It goes to the Trash first." = "Сначала это отправляется в Корзину.";
 "Keep a local record of each scan and deletion, so the list can show what changed" = "Хранить локальную запись о каждом сканировании и удалении, чтобы список показывал изменения";
+"Keep the menu bar icon" = "Оставить значок в строке меню";
 "Launch at login" = "Запускать при входе в систему";
 "Launch at login: %@" = "Запуск при входе: %@";
 "Logs & diagnostics" = "Журналы и диагностика";
@@ -150,6 +151,7 @@
 "The download is not signed by this app's developer, so it was discarded. (%@)" = "Загрузка не подписана разработчиком этого приложения, поэтому она отклонена. (%@)";
 "The downloaded image could not be opened. Nothing was installed." = "Не удалось открыть загруженный образ. Ничего не установлено.";
 "The downloaded image does not contain the app. Nothing was installed." = "Загруженный образ не содержит приложение. Ничего не установлено.";
+"The same panel either way: the menu bar keeps the size in sight, the window opens from Applications like any other app." = "В обоих случаях это одна и та же панель: в строке меню размер всегда на виду, а окно открывается из «Программ», как любое приложение.";
 "The same panel, as a window you can resize and leave open" = "Та же панель в виде окна, размер которого можно менять и оставлять открытым";
 "This is regenerated automatically when needed." = "Это создаётся заново автоматически при необходимости.";
 "Time Machine snapshots" = "Снимки Time Machine";
@@ -157,14 +159,17 @@
 "Untick the selected items. It deletes nothing." = "Снимите отметки с выбранных элементов. Это ничего не удаляет.";
 "Unusual storage growth" = "Необычный рост хранилища";
 "Update" = "Обновить";
+"Use a window instead" = "Использовать окно";
 "Version %@ is available." = "Доступна версия %@.";
 "Virtual machines" = "Виртуальные машины";
 "Warn below" = "Предупреждать ниже";
 "Warn when free space runs low" = "Предупреждать, когда заканчивается свободное место";
 "Weekly summary" = "Еженедельная сводка";
 "What grew, and what came back" = "Что выросло и что вернулось";
+"Where should it live?" = "Где ему жить?";
 "With this off the app lives in its window, and opens from Applications or the Dock." = "Если выключено, приложение живёт в своём окне и открывается из «Программ» или Dock.";
 "Xcode" = "Xcode";
+"You can change this any time in Settings." = "Это можно изменить в любой момент в настройках.";
 "different developer" = "другой разработчик";
 "iOS device backups" = "Резервные копии устройств iOS";
 "macOS is not allowing notifications from this app. Turn them on in System Settings > Notifications." = "macOS не разрешает этому приложению отправлять уведомления. Включите их в разделе «Системные настройки» > «Уведомления».";

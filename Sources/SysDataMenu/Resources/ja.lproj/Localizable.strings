@@ -76,6 +76,7 @@
 "Idle longest" = "未使用期間順";
 "It goes to the Trash first." = "まずゴミ箱に移動します。";
 "Keep a local record of each scan and deletion, so the list can show what changed" = "各スキャンと削除の記録をこのMac内に保存し、変化をリストに表示できるようにします";
+"Keep the menu bar icon" = "メニューバーに表示したままにする";
 "Launch at login" = "ログイン時に起動";
 "Launch at login: %@" = "ログイン時に起動：%@";
 "Logs & diagnostics" = "ログと診断";
@@ -150,6 +151,7 @@
 "The download is not signed by this app's developer, so it was discarded. (%@)" = "ダウンロードがこのAppの開発元によって署名されていないため、破棄しました。(%@)";
 "The downloaded image could not be opened. Nothing was installed." = "ダウンロードしたイメージを開けませんでした。何もインストールされていません。";
 "The downloaded image does not contain the app. Nothing was installed." = "ダウンロードしたイメージにAppが含まれていません。何もインストールされていません。";
+"The same panel either way: the menu bar keeps the size in sight, the window opens from Applications like any other app." = "どちらも同じパネルです。メニューバーは容量を常に表示し、ウインドウは他のアプリと同じように「アプリケーション」から開きます。";
 "The same panel, as a window you can resize and leave open" = "同じパネルを、サイズを変更でき開いたままにできるウインドウとして表示します";
 "This is regenerated automatically when needed." = "これは必要に応じて自動的に再生成されます。";
 "Time Machine snapshots" = "Time Machine スナップショット";
@@ -157,14 +159,17 @@
 "Untick the selected items. It deletes nothing." = "選択した項目のチェックを外します。何も削除しません。";
 "Unusual storage growth" = "ストレージの異常な増加";
 "Update" = "アップデート";
+"Use a window instead" = "ウインドウを使う";
 "Version %@ is available." = "バージョン %@ が利用可能です。";
 "Virtual machines" = "仮想マシン";
 "Warn below" = "この値を下回ったら警告";
 "Warn when free space runs low" = "空き容量が少なくなったら警告";
 "Weekly summary" = "毎週の概要";
 "What grew, and what came back" = "何が増え、何が戻ってきたか";
+"Where should it live?" = "どこに置きますか？";
 "With this off the app lives in its window, and opens from Applications or the Dock." = "オフにすると、アプリはウインドウで動作し、「アプリケーション」フォルダまたはDockから開きます。";
 "Xcode" = "Xcode";
+"You can change this any time in Settings." = "これは設定でいつでも変更できます。";
 "different developer" = "別の開発元";
 "iOS device backups" = "iOSデバイスのバックアップ";
 "macOS is not allowing notifications from this app. Turn them on in System Settings > Notifications." = "macOS がこのAppの通知を許可していません。システム設定 > 通知 で有効にしてください。";

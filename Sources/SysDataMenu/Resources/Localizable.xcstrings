@@ -4063,6 +4063,58 @@
         }
       }
     },
+    "Keep the menu bar icon": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Menü çubuğunda kalsın"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "保留菜单栏图标"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "メニューバーに表示したままにする"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Menüleistensymbol behalten"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Garder l'icône du menu"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mantener el icono en la barra"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "메뉴 막대 아이콘 유지"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Оставить значок в строке меню"
+          }
+        }
+      }
+    },
     "Launch at login": {
       "localizations": {
         "zh-Hans": {
@@ -7917,6 +7969,58 @@
         }
       }
     },
+    "The same panel either way: the menu bar keeps the size in sight, the window opens from Applications like any other app.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "İkisinde de aynı panel: menü çubuğu boyutu hep görünür tutar, pencere ise Uygulamalar klasöründen her uygulama gibi açılır."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "两种方式都是同一个面板：菜单栏让大小始终可见，窗口则像其他应用一样从“应用程序”打开。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "どちらも同じパネルです。メニューバーは容量を常に表示し、ウインドウは他のアプリと同じように「アプリケーション」から開きます。"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "In beiden Fällen dasselbe Panel: Die Menüleiste hält die Größe im Blick, das Fenster öffnet sich wie jede andere App über „Programme“."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Le même panneau dans les deux cas : la barre des menus garde la taille sous les yeux, la fenêtre s'ouvre depuis Applications comme n'importe quelle app."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "El mismo panel en ambos casos: la barra de menús mantiene el tamaño a la vista y la ventana se abre desde Aplicaciones como cualquier otra app."
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "어느 쪽이든 같은 패널입니다. 메뉴 막대는 용량을 항상 보여주고, 창은 다른 앱처럼 응용 프로그램 폴더에서 열립니다."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "В обоих случаях это одна и та же панель: в строке меню размер всегда на виду, а окно открывается из «Программ», как любое приложение."
+          }
+        }
+      }
+    },
     "The same panel, as a window you can resize and leave open": {
       "localizations": {
         "tr": {
@@ -8282,6 +8386,58 @@
         }
       }
     },
+    "Use a window instead": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pencere olarak kullan"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "改用窗口"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ウインドウを使う"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lieber ein Fenster"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Utiliser une fenêtre"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Usar una ventana"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "창으로 사용"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Использовать окно"
+          }
+        }
+      }
+    },
     "Version %@ is available.": {
       "extractionState": "manual",
       "localizations": {
@@ -8595,6 +8751,58 @@
         }
       }
     },
+    "Where should it live?": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nerede dursun?"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "它放在哪里？"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "どこに置きますか？"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wo soll sie leben?"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Où doit-elle vivre ?"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "¿Dónde quieres tenerla?"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "어디에 둘까요?"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Где ему жить?"
+          }
+        }
+      }
+    },
     "With this off the app lives in its window, and opens from Applications or the Dock.": {
       "localizations": {
         "tr": {
@@ -8695,6 +8903,58 @@
           "stringUnit": {
             "state": "translated",
             "value": "Xcode"
+          }
+        }
+      }
+    },
+    "You can change this any time in Settings.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bunu istediğin zaman Ayarlar'dan değiştirebilirsin."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "你可以随时在“设置”中更改。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "これは設定でいつでも変更できます。"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Du kannst das jederzeit in den Einstellungen ändern."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vous pouvez changer cela à tout moment dans les réglages."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Puedes cambiarlo cuando quieras en los ajustes."
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "설정에서 언제든지 변경할 수 있습니다."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Это можно изменить в любой момент в настройках."
           }
         }
       }

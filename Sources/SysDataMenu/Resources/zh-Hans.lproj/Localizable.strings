@@ -76,6 +76,7 @@
 "Idle longest" = "最久未变动";
 "It goes to the Trash first." = "会先移到废纸篓。";
 "Keep a local record of each scan and deletion, so the list can show what changed" = "在本机记录每次扫描和删除操作，以便在列表中显示变化";
+"Keep the menu bar icon" = "保留菜单栏图标";
 "Launch at login" = "登录时启动";
 "Launch at login: %@" = "登录时启动：%@";
 "Logs & diagnostics" = "日志与诊断";
@@ -150,6 +151,7 @@
 "The download is not signed by this app's developer, so it was discarded. (%@)" = "下载内容并非由此应用的开发者签名，已丢弃。（%@）";
 "The downloaded image could not be opened. Nothing was installed." = "无法打开下载的磁盘映像。未安装任何内容。";
 "The downloaded image does not contain the app. Nothing was installed." = "下载的磁盘映像中不包含此应用。未安装任何内容。";
+"The same panel either way: the menu bar keeps the size in sight, the window opens from Applications like any other app." = "两种方式都是同一个面板：菜单栏让大小始终可见，窗口则像其他应用一样从“应用程序”打开。";
 "The same panel, as a window you can resize and leave open" = "同一个面板，以可调整大小并可一直开着的窗口呈现";
 "This is regenerated automatically when needed." = "需要时会自动重新生成。";
 "Time Machine snapshots" = "时间机器快照";
@@ -157,14 +159,17 @@
 "Untick the selected items. It deletes nothing." = "取消选中所选项目。不会删除任何内容。";
 "Unusual storage growth" = "存储空间异常增长";
 "Update" = "更新";
+"Use a window instead" = "改用窗口";
 "Version %@ is available." = "版本 %@ 现已可用。";
 "Virtual machines" = "虚拟机";
 "Warn below" = "可用空间低于此值时提醒";
 "Warn when free space runs low" = "可用空间不足时提醒";
 "Weekly summary" = "每周摘要";
 "What grew, and what came back" = "空间增长与重新出现的项目";
+"Where should it live?" = "它放在哪里？";
 "With this off the app lives in its window, and opens from Applications or the Dock." = "关闭后，应用只在自己的窗口中运行，可从“应用程序”或程序坞打开。";
 "Xcode" = "Xcode";
+"You can change this any time in Settings." = "你可以随时在“设置”中更改。";
 "different developer" = "签名开发者不一致";
 "iOS device backups" = "iOS 设备备份";
 "macOS is not allowing notifications from this app. Turn them on in System Settings > Notifications." = "macOS 当前不允许此应用发送通知。请在“系统设置”>“通知”中开启通知。";

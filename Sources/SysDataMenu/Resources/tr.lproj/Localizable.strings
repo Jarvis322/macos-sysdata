@@ -76,6 +76,7 @@
 "Idle longest" = "En uzun boşta";
 "It goes to the Trash first." = "Önce Çöp Sepeti'ne gider.";
 "Keep a local record of each scan and deletion, so the list can show what changed" = "Her taramanın ve silmenin yerel kaydını tut, böylece liste neyin değiştiğini gösterebilir";
+"Keep the menu bar icon" = "Menü çubuğunda kalsın";
 "Launch at login" = "Girişte başlat";
 "Launch at login: %@" = "Girişte başlat: %@";
 "Logs & diagnostics" = "Günlükler ve tanılama";
@@ -150,6 +151,7 @@
 "The download is not signed by this app's developer, so it was discarded. (%@)" = "İndirilen dosya bu uygulamanın geliştiricisi tarafından imzalanmamış, bu yüzden atıldı. (%@)";
 "The downloaded image could not be opened. Nothing was installed." = "İndirilen disk imajı açılamadı. Hiçbir şey kurulmadı.";
 "The downloaded image does not contain the app. Nothing was installed." = "İndirilen disk imajı uygulamayı içermiyor. Hiçbir şey kurulmadı.";
+"The same panel either way: the menu bar keeps the size in sight, the window opens from Applications like any other app." = "İkisinde de aynı panel: menü çubuğu boyutu hep görünür tutar, pencere ise Uygulamalar klasöründen her uygulama gibi açılır.";
 "The same panel, as a window you can resize and leave open" = "Aynı panel; boyutunu değiştirebileceğin ve açık bırakabileceğin bir pencere olarak";
 "This is regenerated automatically when needed." = "Gerektiğinde kendiliğinden yeniden oluşturulur.";
 "Time Machine snapshots" = "Time Machine anlık görüntüleri";
@@ -157,14 +159,17 @@
 "Untick the selected items. It deletes nothing." = "Seçili öğelerin işaretini kaldırır. Hiçbir şey silmez.";
 "Unusual storage growth" = "Olağandışı depolama büyümesi";
 "Update" = "Güncelle";
+"Use a window instead" = "Pencere olarak kullan";
 "Version %@ is available." = "%@ sürümü yayınlandı.";
 "Virtual machines" = "Sanal makineler";
 "Warn below" = "Şunun altında uyar";
 "Warn when free space runs low" = "Boş alan azalınca uyar";
 "Weekly summary" = "Haftalık özet";
 "What grew, and what came back" = "Ne büyüdü, ne geri geldi";
+"Where should it live?" = "Nerede dursun?";
 "With this off the app lives in its window, and opens from Applications or the Dock." = "Kapalıyken uygulama kendi penceresinde çalışır; Uygulamalar klasöründen veya Dock'tan açılır.";
 "Xcode" = "Xcode";
+"You can change this any time in Settings." = "Bunu istediğin zaman Ayarlar'dan değiştirebilirsin.";
 "different developer" = "farklı geliştirici";
 "iOS device backups" = "iOS aygıt yedekleri";
 "macOS is not allowing notifications from this app. Turn them on in System Settings > Notifications." = "macOS bu uygulamanın bildirimlerine izin vermiyor. Sistem Ayarları > Bildirimler'den açabilirsin.";

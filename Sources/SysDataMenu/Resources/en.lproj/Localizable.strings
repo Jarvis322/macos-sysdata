@@ -76,6 +76,7 @@
 "Idle longest" = "Idle longest";
 "It goes to the Trash first." = "It goes to the Trash first.";
 "Keep a local record of each scan and deletion, so the list can show what changed" = "Keep a local record of each scan and deletion, so the list can show what changed";
+"Keep the menu bar icon" = "Keep the menu bar icon";
 "Launch at login" = "Launch at login";
 "Launch at login: %@" = "Launch at login: %@";
 "Logs & diagnostics" = "Logs & diagnostics";
@@ -150,6 +151,7 @@
 "The download is not signed by this app's developer, so it was discarded. (%@)" = "The download is not signed by this app's developer, so it was discarded. (%@)";
 "The downloaded image could not be opened. Nothing was installed." = "The downloaded image could not be opened. Nothing was installed.";
 "The downloaded image does not contain the app. Nothing was installed." = "The downloaded image does not contain the app. Nothing was installed.";
+"The same panel either way: the menu bar keeps the size in sight, the window opens from Applications like any other app." = "The same panel either way: the menu bar keeps the size in sight, the window opens from Applications like any other app.";
 "The same panel, as a window you can resize and leave open" = "The same panel, as a window you can resize and leave open";
 "This is regenerated automatically when needed." = "This is regenerated automatically when needed.";
 "Time Machine snapshots" = "Time Machine snapshots";
@@ -157,14 +159,17 @@
 "Untick the selected items. It deletes nothing." = "Untick the selected items. It deletes nothing.";
 "Unusual storage growth" = "Unusual storage growth";
 "Update" = "Update";
+"Use a window instead" = "Use a window instead";
 "Version %@ is available." = "Version %@ is available.";
 "Virtual machines" = "Virtual machines";
 "Warn below" = "Warn below";
 "Warn when free space runs low" = "Warn when free space runs low";
 "Weekly summary" = "Weekly summary";
 "What grew, and what came back" = "What grew, and what came back";
+"Where should it live?" = "Where should it live?";
 "With this off the app lives in its window, and opens from Applications or the Dock." = "With this off the app lives in its window, and opens from Applications or the Dock.";
 "Xcode" = "Xcode";
+"You can change this any time in Settings." = "You can change this any time in Settings.";
 "different developer" = "different developer";
 "iOS device backups" = "iOS device backups";
 "macOS is not allowing notifications from this app. Turn them on in System Settings > Notifications." = "macOS is not allowing notifications from this app. Turn them on in System Settings > Notifications.";

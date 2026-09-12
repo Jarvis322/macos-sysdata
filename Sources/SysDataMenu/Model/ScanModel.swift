@@ -101,7 +101,9 @@ final class ScanModel {
     private static let sortKey = "sortOrder"
     private static let historyKey = "keepsHistory"
     private static let menuBarKey = "menuBarContent"
-    private static let menuBarIconKey = "showsMenuBarIcon"
+    /// Read by the app scene too, which needs `@AppStorage` to notice the
+    /// change: an app scene does not track this model the way a view does.
+    static let menuBarIconKey = "showsMenuBarIcon"
     private static let safeToTrashKey = "movesSafeToTrash"
     private static let rescanInterval: Duration = .seconds(24 * 60 * 60)
 

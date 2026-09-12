@@ -76,6 +76,7 @@
 "Idle longest" = "Más tiempo inactivo";
 "It goes to the Trash first." = "Primero va a la Papelera.";
 "Keep a local record of each scan and deletion, so the list can show what changed" = "Guardar un registro local de cada análisis y eliminación, para que la lista pueda mostrar qué cambió";
+"Keep the menu bar icon" = "Mantener el icono en la barra";
 "Launch at login" = "Abrir al iniciar sesión";
 "Launch at login: %@" = "Abrir al iniciar sesión: %@";
 "Logs & diagnostics" = "Registros y diagnósticos";
@@ -150,6 +151,7 @@
 "The download is not signed by this app's developer, so it was discarded. (%@)" = "La descarga no está firmada por el desarrollador de esta app, así que se descartó. (%@)";
 "The downloaded image could not be opened. Nothing was installed." = "No se pudo abrir la imagen descargada. No se instaló nada.";
 "The downloaded image does not contain the app. Nothing was installed." = "La imagen descargada no contiene la app. No se instaló nada.";
+"The same panel either way: the menu bar keeps the size in sight, the window opens from Applications like any other app." = "El mismo panel en ambos casos: la barra de menús mantiene el tamaño a la vista y la ventana se abre desde Aplicaciones como cualquier otra app.";
 "The same panel, as a window you can resize and leave open" = "El mismo panel, en una ventana que puedes redimensionar y dejar abierta";
 "This is regenerated automatically when needed." = "Esto se regenera automáticamente cuando se necesita.";
 "Time Machine snapshots" = "Instantáneas de Time Machine";
@@ -157,14 +159,17 @@
 "Untick the selected items. It deletes nothing." = "Desmarca los elementos seleccionados. No elimina nada.";
 "Unusual storage growth" = "Crecimiento inusual del almacenamiento";
 "Update" = "Actualizar";
+"Use a window instead" = "Usar una ventana";
 "Version %@ is available." = "La versión %@ está disponible.";
 "Virtual machines" = "Máquinas virtuales";
 "Warn below" = "Avisar por debajo de";
 "Warn when free space runs low" = "Avisar cuando quede poco espacio libre";
 "Weekly summary" = "Resumen semanal";
 "What grew, and what came back" = "Qué creció y qué volvió a aparecer";
+"Where should it live?" = "¿Dónde quieres tenerla?";
 "With this off the app lives in its window, and opens from Applications or the Dock." = "Con esto desactivado, la app vive en su ventana y se abre desde Aplicaciones o el Dock.";
 "Xcode" = "Xcode";
+"You can change this any time in Settings." = "Puedes cambiarlo cuando quieras en los ajustes.";
 "different developer" = "otro desarrollador";
 "iOS device backups" = "Copias de seguridad de dispositivos iOS";
 "macOS is not allowing notifications from this app. Turn them on in System Settings > Notifications." = "macOS no permite notificaciones de esta app. Actívalas en Ajustes del Sistema > Notificaciones.";

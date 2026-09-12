@@ -76,6 +76,7 @@
 "Idle longest" = "Inactif depuis le plus longtemps";
 "It goes to the Trash first." = "Cela va d'abord à la Corbeille.";
 "Keep a local record of each scan and deletion, so the list can show what changed" = "Conserver un historique local de chaque analyse et suppression, afin que la liste puisse montrer ce qui a changé";
+"Keep the menu bar icon" = "Garder l'icône du menu";
 "Launch at login" = "Ouvrir à l'ouverture de session";
 "Launch at login: %@" = "Ouvrir à l'ouverture de session : %@";
 "Logs & diagnostics" = "Journaux et diagnostics";
@@ -150,6 +151,7 @@
 "The download is not signed by this app's developer, so it was discarded. (%@)" = "Le téléchargement n'est pas signé par le développeur de cette app, il a donc été ignoré. (%@)";
 "The downloaded image could not be opened. Nothing was installed." = "L'image téléchargée n'a pas pu être ouverte. Rien n'a été installé.";
 "The downloaded image does not contain the app. Nothing was installed." = "L'image téléchargée ne contient pas l'app. Rien n'a été installé.";
+"The same panel either way: the menu bar keeps the size in sight, the window opens from Applications like any other app." = "Le même panneau dans les deux cas : la barre des menus garde la taille sous les yeux, la fenêtre s'ouvre depuis Applications comme n'importe quelle app.";
 "The same panel, as a window you can resize and leave open" = "Le même panneau, dans une fenêtre redimensionnable que vous pouvez laisser ouverte";
 "This is regenerated automatically when needed." = "Ceci est régénéré automatiquement en cas de besoin.";
 "Time Machine snapshots" = "Instantanés Time Machine";
@@ -157,14 +159,17 @@
 "Untick the selected items. It deletes nothing." = "Décochez les éléments sélectionnés. Cela ne supprime rien.";
 "Unusual storage growth" = "Croissance inhabituelle du stockage";
 "Update" = "Mettre à jour";
+"Use a window instead" = "Utiliser une fenêtre";
 "Version %@ is available." = "La version %@ est disponible.";
 "Virtual machines" = "Machines virtuelles";
 "Warn below" = "Avertir en dessous de";
 "Warn when free space runs low" = "Avertir lorsque l'espace disponible devient faible";
 "Weekly summary" = "Résumé hebdomadaire";
 "What grew, and what came back" = "Ce qui a grossi, et ce qui est revenu";
+"Where should it live?" = "Où doit-elle vivre ?";
 "With this off the app lives in its window, and opens from Applications or the Dock." = "Désactivé, l'app vit dans sa fenêtre et s'ouvre depuis Applications ou le Dock.";
 "Xcode" = "Xcode";
+"You can change this any time in Settings." = "Vous pouvez changer cela à tout moment dans les réglages.";
 "different developer" = "développeur différent";
 "iOS device backups" = "Sauvegardes d'appareils iOS";
 "macOS is not allowing notifications from this app. Turn them on in System Settings > Notifications." = "macOS n'autorise pas les notifications de cette app. Activez-les dans Réglages Système > Notifications.";

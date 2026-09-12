@@ -17,7 +17,18 @@ final class MainWindow: NSObject, NSWindowDelegate {
     static let shared = MainWindow()
 
     private var window: NSWindow?
+    private var prompt: NSWindow?
     private var model: ScanModel?
+
+    /// Whether the one-time question about where the app should live has been
+    /// answered. Closing the question counts as an answer: it is a question,
+    /// not a gate, and asking twice would make it one.
+    private static let choiceKey = "presentationChoiceMade"
+
+    static var hasChosenPresentation: Bool {
+        get { UserDefaults.standard.bool(forKey: choiceKey) }
+        set { UserDefaults.standard.set(newValue, forKey: choiceKey) }
+    }
 
     private static let frameName = "SysDataMenuMainWindow"
     private static let defaultSize = NSSize(width: 520, height: 760)
@@ -37,8 +48,52 @@ final class MainWindow: NSObject, NSWindowDelegate {
         show()
     }
 
+    /// The one-time question, asked on the first launch of the version that
+    /// has a window. Someone who only ever wanted a window should not have to
+    /// find a switch to stop the icon appearing.
+    func askWherePresentationBelongs() {
+        guard !Self.hasChosenPresentation, prompt == nil, model != nil else { return }
+        let view = PresentationChoiceView { [weak self] usesWindow in
+            self?.answer(usesWindow: usesWindow)
+        }
+        let window = NSWindow(contentViewController: NSHostingController(rootView: view))
+        window.styleMask = [.titled, .closable, .fullSizeContentView]
+        window.titleVisibility = .hidden
+        window.titlebarAppearsTransparent = true
+        window.isReleasedWhenClosed = false
+        window.delegate = self
+        // Named for the Window menu, which would otherwise say "Untitled".
+        window.title = Bundle.main.object(forInfoDictionaryKey: "CFBundleDisplayName") as? String
+            ?? "System Data Unpacked"
+        window.center()
+        prompt = window
+        // The prompt is the only thing on screen at this point, so the app
+        // needs a Dock tile and the focus to go with it.
+        NSApplication.shared.setActivationPolicy(.regular)
+        NSApplication.shared.activate()
+        window.makeKeyAndOrderFront(nil)
+    }
+
+    private func answer(usesWindow: Bool) {
+        Self.hasChosenPresentation = true
+        model?.showsMenuBarIcon = !usesWindow
+        prompt?.close()
+        if usesWindow {
+            show()
+        } else {
+            syncActivationPolicy(windowIsOpen: window?.isVisible ?? false)
+        }
+    }
+
     func show() {
         guard let model else { return }
+        // While the question is up it is the app: opening the list behind it
+        // would answer it on the person's behalf.
+        if let prompt {
+            NSApplication.shared.activate()
+            prompt.makeKeyAndOrderFront(nil)
+            return
+        }
         let window = self.window ?? make(for: model)
         self.window = window
         syncActivationPolicy(windowIsOpen: true)
@@ -54,7 +109,15 @@ final class MainWindow: NSObject, NSWindowDelegate {
     }
 
     func windowWillClose(_ notification: Notification) {
-        syncActivationPolicy(windowIsOpen: false)
+        let closing = notification.object as AnyObject?
+        if closing === prompt {
+            // Dismissed without an answer: keep what the app already does,
+            // and do not ask again.
+            Self.hasChosenPresentation = true
+            prompt = nil
+        }
+        let windowStaysOpen = closing !== window && (window?.isVisible ?? false)
+        syncActivationPolicy(windowIsOpen: windowStaysOpen)
     }
 
     private func syncActivationPolicy(windowIsOpen: Bool) {

@@ -21,6 +21,7 @@ final class PowerOffGuard: NSObject, NSApplicationDelegate {
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         MainWindow.shared.showIfMenuBarIsHidden()
+        MainWindow.shared.askWherePresentationBelongs()
         NSWorkspace.shared.notificationCenter.addObserver(
             self,
             selector: #selector(workspaceWillPowerOff),
