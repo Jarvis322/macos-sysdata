@@ -35,7 +35,12 @@ struct SysDataMenuApp: App {
     }
 
     var body: some Scene {
-        MenuBarExtra(isInserted: $showsMenuBarIcon) {
+        // Read here, so the scene re-evaluates when the preference changes,
+        // and hand the binding a value it cannot write back to: the icon is
+        // switched where the person switches it, and SwiftUI writing its own
+        // idea of the state into the preference would undo that.
+        let showsIcon = showsMenuBarIcon
+        MenuBarExtra(isInserted: Binding(get: { showsIcon }, set: { _ in })) {
             MenuView()
                 .environment(model)
         } label: {
