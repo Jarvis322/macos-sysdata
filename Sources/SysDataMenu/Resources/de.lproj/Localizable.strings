@@ -101,6 +101,7 @@
 "Open Settings" = "Einstellungen öffnen";
 "Open Unpacked to see what grew." = "Öffne Unpacked, um zu sehen, was gewachsen ist.";
 "Open Unpacked to see what is taking up room." = "Öffne Unpacked, um zu sehen, was Platz beansprucht.";
+"Open in a window" = "In einem Fenster öffnen";
 "Open x.com/yigitech" = "x.com/yigitech öffnen";
 "Order rows by size, or by how long they have sat untouched" = "Ordne die Zeilen nach Größe oder danach, wie lange sie unangetastet geblieben sind";
 "Other large folders" = "Andere große Ordner";
@@ -125,6 +126,7 @@
 "Shared & other users" = "Geteilt & andere Benutzer";
 "Show all" = "Alle anzeigen";
 "Show exactly what runs" = "Zeige genau, was ausgeführt wird";
+"Show in menu bar" = "In der Menüleiste anzeigen";
 "Show largest entries" = "Größte Einträge anzeigen";
 "Show the commands that run as administrator" = "Zeige die Befehle, die als Administrator ausgeführt werden";
 "Shut down simulators at power off" = "Simulatoren beim Ausschalten herunterfahren";
@@ -148,6 +150,7 @@
 "The download is not signed by this app's developer, so it was discarded. (%@)" = "Der Download ist nicht vom Entwickler dieser App signiert und wurde deshalb verworfen. (%@)";
 "The downloaded image could not be opened. Nothing was installed." = "Das heruntergeladene Image konnte nicht geöffnet werden. Es wurde nichts installiert.";
 "The downloaded image does not contain the app. Nothing was installed." = "Das heruntergeladene Image enthält die App nicht. Es wurde nichts installiert.";
+"The same panel, as a window you can resize and leave open" = "Dasselbe Panel als Fenster, das sich in der Größe ändern und geöffnet lassen lässt";
 "This is regenerated automatically when needed." = "Dies wird bei Bedarf automatisch neu erzeugt.";
 "Time Machine snapshots" = "Time Machine-Snapshots";
 "Trash" = "Papierkorb";
@@ -160,6 +163,7 @@
 "Warn when free space runs low" = "Warnen, wenn der freie Speicherplatz knapp wird";
 "Weekly summary" = "Wöchentliche Zusammenfassung";
 "What grew, and what came back" = "Was gewachsen ist und was zurückgekommen ist";
+"With this off the app lives in its window, and opens from Applications or the Dock." = "Ist dies aus, lebt die App in ihrem Fenster und wird über „Programme“ oder das Dock geöffnet.";
 "Xcode" = "Xcode";
 "different developer" = "anderer Entwickler";
 "iOS device backups" = "iOS-Gerätesicherungen";

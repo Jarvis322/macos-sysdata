@@ -76,6 +76,11 @@ final class ScanModel {
     var sortOrder: SortOrder = SortOrder(rawValue: UserDefaults.standard.string(forKey: ScanModel.sortKey) ?? "") ?? .size {
         didSet { UserDefaults.standard.set(sortOrder.rawValue, forKey: Self.sortKey) }
     }
+    /// Whether the app puts an icon in the menu bar at all. With it off the
+    /// app lives in its window, and the Dock is what reopens it.
+    var showsMenuBarIcon: Bool = UserDefaults.standard.object(forKey: ScanModel.menuBarIconKey) as? Bool ?? true {
+        didSet { UserDefaults.standard.set(showsMenuBarIcon, forKey: Self.menuBarIconKey) }
+    }
     /// What the menu bar shows at rest.
     var menuBarContent: MenuBarContent = MenuBarContent(rawValue: UserDefaults.standard.string(forKey: ScanModel.menuBarKey) ?? "") ?? .systemData {
         didSet { UserDefaults.standard.set(menuBarContent.rawValue, forKey: Self.menuBarKey) }
@@ -96,6 +101,7 @@ final class ScanModel {
     private static let sortKey = "sortOrder"
     private static let historyKey = "keepsHistory"
     private static let menuBarKey = "menuBarContent"
+    private static let menuBarIconKey = "showsMenuBarIcon"
     private static let safeToTrashKey = "movesSafeToTrash"
     private static let rescanInterval: Duration = .seconds(24 * 60 * 60)
 

@@ -101,6 +101,7 @@
 "Open Settings" = "打开设置";
 "Open Unpacked to see what grew." = "打开 Unpacked 查看增长了什么。";
 "Open Unpacked to see what is taking up room." = "打开 Unpacked 以查看哪些内容占用了空间。";
+"Open in a window" = "在窗口中打开";
 "Open x.com/yigitech" = "打开 x.com/yigitech";
 "Order rows by size, or by how long they have sat untouched" = "按大小或未变动的时长排列项目";
 "Other large folders" = "其他大型文件夹";
@@ -125,6 +126,7 @@
 "Shared & other users" = "共享与其他用户";
 "Show all" = "显示全部";
 "Show exactly what runs" = "显示将执行的具体操作";
+"Show in menu bar" = "在菜单栏中显示";
 "Show largest entries" = "显示最大的项目";
 "Show the commands that run as administrator" = "显示以管理员身份执行的命令";
 "Shut down simulators at power off" = "关机时关闭模拟器";
@@ -148,6 +150,7 @@
 "The download is not signed by this app's developer, so it was discarded. (%@)" = "下载内容并非由此应用的开发者签名，已丢弃。（%@）";
 "The downloaded image could not be opened. Nothing was installed." = "无法打开下载的磁盘映像。未安装任何内容。";
 "The downloaded image does not contain the app. Nothing was installed." = "下载的磁盘映像中不包含此应用。未安装任何内容。";
+"The same panel, as a window you can resize and leave open" = "同一个面板，以可调整大小并可一直开着的窗口呈现";
 "This is regenerated automatically when needed." = "需要时会自动重新生成。";
 "Time Machine snapshots" = "时间机器快照";
 "Trash" = "废纸篓";
@@ -160,6 +163,7 @@
 "Warn when free space runs low" = "可用空间不足时提醒";
 "Weekly summary" = "每周摘要";
 "What grew, and what came back" = "空间增长与重新出现的项目";
+"With this off the app lives in its window, and opens from Applications or the Dock." = "关闭后，应用只在自己的窗口中运行，可从“应用程序”或程序坞打开。";
 "Xcode" = "Xcode";
 "different developer" = "签名开发者不一致";
 "iOS device backups" = "iOS 设备备份";

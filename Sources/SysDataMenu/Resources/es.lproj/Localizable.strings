@@ -101,6 +101,7 @@
 "Open Settings" = "Abrir Ajustes";
 "Open Unpacked to see what grew." = "Abre Unpacked para ver qué creció.";
 "Open Unpacked to see what is taking up room." = "Abre Unpacked para ver qué ocupa espacio.";
+"Open in a window" = "Abrir en una ventana";
 "Open x.com/yigitech" = "Abrir x.com/yigitech";
 "Order rows by size, or by how long they have sat untouched" = "Ordenar las filas por tamaño o por cuánto tiempo llevan sin tocarse";
 "Other large folders" = "Otras carpetas grandes";
@@ -125,6 +126,7 @@
 "Shared & other users" = "Compartidos y otros usuarios";
 "Show all" = "Mostrar todo";
 "Show exactly what runs" = "Mostrar exactamente qué se ejecuta";
+"Show in menu bar" = "Mostrar en la barra de menús";
 "Show largest entries" = "Mostrar las entradas más grandes";
 "Show the commands that run as administrator" = "Mostrar los comandos que se ejecutan como administrador";
 "Shut down simulators at power off" = "Apagar los simuladores al apagar el equipo";
@@ -148,6 +150,7 @@
 "The download is not signed by this app's developer, so it was discarded. (%@)" = "La descarga no está firmada por el desarrollador de esta app, así que se descartó. (%@)";
 "The downloaded image could not be opened. Nothing was installed." = "No se pudo abrir la imagen descargada. No se instaló nada.";
 "The downloaded image does not contain the app. Nothing was installed." = "La imagen descargada no contiene la app. No se instaló nada.";
+"The same panel, as a window you can resize and leave open" = "El mismo panel, en una ventana que puedes redimensionar y dejar abierta";
 "This is regenerated automatically when needed." = "Esto se regenera automáticamente cuando se necesita.";
 "Time Machine snapshots" = "Instantáneas de Time Machine";
 "Trash" = "Papelera";
@@ -160,6 +163,7 @@
 "Warn when free space runs low" = "Avisar cuando quede poco espacio libre";
 "Weekly summary" = "Resumen semanal";
 "What grew, and what came back" = "Qué creció y qué volvió a aparecer";
+"With this off the app lives in its window, and opens from Applications or the Dock." = "Con esto desactivado, la app vive en su ventana y se abre desde Aplicaciones o el Dock.";
 "Xcode" = "Xcode";
 "different developer" = "otro desarrollador";
 "iOS device backups" = "Copias de seguridad de dispositivos iOS";

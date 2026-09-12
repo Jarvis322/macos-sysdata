@@ -101,6 +101,7 @@
 "Open Settings" = "Ayarları Aç";
 "Open Unpacked to see what grew." = "Neyin büyüdüğünü görmek için Unpacked'ı aç.";
 "Open Unpacked to see what is taking up room." = "Neyin yer kapladığını görmek için Unpacked'ı aç.";
+"Open in a window" = "Pencerede aç";
 "Open x.com/yigitech" = "x.com/yigitech adresini aç";
 "Order rows by size, or by how long they have sat untouched" = "Satırları boyuta ya da ne kadardır dokunulmadığına göre sırala";
 "Other large folders" = "Diğer büyük klasörler";
@@ -125,6 +126,7 @@
 "Shared & other users" = "Paylaşılan ve diğer kullanıcılar";
 "Show all" = "Tümünü göster";
 "Show exactly what runs" = "Tam olarak ne çalışacağını göster";
+"Show in menu bar" = "Menü çubuğunda göster";
 "Show largest entries" = "En büyük girdileri göster";
 "Show the commands that run as administrator" = "Yönetici olarak çalışacak komutları göster";
 "Shut down simulators at power off" = "Kapanışta simülatörleri kapat";
@@ -148,6 +150,7 @@
 "The download is not signed by this app's developer, so it was discarded. (%@)" = "İndirilen dosya bu uygulamanın geliştiricisi tarafından imzalanmamış, bu yüzden atıldı. (%@)";
 "The downloaded image could not be opened. Nothing was installed." = "İndirilen disk imajı açılamadı. Hiçbir şey kurulmadı.";
 "The downloaded image does not contain the app. Nothing was installed." = "İndirilen disk imajı uygulamayı içermiyor. Hiçbir şey kurulmadı.";
+"The same panel, as a window you can resize and leave open" = "Aynı panel; boyutunu değiştirebileceğin ve açık bırakabileceğin bir pencere olarak";
 "This is regenerated automatically when needed." = "Gerektiğinde kendiliğinden yeniden oluşturulur.";
 "Time Machine snapshots" = "Time Machine anlık görüntüleri";
 "Trash" = "Çöp Sepeti";
@@ -160,6 +163,7 @@
 "Warn when free space runs low" = "Boş alan azalınca uyar";
 "Weekly summary" = "Haftalık özet";
 "What grew, and what came back" = "Ne büyüdü, ne geri geldi";
+"With this off the app lives in its window, and opens from Applications or the Dock." = "Kapalıyken uygulama kendi penceresinde çalışır; Uygulamalar klasöründen veya Dock'tan açılır.";
 "Xcode" = "Xcode";
 "different developer" = "farklı geliştirici";
 "iOS device backups" = "iOS aygıt yedekleri";

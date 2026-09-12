@@ -101,6 +101,7 @@
 "Open Settings" = "設定を開く";
 "Open Unpacked to see what grew." = "何が増えたかを確認するには Unpacked を開いてください。";
 "Open Unpacked to see what is taking up room." = "何が容量を使っているかを見るには、Unpacked を開いてください。";
+"Open in a window" = "ウインドウで開く";
 "Open x.com/yigitech" = "x.com/yigitech を開く";
 "Order rows by size, or by how long they have sat untouched" = "項目をサイズ順、または未使用期間順に並べ替えます";
 "Other large folders" = "その他の大きいフォルダ";
@@ -125,6 +126,7 @@
 "Shared & other users" = "共有と他のユーザ";
 "Show all" = "すべて表示";
 "Show exactly what runs" = "実行される内容を表示";
+"Show in menu bar" = "メニューバーに表示";
 "Show largest entries" = "最大の項目を表示";
 "Show the commands that run as administrator" = "管理者として実行されるコマンドを表示";
 "Shut down simulators at power off" = "電源オフ時にシミュレータを終了";
@@ -148,6 +150,7 @@
 "The download is not signed by this app's developer, so it was discarded. (%@)" = "ダウンロードがこのAppの開発元によって署名されていないため、破棄しました。(%@)";
 "The downloaded image could not be opened. Nothing was installed." = "ダウンロードしたイメージを開けませんでした。何もインストールされていません。";
 "The downloaded image does not contain the app. Nothing was installed." = "ダウンロードしたイメージにAppが含まれていません。何もインストールされていません。";
+"The same panel, as a window you can resize and leave open" = "同じパネルを、サイズを変更でき開いたままにできるウインドウとして表示します";
 "This is regenerated automatically when needed." = "これは必要に応じて自動的に再生成されます。";
 "Time Machine snapshots" = "Time Machine スナップショット";
 "Trash" = "ゴミ箱";
@@ -160,6 +163,7 @@
 "Warn when free space runs low" = "空き容量が少なくなったら警告";
 "Weekly summary" = "毎週の概要";
 "What grew, and what came back" = "何が増え、何が戻ってきたか";
+"With this off the app lives in its window, and opens from Applications or the Dock." = "オフにすると、アプリはウインドウで動作し、「アプリケーション」フォルダまたはDockから開きます。";
 "Xcode" = "Xcode";
 "different developer" = "別の開発元";
 "iOS device backups" = "iOSデバイスのバックアップ";

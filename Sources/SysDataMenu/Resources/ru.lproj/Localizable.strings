@@ -101,6 +101,7 @@
 "Open Settings" = "Открыть настройки";
 "Open Unpacked to see what grew." = "Откройте Unpacked, чтобы увидеть, что выросло.";
 "Open Unpacked to see what is taking up room." = "Откройте Unpacked, чтобы увидеть, что занимает место.";
+"Open in a window" = "Открыть в окне";
 "Open x.com/yigitech" = "Открыть x.com/yigitech";
 "Order rows by size, or by how long they have sat untouched" = "Упорядочить строки по размеру или по времени без использования";
 "Other large folders" = "Другие крупные папки";
@@ -125,6 +126,7 @@
 "Shared & other users" = "Общие данные и другие пользователи";
 "Show all" = "Показать все";
 "Show exactly what runs" = "Показать, что именно выполняется";
+"Show in menu bar" = "Показывать в строке меню";
 "Show largest entries" = "Показать самые крупные объекты";
 "Show the commands that run as administrator" = "Показать команды, выполняемые от имени администратора";
 "Shut down simulators at power off" = "Выключать симуляторы при завершении работы";
@@ -148,6 +150,7 @@
 "The download is not signed by this app's developer, so it was discarded. (%@)" = "Загрузка не подписана разработчиком этого приложения, поэтому она отклонена. (%@)";
 "The downloaded image could not be opened. Nothing was installed." = "Не удалось открыть загруженный образ. Ничего не установлено.";
 "The downloaded image does not contain the app. Nothing was installed." = "Загруженный образ не содержит приложение. Ничего не установлено.";
+"The same panel, as a window you can resize and leave open" = "Та же панель в виде окна, размер которого можно менять и оставлять открытым";
 "This is regenerated automatically when needed." = "Это создаётся заново автоматически при необходимости.";
 "Time Machine snapshots" = "Снимки Time Machine";
 "Trash" = "Корзина";
@@ -160,6 +163,7 @@
 "Warn when free space runs low" = "Предупреждать, когда заканчивается свободное место";
 "Weekly summary" = "Еженедельная сводка";
 "What grew, and what came back" = "Что выросло и что вернулось";
+"With this off the app lives in its window, and opens from Applications or the Dock." = "Если выключено, приложение живёт в своём окне и открывается из «Программ» или Dock.";
 "Xcode" = "Xcode";
 "different developer" = "другой разработчик";
 "iOS device backups" = "Резервные копии устройств iOS";

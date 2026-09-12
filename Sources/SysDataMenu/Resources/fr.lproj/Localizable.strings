@@ -101,6 +101,7 @@
 "Open Settings" = "Ouvrir les réglages";
 "Open Unpacked to see what grew." = "Ouvrez Unpacked pour voir ce qui a augmenté.";
 "Open Unpacked to see what is taking up room." = "Ouvrez Unpacked pour voir ce qui prend de la place.";
+"Open in a window" = "Ouvrir dans une fenêtre";
 "Open x.com/yigitech" = "Ouvrir x.com/yigitech";
 "Order rows by size, or by how long they have sat untouched" = "Trier les lignes par taille, ou par durée d'inactivité";
 "Other large folders" = "Autres dossiers volumineux";
@@ -125,6 +126,7 @@
 "Shared & other users" = "Partagé et autres utilisateurs";
 "Show all" = "Tout afficher";
 "Show exactly what runs" = "Afficher exactement ce qui s'exécute";
+"Show in menu bar" = "Afficher dans la barre des menus";
 "Show largest entries" = "Afficher les entrées les plus volumineuses";
 "Show the commands that run as administrator" = "Afficher les commandes exécutées en tant qu'administrateur";
 "Shut down simulators at power off" = "Éteindre les simulateurs à l'extinction";
@@ -148,6 +150,7 @@
 "The download is not signed by this app's developer, so it was discarded. (%@)" = "Le téléchargement n'est pas signé par le développeur de cette app, il a donc été ignoré. (%@)";
 "The downloaded image could not be opened. Nothing was installed." = "L'image téléchargée n'a pas pu être ouverte. Rien n'a été installé.";
 "The downloaded image does not contain the app. Nothing was installed." = "L'image téléchargée ne contient pas l'app. Rien n'a été installé.";
+"The same panel, as a window you can resize and leave open" = "Le même panneau, dans une fenêtre redimensionnable que vous pouvez laisser ouverte";
 "This is regenerated automatically when needed." = "Ceci est régénéré automatiquement en cas de besoin.";
 "Time Machine snapshots" = "Instantanés Time Machine";
 "Trash" = "Corbeille";
@@ -160,6 +163,7 @@
 "Warn when free space runs low" = "Avertir lorsque l'espace disponible devient faible";
 "Weekly summary" = "Résumé hebdomadaire";
 "What grew, and what came back" = "Ce qui a grossi, et ce qui est revenu";
+"With this off the app lives in its window, and opens from Applications or the Dock." = "Désactivé, l'app vit dans sa fenêtre et s'ouvre depuis Applications ou le Dock.";
 "Xcode" = "Xcode";
 "different developer" = "développeur différent";
 "iOS device backups" = "Sauvegardes d'appareils iOS";

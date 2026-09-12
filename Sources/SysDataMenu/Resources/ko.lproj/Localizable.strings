@@ -101,6 +101,7 @@
 "Open Settings" = "설정 열기";
 "Open Unpacked to see what grew." = "Unpacked를 열어 무엇이 늘었는지 확인하세요.";
 "Open Unpacked to see what is taking up room." = "Unpacked를 열어 공간을 차지하는 항목을 확인하세요.";
+"Open in a window" = "창에서 열기";
 "Open x.com/yigitech" = "x.com/yigitech 열기";
 "Order rows by size, or by how long they have sat untouched" = "행을 크기순 또는 방치된 기간순으로 정렬";
 "Other large folders" = "기타 큰 폴더";
@@ -125,6 +126,7 @@
 "Shared & other users" = "공유 및 다른 사용자";
 "Show all" = "모두 보기";
 "Show exactly what runs" = "실행되는 내용을 정확히 표시";
+"Show in menu bar" = "메뉴 막대에 표시";
 "Show largest entries" = "가장 큰 항목 표시";
 "Show the commands that run as administrator" = "관리자 권한으로 실행되는 명령 표시";
 "Shut down simulators at power off" = "종료 시 시뮬레이터 끄기";
@@ -148,6 +150,7 @@
 "The download is not signed by this app's developer, so it was discarded. (%@)" = "다운로드가 이 앱의 개발자 서명으로 서명되지 않아 삭제되었습니다. (%@)";
 "The downloaded image could not be opened. Nothing was installed." = "다운로드한 이미지를 열 수 없습니다. 설치된 항목이 없습니다.";
 "The downloaded image does not contain the app. Nothing was installed." = "다운로드한 이미지에 앱이 들어 있지 않습니다. 설치된 항목이 없습니다.";
+"The same panel, as a window you can resize and leave open" = "같은 패널을 크기를 조절하고 계속 열어 둘 수 있는 창으로 표시합니다";
 "This is regenerated automatically when needed." = "필요할 때 자동으로 다시 생성됩니다.";
 "Time Machine snapshots" = "Time Machine 스냅샷";
 "Trash" = "휴지통";
@@ -160,6 +163,7 @@
 "Warn when free space runs low" = "여유 공간이 부족할 때 경고";
 "Weekly summary" = "주간 요약";
 "What grew, and what came back" = "늘어난 항목과 다시 생긴 항목";
+"With this off the app lives in its window, and opens from Applications or the Dock." = "끄면 앱이 창에서 실행되며 응용 프로그램 폴더나 Dock에서 열립니다.";
 "Xcode" = "Xcode";
 "different developer" = "다른 개발자";
 "iOS device backups" = "iOS 기기 백업";

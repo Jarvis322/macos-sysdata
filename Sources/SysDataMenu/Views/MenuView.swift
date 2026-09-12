@@ -2,6 +2,15 @@ import AppKit
 import SwiftUI
 
 struct MenuView: View {
+    /// Where this panel is drawn. The menu bar popover has to be told its
+    /// size; the window is resizable and keeps whatever size it is given.
+    enum Presentation {
+        case menuBar
+        case window
+    }
+
+    var presentation: Presentation = .menuBar
+
     @Environment(ScanModel.self) private var model
     @State private var updates = UpdateCheck()
     @FocusState private var filterIsFocused: Bool
@@ -94,7 +103,7 @@ struct MenuView: View {
             }
             footer
         }
-        .frame(width: 460, height: 640)
+        .modifier(PanelSize(presentation: presentation))
         .task {
             if !model.hasScanned, !model.isScanning { await model.scan() }
             await updates.checkIfDue()
@@ -260,10 +269,10 @@ struct MenuView: View {
             VStack(alignment: .leading, spacing: 2) {
                 HStack(alignment: .firstTextBaseline, spacing: 6) {
                     Text(L("System Data"))
-                        .font(.headline)
+                        .font(titleFont)
                     if !model.visibleItems.isEmpty {
                         Text(model.measuredBytes.byteString)
-                            .font(.headline)
+                            .font(titleFont)
                             .foregroundStyle(.secondary)
                             .monospacedDigit()
                     }
@@ -365,8 +374,17 @@ struct MenuView: View {
                 settingsMenu
             }
         }
-        .padding(.horizontal, 14)
-        .padding(.vertical, 10)
+        .padding(.horizontal, presentation == .window ? 18 : 14)
+        .padding(.vertical, presentation == .window ? 14 : 10)
+        // In the window the title bar is transparent and empty, so the header
+        // is the title: it needs the traffic lights' row above it.
+        .padding(.top, presentation == .window ? 20 : 0)
+    }
+
+    /// The window has room the popover does not, and a header that is also
+    /// the title bar should read as one.
+    private var titleFont: Font {
+        presentation == .window ? .title3.weight(.semibold) : .headline
     }
 
     /// Shown once the list is long enough that finding a row by eye is work.
@@ -397,7 +415,7 @@ struct MenuView: View {
             .padding(.horizontal, 8)
             .padding(.vertical, 5)
             .background(.quaternary.opacity(0.4), in: RoundedRectangle(cornerRadius: 6))
-            .padding(.horizontal, 14)
+            .padding(.horizontal, presentation == .window ? 18 : 14)
             .padding(.bottom, 8)
         }
     }
@@ -673,6 +691,10 @@ struct MenuView: View {
                 }
                 .help(L("What grew, and what came back"))
             }
+            if presentation == .menuBar {
+                Button(L("Open in a window")) { MainWindow.shared.show() }
+                    .help(L("The same panel, as a window you can resize and leave open"))
+            }
             Divider()
             Toggle(L("Remember what changed"), isOn: Binding(
                 get: { model.keepsHistory },
@@ -757,12 +779,26 @@ struct MenuView: View {
                 set: { model.setLaunchAtLogin($0) }
             ))
             Divider()
-            Picker(L("Menu bar shows"), selection: Binding(
-                get: { model.menuBarContent },
-                set: { model.menuBarContent = $0 }
-            )) {
-                ForEach(MenuBarContent.allCases) { content in
-                    Text(content.title).tag(content)
+            Toggle(L("Show in menu bar"), isOn: Binding(
+                get: { model.showsMenuBarIcon },
+                set: { wanted in
+                    // Taking the icon away while it is the only way into the
+                    // app would leave it with nowhere to appear, so the
+                    // window opens before the icon goes.
+                    if !wanted { MainWindow.shared.show() }
+                    model.showsMenuBarIcon = wanted
+                    MainWindow.shared.menuBarPreferenceChanged()
+                }
+            ))
+            .help(L("With this off the app lives in its window, and opens from Applications or the Dock."))
+            if model.showsMenuBarIcon {
+                Picker(L("Menu bar shows"), selection: Binding(
+                    get: { model.menuBarContent },
+                    set: { model.menuBarContent = $0 }
+                )) {
+                    ForEach(MenuBarContent.allCases) { content in
+                        Text(content.title).tag(content)
+                    }
                 }
             }
         } label: {
@@ -831,11 +867,15 @@ struct MenuView: View {
                     .help(L("Show all"))
                 }
                 Spacer()
-                Button(L("Quit")) {
-                    NSApplication.shared.terminate(nil)
+                // The window has an app menu, and a Quit button under a list
+                // of delete buttons is one more thing to press by accident.
+                if presentation == .menuBar {
+                    Button(L("Quit")) {
+                        NSApplication.shared.terminate(nil)
+                    }
+                    .controlSize(.small)
+                    .keyboardShortcut("q")
                 }
-                .controlSize(.small)
-                .keyboardShortcut("q")
             }
             HStack {
                 authorBadge
@@ -925,5 +965,17 @@ struct MenuView: View {
             lines.append(L("1 item needs root."))
         }
         return lines.joined(separator: "\n")
+    }
+}
+
+/// Fixed for the popover, floored for the window.
+private struct PanelSize: ViewModifier {
+    let presentation: MenuView.Presentation
+
+    func body(content: Content) -> some View {
+        switch presentation {
+        case .menuBar: content.frame(width: 460, height: 640)
+        case .window: content.frame(minWidth: 460, minHeight: 520)
+        }
     }
 }

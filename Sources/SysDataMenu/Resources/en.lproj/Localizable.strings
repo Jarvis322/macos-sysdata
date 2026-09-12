@@ -101,6 +101,7 @@
 "Open Settings" = "Open Settings";
 "Open Unpacked to see what grew." = "Open Unpacked to see what grew.";
 "Open Unpacked to see what is taking up room." = "Open Unpacked to see what is taking up room.";
+"Open in a window" = "Open in a window";
 "Open x.com/yigitech" = "Open x.com/yigitech";
 "Order rows by size, or by how long they have sat untouched" = "Order rows by size, or by how long they have sat untouched";
 "Other large folders" = "Other large folders";
@@ -125,6 +126,7 @@
 "Shared & other users" = "Shared & other users";
 "Show all" = "Show all";
 "Show exactly what runs" = "Show exactly what runs";
+"Show in menu bar" = "Show in menu bar";
 "Show largest entries" = "Show largest entries";
 "Show the commands that run as administrator" = "Show the commands that run as administrator";
 "Shut down simulators at power off" = "Shut down simulators at power off";
@@ -148,6 +150,7 @@
 "The download is not signed by this app's developer, so it was discarded. (%@)" = "The download is not signed by this app's developer, so it was discarded. (%@)";
 "The downloaded image could not be opened. Nothing was installed." = "The downloaded image could not be opened. Nothing was installed.";
 "The downloaded image does not contain the app. Nothing was installed." = "The downloaded image does not contain the app. Nothing was installed.";
+"The same panel, as a window you can resize and leave open" = "The same panel, as a window you can resize and leave open";
 "This is regenerated automatically when needed." = "This is regenerated automatically when needed.";
 "Time Machine snapshots" = "Time Machine snapshots";
 "Trash" = "Trash";
@@ -160,6 +163,7 @@
 "Warn when free space runs low" = "Warn when free space runs low";
 "Weekly summary" = "Weekly summary";
 "What grew, and what came back" = "What grew, and what came back";
+"With this off the app lives in its window, and opens from Applications or the Dock." = "With this off the app lives in its window, and opens from Applications or the Dock.";
 "Xcode" = "Xcode";
 "different developer" = "different developer";
 "iOS device backups" = "iOS device backups";

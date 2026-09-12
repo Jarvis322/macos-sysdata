@@ -5363,6 +5363,58 @@
         }
       }
     },
+    "Open in a window": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pencerede aç"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "在窗口中打开"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ウインドウで開く"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "In einem Fenster öffnen"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ouvrir dans une fenêtre"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abrir en una ventana"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "창에서 열기"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Открыть в окне"
+          }
+        }
+      }
+    },
     "Open x.com/yigitech": {
       "localizations": {
         "zh-Hans": {
@@ -6611,6 +6663,58 @@
         }
       }
     },
+    "Show in menu bar": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Menü çubuğunda göster"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "在菜单栏中显示"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "メニューバーに表示"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "In der Menüleiste anzeigen"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Afficher dans la barre des menus"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mostrar en la barra de menús"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "메뉴 막대에 표시"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Показывать в строке меню"
+          }
+        }
+      }
+    },
     "Show largest entries": {
       "localizations": {
         "zh-Hans": {
@@ -7813,6 +7917,58 @@
         }
       }
     },
+    "The same panel, as a window you can resize and leave open": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aynı panel; boyutunu değiştirebileceğin ve açık bırakabileceğin bir pencere olarak"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "同一个面板，以可调整大小并可一直开着的窗口呈现"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "同じパネルを、サイズを変更でき開いたままにできるウインドウとして表示します"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dasselbe Panel als Fenster, das sich in der Größe ändern und geöffnet lassen lässt"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Le même panneau, dans une fenêtre redimensionnable que vous pouvez laisser ouverte"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "El mismo panel, en una ventana que puedes redimensionar y dejar abierta"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "같은 패널을 크기를 조절하고 계속 열어 둘 수 있는 창으로 표시합니다"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Та же панель в виде окна, размер которого можно менять и оставлять открытым"
+          }
+        }
+      }
+    },
     "This is regenerated automatically when needed.": {
       "localizations": {
         "zh-Hans": {
@@ -8435,6 +8591,58 @@
           "stringUnit": {
             "state": "translated",
             "value": "Что выросло и что вернулось"
+          }
+        }
+      }
+    },
+    "With this off the app lives in its window, and opens from Applications or the Dock.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kapalıyken uygulama kendi penceresinde çalışır; Uygulamalar klasöründen veya Dock'tan açılır."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "关闭后，应用只在自己的窗口中运行，可从“应用程序”或程序坞打开。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "オフにすると、アプリはウインドウで動作し、「アプリケーション」フォルダまたはDockから開きます。"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ist dies aus, lebt die App in ihrem Fenster und wird über „Programme“ oder das Dock geöffnet."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Désactivé, l'app vit dans sa fenêtre et s'ouvre depuis Applications ou le Dock."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Con esto desactivado, la app vive en su ventana y se abre desde Aplicaciones o el Dock."
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "끄면 앱이 창에서 실행되며 응용 프로그램 폴더나 Dock에서 열립니다."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Если выключено, приложение живёт в своём окне и открывается из «Программ» или Dock."
           }
         }
       }

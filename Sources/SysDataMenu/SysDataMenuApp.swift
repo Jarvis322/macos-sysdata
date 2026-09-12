@@ -24,13 +24,18 @@ struct SysDataMenuApp: App {
     @State private var model = ScanModel()
 
     init() {
-        // Menu bar only: no Dock icon, no main window.
+        // No Dock icon while the app is only a menu bar item; MainWindow puts
+        // one there as soon as the window opens or the icon is switched off.
         NSApplication.shared.setActivationPolicy(.accessory)
         Updater.unhide(Bundle.main.bundleURL)
+        MainWindow.shared.use(model)
     }
 
     var body: some Scene {
-        MenuBarExtra {
+        MenuBarExtra(isInserted: Binding(
+            get: { model.showsMenuBarIcon },
+            set: { model.showsMenuBarIcon = $0; MainWindow.shared.menuBarPreferenceChanged() }
+        )) {
             MenuView()
                 .environment(model)
         } label: {

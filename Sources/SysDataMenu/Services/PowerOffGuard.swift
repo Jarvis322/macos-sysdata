@@ -20,12 +20,21 @@ final class PowerOffGuard: NSObject, NSApplicationDelegate {
     private var shutdownTask: Task<Void, Never>?
 
     func applicationDidFinishLaunching(_ notification: Notification) {
+        MainWindow.shared.showIfMenuBarIsHidden()
         NSWorkspace.shared.notificationCenter.addObserver(
             self,
             selector: #selector(workspaceWillPowerOff),
             name: NSWorkspace.willPowerOffNotification,
             object: nil
         )
+    }
+
+    /// A click on the Dock tile, or launching the app again from Finder when
+    /// it is already running. Both mean "show me the app", which for a menu
+    /// bar app with no windows would otherwise do nothing at all.
+    func applicationShouldHandleReopen(_ sender: NSApplication, hasVisibleWindows: Bool) -> Bool {
+        MainWindow.shared.show()
+        return true
     }
 
     @objc private func workspaceWillPowerOff(_ notification: Notification) {
