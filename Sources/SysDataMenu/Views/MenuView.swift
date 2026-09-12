@@ -783,10 +783,15 @@ struct MenuView: View {
                 get: { model.showsMenuBarIcon },
                 set: { wanted in
                     // Taking the icon away while it is the only way into the
-                    // app would leave it with nowhere to appear, so the
-                    // window opens before the icon goes.
-                    if !wanted { MainWindow.shared.openWindowLeavingTheMenuBar() }
-                    model.showsMenuBarIcon = wanted
+                    // app would leave it with nowhere to appear, so the window
+                    // opens before the icon goes — and when the switch is
+                    // thrown from the menu bar panel, the icon waits for that
+                    // panel to close.
+                    guard wanted else {
+                        MainWindow.shared.openWindowLeavingTheMenuBar()
+                        return
+                    }
+                    model.showsMenuBarIcon = true
                     MainWindow.shared.menuBarPreferenceChanged()
                 }
             ))

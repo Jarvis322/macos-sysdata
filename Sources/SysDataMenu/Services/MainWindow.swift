@@ -101,18 +101,32 @@ final class MainWindow: NSObject, NSWindowDelegate {
         window.makeKeyAndOrderFront(nil)
     }
 
-    /// Opens the window for someone who has just switched the menu bar icon
-    /// off from the menu bar panel itself.
+    /// Switches the icon off from the menu bar panel itself.
     ///
-    /// That panel belongs to the icon, and SwiftUI leaves it on screen when
-    /// the icon goes: a panel with nothing behind it, floating over the
-    /// window that was just asked for. Every visible window of this app that
-    /// is not one of ours is that panel.
+    /// The panel belongs to the icon: taking the icon away underneath it
+    /// leaves it on screen with nothing behind it. Ordering that panel away
+    /// by hand is worse — SwiftUI still believes it is showing, and the icon
+    /// comes back stuck in its pressed state, opening nothing. So the window
+    /// opens, which takes the focus, and the panel is left to close itself.
+    /// The icon goes when it has.
     func openWindowLeavingTheMenuBar() {
         show()
-        for panel in NSApplication.shared.windows
-        where panel !== window && panel !== prompt && panel.isVisible {
-            panel.orderOut(nil)
+        Task { @MainActor in
+            for _ in 0..<15 where hasOpenMenuBarPanel {
+                try? await Task.sleep(for: .milliseconds(200))
+            }
+            // Whether or not it closed: a panel that stays is a smaller
+            // problem than a switch that did nothing.
+            model?.showsMenuBarIcon = false
+            menuBarPreferenceChanged()
+        }
+    }
+
+    /// Any visible window of this app that is not one of ours: the menu bar
+    /// panel, or the menu the switch was thrown from.
+    private var hasOpenMenuBarPanel: Bool {
+        NSApplication.shared.windows.contains {
+            $0 !== window && $0 !== prompt && $0.isVisible
         }
     }
 

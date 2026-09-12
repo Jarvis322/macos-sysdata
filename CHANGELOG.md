@@ -5,6 +5,16 @@ What changed in each release, and where it is worth saying, why.
 Versions up to and including v0.3.7 were released under the MIT License; see
 [LICENSE](LICENSE).
 
+## v1.2.1 — 2026-09-12
+
+- **Fixed: the menu bar icon could come back stuck.** Switching the icon off
+  from its own panel dismissed that panel by hand, which SwiftUI did not know
+  about; switching the icon back on then produced an icon that highlighted and
+  opened nothing. The panel is now left to close itself, and the icon goes when
+  it has.
+- **Fixed: the icon preference could be written by SwiftUI** rather than only
+  by the person setting it.
+
 ## v1.2.0 — 2026-09-12
 
 - **The app is also a window.** People asked for the list as a normal app:
