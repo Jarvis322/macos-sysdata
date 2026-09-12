@@ -802,10 +802,12 @@ struct MenuView: View {
                 }
             }
         } label: {
-            Label(L("Settings"), systemImage: "ellipsis.circle")
+            Label(L("Settings"), systemImage: "gearshape")
                 .labelStyle(.iconOnly)
         }
-        .menuStyle(.borderlessButton)
+        // Bordered, like Rescan beside it. As a borderless ellipsis it was the
+        // quietest thing in the header, and everything the app can be told to
+        // do is behind it.
         .menuIndicator(.hidden)
         .controlSize(.small)
         .fixedSize()
