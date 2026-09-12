@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Renders /sitemap.xml as a readable page in browsers. Search engines ignore this file.
-     If a browser drops XSLT support it falls back to its plain XML tree view. -->
+     If a browser drops XSLT support it falls back to its plain XML tree view.
+     The .xml extension is deliberate: nginx serves .xsl as application/octet-stream,
+     and browsers apply a stylesheet only when it arrives as XML. -->
 <xsl:stylesheet version="1.0"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:s="http://www.sitemaps.org/schemas/sitemap/0.9"
