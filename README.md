@@ -5,7 +5,7 @@
 <h1 align="center">System Data Unpacked</h1>
 
 <p align="center">
-  A menu bar app that shows what is really inside macOS "System Data" and lets you delete it, item by item.<br>
+  A Mac app, in a window or in the menu bar, that shows what is really inside macOS "System Data" and lets you delete it, item by item.<br>
   <img src="https://img.shields.io/badge/macOS-14%2B-black" alt="macOS 14+">
   <img src="https://img.shields.io/badge/Swift-6-orange" alt="Swift 6">
   <img src="https://img.shields.io/badge/languages-9-blue" alt="Nine languages">
@@ -192,8 +192,10 @@ prompt, which is why it asks each time and shows you the command first.
   password, and never on a scan you are watching.
 - **Safe items to the Trash**, if you want an undo window for the items that
   are normally deleted outright. They free nothing until the Trash is emptied.
-- **The menu bar** shows System Data's size, free space, or just the icon —
-  your choice.
+- **A window or the menu bar.** The same panel opens as a real window —
+  from Applications, from the Dock, or from Settings > Open in a window — and
+  the menu bar icon can be switched off entirely. With the icon on, it shows
+  System Data's size, free space, or just the icon.
 - **Hide.** The eye button removes an item from future scans (Ollama models
   you want to keep, say). A footer link brings hidden items back.
 - **Purgeable space** is shown in the header, with a tooltip saying what it

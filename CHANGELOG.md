@@ -5,6 +5,17 @@ What changed in each release, and where it is worth saying, why.
 Versions up to and including v0.3.7 were released under the MIT License; see
 [LICENSE](LICENSE).
 
+## v1.2.0 — 2026-09-12
+
+- **The app is also a window.** People asked for the list as a normal app:
+  open it from Applications or the Dock, resize it, leave it open. It is the
+  same panel, with the title bar as its header, and it opens from Settings >
+  Open in a window as well.
+- **The menu bar icon is now optional.** Settings > Show in menu bar turns it
+  off. The app then lives in its window and appears in the Dock, so it can
+  always be reached; turning the icon off opens the window first rather than
+  leaving the app with nowhere to be.
+
 ## v1.1.0 — 2026-09-12
 
 - **The folded list is now a map of the disk.** Categories start folded and,
