@@ -32,7 +32,7 @@ click.
 
 Every release is listed in [CHANGELOG.md](CHANGELOG.md), including the two
 that shipped a broken updater and what to do if you are on one of them. There
-is a short tour at [jarvis322.github.io/macos-sysdata](https://jarvis322.github.io/macos-sysdata/),
+is a short tour at [macos-sysdata.yigitech.dev](https://macos-sysdata.yigitech.dev/),
 and contributions are described in [CONTRIBUTING.md](CONTRIBUTING.md).
 
 Up to 1.0.4 the app was called SysDataMenu. The bundle identifier, the

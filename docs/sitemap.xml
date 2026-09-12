@@ -1,4 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://macos-sysdata.yigitech.dev/</loc><changefreq>monthly</changefreq><priority>1.0</priority></url>
+<?xml-stylesheet type="text/xsl" href="/sitemap.xsl"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+  <url>
+    <loc>https://macos-sysdata.yigitech.dev/</loc>
+    <lastmod>2026-09-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://macos-sysdata.yigitech.dev/screenshot.png</image:loc>
+      <image:title>System Data Unpacked</image:title>
+    </image:image>
+  </url>
 </urlset>

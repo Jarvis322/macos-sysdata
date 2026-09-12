@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Renders /sitemap.xml as a readable page in browsers. Search engines ignore this file.
+     If a browser drops XSLT support it falls back to its plain XML tree view. -->
+<xsl:stylesheet version="1.0"
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  xmlns:s="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
+  exclude-result-prefixes="s image">
+  <xsl:output method="html" encoding="UTF-8" indent="yes" doctype-system="about:legacy-compat"/>
+
+  <xsl:template match="/">
+    <html lang="en">
+      <head>
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <meta name="robots" content="noindex"/>
+        <title>Sitemap · System Data Unpacked</title>
+        <style>
+          :root { color-scheme: light; --bg:#f7f6f3; --fg:#1c1b19; --muted:#6b6862; --line:#e4e1da; --card:#fff; --safe:#1a7f37; }
+          @media (prefers-color-scheme: dark) { :root { color-scheme: dark; --bg:#141413; --fg:#ecebe7; --muted:#9a968e; --line:#2a2927; --card:#1c1b19; --safe:#4ac26b; } }
+          * { box-sizing: border-box; }
+          body { margin:0; background:var(--bg); color:var(--fg); font:16px/1.6 -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif; }
+          main { max-width: 880px; margin: 0 auto; padding: 72px 24px 96px; }
+          .brand { display:inline-flex; align-items:center; gap:10px; color:var(--fg); text-decoration:none; font-weight:600; }
+          .brand img { width:28px; height:28px; border-radius:7px; }
+          h1 { font-size: clamp(34px, 5vw, 50px); line-height:1.05; letter-spacing:-0.02em; margin: 28px 0 16px; }
+          .lede { font-size: 19px; color: var(--muted); max-width: 34em; margin:0; }
+          .card { margin-top: 40px; background:var(--card); border:1px solid var(--line); border-radius:12px; overflow:hidden; }
+          table { width:100%; border-collapse:collapse; }
+          th { text-align:left; font-size:12px; text-transform:uppercase; letter-spacing:.08em; font-weight:600; color:var(--muted); padding:14px 20px; border-bottom:1px solid var(--line); }
+          td { padding:16px 20px; border-bottom:1px solid var(--line); }
+          tr:last-child td { border-bottom:0; }
+          td a { color:var(--fg); font-weight:600; text-decoration:none; word-break:break-all; }
+          td a:hover { text-decoration:underline; text-underline-offset:4px; }
+          .date, .num { font: 14px ui-monospace, "SF Mono", Menlo, monospace; color:var(--muted); white-space:nowrap; }
+          footer { margin-top: 40px; padding-top: 24px; border-top:1px solid var(--line); color:var(--muted); font-size:14px; display:flex; flex-wrap:wrap; gap:16px; }
+          footer a { color: inherit; }
+          @media (max-width: 600px) { th.hide, td.hide { display:none; } td, th { padding:14px; } }
+        </style>
+      </head>
+      <body>
+        <main>
+          <a class="brand" href="/"><img src="/icon.png" alt=""/> System Data Unpacked</a>
+
+          <h1>Sitemap</h1>
+          <p class="lede">The file search engines read, listed for people. <xsl:value-of select="count(s:urlset/s:url)"/> page<xsl:if test="count(s:urlset/s:url) != 1">s</xsl:if>, with the images that go with <xsl:if test="count(s:urlset/s:url) = 1">it</xsl:if><xsl:if test="count(s:urlset/s:url) != 1">them</xsl:if>.</p>
+
+          <div class="card">
+            <table>
+              <thead>
+                <tr>
+                  <th>Page</th>
+                  <th class="hide">Images</th>
+                  <th>Last modified</th>
+                </tr>
+              </thead>
+              <tbody>
+                <xsl:for-each select="s:urlset/s:url">
+                  <tr>
+                    <td><a href="{s:loc}"><xsl:value-of select="s:loc"/></a></td>
+                    <td class="num hide"><xsl:value-of select="count(image:image)"/></td>
+                    <td class="date"><xsl:value-of select="substring(s:lastmod, 1, 10)"/></td>
+                  </tr>
+                </xsl:for-each>
+              </tbody>
+            </table>
+          </div>
+
+          <footer>
+            <a href="/">Home</a>
+            <a href="/llms.txt">llms.txt</a>
+            <a href="/llms-full.txt">llms-full.txt</a>
+            <a href="/robots.txt">robots.txt</a>
+            <a href="https://github.com/Jarvis322/macos-sysdata">Source</a>
+          </footer>
+        </main>
+      </body>
+    </html>
+  </xsl:template>
+</xsl:stylesheet>

@@ -135,7 +135,7 @@ happens after the first clean.
 - **Nine languages.** German, French, Spanish, Korean and Russian join English,
   Turkish, Simplified Chinese and Japanese. The five new ones are
   machine-assisted; native corrections are welcome.
-- A [website](https://jarvis322.github.io/macos-sysdata/), a contributing
+- A [website](https://macos-sysdata.yigitech.dev/), a contributing
   guide, and issue and pull request templates.
 
 ## v0.5.2 — 2026-09-08

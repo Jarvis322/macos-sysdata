@@ -1,0 +1,72 @@
+# System Data Unpacked
+
+> A free Mac app that opens macOS "System Data" and lets you delete what is inside it, item by item, with every command shown before it runs. Menu bar or window, macOS 14 or later, no account and no analytics.
+
+Site: https://macos-sysdata.yigitech.dev/
+Source: https://github.com/Jarvis322/macos-sysdata
+Version: 1.2.0
+Licence: proprietary, free of charge
+Author: Yigit Can Polat (https://yigitech.dev, https://x.com/yigitech, https://github.com/Jarvis322)
+
+## What System Data is
+
+System Data is the name Storage settings gives to everything it cannot file under Apps, Photos or Documents: caches, logs, simulator runtimes, local Time Machine snapshots, disk images, mail attachments, application support folders. It is not one thing, which is why the number gets large and why macOS shows a bar instead of a list.
+
+On a Mac used for development it is usually a handful of folders: Xcode DerivedData and archives, simulator runtimes, npm and Homebrew caches, Docker disks, downloaded models. Each regenerates on demand, and together they pass 100 GB without anything being wrong.
+
+Parts of it can be deleted. Caches and build folders come back on their own, so removing them costs a rebuild and nothing else. Snapshots and device backups are a decision rather than a cleanup. Nothing in macOS tells you which is which — that separation is what this app adds.
+
+This is not a cache cleaner. `~/Library/Caches` is one small line among fifty, and the app never deletes anything you did not click.
+
+## Install
+
+    brew install --cask Jarvis322/tap/sysdata
+
+Or download the disk image from https://github.com/Jarvis322/macos-sysdata/releases/latest and drag the app onto Applications. Releases are signed with a Developer ID and notarized, and the binary is universal. If the app is already in Applications, hand the existing copy to Homebrew with `brew install --cask --adopt Jarvis322/tap/sysdata`.
+
+Uninstall with `brew uninstall --zap --cask sysdata`. Without `--zap` the app goes and its files stay.
+
+## What the app does
+
+- Measures every item on disk and gives it a badge. Safe regenerates automatically. Review costs you something — a simulator, a login, a re-download. Manual cannot be removed by the app, and the info button shows the command or the settings path.
+- Shows every command verbatim before anything runs, including the ones that ask for a password. Copy puts the whole plan on the pasteboard.
+- Sends Review items to the Trash, so a wrong click can be undone for 30 days. Safe items are deleted outright because they come back on their own.
+- Lists categories largest first, folded, each header carrying a bar split into Safe, Review and Manual. A category well above its recent size is marked in amber.
+- Records each scan locally, so rows show growth, and a history view answers what came back, what grew most and what you deleted. Switch it off and the file is deleted.
+- Marks idle time on rows untouched for more than a fortnight, and can sort by it. Size cannot tell today's build folder from one abandoned two years ago.
+- Filters around 180 items across eighteen groups by name, description or group, without quietly editing the selection.
+- Deletes in batches. Select safe ticks everything regenerable on screen. Root actions are folded into one script where they can be.
+- Warns when free space runs low, if you turn it on, and offers to free the safe items in one press.
+- Sends an optional weekly summary when System Data has grown by more than 2 GB, and an optional notification when a category runs at least 50% and 2 GB above its median over its last 14 scans.
+- Cleans automatically once a week, opt-in, and only items marked Safe: nothing that needs a password, never on a scan you are watching.
+- Shuts booted simulators down at power off, because one ignoring the quit request makes macOS wait 33 seconds. Measured on a MacBook Air with three simulators booted: 33,074 ms down to 5,842 ms.
+- Shows purgeable space with a tooltip saying what it is not. It is macOS's estimate of what it could give back, not space you can plan around.
+- Runs as a window or from the menu bar. On first launch after 1.2.0 the app asks which, once. The menu bar icon can show System Data's size, free space, just the icon, or be switched off.
+- Hides items you want left alone, and brings them back from a footer link.
+- Speaks nine languages, following the system: English, Turkish, Simplified Chinese, Japanese, German, French, Spanish, Korean and Russian.
+- Prints the whole inventory for scripts with `SysDataMenu --json`.
+
+## What it finds
+
+- Time Machine snapshots: local APFS snapshots.
+- Simulator devices and runtimes: per-device caches, unavailable devices, each installed runtime disk image.
+- Xcode: DerivedData, DeviceSupport, preview devices, caches, archives, inactive Xcode copies.
+- Package managers: brew, npm, pnpm, yarn, pip, uv, CocoaPods, Gradle, Cargo, SwiftPM, Go, Cypress, Playwright.
+- Developer tool data: Ollama and Hugging Face models, nvm, rustup, pyenv, rbenv, SDKMAN, conda, Maven, Bun, Deno, Docker CLI, OrbStack, Lima, Colima, VS Code and Cursor extensions, AI coding tools.
+- Logs and diagnostics: the unified log store, crash reports, ASL, `~/Library/Logs`.
+- Temporary files older than three days, Docker reclaimable space, virtual machine disks from Parallels, UTM, VMware Fusion, VirtualBox and Tart.
+- iOS device backups, the Trash, shared and other users' data, Android emulators and SDKs.
+- App data and caches over their thresholds: Slack, Discord, Teams, Zoom, Spotify, Safari, Adobe, Steam, Epic, Photos, Quick Look and Final Cut render caches.
+- Project build folders: node_modules, .build, Pods, DerivedData, .next, .nuxt, .svelte-kit, .astro, .angular, .turbo, .parcel-cache, .expo.
+- System files: macOS installers, device firmware, Mail downloads, `/Library/Caches`, Command Line Tools, cryptexes, the Spotlight index, swap, iCloud local copies.
+- A catch-all pass for every folder over 500 MB that no category above explains, shown with its full path.
+
+Photos, Music, Movies, Messages, Mail, iCloud Drive and Applications are left out, because they are not System Data. Desktop, Documents and Downloads are left out too: Storage settings counts them as Documents, and what is in them is your own work. Reclaimable things under them still get their own rows.
+
+## Privacy
+
+No account, no analytics. The only network request the app can make is a daily update check, off by default. With it off, nothing leaves the Mac. The scan history is a local file and deleting it is one switch away. The app installs no privileged helper, no launch daemon and no kernel extension: every root action is a one-off `osascript` prompt that shows the command first.
+
+## Requirements
+
+macOS 14 or later. Universal binary. Full Disk Access is requested so the scan can measure files a sandboxed app cannot see; notifications only if you turn the low-space warning on.
