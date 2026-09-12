@@ -3,8 +3,22 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>System Data Unpacked — see what is really inside macOS System Data</title>
+<title>System Data Unpacked — see and clear macOS System Data</title>
 <meta name="description" content="A free Mac app that opens macOS System Data and lets you delete it, item by item, with every command shown first. Window or menu bar, your choice.">
+<link rel="canonical" href="https://macos-sysdata.yigitech.dev/">
+<meta name="theme-color" content="#f7f6f3" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#141413" media="(prefers-color-scheme: dark)">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="System Data Unpacked">
+<meta property="og:url" content="https://macos-sysdata.yigitech.dev/">
+<meta property="og:title" content="System Data Unpacked — see and clear macOS System Data">
+<meta property="og:description" content="A free Mac app that opens macOS System Data and lets you delete it, item by item, with every command shown first. Window or menu bar, your choice.">
+<meta property="og:image" content="https://macos-sysdata.yigitech.dev/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="System Data Unpacked listing macOS System Data categories largest first, with the size of each.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@yigitech">
 <link rel="icon" type="image/png" sizes="64x64" href="favicon.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <style>
@@ -33,19 +47,24 @@
   .grid p { margin:0; color:var(--muted); font-size:15px; }
   ul.found { columns: 2; column-gap: 32px; padding-left: 18px; color: var(--muted); }
   @media (max-width: 600px) { ul.found { columns: 1; } }
+  .qa { border-top:1px solid var(--line); }
+  .qa div { border-bottom:1px solid var(--line); padding: 22px 0; }
+  .qa h3 { margin:0 0 6px; font-size:17px; }
+  .qa p { margin:0; color:var(--muted); max-width: 62ch; }
   .promise { font-size: 22px; line-height:1.4; max-width: 34em; }
   .promise b { color: var(--safe); font-weight:600; }
   footer { margin-top: 96px; padding-top: 24px; border-top:1px solid var(--line); color:var(--muted); font-size:14px; display:flex; flex-wrap:wrap; gap:16px; justify-content:space-between; }
   footer a { color: inherit; }
 </style>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"System Data Unpacked","alternateName":"macos-sysdata","description":"A free Mac app that opens macOS System Data and lets you delete it, item by item, with every command shown first.","applicationCategory":"UtilitiesApplication","operatingSystem":"macOS 14 or later","url":"https://macos-sysdata.yigitech.dev/","downloadUrl":"https://github.com/Jarvis322/macos-sysdata/releases/latest","softwareHelp":"https://github.com/Jarvis322/macos-sysdata","image":"https://macos-sysdata.yigitech.dev/og.png","screenshot":"https://macos-sysdata.yigitech.dev/screenshot.png","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Person","name":"Yigit Can Polat","url":"https://yigitech.dev","sameAs":["https://x.com/yigitech","https://github.com/Jarvis322"]}},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is System Data on a Mac?","acceptedAnswer":{"@type":"Answer","text":"System Data is the name Storage settings gives to everything it cannot file under Apps, Photos or Documents: caches, logs, simulator runtimes, local Time Machine snapshots, disk images, mail attachments and application support folders."}},{"@type":"Question","name":"Why is my System Data so large?","acceptedAnswer":{"@type":"Answer","text":"On a Mac used for development it is usually a handful of folders: Xcode DerivedData and archives, simulator runtimes, npm and Homebrew caches, Docker disks and downloaded models. Each regenerates on demand, and together they pass 100 GB."}},{"@type":"Question","name":"Can I delete System Data?","acceptedAnswer":{"@type":"Answer","text":"Parts of it. Caches and build folders regenerate on their own. Snapshots and device backups are a decision rather than a cleanup. System Data Unpacked labels every item and shows the command before it runs."}}]}]}</script>
 </head>
 <body>
 <main>
   <header>
     <div>
-      <img class="icon" src="https://raw.githubusercontent.com/Jarvis322/macos-sysdata/main/assets/icon.png" alt="">
+      <img class="icon" src="icon.png" width="512" height="512" alt="">
       <h2 style="margin: 20px 0 -8px">System Data Unpacked</h2>
-      <h1>See what is really inside System Data.</h1>
+      <h1>See what is really inside macOS System Data.</h1>
       <p class="lede">macOS files everything it cannot name under one line in Storage settings. This app opens it — simulator runtimes, Xcode caches, package stores, backups, snapshots — and lets you delete it item by item, in a window or from the menu bar.</p>
       <div class="install">
         <code class="cmd">brew install --cask jarvis322/tap/sysdata</code>
@@ -53,7 +72,7 @@
         <a class="btn ghost" href="https://github.com/Jarvis322/macos-sysdata">Source</a>
       </div>
     </div>
-    <img class="shot" src="https://raw.githubusercontent.com/Jarvis322/macos-sysdata/main/assets/screenshot.png?v=1.1.0" alt="System Data Unpacked: categories listed largest first, each with a bar split into safe, review and manual">
+    <img class="shot" src="screenshot.png" width="920" height="1280" alt="System Data Unpacked: categories listed largest first, each with a bar split into safe, review and manual">
   </header>
 
   <section>
@@ -88,6 +107,25 @@
       <li>Project build folders: node_modules, .build, Pods</li>
       <li>Anything else over 500 MB it cannot explain</li>
     </ul>
+  </section>
+
+
+  <section>
+    <h2>What System Data actually is</h2>
+    <div class="qa">
+      <div>
+        <h3>What is System Data on a Mac?</h3>
+        <p>It is the name Storage settings gives to everything it cannot file under Apps, Photos or Documents: caches, logs, simulator runtimes, local Time Machine snapshots, disk images, mail attachments, application support folders. It is not one thing, which is why the number gets large and why macOS shows you a bar instead of a list.</p>
+      </div>
+      <div>
+        <h3>Why is my System Data so large?</h3>
+        <p>On a Mac used for development it is usually a handful of folders: Xcode DerivedData and archives, simulator runtimes, npm and Homebrew caches, Docker disks, downloaded models. Each regenerates on demand, and together they pass 100 GB without anything being wrong.</p>
+      </div>
+      <div>
+        <h3>Can I delete System Data?</h3>
+        <p>Parts of it. Caches and build folders come back on their own, so removing them costs you a rebuild and nothing else. Snapshots and device backups are a decision rather than a cleanup. Nothing in macOS tells you which is which — this app labels every item before you touch it, and shows the command it will run.</p>
+      </div>
+    </div>
   </section>
 
   <footer>

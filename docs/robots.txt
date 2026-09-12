@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://macos-sysdata.yigitech.dev/sitemap.xml
