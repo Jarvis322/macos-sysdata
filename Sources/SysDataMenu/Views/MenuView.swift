@@ -785,7 +785,7 @@ struct MenuView: View {
                     // Taking the icon away while it is the only way into the
                     // app would leave it with nowhere to appear, so the
                     // window opens before the icon goes.
-                    if !wanted { MainWindow.shared.show() }
+                    if !wanted { MainWindow.shared.openWindowLeavingTheMenuBar() }
                     model.showsMenuBarIcon = wanted
                     MainWindow.shared.menuBarPreferenceChanged()
                 }

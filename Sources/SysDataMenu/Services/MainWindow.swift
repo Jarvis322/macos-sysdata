@@ -101,6 +101,21 @@ final class MainWindow: NSObject, NSWindowDelegate {
         window.makeKeyAndOrderFront(nil)
     }
 
+    /// Opens the window for someone who has just switched the menu bar icon
+    /// off from the menu bar panel itself.
+    ///
+    /// That panel belongs to the icon, and SwiftUI leaves it on screen when
+    /// the icon goes: a panel with nothing behind it, floating over the
+    /// window that was just asked for. Every visible window of this app that
+    /// is not one of ours is that panel.
+    func openWindowLeavingTheMenuBar() {
+        show()
+        for panel in NSApplication.shared.windows
+        where panel !== window && panel !== prompt && panel.isVisible {
+            panel.orderOut(nil)
+        }
+    }
+
     /// Re-reads the menu bar preference. Turning the icon off has to put the
     /// app in the Dock: an app with no icon and no Dock tile cannot be
     /// reached again, which is not a preference, it is a disappearance.
