@@ -19,10 +19,10 @@ volume="$app_name $version"
 
 [ -d "$app" ] || { echo "missing $app; run scripts/build-app.sh first" >&2; exit 1; }
 
+command -v uvx >/dev/null || { echo "uvx is required (brew install uv)" >&2; exit 1; }
+
 staging=$(mktemp -d)
 trap 'rm -rf "$staging"' EXIT
-cp -R "$app" "$staging/"
-ln -s /Applications "$staging/Applications"
 
 # Until 1.0.4 the in-app updater looked inside the image for its own file
 # name, SysDataMenu.app. A hidden copy under that name lets those versions
@@ -31,18 +31,48 @@ ln -s /Applications "$staging/Applications"
 # changes, and Finder does not show it. Those updaters copy the hidden flag
 # along with it, so the app clears the flag on its own bundle at launch
 # (Updater.unhide); without that, an update left it missing from Finder.
-cp -R "$app" "$staging/$name.app"
-chflags hidden "$staging/$name.app"
+# dmg-settings.py hides it in the image.
+legacy="$staging/$name.app"
+cp -R "$app" "$legacy"
 
-# The volume takes the app's own icon, so the mounted disk is recognisable in
-# the Finder sidebar rather than a generic white drive.
-if [ -f "$root/assets/AppIcon.icns" ]; then
-  cp "$root/assets/AppIcon.icns" "$staging/.VolumeIcon.icns"
-  SetFile -a C "$staging" 2>/dev/null || true
-fi
+# The window people see when the image opens: the app on the left, an arrow,
+# Applications on the right. Drawn at both scales and joined into one TIFF so
+# it stays sharp on Retina displays.
+swift "$root/scripts/make-dmg-background.swift" 1 "$staging/background.png"
+swift "$root/scripts/make-dmg-background.swift" 2 "$staging/background@2x.png"
+tiffutil -cathidpicheck "$staging/background.png" "$staging/background@2x.png" \
+  -out "$staging/background.tiff" 2>/dev/null
+
+[ -f "$root/assets/AppIcon.icns" ] || "$root/scripts/make-icon.sh"
 
 rm -f "$dmg"
-hdiutil create -volname "$volume" -srcfolder "$staging" -ov -format ULFO -quiet "$dmg"
+# dmgbuild writes the Finder layout into the image directly, so this needs no
+# Finder scripting, no GUI session and no Automation permission. Pinned: the
+# layout format is its code, not ours.
+uvx --from dmgbuild==1.6.7 dmgbuild \
+  -s "$root/scripts/dmg-settings.py" \
+  -D app="$app" \
+  -D legacy="$legacy" \
+  -D background="$staging/background.tiff" \
+  -D volume_icon="$root/assets/AppIcon.icns" \
+  "$volume" "$dmg"
+
+# dmgbuild ignores a failed copy, so the image is checked rather than trusted:
+# the app is there and still validly signed, the legacy copy is there and
+# hidden, and Applications points where it should.
+mount=$(mktemp -d)
+hdiutil attach -readonly -nobrowse -noautoopen -mountpoint "$mount" "$dmg" >/dev/null
+check_image() {
+  codesign --verify --deep --strict "$mount/$app_name.app" &&
+  [ -d "$mount/$name.app" ] &&
+  GetFileInfo -a "$mount/$name.app" | grep -q V &&
+  [ "$(readlink "$mount/Applications")" = "/Applications" ] &&
+  [ -f "$mount/.background.tiff" ]
+}
+if check_image; then image_ok=1; else image_ok=0; fi
+hdiutil detach "$mount" -quiet
+rmdir "$mount"
+[ "$image_ok" = 1 ] || { echo "the disk image is incomplete: $dmg" >&2; exit 1; }
 
 # The image is signed with the same identity as the app; an unsigned image
 # around a signed app still warns on download.
