@@ -13,10 +13,21 @@ version=$(tr -d "[:space:]" < "$root/VERSION")
 bundle="$root/build/$app_name.app"
 archive="$root/build/$name-$version.zip"
 
+# Keep in step with Package.swift's platforms.
+minimum_macos="14.0"
+sdk_version=$(xcrun --sdk macosx --show-sdk-version)
+
 "$root/scripts/compile-strings.sh"
 # Universal: macOS 14 still runs on Intel Macs, and a single-architecture
 # build silently excludes every one of them.
-build_flags=(-c release --package-path "$root" --arch arm64 --arch x86_64)
+#
+# The linker is told the SDK version outright. SwiftPM's default build system
+# records the deployment target there instead (sdk 14.0), and macOS decides
+# from that field which behaviour an app was built for: an app that claims the
+# macOS 14 SDK keeps the macOS 14 controls on macOS 26 and later, next to
+# every other app on the system in the current design.
+build_flags=(-c release --package-path "$root" --arch arm64 --arch x86_64
+  -Xlinker -platform_version -Xlinker macos -Xlinker "$minimum_macos" -Xlinker "$sdk_version")
 swift build "${build_flags[@]}"
 
 bin_path=$(swift build "${build_flags[@]}" --show-bin-path)
@@ -60,7 +71,7 @@ cat > "$bundle/Contents/Info.plist" <<EOF
 	<key>CFBundleVersion</key>
 	<string>$version</string>
 	<key>LSMinimumSystemVersion</key>
-	<string>14.0</string>
+	<string>$minimum_macos</string>
 	<key>LSUIElement</key>
 	<true/>
 </dict>

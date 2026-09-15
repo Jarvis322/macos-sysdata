@@ -54,6 +54,18 @@ case "$architectures" in
   *arm64*x86_64*|*x86_64*arm64*) echo "universal: $architectures" ;;
   *) echo "built for $architectures only; Intel Macs cannot run this" >&2; exit 1 ;;
 esac
+# Every slice must claim the SDK it was built with and still launch on
+# macOS 14. A binary that records sdk 14.0 gets the old controls on current
+# macOS without a single warning, which is how 1.2.1 and earlier shipped.
+expected_sdk=$(xcrun --sdk macosx --show-sdk-version)
+build_versions=$(vtool -show-build "$app/Contents/MacOS/SysDataMenu")
+if printf '%s\n' "$build_versions" | awk '$1 == "sdk" && $2 != "'"$expected_sdk"'" { bad = 1 } END { exit !bad }'; then
+  echo "binary does not record SDK $expected_sdk:" >&2; printf '%s\n' "$build_versions" >&2; exit 1
+fi
+if printf '%s\n' "$build_versions" | awk '$1 == "minos" && $2 != "14.0" { bad = 1 } END { exit !bad }'; then
+  echo "binary no longer runs on macOS 14:" >&2; printf '%s\n' "$build_versions" >&2; exit 1
+fi
+echo "sdk $expected_sdk, minos 14.0"
 
 step "Check the compiled strings are up to date"
 # compile-strings.sh regenerates the .strings tables from the catalogue; a
