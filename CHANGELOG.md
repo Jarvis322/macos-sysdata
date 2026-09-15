@@ -5,6 +5,24 @@ What changed in each release, and where it is worth saying, why.
 Versions up to and including v0.3.7 were released under the MIT License; see
 [LICENSE](LICENSE).
 
+## v1.3.0 — 2026-09-15
+
+- **The current macOS design.** Every build so far told macOS it was made
+  with the macOS 14 SDK — SwiftPM's build system writes the deployment target
+  into that field — so on macOS 26 and 27 the app kept the old controls while
+  everything around it had moved on. It now records the SDK it is built with:
+  the buttons, checkboxes and window take the current design, and it still
+  runs on macOS 14. A release check fails if a build ever claims the wrong SDK
+  again.
+- **The header fits the new controls.** The figures under the title have their
+  own full-width line; next to the larger buttons they had been squeezed onto
+  three.
+- **The window no longer leaves an empty band under its title bar** on
+  macOS 27.
+- **A proper disk image.** It opens on a window with the app, an arrow and
+  Applications, so installing is one drag. The site's Download button now
+  hands over the image itself instead of a release page to search.
+
 ## v1.2.1 — 2026-09-12
 
 - **Fixed: the menu bar icon could come back stuck.** Switching the icon off

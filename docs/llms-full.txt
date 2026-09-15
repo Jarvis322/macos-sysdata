@@ -4,7 +4,7 @@
 
 Site: https://macos-sysdata.yigitech.dev/
 Source: https://github.com/Jarvis322/macos-sysdata
-Version: 1.2.0
+Version: 1.2.1
 Author: Yigit Can Polat (https://yigitech.dev, https://x.com/yigitech, https://github.com/Jarvis322)
 
 Everything below is the project's README, the same text the repository carries.
@@ -35,9 +35,10 @@ Access, your settings and any scripts carry over without reinstalling.
 brew install --cask Jarvis322/tap/sysdata
 ```
 
-Or download `SysDataMenu-<version>.dmg` from the
-[latest release](https://github.com/Jarvis322/macos-sysdata/releases/latest),
-open it and drag the app onto Applications. A `.zip` of the same app is
+Or [download the disk image](https://github.com/Jarvis322/macos-sysdata/releases/latest/download/SystemDataUnpacked.dmg),
+open it and drag the app onto Applications. Every
+[release](https://github.com/Jarvis322/macos-sysdata/releases/latest) carries
+the same image as `SysDataMenu-<version>.dmg`. A `.zip` of the same app is
 attached to every release for anyone scripting the download.
 
 If the app is already in Applications from the disk image, `brew install`

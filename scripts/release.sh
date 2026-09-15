@@ -60,6 +60,11 @@ scripts/build-app.sh
 scripts/make-dmg.sh
 archive="build/SysDataMenu-$version.zip"
 image="build/SysDataMenu-$version.dmg"
+# The same image under a name that never changes, so the site's Download
+# button can point at releases/latest/download/ and hand over the image
+# itself rather than a release page to search. The versioned name stays for
+# the cask and for older in-app updaters.
+stable_image="build/SystemDataUnpacked.dmg"
 for artefact in "$archive" "$image"; do
   [ -f "$artefact" ] || { echo "missing $artefact" >&2; exit 1; }
 done
@@ -87,7 +92,8 @@ git add VERSION
 git commit -q -m "chore: release $tag"
 git tag -a "$tag" -m "$tag"
 git push -q origin main "$tag"
-gh release create "$tag" "$image" "$archive" --repo "$repo" --title "$tag" --notes-file "$notes"
+cp "$image" "$stable_image"
+gh release create "$tag" "$image" "$archive" "$stable_image" --repo "$repo" --title "$tag" --notes-file "$notes"
 rm -f "$notes"
 
 # Homebrew cask.
