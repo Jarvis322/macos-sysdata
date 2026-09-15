@@ -264,32 +264,45 @@ struct MenuView: View {
 
     // MARK: Header
 
+    /// The title and controls on one row, and the figures on a full-width
+    /// line under them. The figures used to share the row with the controls;
+    /// with the taller, wider buttons of the current macOS design they were
+    /// squeezed onto three lines.
     private var header: some View {
+        VStack(alignment: .leading, spacing: 2) {
+            headerTitleRow
+            Text(subtitle)
+                .font(.caption)
+                .foregroundStyle(.secondary)
+                .monospacedDigit()
+                // The purgeable figure is the one number here nobody can
+                // act on, and the one people meet in Finder wondering why
+                // free space they can see will not open a file. Measured
+                // on this Mac: writing 6.44 GB cost 6.44 GB of real free
+                // space and took nothing from the pool, which then
+                // refilled itself. See docs/purgeable-measurement.md.
+                .help(model.purgeableBytes > 0
+                      ? L("Purgeable is what macOS estimates it could give back if it had to: caches and local snapshots. It is an estimate, not space you can count on — it moves on its own, and writing a file does not spend it. The items below are the ones you can actually free.")
+                      : L("Free space on the startup disk."))
+        }
+        .padding(.horizontal, presentation == .window ? 18 : 14)
+        .padding(.vertical, presentation == .window ? 14 : 10)
+        // In the window the title bar is transparent and empty, so the header
+        // is the title: it needs the traffic lights' row above it.
+        .padding(.top, presentation == .window ? 20 : 0)
+    }
+
+    private var headerTitleRow: some View {
         HStack(alignment: .firstTextBaseline) {
-            VStack(alignment: .leading, spacing: 2) {
-                HStack(alignment: .firstTextBaseline, spacing: 6) {
-                    Text(L("System Data"))
+            HStack(alignment: .firstTextBaseline, spacing: 6) {
+                Text(L("System Data"))
+                    .font(titleFont)
+                if !model.visibleItems.isEmpty {
+                    Text(model.measuredBytes.byteString)
                         .font(titleFont)
-                    if !model.visibleItems.isEmpty {
-                        Text(model.measuredBytes.byteString)
-                            .font(titleFont)
-                            .foregroundStyle(.secondary)
-                            .monospacedDigit()
-                    }
+                        .foregroundStyle(.secondary)
+                        .monospacedDigit()
                 }
-                Text(subtitle)
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-                    .monospacedDigit()
-                    // The purgeable figure is the one number here nobody can
-                    // act on, and the one people meet in Finder wondering why
-                    // free space they can see will not open a file. Measured
-                    // on this Mac: writing 6.44 GB cost 6.44 GB of real free
-                    // space and took nothing from the pool, which then
-                    // refilled itself. See docs/purgeable-measurement.md.
-                    .help(model.purgeableBytes > 0
-                          ? L("Purgeable is what macOS estimates it could give back if it had to: caches and local snapshots. It is an estimate, not space you can count on — it moves on its own, and writing a file does not spend it. The items below are the ones you can actually free.")
-                          : L("Free space on the startup disk."))
             }
             Spacer()
             if model.isScanning {
@@ -374,11 +387,6 @@ struct MenuView: View {
                 settingsMenu
             }
         }
-        .padding(.horizontal, presentation == .window ? 18 : 14)
-        .padding(.vertical, presentation == .window ? 14 : 10)
-        // In the window the title bar is transparent and empty, so the header
-        // is the title: it needs the traffic lights' row above it.
-        .padding(.top, presentation == .window ? 20 : 0)
     }
 
     /// The window has room the popover does not, and a header that is also
@@ -982,7 +990,14 @@ private struct PanelSize: ViewModifier {
     func body(content: Content) -> some View {
         switch presentation {
         case .menuBar: content.frame(width: 460, height: 640)
-        case .window: content.frame(minWidth: 460, minHeight: 520)
+        case .window:
+            // The header sits under the transparent title bar on its own
+            // padding. Whether the title bar also counts as safe area depends
+            // on the macOS and SDK the app meets, and on macOS 27 the two
+            // added up to an empty band above the title.
+            content
+                .frame(minWidth: 460, minHeight: 520)
+                .ignoresSafeArea(.container, edges: .top)
         }
     }
 }
