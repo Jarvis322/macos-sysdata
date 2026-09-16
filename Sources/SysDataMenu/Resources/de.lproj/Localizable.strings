@@ -48,6 +48,8 @@
 "Delete the history file" = "Verlaufsdatei löschen";
 "Deleted" = "Gelöscht";
 "Deleted %@, back by %@" = "%@ gelöscht, %@ zurückgekommen";
+"Deleted %@, but the disk has only %@ more free. macOS is holding the rest as purgeable space and gives it back when something needs the room." = "%@ gelöscht, aber auf dem Volume sind nur %@ mehr frei. Den Rest führt macOS als bereinigbaren Speicher und gibt ihn frei, sobald er gebraucht wird.";
+"Deleted %@, but the disk has only %@ more free: local snapshots still hold the rest. Delete the Time Machine local snapshots to get it back now." = "%@ gelöscht, aber auf dem Volume sind nur %@ mehr frei: Den Rest halten lokale Schnappschüsse. Lösche die lokalen Time-Machine-Schnappschüsse, um ihn sofort zurückzubekommen.";
 "Deselect" = "Abwählen";
 "Deselect safe" = "Sichere abwählen";
 "Developer tool data" = "Daten von Entwicklertools";

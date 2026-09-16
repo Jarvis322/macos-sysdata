@@ -48,6 +48,8 @@
 "Delete the history file" = "删除历史记录文件";
 "Deleted" = "已删除";
 "Deleted %@, back by %@" = "于 %@ 删除，截至 %@ 已重新出现";
+"Deleted %@, but the disk has only %@ more free. macOS is holding the rest as purgeable space and gives it back when something needs the room." = "已删除 %@，但磁盘可用空间只增加了 %@。其余部分被 macOS 记为可清除空间，需要时会自动释放。";
+"Deleted %@, but the disk has only %@ more free: local snapshots still hold the rest. Delete the Time Machine local snapshots to get it back now." = "已删除 %@，但磁盘可用空间只增加了 %@：其余部分仍被本地快照占用。删除 Time Machine 本地快照即可立即取回。";
 "Deselect" = "取消选择";
 "Deselect safe" = "取消选择可安全清理的项目";
 "Developer tool data" = "开发者工具数据";

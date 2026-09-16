@@ -48,6 +48,8 @@
 "Delete the history file" = "기록 파일 삭제";
 "Deleted" = "삭제됨";
 "Deleted %@, back by %@" = "%@ 삭제됨, %@ 후 다시 생김";
+"Deleted %@, but the disk has only %@ more free. macOS is holding the rest as purgeable space and gives it back when something needs the room." = "%@을(를) 삭제했지만 디스크 여유 공간은 %@만 늘었습니다. 나머지는 macOS가 제거 가능한 공간으로 잡아 두었다가 공간이 필요할 때 돌려줍니다.";
+"Deleted %@, but the disk has only %@ more free: local snapshots still hold the rest. Delete the Time Machine local snapshots to get it back now." = "%@을(를) 삭제했지만 디스크 여유 공간은 %@만 늘었습니다. 나머지는 로컬 스냅샷이 잡고 있습니다. Time Machine 로컬 스냅샷을 삭제하면 지금 바로 돌려받습니다.";
 "Deselect" = "선택 해제";
 "Deselect safe" = "안전 항목 선택 해제";
 "Developer tool data" = "개발자 도구 데이터";

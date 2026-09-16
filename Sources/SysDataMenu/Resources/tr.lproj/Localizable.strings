@@ -48,6 +48,8 @@
 "Delete the history file" = "Geçmiş dosyasını sil";
 "Deleted" = "Silinen";
 "Deleted %@, back by %@" = "%@ tarihinde silindi, %@ tarihinde geri geldi";
+"Deleted %@, but the disk has only %@ more free. macOS is holding the rest as purgeable space and gives it back when something needs the room." = "%@ silindi, ama diskte yalnızca %@ daha boş yer var. Kalanını macOS temizlenebilir alan olarak tutuyor ve yere ihtiyaç olduğunda geri veriyor.";
+"Deleted %@, but the disk has only %@ more free: local snapshots still hold the rest. Delete the Time Machine local snapshots to get it back now." = "%@ silindi, ama diskte yalnızca %@ daha boş yer var: kalanı yerel anlık görüntüler tutuyor. Hemen geri almak için Time Machine yerel anlık görüntülerini sil.";
 "Deselect" = "Seçimi kaldır";
 "Deselect safe" = "Güvenlileri bırak";
 "Developer tool data" = "Geliştirici araç verileri";

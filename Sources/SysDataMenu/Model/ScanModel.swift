@@ -94,6 +94,9 @@ final class ScanModel {
     var errorMessage: String?
     /// Failures collected during one batch, shown together when it ends.
     @ObservationIgnored private var failures: [String] = []
+    /// Whether anything in this batch was trashed rather than deleted. The
+    /// Trash frees nothing until it is emptied, which the notice already says.
+    @ObservationIgnored private var anythingWentToTheTrash = false
     /// Non-error feedback, such as "moved to the Trash".
     var notice: String?
 
@@ -501,6 +504,12 @@ final class ScanModel {
         errorMessage = nil
         notice = nil
         failures = []
+        // What the disk says before any of it runs, to compare with what the
+        // batch removed. They are not the same number as often as one would
+        // hope, and the difference is the thing worth saying out loud.
+        let freeBeforeBatch = DiskSize.freeSpace()
+        let askedToFree = runnable.reduce(0) { $0 + ($1.sizeBytes ?? 0) }
+        anythingWentToTheTrash = false
         // Every failure in the batch, one per line, once it is over.
         defer { if !failures.isEmpty { errorMessage = failures.joined(separator: "\n") } }
 
@@ -536,6 +545,47 @@ final class ScanModel {
             }
             deleted += 1
         }
+
+        await explainAnyShortfall(freeBefore: freeBeforeBatch, askedToFree: askedToFree)
+    }
+
+    /// Says so when the disk did not give back what was deleted.
+    ///
+    /// Deleting a file does not always free its space: while a local Time
+    /// Machine snapshot still refers to it, it moves from the file to the
+    /// snapshot, and macOS books it as purgeable — space it will hand back
+    /// when something needs it, not space that is free now. Caches the system
+    /// rebuilds immediately take their share too. Without this, the app
+    /// reported having freed gigabytes while the disk showed less room than
+    /// before, which is the one thing a tool like this must never do.
+    private func explainAnyShortfall(freeBefore: Int64, askedToFree: Int64) async {
+        guard askedToFree > 0, errorMessage == nil, !anythingWentToTheTrash else { return }
+        // Half of it, and at least half a gigabyte short: normal background
+        // writing is not worth a notice.
+        let gained = DiskSize.freeSpace() - freeBefore
+        guard gained < askedToFree / 2, askedToFree - gained > 512 * ProbeSupport.megabyte else { return }
+
+        notice = Self.shortfallNotice(
+            askedToFree: askedToFree, gained: gained, hasLocalSnapshots: await hasLocalSnapshots()
+        )
+    }
+
+    /// The wording, kept apart from the disk and the clock so it can be read
+    /// back in a test.
+    nonisolated static func shortfallNotice(askedToFree: Int64, gained: Int64, hasLocalSnapshots: Bool) -> String? {
+        guard askedToFree > 0,
+              gained < askedToFree / 2,
+              askedToFree - gained > 512 * ProbeSupport.megabyte else { return nil }
+        let deleted = askedToFree.byteString
+        let free = max(gained, 0).byteString
+        return hasLocalSnapshots
+            ? L("Deleted %@, but the disk has only %@ more free: local snapshots still hold the rest. Delete the Time Machine local snapshots to get it back now.", deleted, free)
+            : L("Deleted %@, but the disk has only %@ more free. macOS is holding the rest as purgeable space and gives it back when something needs the room.", deleted, free)
+    }
+
+    private func hasLocalSnapshots() async -> Bool {
+        guard let result = try? await Shell.run("/usr/bin/tmutil", ["listlocalsnapshots", "/"]) else { return false }
+        return result.output.contains("com.apple.TimeMachine")
     }
 
     /// Puts the untouched items back in the selection and says plainly how far
@@ -586,6 +636,7 @@ final class ScanModel {
             freeBytes = after
             purgeableBytes = DiskSize.purgeableSpace()
             if movedToTrash {
+                anythingWentToTheTrash = true
                 notice = L("Moved to the Trash. Empty the Trash to free the space.")
             }
         } catch {

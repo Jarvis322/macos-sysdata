@@ -48,6 +48,8 @@
 "Delete the history file" = "履歴ファイルを削除";
 "Deleted" = "削除済み";
 "Deleted %@, back by %@" = "%@ に削除、%@ までに復活";
+"Deleted %@, but the disk has only %@ more free. macOS is holding the rest as purgeable space and gives it back when something needs the room." = "%@ を削除しましたが、ディスクの空き容量は %@ しか増えていません。残りはmacOSがパージ可能な領域として保持し、必要になったときに解放します。";
+"Deleted %@, but the disk has only %@ more free: local snapshots still hold the rest. Delete the Time Machine local snapshots to get it back now." = "%@ を削除しましたが、ディスクの空き容量は %@ しか増えていません。残りはローカルスナップショットが保持しています。Time Machineのローカルスナップショットを削除すると今すぐ解放されます。";
 "Deselect" = "選択を解除";
 "Deselect safe" = "安全な項目の選択を解除";
 "Developer tool data" = "開発ツールのデータ";

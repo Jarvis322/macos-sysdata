@@ -4,7 +4,7 @@
 
 System Data is what macOS calls everything Storage settings cannot file under Apps, Photos or Documents: simulator runtimes, Xcode caches, package-manager stores, virtual machine disks, local Time Machine snapshots, logs, per-app data folders. macOS shows the total and nothing else. This app measures each item on disk, labels it Safe, Review or Manual, and deletes only what you tick.
 
-Current version: 1.3.0. Install: `brew install --cask Jarvis322/tap/sysdata`
+Current version: 1.3.1. Install: `brew install --cask Jarvis322/tap/sysdata`
 
 ## Pages
 

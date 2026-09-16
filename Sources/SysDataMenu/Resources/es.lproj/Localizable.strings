@@ -48,6 +48,8 @@
 "Delete the history file" = "Eliminar el archivo de historial";
 "Deleted" = "Eliminado";
 "Deleted %@, back by %@" = "Eliminado %@, reapareció %@";
+"Deleted %@, but the disk has only %@ more free. macOS is holding the rest as purgeable space and gives it back when something needs the room." = "Se eliminaron %@, pero el disco solo tiene %@ más libres. macOS mantiene el resto como espacio purgable y lo devuelve cuando hace falta sitio.";
+"Deleted %@, but the disk has only %@ more free: local snapshots still hold the rest. Delete the Time Machine local snapshots to get it back now." = "Se eliminaron %@, pero el disco solo tiene %@ más libres: el resto lo retienen las instantáneas locales. Elimina las instantáneas locales de Time Machine para recuperarlo ahora.";
 "Deselect" = "Deseleccionar";
 "Deselect safe" = "Deseleccionar seguros";
 "Developer tool data" = "Datos de herramientas de desarrollo";

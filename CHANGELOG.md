@@ -5,6 +5,17 @@ What changed in each release, and where it is worth saying, why.
 Versions up to and including v0.3.7 were released under the MIT License; see
 [LICENSE](LICENSE).
 
+## v1.3.2 — 2026-09-16
+
+- **It now says when the disk did not give the space back.** Deleting a file
+  frees nothing while a local Time Machine snapshot still refers to it: the
+  space moves from the file to the snapshot, and macOS books it as purgeable.
+  Someone deleted 1.4 GB of safe items and watched free space fall, with the
+  app claiming it had freed them. After a delete the app compares what it
+  removed with what the disk actually gained, and when they disagree it says
+  so — naming local snapshots when there are any, and purgeable space when
+  there are not.
+
 ## v1.3.1 — 2026-09-16
 
 - **Fixed: clearing the system-wide caches ended in an error.** The command
