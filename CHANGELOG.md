@@ -5,6 +5,16 @@ What changed in each release, and where it is worth saying, why.
 Versions up to and including v0.3.7 were released under the MIT License; see
 [LICENSE](LICENSE).
 
+## v1.3.1 — 2026-09-16
+
+- **Fixed: clearing the system-wide caches ended in an error.** The command
+  was `rm -rf /Library/Caches/*`, and the glob reached entries the system will
+  not let anyone remove, root included — entries this app cannot even see. Each
+  one printed "Operation not permitted", and a delete that had removed
+  everything it could was reported as a failure. It now names the entries it
+  measured instead of globbing, so what it cannot free it no longer claims to
+  try.
+
 ## v1.3.0 — 2026-09-15
 
 - **The current macOS design.** Every build so far told macOS it was made
