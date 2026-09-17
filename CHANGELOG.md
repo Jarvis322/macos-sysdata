@@ -5,6 +5,17 @@ What changed in each release, and where it is worth saying, why.
 Versions up to and including v0.3.7 were released under the MIT License; see
 [LICENSE](LICENSE).
 
+## v1.3.3 — 2026-09-17
+
+- **Fixed, properly this time: clearing the system-wide caches still ended in
+  an error.** 1.3.1 stopped globbing over `/Library/Caches` and named the
+  entries it found instead, on the assumption that the ones macOS protects
+  never appear in that listing. They do — sometimes the same folder lists them
+  and sometimes it does not. Each entry is now checked: anything the system
+  marks restricted, and anything it will not even let the app look at — data
+  vaults such as `com.apple.aned` — is left out, because nothing on the Mac
+  can remove it. What is left is what the delete now touches.
+
 ## v1.3.2 — 2026-09-16
 
 - **It now says when the disk did not give the space back.** Deleting a file
