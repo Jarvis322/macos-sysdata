@@ -5,9 +5,38 @@ What changed in each release, and where it is worth saying, why.
 Versions up to and including v0.3.7 were released under the MIT License; see
 [LICENSE](LICENSE).
 
-## v1.3.4 — 2026-09-21
+## v1.4.0 — 2026-09-21
 
-From an audit of the code that deletes things.
+- **Who made it.** Rows under "Other large folders" used to say only that
+  they were not recognised — 19 GB of them on the Mac this was written on.
+  Each is now traced from its path: a bundle identifier under Containers or
+  Caches, an app's name under Application Support. "Belongs to Google
+  Chrome", or "Left by com.example.app, which is no longer installed", which
+  is the answer that matters, since nothing else will clean up after an app
+  that is gone. `~/Library/Metadata` is named for what it is: Spotlight's
+  index. The npx cache is now its own Safe row.
+- **Idle projects.** Build folders are dated by the project's own files —
+  the newest one anywhere in it, and git's index — rather than by the folder,
+  which is only as old as the last install. A link in the header selects the
+  build folders of every project nobody has changed in 60 days.
+- **Unused simulator runtimes.** A runtime that no installed SDK is matched
+  to, with no simulator on it, is marked unused. Every Xcode update downloads
+  a new one and leaves the old one where it was, several gigabytes each.
+- **Docker, piece by piece.** One row used to promise everything
+  `docker system df` calls reclaimable while running `docker system prune -f`,
+  which frees only the dangling part. Build cache, unused images, stopped
+  containers and unused volumes now each have a row sized at what their own
+  prune command frees. Volumes are where databases keep their data, and say so.
+- **A way out when snapshots hold the space.** The notice that says a delete
+  gave back less than it removed now has a button that deletes the local
+  snapshots, through the same confirmation as any other row.
+- **Widget.** System Data, free space and what is safe to free, as of the
+  last scan, on the desktop or in Notification Center.
+- **Shortcuts.** *Free Safe Items* runs the same password-free set as the
+  low-space button; *Get System Data Size* returns the figure. Both can run
+  from an automation.
+
+And from an audit of the code that deletes things:
 
 - **Fixed: clearing the temporary folders removed live sockets.** The item
   says only files older than three days are removed; it also removed every

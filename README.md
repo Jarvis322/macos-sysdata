@@ -222,6 +222,25 @@ prompt, which is why it asks each time and shows you the command first.
   interface string is translated in all of them; the last five are
   machine-assisted, and native-speaker corrections are welcome (see
   [CONTRIBUTING.md](CONTRIBUTING.md)).
+- **Who made it.** Folders nothing else explains are traced to their owner
+  from their path: "Belongs to Google Chrome", or — the useful one — "Left by
+  com.example.app, which is no longer installed on this Mac". The 13 GB
+  `~/Library/Metadata` is named for what it is, Spotlight's index.
+- **Idle projects.** Build folders are dated by the project's own files, not
+  by the last `npm install`, and one link selects every project nobody has
+  changed in 60 days.
+- **Unused simulator runtimes.** A runtime no installed SDK builds against and
+  no simulator sits on is marked unused — every Xcode update leaves one.
+- **Docker, piece by piece.** Build cache, unused images, stopped containers
+  and unused volumes each get a row, a size and the prune command that frees
+  exactly that. Volumes carry a warning: databases keep their data there.
+- **When the disk does not give the space back**, because local snapshots
+  still hold it, the notice now has a button that deletes them — through the
+  same confirmation as every other row.
+- **Widget.** System Data, free space and what is safe to free, on the desktop
+  or in Notification Center, as of the last scan.
+- **Shortcuts.** *Free Safe Items* and *Get System Data Size*, for a weekly
+  automation or anything else Shortcuts can run.
 - **`SysDataMenu --json`** prints the whole inventory for scripts.
 
 ## What it finds
