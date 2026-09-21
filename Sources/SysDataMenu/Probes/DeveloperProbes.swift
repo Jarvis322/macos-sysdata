@@ -8,7 +8,7 @@ private let xcrun = "/usr/bin/xcrun"
 /// their blocks as System Data and APFS refuses to report their size.
 struct SnapshotProbe: StorageProbe {
     func probe() async -> [StorageItem] {
-        guard let result = try? await Shell.run("/usr/bin/tmutil", ["listlocalsnapshots", "/"]) else { return [] }
+        guard let result = try? await Shell.run("/usr/bin/tmutil", ["listlocalsnapshots", "/"], timeout: Shell.probeTimeout) else { return [] }
         let count = result.output
             .split(separator: "\n")
             .filter { $0.contains("com.apple.TimeMachine") }
@@ -218,7 +218,7 @@ struct XcodeProbe: StorageProbe {
             items.append(item)
         }
 
-        let active = (try? await Shell.run("/usr/bin/xcode-select", ["-p"]))?.output
+        let active = (try? await Shell.run("/usr/bin/xcode-select", ["-p"], timeout: Shell.probeTimeout))?.output
             .trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
         for app in URL(fileURLWithPath: "/Applications").children()
         where app.lastPathComponent.hasPrefix("Xcode") && app.pathExtension == "app" && !active.hasPrefix(app.path) {

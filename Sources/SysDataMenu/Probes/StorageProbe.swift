@@ -36,7 +36,7 @@ enum ProbeSupport {
 
     /// Runs a JSON-producing command and decodes its top-level object.
     static func json(_ executable: String, _ arguments: [String]) async -> [String: Any]? {
-        guard let result = try? await Shell.run(executable, arguments, mergeStderr: false),
+        guard let result = try? await Shell.run(executable, arguments, mergeStderr: false, timeout: Shell.probeTimeout),
               result.succeeded,
               let data = result.output.data(using: .utf8),
               let object = try? JSONSerialization.jsonObject(with: data) as? [String: Any]

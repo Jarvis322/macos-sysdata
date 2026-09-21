@@ -96,8 +96,8 @@ struct DockerProbe: StorageProbe {
         let vms = URL.home("Library/Containers/com.docker.docker/Data/vms")
 
         guard let docker = Shell.which("docker"),
-              let info = try? await Shell.run(docker, ["info"], mergeStderr: false), info.succeeded,
-              let df = try? await Shell.run(docker, ["system", "df", "--format", "{{json .}}"], mergeStderr: false),
+              let info = try? await Shell.run(docker, ["info"], mergeStderr: false, timeout: Shell.probeTimeout), info.succeeded,
+              let df = try? await Shell.run(docker, ["system", "df", "--format", "{{json .}}"], mergeStderr: false, timeout: Shell.probeTimeout),
               df.succeeded
         else {
             guard vms.exists else { return [] }

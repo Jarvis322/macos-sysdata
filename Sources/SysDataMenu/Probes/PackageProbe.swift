@@ -50,7 +50,7 @@ struct PackageProbe: StorageProbe {
         // it leaves the store on disk, and from then on nothing references it
         // and nothing reports it.
         if let pnpm = Shell.which("pnpm") {
-            if let result = try? await Shell.run(pnpm, ["store", "path"], mergeStderr: false),
+            if let result = try? await Shell.run(pnpm, ["store", "path"], mergeStderr: false, timeout: Shell.probeTimeout),
                result.succeeded {
                 let path = result.output.trimmingCharacters(in: .whitespacesAndNewlines)
                 caches.append(Cache(id: "pnpm", name: "pnpm store", url: URL(fileURLWithPath: path),

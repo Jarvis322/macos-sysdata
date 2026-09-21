@@ -25,12 +25,23 @@ struct CommandError: LocalizedError {
 }
 
 enum Shell {
+    /// How long a scan waits on another program before giving up on it. A
+    /// scan is a list of questions, and one that never gets an answer —
+    /// `docker info` while Docker Desktop is starting, `simctl` while
+    /// CoreSimulator is wedged — used to leave the whole window on
+    /// "Measuring…" for as long as that program chose to hang.
+    static let probeTimeout: Duration = .seconds(20)
+
     /// Runs a program and captures its output. `mergeStderr` folds stderr into
-    /// the output; pass `false` when the output must be parsed as JSON.
+    /// the output; pass `false` when the output must be parsed as JSON. With a
+    /// `timeout`, a program still running when it expires is terminated and
+    /// the result is a failure. Deletions pass none: an erase or a password
+    /// prompt takes as long as it takes.
     static func run(
         _ executable: String,
         _ arguments: [String],
-        mergeStderr: Bool = true
+        mergeStderr: Bool = true,
+        timeout: Duration? = nil
     ) async throws -> CommandResult {
         try await Task.detached(priority: .userInitiated) {
             let process = Process()
@@ -44,8 +55,18 @@ enum Shell {
             process.standardInput = FileHandle.nullDevice
 
             try process.run()
+            // The process identifier rather than the Process: the timer runs
+            // on another queue, and a pid is a plain number to hand across.
+            let pid = process.processIdentifier
+            let deadline = timeout.map { limit in
+                let item = DispatchWorkItem { kill(pid, SIGTERM) }
+                let seconds = Double(limit.components.seconds) + Double(limit.components.attoseconds) / 1e18
+                DispatchQueue.global(qos: .utility).asyncAfter(deadline: .now() + seconds, execute: item)
+                return item
+            }
             let data = pipe.fileHandleForReading.readDataToEndOfFile()
             process.waitUntilExit()
+            deadline?.cancel()
 
             return CommandResult(
                 status: process.terminationStatus,
