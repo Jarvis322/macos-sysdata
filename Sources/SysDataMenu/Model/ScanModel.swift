@@ -1,4 +1,6 @@
 import Foundation
+import WidgetKit
+import WidgetSnapshot
 import Observation
 import ServiceManagement
 
@@ -92,6 +94,10 @@ final class ScanModel {
         didSet { UserDefaults.standard.set(movesSafeToTrash, forKey: Self.safeToTrashKey) }
     }
     var errorMessage: String?
+    /// Set when a delete gave back less than it removed and local snapshots
+    /// are why. The notice explains it; this puts the way out next to it
+    /// instead of leaving the person to find the row.
+    var offersSnapshotCleanup = false
     /// Failures collected during one batch, shown together when it ends.
     @ObservationIgnored private var failures: [String] = []
     /// Whether anything in this batch was trashed rather than deleted. The
@@ -99,6 +105,10 @@ final class ScanModel {
     @ObservationIgnored private var anythingWentToTheTrash = false
     /// Non-error feedback, such as "moved to the Trash".
     var notice: String?
+
+    /// False for the headless modes and the Shortcuts actions, which run a
+    /// model of their own and must not overwrite what the widget shows.
+    @ObservationIgnored private let scansAutomatically: Bool
 
     private static let hiddenKey = "hiddenItemIDs"
     private static let sortKey = "sortOrder"
@@ -114,6 +124,7 @@ final class ScanModel {
     /// scan themselves. `items` starts the model on a known list instead of
     /// whichever machine the tests happen to run on.
     init(scansAutomatically: Bool = true, items: [StorageItem] = []) {
+        self.scansAutomatically = scansAutomatically
         self.items = items
         hiddenIDs = Set(UserDefaults.standard.stringArray(forKey: Self.hiddenKey) ?? [])
         if scansAutomatically {
@@ -310,6 +321,31 @@ final class ScanModel {
     /// It only ever adds to or removes from what is listed: rows the filter is
     /// hiding are neither ticked behind the person's back nor dropped from a
     /// selection they made before they started typing.
+    /// How long a project has to sit untouched before its build folders are
+    /// offered as a group.
+    static let idleProjectDays = 60
+
+    /// Build folders of projects nobody has changed in two months. Dated by
+    /// the project's own files, so a codebase edited daily whose
+    /// node_modules is old does not qualify.
+    var idleProjectItems: [StorageItem] {
+        listedItems.filter { $0.category == .projects && ($0.idleDays ?? 0) >= Self.idleProjectDays }
+    }
+
+    /// Ticks the idle projects' build folders, or unticks them when they
+    /// already all are — the same toggle Select safe is.
+    func selectIdleProjects() {
+        let ids = Set(idleProjectItems.map(\.id))
+        guard !ids.isEmpty else { return }
+        if ids.isSubset(of: selectedIDs) {
+            selectedIDs.subtract(ids)
+        } else {
+            selectedIDs.formUnion(ids)
+            collapsedCategories.remove(.projects)
+        }
+        selectionAnchorID = nil
+    }
+
     func selectAllSafe() {
         let listedSafeItems = listedItems.filter { $0.safety == .safe && !$0.action.isManual }
         let listedSafeIDs = Set(listedSafeItems.map(\.id))
@@ -470,6 +506,22 @@ final class ScanModel {
             history = ScanHistory.load()
         }
         await LowSpaceAlert.check(freeBytes: freeBytes, reclaimable: safeBytes)
+        publishToWidget()
+    }
+
+    /// Hands the widget the latest figures. It runs sandboxed in its own
+    /// process and cannot scan, so this file is all it knows. Skipped by the
+    /// headless modes, which do not own the user's widget.
+    func publishToWidget() {
+        guard scansAutomatically else { return }
+        let capacity = (try? URL(fileURLWithPath: "/").resourceValues(forKeys: [.volumeTotalCapacityKey]))?
+            .volumeTotalCapacity ?? 0
+        let snapshot = WidgetSnapshot(
+            systemDataBytes: measuredBytes, freeBytes: freeBytes, safeBytes: safeBytes,
+            capacityBytes: Int64(capacity), scannedAt: lastScan ?? .now
+        )
+        try? snapshot.save()
+        WidgetCenter.shared.reloadTimelines(ofKind: WidgetSnapshot.widgetKind)
     }
 
     /// How much this item grew or shrank since the previous scan, or nil when
@@ -510,6 +562,7 @@ final class ScanModel {
         let freeBeforeBatch = DiskSize.freeSpace()
         let askedToFree = runnable.reduce(0) { $0 + ($1.sizeBytes ?? 0) }
         anythingWentToTheTrash = false
+        offersSnapshotCleanup = false
         // Every failure in the batch, one per line, once it is over.
         defer { if !failures.isEmpty { errorMessage = failures.joined(separator: "\n") } }
 
@@ -564,10 +617,15 @@ final class ScanModel {
         let gained = DiskSize.freeSpace() - freeBefore
         guard gained < askedToFree / 2, askedToFree - gained > 512 * ProbeSupport.megabyte else { return }
 
+        let snapshotsHoldIt = await hasLocalSnapshots()
         notice = Self.shortfallNotice(
-            askedToFree: askedToFree, gained: gained, hasLocalSnapshots: await hasLocalSnapshots()
+            askedToFree: askedToFree, gained: gained, hasLocalSnapshots: snapshotsHoldIt
         )
+        offersSnapshotCleanup = snapshotsHoldIt && notice != nil && snapshotItem != nil
     }
+
+    /// The local snapshots row, when the last scan found any.
+    var snapshotItem: StorageItem? { items.first { $0.id == "snapshots" } }
 
     /// The wording, kept apart from the disk and the clock so it can be read
     /// back in a test.
@@ -655,6 +713,7 @@ final class ScanModel {
         reclaimedBytes += movedToTrash ? max(after - before, 0) : max(after - before, expected)
         freeBytes = after
         purgeableBytes = DiskSize.purgeableSpace()
+        publishToWidget()
         if movedToTrash {
             anythingWentToTheTrash = true
             notice = L("Moved to the Trash. Empty the Trash to free the space.")

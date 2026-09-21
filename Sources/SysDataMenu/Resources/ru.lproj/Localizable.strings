@@ -45,6 +45,7 @@
 "Delete %lld selected · %@" = "Удалить %lld выбранных · %@";
 "Delete everything inside %@" = "Удалить всё содержимое %@";
 "Delete files older than %lld days in %@" = "Удалить файлы старше %lld дн. в %@";
+"Delete local snapshots…" = "Удалить локальные снимки…";
 "Delete the history file" = "Удалить файл истории";
 "Deleted" = "Удалено";
 "Deleted %@, back by %@" = "Удалено %@, вернулось %@";
@@ -75,6 +76,7 @@
 "History and settings" = "История и настройки";
 "How to remove %@" = "Как удалить %@";
 "Icon only" = "Только значок";
+"Idle %lld days: %lld" = "Не трогали %lld дн.: %lld";
 "Idle longest" = "Дольше всего не используется";
 "It goes to the Trash first." = "Сначала это отправляется в Корзину.";
 "Keep a local record of each scan and deletion, so the list can show what changed" = "Хранить локальную запись о каждом сканировании и удалении, чтобы список показывал изменения";
@@ -125,6 +127,7 @@
 "Select %@" = "Выбрать %@";
 "Select every item that is regenerated automatically" = "Выбрать все объекты, которые создаются автоматически заново";
 "Select safe" = "Выбрать безопасные";
+"Select the build folders of projects whose own files nobody has changed in this long. Each is recreated by its build or install command." = "Выбирает папки сборки проектов, файлы которых никто не менял всё это время. Каждая пересоздаётся командой сборки или установки.";
 "Settings" = "Настройки";
 "Shared & other users" = "Общие данные и другие пользователи";
 "Show all" = "Показать все";

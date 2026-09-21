@@ -45,6 +45,7 @@
 "Delete %lld selected · %@" = "Delete %lld selected · %@";
 "Delete everything inside %@" = "Delete everything inside %@";
 "Delete files older than %lld days in %@" = "Delete files older than %lld days in %@";
+"Delete local snapshots…" = "Delete local snapshots…";
 "Delete the history file" = "Delete the history file";
 "Deleted" = "Deleted";
 "Deleted %@, back by %@" = "Deleted %@, back by %@";
@@ -75,6 +76,7 @@
 "History and settings" = "History and settings";
 "How to remove %@" = "How to remove %@";
 "Icon only" = "Icon only";
+"Idle %lld days: %lld" = "Idle %lld days: %lld";
 "Idle longest" = "Idle longest";
 "It goes to the Trash first." = "It goes to the Trash first.";
 "Keep a local record of each scan and deletion, so the list can show what changed" = "Keep a local record of each scan and deletion, so the list can show what changed";
@@ -125,6 +127,7 @@
 "Select %@" = "Select %@";
 "Select every item that is regenerated automatically" = "Select every item that is regenerated automatically";
 "Select safe" = "Select safe";
+"Select the build folders of projects whose own files nobody has changed in this long. Each is recreated by its build or install command." = "Select the build folders of projects whose own files nobody has changed in this long. Each is recreated by its build or install command.";
 "Settings" = "Settings";
 "Shared & other users" = "Shared & other users";
 "Show all" = "Show all";

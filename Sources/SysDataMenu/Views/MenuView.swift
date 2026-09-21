@@ -652,6 +652,14 @@ struct MenuView: View {
             .toggleStyle(.checkbox)
             .controlSize(.small)
             .disabled(!model.categoryHasSelectableItems(category))
+            if category == .projects, !model.idleProjectItems.isEmpty {
+                Button(L("Idle %lld days: %lld", ScanModel.idleProjectDays, model.idleProjectItems.count)) {
+                    model.selectIdleProjects()
+                }
+                .buttonStyle(.link)
+                .font(.caption)
+                .help(L("Select the build folders of projects whose own files nobody has changed in this long. Each is recreated by its build or install command."))
+            }
             Spacer()
             // A category whose sizes are all unmeasurable — APFS never reports
             // a snapshot's size — summed to zero and displayed "0 bytes", which
@@ -836,8 +844,21 @@ struct MenuView: View {
                     model.errorMessage = nil
                 }
             } else if let message = model.notice {
-                feedbackRow(message, symbol: "checkmark.circle.fill", tint: .green) {
+                feedbackRow(message, symbol: model.offersSnapshotCleanup ? "exclamationmark.circle.fill" : "checkmark.circle.fill",
+                            tint: model.offersSnapshotCleanup ? .orange : .green) {
                     model.notice = nil
+                    model.offersSnapshotCleanup = false
+                }
+                if model.offersSnapshotCleanup, let snapshots = model.snapshotItem {
+                    // Through the same confirmation as any other row, command
+                    // shown: the notice explains, the person still decides.
+                    Button(L("Delete local snapshots…")) {
+                        model.notice = nil
+                        model.offersSnapshotCleanup = false
+                        pendingDeletion = snapshots
+                    }
+                    .controlSize(.small)
+                    .frame(maxWidth: .infinity, alignment: .leading)
                 }
             }
             HStack {

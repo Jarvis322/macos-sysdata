@@ -45,6 +45,7 @@
 "Delete %lld selected · %@" = "選択した %lld 項目を削除 · %@";
 "Delete everything inside %@" = "%@ の中身をすべて削除";
 "Delete files older than %lld days in %@" = "%2$@ 内の %1$lld 日より古いファイルを削除";
+"Delete local snapshots…" = "ローカルスナップショットを削除…";
 "Delete the history file" = "履歴ファイルを削除";
 "Deleted" = "削除済み";
 "Deleted %@, back by %@" = "%@ に削除、%@ までに復活";
@@ -75,6 +76,7 @@
 "History and settings" = "履歴と設定";
 "How to remove %@" = "%@ の削除方法";
 "Icon only" = "アイコンのみ";
+"Idle %lld days: %lld" = "%lld日間放置：%lld";
 "Idle longest" = "未使用期間順";
 "It goes to the Trash first." = "まずゴミ箱に移動します。";
 "Keep a local record of each scan and deletion, so the list can show what changed" = "各スキャンと削除の記録をこのMac内に保存し、変化をリストに表示できるようにします";
@@ -125,6 +127,7 @@
 "Select %@" = "%@ を選択";
 "Select every item that is regenerated automatically" = "自動的に再生成される項目をすべて選択";
 "Select safe" = "安全な項目を選択";
+"Select the build folders of projects whose own files nobody has changed in this long. Each is recreated by its build or install command." = "この期間、誰もファイルを変更していないプロジェクトのビルドフォルダを選択します。どれもビルドまたはインストールのコマンドで作り直せます。";
 "Settings" = "設定";
 "Shared & other users" = "共有と他のユーザ";
 "Show all" = "すべて表示";

@@ -45,6 +45,7 @@
 "Delete %lld selected · %@" = "Eliminar %lld seleccionados · %@";
 "Delete everything inside %@" = "Eliminar todo el contenido de %@";
 "Delete files older than %lld days in %@" = "Eliminar archivos con más de %lld días en %@";
+"Delete local snapshots…" = "Eliminar instantáneas locales…";
 "Delete the history file" = "Eliminar el archivo de historial";
 "Deleted" = "Eliminado";
 "Deleted %@, back by %@" = "Eliminado %@, reapareció %@";
@@ -75,6 +76,7 @@
 "History and settings" = "Historial y ajustes";
 "How to remove %@" = "Cómo eliminar %@";
 "Icon only" = "Solo icono";
+"Idle %lld days: %lld" = "Inactivos %lld días: %lld";
 "Idle longest" = "Más tiempo inactivo";
 "It goes to the Trash first." = "Primero va a la Papelera.";
 "Keep a local record of each scan and deletion, so the list can show what changed" = "Guardar un registro local de cada análisis y eliminación, para que la lista pueda mostrar qué cambió";
@@ -125,6 +127,7 @@
 "Select %@" = "Seleccionar %@";
 "Select every item that is regenerated automatically" = "Seleccionar todos los elementos que se regeneran automáticamente";
 "Select safe" = "Seleccionar seguros";
+"Select the build folders of projects whose own files nobody has changed in this long. Each is recreated by its build or install command." = "Selecciona las carpetas de compilación de los proyectos cuyos archivos nadie ha cambiado en este tiempo. Cada una se vuelve a crear con su comando de compilación o instalación.";
 "Settings" = "Ajustes";
 "Shared & other users" = "Compartidos y otros usuarios";
 "Show all" = "Mostrar todo";

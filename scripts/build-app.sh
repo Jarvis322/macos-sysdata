@@ -44,6 +44,73 @@ esac
 # resources; without it the app aborts on its first localized string.
 cp -R "$bin_path/${name}_${name}.bundle" "$bundle/Contents/Resources/"
 
+# Shortcuts finds an app's actions through Metadata.appintents, which Xcode
+# writes with appintentsmetadataprocessor and SwiftPM does not. The same tool
+# is run here on the same inputs: the sources and the constant values the
+# compiler recorded for them. Without it the intents compile and nothing in
+# Shortcuts ever lists them.
+intents_work=$(mktemp -d)
+# The newest set: .build keeps the outputs of earlier build systems beside
+# the current one.
+# Only the app's own module: the widget and the snapshot library are built
+# alongside it and have constant values of their own.
+const_values=$(find "$root/.build" -path "*/Release/$name-p.build/Objects-normal/arm64/*.swiftconstvalues" -print0 2>/dev/null \
+  | xargs -0 ls -t 2>/dev/null | head -1)
+[ -n "$const_values" ] || { echo "no compiler constant values found for App Intents" >&2; exit 1; }
+find "$root/Sources/SysDataMenu" -name "*.swift" > "$intents_work/sources.txt"
+printf '%s\n' "$const_values" > "$intents_work/const-values.txt"
+xcrun appintentsmetadataprocessor \
+  --output "$intents_work" \
+  --toolchain-dir "$(xcode-select -p)/Toolchains/XcodeDefault.xctoolchain" \
+  --module-name "$name" \
+  --sdk-root "$(xcrun --sdk macosx --show-sdk-path)" \
+  --xcode-version "$(xcodebuild -version | awk '/Build version/ { print $3 }')" \
+  --platform-family macOS \
+  --deployment-target "$minimum_macos" \
+  --target-triple "arm64-apple-macos$minimum_macos" \
+  --source-file-list "$intents_work/sources.txt" \
+  --swift-const-vals-list "$intents_work/const-values.txt" \
+  --force --quiet-warnings >/dev/null 2>&1
+[ -f "$intents_work/Metadata.appintents/extract.actionsdata" ] \
+  || { echo "appintentsmetadataprocessor wrote no metadata" >&2; exit 1; }
+cp -R "$intents_work/Metadata.appintents" "$bundle/Contents/Resources/"
+rm -rf "$intents_work"
+
+# The desktop widget, as an app extension inside the app. SwiftPM builds it
+# as a plain executable; the bundle around it is what makes it an extension.
+widget="$bundle/Contents/PlugIns/SysDataWidget.appex"
+mkdir -p "$widget/Contents/MacOS"
+cp "$bin_path/SysDataWidget" "$widget/Contents/MacOS/SysDataWidget"
+cat > "$widget/Contents/Info.plist" <<WIDGET
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleExecutable</key>
+	<string>SysDataWidget</string>
+	<key>CFBundleIdentifier</key>
+	<string>local.sysdata.menu.widget</string>
+	<key>CFBundleName</key>
+	<string>SysDataWidget</string>
+	<key>CFBundleDisplayName</key>
+	<string>System Data</string>
+	<key>CFBundlePackageType</key>
+	<string>XPC!</string>
+	<key>CFBundleShortVersionString</key>
+	<string>$version</string>
+	<key>CFBundleVersion</key>
+	<string>$version</string>
+	<key>LSMinimumSystemVersion</key>
+	<string>$minimum_macos</string>
+	<key>NSExtension</key>
+	<dict>
+		<key>NSExtensionPointIdentifier</key>
+		<string>com.apple.widgetkit-extension</string>
+	</dict>
+</dict>
+</plist>
+WIDGET
+
 [ -f "$root/assets/AppIcon.icns" ] || "$root/scripts/make-icon.sh"
 cp "$root/assets/AppIcon.icns" "$bundle/Contents/Resources/AppIcon.icns"
 
@@ -94,7 +161,12 @@ if [ -z "$identity" ]; then
 fi
 
 if [ -n "$identity" ]; then
-  codesign --force --options runtime --timestamp --sign "$identity" --identifier local.sysdata.menu "$bundle"
+  # Inside out: the extension is sealed first, then the app around it. Both
+  # carry the team-prefixed app group the widget reads the last scan from.
+  codesign --force --options runtime --timestamp --sign "$identity" \
+    --entitlements "$root/scripts/entitlements/widget.entitlements" "$widget"
+  codesign --force --options runtime --timestamp --sign "$identity" --identifier local.sysdata.menu \
+    --entitlements "$root/scripts/entitlements/app.entitlements" "$bundle"
   echo "Signed with: $identity"
 else
   codesign --force --sign - "$bundle"

@@ -48,6 +48,11 @@ test -f "$app/Contents/Info.plist"
 # Bundle.module reads this; without it the app aborts on its first localized
 # string, which is how it shipped broken once already.
 test -d "$app/Contents/Resources/SysDataMenu_SysDataMenu.bundle"
+# The widget and the Shortcuts actions live in files SwiftPM does not make;
+# build-app.sh writes both, and a bundle without them still launches fine,
+# which is exactly why it is checked.
+test -x "$app/Contents/PlugIns/SysDataWidget.appex/Contents/MacOS/SysDataWidget"
+grep -q "FreeSafeItemsIntent" "$app/Contents/Resources/Metadata.appintents/extract.actionsdata"
 codesign --verify --deep --strict "$app"
 architectures=$(lipo -archs "$app/Contents/MacOS/SysDataMenu")
 case "$architectures" in

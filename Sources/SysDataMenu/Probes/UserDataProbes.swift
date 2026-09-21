@@ -317,16 +317,57 @@ struct ProjectProbe: StorageProbe {
             case ".angular", ".turbo", ".parcel-cache", ".expo": "the next build"
             default: "the next build"
             }
-            if let item = await ProbeSupport.directoryItem(
+            if let measured = await ProbeSupport.directoryItem(
                 id: "project-\(folder.path)", category: .projects,
                 name: "\(project.lastPathComponent)/\(folder.lastPathComponent)",
                 detail: "\(project.abbreviatedPath). Recreated by \(tool).",
                 url: folder, safety: .review, action: .removePaths([folder]), minimumBytes: Self.threshold
             ) {
-                items.append(item)
+                // Dated by the project, not by the folder: node_modules is as
+                // old as the last install, which says nothing about whether
+                // anyone still works on the code next to it.
+                items.append(StorageItem(
+                    id: measured.id, category: measured.category, name: measured.name,
+                    detail: measured.detail, sizeBytes: measured.sizeBytes, safety: measured.safety,
+                    action: measured.action, revealURL: measured.revealURL,
+                    lastModified: Self.lastActivity(in: project) ?? measured.lastModified
+                ))
             }
         }
         return items.sorted { ($0.sizeBytes ?? 0) > ($1.sizeBytes ?? 0) }
+    }
+
+    /// When someone last changed anything in a project: the newest file in
+    /// it, leaving out the build folders this probe offers and the git object
+    /// store, plus git's index, which moves on every commit and checkout.
+    ///
+    /// A directory's own date only moves when its direct entries change, so
+    /// an edit three folders down would not show at the top; the walk is what
+    /// finds it. It stops after a bounded number of entries so a huge
+    /// repository costs no more than a small one.
+    static func lastActivity(in project: URL, limit: Int = 20_000) -> Date? {
+        let keys: Set<URLResourceKey> = [.contentModificationDateKey, .isDirectoryKey]
+        guard let enumerator = FileManager.default.enumerator(
+            at: project, includingPropertiesForKeys: Array(keys), options: [.skipsPackageDescendants],
+            errorHandler: { _, _ in true }
+        ) else { return nil }
+
+        var newest = (try? project.appending(path: ".git/index").resourceValues(forKeys: keys))?.contentModificationDate
+        var seen = 0
+        for case let url as URL in enumerator {
+            seen += 1
+            if seen > limit { break }
+            let name = url.lastPathComponent
+            if targets.contains(name) || name == ".git" {
+                enumerator.skipDescendants()
+                continue
+            }
+            guard let values = try? url.resourceValues(forKeys: keys),
+                  values.isDirectory != true,
+                  let modified = values.contentModificationDate else { continue }
+            if modified > (newest ?? .distantPast) { newest = modified }
+        }
+        return newest
     }
 
     private func collect(_ directory: URL, depth: Int, into found: inout [URL]) {

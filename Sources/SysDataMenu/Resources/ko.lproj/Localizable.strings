@@ -45,6 +45,7 @@
 "Delete %lld selected · %@" = "선택한 %lld개 삭제 · %@";
 "Delete everything inside %@" = "%@ 안의 모든 항목 삭제";
 "Delete files older than %lld days in %@" = "%2$@ 안에서 %1$lld일이 지난 파일 삭제";
+"Delete local snapshots…" = "로컬 스냅샷 삭제…";
 "Delete the history file" = "기록 파일 삭제";
 "Deleted" = "삭제됨";
 "Deleted %@, back by %@" = "%@ 삭제됨, %@ 후 다시 생김";
@@ -75,6 +76,7 @@
 "History and settings" = "기록 및 설정";
 "How to remove %@" = "%@ 제거 방법";
 "Icon only" = "아이콘만";
+"Idle %lld days: %lld" = "%lld일 동안 방치: %lld";
 "Idle longest" = "가장 오래 미사용";
 "It goes to the Trash first." = "먼저 휴지통으로 이동합니다.";
 "Keep a local record of each scan and deletion, so the list can show what changed" = "검사와 삭제 기록을 로컬에 보관하여 목록에서 변경 사항을 확인할 수 있게 합니다";
@@ -125,6 +127,7 @@
 "Select %@" = "%@ 선택";
 "Select every item that is regenerated automatically" = "자동으로 다시 생성되는 모든 항목 선택";
 "Select safe" = "안전 항목 선택";
+"Select the build folders of projects whose own files nobody has changed in this long. Each is recreated by its build or install command." = "이 기간 동안 아무도 파일을 변경하지 않은 프로젝트의 빌드 폴더를 선택합니다. 각 폴더는 빌드 또는 설치 명령으로 다시 만들어집니다.";
 "Settings" = "설정";
 "Shared & other users" = "공유 및 다른 사용자";
 "Show all" = "모두 보기";

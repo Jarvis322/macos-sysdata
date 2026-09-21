@@ -45,6 +45,7 @@
 "Delete %lld selected · %@" = "Seçili %lld kalemi sil · %@";
 "Delete everything inside %@" = "%@ içindeki her şey silinir";
 "Delete files older than %lld days in %@" = "%2$@ içinde %1$lld günden eski dosyalar silinir";
+"Delete local snapshots…" = "Yerel anlık görüntüleri sil…";
 "Delete the history file" = "Geçmiş dosyasını sil";
 "Deleted" = "Silinen";
 "Deleted %@, back by %@" = "%@ tarihinde silindi, %@ tarihinde geri geldi";
@@ -75,6 +76,7 @@
 "History and settings" = "Geçmiş ve ayarlar";
 "How to remove %@" = "%@ nasıl kaldırılır";
 "Icon only" = "Yalnızca simge";
+"Idle %lld days: %lld" = "%lld gündür boşta: %lld";
 "Idle longest" = "En uzun boşta";
 "It goes to the Trash first." = "Önce Çöp Sepeti'ne gider.";
 "Keep a local record of each scan and deletion, so the list can show what changed" = "Her taramanın ve silmenin yerel kaydını tut, böylece liste neyin değiştiğini gösterebilir";
@@ -125,6 +127,7 @@
 "Select %@" = "%@ öğesini seç";
 "Select every item that is regenerated automatically" = "Kendiliğinden yeniden oluşan her kalemi seç";
 "Select safe" = "Güvenlileri seç";
+"Select the build folders of projects whose own files nobody has changed in this long. Each is recreated by its build or install command." = "Kendi dosyalarına bu süre boyunca kimsenin dokunmadığı projelerin build klasörlerini seçer. Her biri kendi build veya kurulum komutuyla yeniden oluşur.";
 "Settings" = "Ayarlar";
 "Shared & other users" = "Paylaşılan ve diğer kullanıcılar";
 "Show all" = "Tümünü göster";

@@ -45,6 +45,7 @@
 "Delete %lld selected · %@" = "删除所选的 %lld 项 · %@";
 "Delete everything inside %@" = "删除%@中的所有内容";
 "Delete files older than %lld days in %@" = "删除 %2$@ 中超过 %1$lld 天的文件";
+"Delete local snapshots…" = "删除本地快照…";
 "Delete the history file" = "删除历史记录文件";
 "Deleted" = "已删除";
 "Deleted %@, back by %@" = "于 %@ 删除，截至 %@ 已重新出现";
@@ -75,6 +76,7 @@
 "History and settings" = "历史记录与设置";
 "How to remove %@" = "如何移除%@";
 "Icon only" = "仅图标";
+"Idle %lld days: %lld" = "闲置 %lld 天：%lld";
 "Idle longest" = "最久未变动";
 "It goes to the Trash first." = "会先移到废纸篓。";
 "Keep a local record of each scan and deletion, so the list can show what changed" = "在本机记录每次扫描和删除操作，以便在列表中显示变化";
@@ -125,6 +127,7 @@
 "Select %@" = "选择%@";
 "Select every item that is regenerated automatically" = "选择所有会自动重新生成的项目";
 "Select safe" = "选择可安全清理的项目";
+"Select the build folders of projects whose own files nobody has changed in this long. Each is recreated by its build or install command." = "选择在这段时间内无人修改过其文件的项目的构建文件夹。每个文件夹都可由对应的构建或安装命令重新生成。";
 "Settings" = "设置";
 "Shared & other users" = "共享与其他用户";
 "Show all" = "显示全部";
