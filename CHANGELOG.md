@@ -5,6 +5,14 @@ What changed in each release, and where it is worth saying, why.
 Versions up to and including v0.3.7 were released under the MIT License; see
 [LICENSE](LICENSE).
 
+## v1.4.1 — 2026-09-21
+
+- **The rows behind "Idle 60 days" are marked.** The header link counted the
+  build folders of projects nobody had touched in 60 days, but the rows said
+  their age only in the grey detail line, where "2 months idle" looked the
+  same as "1 month idle". Those rows now carry the age as a badge in the
+  link's colour, next to the name.
+
 ## v1.4.0 — 2026-09-21
 
 - **Who made it.** Rows under "Other large folders" used to say only that
