@@ -5,6 +5,29 @@ What changed in each release, and where it is worth saying, why.
 Versions up to and including v0.3.7 were released under the MIT License; see
 [LICENSE](LICENSE).
 
+## v1.3.4 — 2026-09-21
+
+From an audit of the code that deletes things.
+
+- **Fixed: clearing the temporary folders removed live sockets.** The item
+  says only files older than three days are removed; it also removed every
+  socket, pipe, link and empty directory in them, whatever their age, because
+  anything that was not a file was treated as a folder and deleted once empty.
+  Running apps keep their sockets there — on the Mac this was found on, 48 of
+  them, VS Code's git sockets among them. Now only old files go, and the
+  folders that removing them left empty; nothing else is touched. The
+  item is marked Safe, so it was part of Select safe, the low-space button and
+  the weekly automatic clean.
+- **Fixed: a batch that needed the password could hide a failure.** Everything
+  needing root runs as one script so the password is asked once, and a shell
+  reports only the last command's result. A step that failed in the middle was
+  counted as deleted; a step that failed at the end was blamed on every item in
+  the batch. Each step is now checked on its own, and only the ones that failed
+  are reported.
+- **Fixed: a scan could wait forever on another program.** `docker info` while
+  Docker Desktop starts, or `simctl` with CoreSimulator stuck, left the window
+  on "Measuring…". Scan-time commands now give up after 20 seconds.
+
 ## v1.3.3 — 2026-09-17
 
 - **Fixed, properly this time: clearing the system-wide caches still ended in
