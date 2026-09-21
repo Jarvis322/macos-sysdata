@@ -133,6 +133,12 @@ struct SimulatorProbe: StorageProbe {
 struct RuntimeProbe: StorageProbe {
     func probe() async -> [StorageItem] {
         guard let json = await ProbeSupport.json(xcrun, ["simctl", "runtime", "list", "-j"]) else { return [] }
+        // Which runtime each installed SDK builds against, and which runtimes
+        // still have a simulator on them. Either answer missing means nothing
+        // is claimed about use at all: "unused" has to be known, not guessed.
+        let chosenBuilds = await ProbeSupport.json(xcrun, ["simctl", "runtime", "match", "list", "-j"])
+            .map(Self.chosenBuilds)
+        let devices = await ProbeSupport.json(xcrun, ["simctl", "list", "devices", "-j"])?["devices"] as? [String: [Any]]
 
         return json.compactMap { identifier, value -> StorageItem? in
             guard let runtime = value as? [String: Any],
@@ -146,12 +152,21 @@ struct RuntimeProbe: StorageProbe {
             // build touches nothing the way running a simulator does.
             let lastUsedAt = (runtime["lastUsedAt"] as? String).flatMap(Self.parseTimestamp)
             let lastUsed = (runtime["lastUsedAt"] as? String).map { "Last used \($0.prefix(10)). " } ?? ""
+            let unused = chosenBuilds.map { chosen in
+                Self.isUnused(
+                    build: build, runtimeIdentifier: runtime["runtimeIdentifier"] as? String,
+                    chosenBuilds: chosen, devices: devices
+                )
+            } ?? false
+            let detail = unused
+                ? "\(lastUsed)No installed Xcode builds against this runtime, and no simulator is on it. Xcode > Settings > Components downloads it again if you ever need it."
+                : "\(lastUsed)Simulators on this runtime stop working. Xcode > Settings > Components downloads it again."
 
             return StorageItem(
                 id: "runtime-\(identifier)",
                 category: .runtimes,
-                name: "\(platform) \(version) (\(build))",
-                detail: "\(lastUsed)Simulators on this runtime stop working. Xcode > Settings > Components downloads it again.",
+                name: unused ? "\(platform) \(version) (\(build)) · unused" : "\(platform) \(version) (\(build))",
+                detail: detail,
                 sizeBytes: size,
                 safety: .review,
                 action: .command(executable: xcrun, arguments: ["simctl", "runtime", "delete", identifier]),
@@ -160,6 +175,28 @@ struct RuntimeProbe: StorageProbe {
             )
         }
         .sorted { ($0.sizeBytes ?? 0) > ($1.sizeBytes ?? 0) }
+    }
+
+    /// The runtime builds the installed SDKs are matched to, from
+    /// `simctl runtime match list -j`.
+    static func chosenBuilds(from match: [String: Any]) -> Set<String> {
+        Set(match.values.compactMap { ($0 as? [String: Any])?["chosenRuntimeBuild"] as? String })
+    }
+
+    /// A runtime no installed SDK is matched to, with no simulator on it, is
+    /// one nothing on this Mac can reach: building for the platform picks a
+    /// different one, and there is no device to boot. Several gigabytes each,
+    /// and they pile up — every Xcode update downloads a new one and leaves
+    /// the old one where it was.
+    ///
+    /// Without the device list, nothing is claimed: a runtime whose devices
+    /// could not be counted might have some.
+    static func isUnused(
+        build: String, runtimeIdentifier: String?,
+        chosenBuilds: Set<String>, devices: [String: [Any]]?
+    ) -> Bool {
+        guard !chosenBuilds.contains(build), let devices, let runtimeIdentifier else { return false }
+        return devices[runtimeIdentifier]?.isEmpty ?? true
     }
 
     /// simctl reports ISO-8601 in UTC, today without fractional seconds.
