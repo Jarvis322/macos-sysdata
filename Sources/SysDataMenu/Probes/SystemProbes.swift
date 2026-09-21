@@ -110,24 +110,60 @@ struct DockerProbe: StorageProbe {
             )].compactMap { $0 }
         }
 
-        var reclaimable: Int64 = 0
-        for line in df.output.split(separator: "\n") {
+        return Self.items(fromSystemDF: df.output, docker: docker, reveal: vms)
+    }
+
+    /// One row per kind of thing Docker can let go of, each with the prune
+    /// command that frees exactly that.
+    ///
+    /// It used to be one row, "unused images, containers and build cache",
+    /// sized at everything `docker system df` calls reclaimable and running
+    /// `docker system prune -f`. That command removes only dangling images and
+    /// dangling build cache, so the row promised gigabytes of unused images it
+    /// would never touch. Split, each size is what its own command frees, and
+    /// volumes — where databases live — are a separate decision.
+    static func items(fromSystemDF output: String, docker: String, reveal: URL?) -> [StorageItem] {
+        let reclaimable = reclaimableByType(output)
+        let kinds: [(type: String, id: String, name: String, detail: String, safety: Safety, arguments: [String])] = [
+            ("Build Cache", "docker-build-cache", "Docker build cache",
+             "Layers kept to speed up the next build. docker builder prune -a; the next build rebuilds them.",
+             .safe, ["builder", "prune", "-a", "-f"]),
+            ("Images", "docker-images", "Unused Docker images",
+             "Images no container uses. docker image prune -a; pulled again when something runs them.",
+             .review, ["image", "prune", "-a", "-f"]),
+            ("Containers", "docker-containers", "Stopped Docker containers",
+             "Containers that are not running, with whatever they wrote inside themselves. docker container prune.",
+             .review, ["container", "prune", "-f"]),
+            ("Local Volumes", "docker-volumes", "Unused Docker volumes",
+             "Volumes no container is attached to. Databases often keep their data here, so look before deleting. docker volume prune -a.",
+             .review, ["volume", "prune", "-a", "-f"]),
+        ]
+        return kinds.compactMap { kind in
+            guard let bytes = reclaimable[kind.type], bytes > 0 else { return nil }
+            return StorageItem(
+                id: kind.id, category: .docker, name: kind.name, detail: kind.detail,
+                sizeBytes: bytes, safety: kind.safety,
+                action: .command(executable: docker, arguments: kind.arguments), revealURL: reveal
+            )
+        }
+    }
+
+    /// `docker system df --format '{{json .}}'` prints one object per line:
+    /// `{"Type":"Images","Reclaimable":"1.211GB (45%)",…}`.
+    static func reclaimableByType(_ output: String) -> [String: Int64] {
+        var result: [String: Int64] = [:]
+        for line in output.split(separator: "\n") {
             guard let data = line.data(using: .utf8),
                   let row = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+                  let type = row["Type"] as? String,
                   let text = row["Reclaimable"] as? String else { continue }
-            reclaimable += parseDockerSize(text)
+            result[type, default: 0] += parseDockerSize(text)
         }
-        guard reclaimable > 0 else { return [] }
-
-        return [StorageItem(
-            id: "docker-prune", category: .docker, name: "Unused images, containers and build cache",
-            detail: "docker system prune. Volumes are kept.", sizeBytes: reclaimable, safety: .review,
-            action: .command(executable: docker, arguments: ["system", "prune", "-f"]), revealURL: vms
-        )]
+        return result
     }
 
     /// Parses Docker's "1.23GB (45%)" strings.
-    private func parseDockerSize(_ text: String) -> Int64 {
+    static func parseDockerSize(_ text: String) -> Int64 {
         let scanner = Scanner(string: text)
         guard let value = scanner.scanDouble() else { return 0 }
         let unit = scanner.scanCharacters(from: .letters)?.uppercased() ?? "B"
