@@ -527,8 +527,7 @@ final class ScanModel {
             direct.insert(privileged[0].item, at: 0)
         } else if privileged.count > 1 {
             let items = privileged.map(\.item)
-            let combined = privileged.map(\.script).joined(separator: " ; ")
-            guard await perform(.privilegedScript(combined), for: items) else {
+            guard await performPrivilegedBatch(privileged) else {
                 // Dismissing the password dialog is the last chance anyone has
                 // to stop a batch. It stops the whole batch, not just the part
                 // that needed the password.
@@ -584,7 +583,7 @@ final class ScanModel {
     }
 
     private func hasLocalSnapshots() async -> Bool {
-        guard let result = try? await Shell.run("/usr/bin/tmutil", ["listlocalsnapshots", "/"]) else { return false }
+        guard let result = try? await Shell.run("/usr/bin/tmutil", ["listlocalsnapshots", "/"], timeout: Shell.probeTimeout) else { return false }
         return result.output.contains("com.apple.TimeMachine")
     }
 
@@ -616,29 +615,7 @@ final class ScanModel {
         let before = DiskSize.freeSpace()
         do {
             let movedToTrash = try await Reclaimer.perform(action, preferTrash: toTrash)
-            if keepsHistory {
-                // Written before the size is forgotten, and before the free
-                // space is re-read, so it records what was asked for even if
-                // the disk disagrees about what it got.
-                for item in affected {
-                    ScanHistory.record(deleted: item, bytes: item.sizeBytes ?? 0)
-                }
-                history = ScanHistory.load()
-            }
-            items.removeAll { ids.contains($0.id) }
-            let after = DiskSize.freeSpace()
-            let expected = affected.reduce(0) { $0 + ($1.sizeBytes ?? 0) }
-            // A trashed item is renamed onto the same volume, so the drive has
-            // no more room than before. Falling back to the item's size there
-            // would credit the header with space the disk does not have, right
-            // next to a notice saying the Trash still has to be emptied.
-            reclaimedBytes += movedToTrash ? max(after - before, 0) : max(after - before, expected)
-            freeBytes = after
-            purgeableBytes = DiskSize.purgeableSpace()
-            if movedToTrash {
-                anythingWentToTheTrash = true
-                notice = L("Moved to the Trash. Empty the Trash to free the space.")
-            }
+            recordReclaimed(affected, freeBefore: before, movedToTrash: movedToTrash)
         } catch {
             if let command = error as? CommandError, command.wasCancelled { return false }
             let names = affected.map(\.name).joined(separator: ", ")
@@ -653,4 +630,108 @@ final class ScanModel {
         }
         return true
     }
+
+    /// Everything a successful delete changes: the history, the list, the
+    /// running total and the free-space figures.
+    private func recordReclaimed(_ affected: [StorageItem], freeBefore before: Int64, movedToTrash: Bool) {
+        guard !affected.isEmpty else { return }
+        let ids = Set(affected.map(\.id))
+        if keepsHistory {
+            // Written before the size is forgotten, and before the free
+            // space is re-read, so it records what was asked for even if
+            // the disk disagrees about what it got.
+            for item in affected {
+                ScanHistory.record(deleted: item, bytes: item.sizeBytes ?? 0)
+            }
+            history = ScanHistory.load()
+        }
+        items.removeAll { ids.contains($0.id) }
+        let after = DiskSize.freeSpace()
+        let expected = affected.reduce(0) { $0 + ($1.sizeBytes ?? 0) }
+        // A trashed item is renamed onto the same volume, so the drive has
+        // no more room than before. Falling back to the item's size there
+        // would credit the header with space the disk does not have, right
+        // next to a notice saying the Trash still has to be emptied.
+        reclaimedBytes += movedToTrash ? max(after - before, 0) : max(after - before, expected)
+        freeBytes = after
+        purgeableBytes = DiskSize.purgeableSpace()
+        if movedToTrash {
+            anythingWentToTheTrash = true
+            notice = L("Moved to the Trash. Empty the Trash to free the space.")
+        }
+    }
+
+    /// Runs every script that needs root under one password prompt, and
+    /// works out afterwards which of them failed.
+    ///
+    /// They used to be joined with ` ; `, and a shell reports only the last
+    /// command's status. A failure anywhere but at the end went unreported —
+    /// its item left the list and entered the history as deleted — and a
+    /// failure at the end was blamed on every item in the batch, which is how
+    /// a cache folder macOS protects came to be reported against the log
+    /// store, the crash reports and the ASL logs as well.
+    ///
+    /// Returns false when the person dismissed the password dialog.
+    private func performPrivilegedBatch(_ privileged: [(item: StorageItem, script: String)]) async -> Bool {
+        let affected = privileged.map(\.item)
+        let ids = Set(affected.map(\.id))
+        busyItemIDs.formUnion(ids)
+        defer { busyItemIDs.subtract(ids) }
+
+        let before = DiskSize.freeSpace()
+        let script = Self.combinedPrivilegedScript(privileged.map(\.script))
+        do {
+            try await Reclaimer.perform(.privilegedScript(script))
+            recordReclaimed(affected, freeBefore: before, movedToTrash: false)
+        } catch {
+            if let command = error as? CommandError, command.wasCancelled { return false }
+            let output = (error as? CommandError)?.result.output ?? ""
+            // No marker means the batch never reached the end, so nothing in
+            // it can be counted as done.
+            let failedIndices = Self.failedIndices(in: output) ?? Set(affected.indices)
+            let succeeded = affected.enumerated().filter { !failedIndices.contains($0.offset) }.map(\.element)
+            let failed = affected.enumerated().filter { failedIndices.contains($0.offset) }.map(\.element)
+            recordReclaimed(succeeded, freeBefore: before, movedToTrash: false)
+            let names = failed.map(\.name).joined(separator: ", ")
+            // A step that failed without a word on stderr leaves nothing but
+            // the marker; its command is then the most useful thing to show.
+            let reason = Self.withoutFailureMarker(error.localizedDescription)
+            let shown = reason.isEmpty
+                ? privileged.enumerated().filter { failedIndices.contains($0.offset) }.map(\.element.script).joined(separator: "; ")
+                : reason
+            failures.append("\(names): \(shown)")
+        }
+        return true
+    }
+
+    nonisolated private static let failureMarker = "SYSDATA_FAILED:"
+
+    /// Each script in its own subshell, its failure noted by position, and one
+    /// line at the end naming the positions that failed.
+    nonisolated static func combinedPrivilegedScript(_ scripts: [String]) -> String {
+        let steps = scripts.enumerated().map { index, script in
+            "( \(script) ) || failed=\"$failed \(index)\""
+        }
+        return (["failed=''"] + steps + [
+            "[ -z \"$failed\" ] || { echo \"\(failureMarker)$failed\" >&2; exit 1; }",
+        ]).joined(separator: " ; ")
+    }
+
+    /// The positions the combined script reported as failed, or nil when it
+    /// never got as far as reporting.
+    nonisolated static func failedIndices(in output: String) -> Set<Int>? {
+        guard let range = output.range(of: failureMarker) else { return nil }
+        // osascript separates lines with \r and appends " (1)", the exit
+        // status; neither is a position.
+        let line = output[range.upperBound...].prefix { !$0.isNewline && $0 != "\"" }
+        return Set(line.split(separator: " ").compactMap { Int($0) })
+    }
+
+    nonisolated static func withoutFailureMarker(_ text: String) -> String {
+        text.split(omittingEmptySubsequences: false, whereSeparator: \.isNewline)
+            .filter { !$0.contains(failureMarker) }
+            .joined(separator: "\n")
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+    }
+
 }
