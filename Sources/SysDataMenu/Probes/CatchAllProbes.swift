@@ -44,6 +44,9 @@ struct DeveloperToolProbe: StorageProbe {
         Known(".android/cache", "Android SDK download cache", "Re-downloaded on demand.", .safe),
         Known("go/pkg/mod", "Go module cache", "Downloaded modules.", .safe, tool: ("go", ["clean", "-modcache"])),
         Known(".bun/install/cache", "Bun cache", "Package tarballs.", .safe),
+        // Found unexplained under "Other large folders" at 0.8 GB. `npm cache
+        // clean` does not touch it.
+        Known(".npm/_npx", "npx cache", "Packages npx downloaded to run once. npx fetches them again the next time.", .safe),
         Known(".deno", "Deno cache", "Cached modules.", .safe),
         Known(".vscode/extensions", "VS Code extensions", "Installed extensions. Reinstall from the marketplace.", .review),
         Known(".cursor/extensions", "Cursor extensions", "Installed extensions.", .review),
@@ -170,6 +173,9 @@ struct LargeFolderProbe: StorageProbe {
 
     func probe() async -> [StorageItem] {
         let claimedPaths = claimed.map(\.standardizedFileURL.path)
+        // Read once per scan: which apps are installed is the question behind
+        // every "who made this folder" answer below.
+        let apps = InstalledApps.current()
         // Without Full Disk Access the containers are added to the exclusions:
         // descending into one asks macOS for permission by the owning app's
         // name, and a walk of ~/Library/Containers asks about all of them.
@@ -199,7 +205,7 @@ struct LargeFolderProbe: StorageProbe {
                         )
                         var items: [StorageItem] = []
                         for child in root.children(includeHidden: true) where child.isDirectory {
-                            Self.visit(child, depth: 1, sizes: sizes, claimed: claimedPaths, excluded: excludedPaths, into: &items)
+                            Self.visit(child, depth: 1, sizes: sizes, claimed: claimedPaths, excluded: excludedPaths, apps: apps, into: &items)
                         }
                         return items
                     }.value
@@ -213,7 +219,7 @@ struct LargeFolderProbe: StorageProbe {
 
     private static func visit(
         _ url: URL, depth: Int, sizes: [String: Int64], claimed: [String], excluded: [String],
-        into items: inout [StorageItem]
+        apps: InstalledApps, into items: inout [StorageItem]
     ) {
         let path = url.standardizedFileURL.path
         let prefix = path + "/"
@@ -229,7 +235,7 @@ struct LargeFolderProbe: StorageProbe {
             // Part of it is explained elsewhere; look one level deeper.
             guard depth < maxDepth else { return }
             for child in url.children(includeHidden: true) where child.isDirectory {
-                visit(child, depth: depth + 1, sizes: sizes, claimed: claimed, excluded: excluded, into: &items)
+                visit(child, depth: depth + 1, sizes: sizes, claimed: claimed, excluded: excluded, apps: apps, into: &items)
             }
             return
         }
@@ -238,7 +244,8 @@ struct LargeFolderProbe: StorageProbe {
             id: "other-\(path)",
             category: .other,
             name: url.abbreviatedPath,
-            detail: "Not recognised by this app. Open it in Finder and decide.",
+            detail: FolderOwner.describe(url, apps: apps).map { "\($0) Open it in Finder and decide." }
+                ?? "Not recognised by this app. Open it in Finder and decide.",
             sizeBytes: size,
             safety: .review,
             action: .removePaths([url]),
