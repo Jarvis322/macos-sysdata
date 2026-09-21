@@ -108,8 +108,18 @@ enum Reclaimer {
         return trashed
     }
 
-    /// Deletes files not modified in the last `days` days, then any directories
-    /// left empty. Individual failures (files in use) are skipped.
+    /// Deletes regular files not modified in the last `days` days, then the
+    /// directories that doing so left empty. Nothing else.
+    ///
+    /// This runs on the user's temporary and cache folders, where running
+    /// apps keep their live sockets, pipes, links and lock directories. It
+    /// used to treat anything that was not a regular file as a directory and
+    /// delete it once empty — which a socket always is — so a pass here took
+    /// every open socket in $TMPDIR with it, VS Code's git sockets among them,
+    /// whatever its age, along with every empty directory an app had just
+    /// made. Now a directory goes only when this pass emptied it, and links,
+    /// sockets and pipes are never touched: they hold no data to free.
+    /// Individual failures (files in use) are skipped.
     private static func prune(_ directory: URL, olderThanDays days: Int) {
         let cutoff = Date().addingTimeInterval(-Double(days) * 86_400)
         let fileManager = FileManager.default
@@ -118,21 +128,28 @@ enum Reclaimer {
             at: directory, includingPropertiesForKeys: Array(keys), options: [], errorHandler: { _, _ in true }
         ) else { return }
 
-        var directories: [URL] = []
+        var emptied: Set<URL> = []
         for case let url as URL in enumerator {
-            guard let values = try? url.resourceValues(forKeys: keys) else { continue }
-            if values.isRegularFile == true {
-                if let modified = values.contentModificationDate, modified < cutoff {
-                    try? fileManager.removeItem(at: url)
-                }
-            } else {
-                directories.append(url)
+            guard let values = try? url.resourceValues(forKeys: keys),
+                  values.isRegularFile == true,
+                  let modified = values.contentModificationDate, modified < cutoff
+            else { continue }
+            if (try? fileManager.removeItem(at: url)) != nil {
+                emptied.insert(url.deletingLastPathComponent().standardizedFileURL)
             }
         }
-        // Deepest directories first so empty parents can go too.
-        for url in directories.sorted(by: { $0.path.count > $1.path.count })
-        where url.children(includeHidden: true).isEmpty {
-            try? fileManager.removeItem(at: url)
+
+        // Deepest first, so a parent that held nothing but an emptied folder
+        // goes too. The folder being pruned is never removed itself.
+        let root = directory.standardizedFileURL.path
+        var candidates = emptied
+        while let deepest = candidates.max(by: { $0.path.count < $1.path.count }) {
+            candidates.remove(deepest)
+            guard deepest.path.hasPrefix(root + "/"),
+                  (try? fileManager.contentsOfDirectory(atPath: deepest.path))?.isEmpty == true,
+                  (try? fileManager.removeItem(at: deepest)) != nil
+            else { continue }
+            candidates.insert(deepest.deletingLastPathComponent().standardizedFileURL)
         }
     }
 }
