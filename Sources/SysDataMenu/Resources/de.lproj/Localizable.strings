@@ -96,6 +96,7 @@
 "Move safe items to the Trash" = "Sichere Elemente in den Papierkorb verschieben";
 "Moved to the Trash. Empty the Trash to free the space." = "In den Papierkorb verschoben. Leere den Papierkorb, um den Speicherplatz freizugeben.";
 "No item matches" = "Keine Übereinstimmung";
+"Nobody has changed this project's own files in %lld days." = "Die eigenen Dateien dieses Projekts hat seit %lld Tagen niemand geändert.";
 "Nothing to compare yet" = "Noch nichts zum Vergleichen";
 "Nothing to reclaim" = "Nichts freizugeben";
 "Notify about unusual growth" = "Über ungewöhnliches Wachstum informieren";

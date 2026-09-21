@@ -96,6 +96,7 @@
 "Move safe items to the Trash" = "Move safe items to the Trash";
 "Moved to the Trash. Empty the Trash to free the space." = "Moved to the Trash. Empty the Trash to free the space.";
 "No item matches" = "No item matches";
+"Nobody has changed this project's own files in %lld days." = "Nobody has changed this project's own files in %lld days.";
 "Nothing to compare yet" = "Nothing to compare yet";
 "Nothing to reclaim" = "Nothing to reclaim";
 "Notify about unusual growth" = "Notify about unusual growth";

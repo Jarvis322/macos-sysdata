@@ -96,6 +96,7 @@
 "Move safe items to the Trash" = "안전 항목을 휴지통으로 이동";
 "Moved to the Trash. Empty the Trash to free the space." = "휴지통으로 이동했습니다. 공간을 확보하려면 휴지통을 비우세요.";
 "No item matches" = "일치하는 항목 없음";
+"Nobody has changed this project's own files in %lld days." = "%lld일 동안 아무도 이 프로젝트의 파일을 변경하지 않았습니다.";
 "Nothing to compare yet" = "아직 비교할 항목 없음";
 "Nothing to reclaim" = "확보할 공간 없음";
 "Notify about unusual growth" = "비정상적인 증가 알림";

@@ -96,6 +96,7 @@
 "Move safe items to the Trash" = "将可安全清理的项目移到废纸篓";
 "Moved to the Trash. Empty the Trash to free the space." = "已移到废纸篓。清倒废纸篓以释放空间。";
 "No item matches" = "没有匹配的项目";
+"Nobody has changed this project's own files in %lld days." = "%lld 天内没有人修改过这个项目自己的文件。";
 "Nothing to compare yet" = "暂无可比较的记录";
 "Nothing to reclaim" = "没有可释放的空间";
 "Notify about unusual growth" = "异常增长通知";

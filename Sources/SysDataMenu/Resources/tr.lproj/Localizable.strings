@@ -96,6 +96,7 @@
 "Move safe items to the Trash" = "Güvenli öğeleri Çöp Sepeti'ne taşı";
 "Moved to the Trash. Empty the Trash to free the space." = "Çöp Sepeti'ne taşındı. Alanı boşaltmak için Çöp Sepeti'ni boşaltın.";
 "No item matches" = "Eşleşen öğe yok";
+"Nobody has changed this project's own files in %lld days." = "Bu projenin kendi dosyalarına %lld gündür kimse dokunmadı.";
 "Nothing to compare yet" = "Henüz karşılaştıracak bir şey yok";
 "Nothing to reclaim" = "Geri kazanılacak bir şey yok";
 "Notify about unusual growth" = "Olağandışı büyüme için bildirim gönder";

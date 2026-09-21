@@ -96,6 +96,7 @@
 "Move safe items to the Trash" = "Déplacer les éléments sûrs vers la Corbeille";
 "Moved to the Trash. Empty the Trash to free the space." = "Déplacé vers la Corbeille. Videz la Corbeille pour libérer l'espace.";
 "No item matches" = "Aucun élément ne correspond";
+"Nobody has changed this project's own files in %lld days." = "Personne n'a modifié les fichiers de ce projet depuis %lld jours.";
 "Nothing to compare yet" = "Rien à comparer pour l'instant";
 "Nothing to reclaim" = "Rien à récupérer";
 "Notify about unusual growth" = "Notifier une croissance inhabituelle";

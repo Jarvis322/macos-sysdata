@@ -96,6 +96,7 @@
 "Move safe items to the Trash" = "安全な項目をゴミ箱に入れる";
 "Moved to the Trash. Empty the Trash to free the space." = "ゴミ箱に移動しました。容量を解放するにはゴミ箱を空にしてください。";
 "No item matches" = "一致する項目がありません";
+"Nobody has changed this project's own files in %lld days." = "このプロジェクト自体のファイルは %lld 日間誰も変更していません。";
 "Nothing to compare yet" = "まだ比較できるものがありません";
 "Nothing to reclaim" = "解放できるものがありません";
 "Notify about unusual growth" = "異常な増加を通知";

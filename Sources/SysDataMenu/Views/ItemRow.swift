@@ -73,9 +73,12 @@ struct ItemRow: View {
                 Text(item.name)
                     .lineLimit(1)
                 safetyBadge
+                if isIdleProject, let idle = item.idleLabel {
+                    idleBadge(idle)
+                }
             }
             HStack(alignment: .firstTextBaseline, spacing: 4) {
-                if let idle = item.idleLabel {
+                if !isIdleProject, let idle = item.idleLabel {
                     // Only appears past a fortnight, so it marks the rows
                     // where age is the deciding fact rather than repeating
                     // "in use" on every line.
@@ -212,6 +215,26 @@ struct ItemRow: View {
             .background(badgeColor.opacity(0.18), in: Capsule())
             .foregroundStyle(badgeColor)
             .accessibilityLabel(L("Safety: %@", item.safety.label))
+    }
+
+    /// One of the rows the header's "Idle 60 days" link selects. The link
+    /// counted them, but the rows only said their age in the grey detail
+    /// line, where "2 months idle" looked the same as "1 month idle" — so
+    /// nothing showed which rows the count meant.
+    private var isIdleProject: Bool {
+        item.category == .projects && (item.idleDays ?? 0) >= ScanModel.idleProjectDays
+    }
+
+    /// The link's colour, so the rows and the count visibly belong together.
+    private func idleBadge(_ text: String) -> some View {
+        Text(text)
+            .font(.caption2.weight(.medium))
+            .padding(.horizontal, 5)
+            .padding(.vertical, 1)
+            .background(Color.accentColor.opacity(0.18), in: Capsule())
+            .foregroundStyle(Color.accentColor)
+            .fixedSize()
+            .help(L("Nobody has changed this project's own files in %lld days.", item.idleDays ?? 0))
     }
 
     private var badgeColor: Color {

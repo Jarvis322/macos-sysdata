@@ -5103,6 +5103,58 @@
         }
       }
     },
+    "Nobody has changed this project's own files in %lld days.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu projenin kendi dosyalarına %lld gündür kimse dokunmadı."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld 天内没有人修改过这个项目自己的文件。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "このプロジェクト自体のファイルは %lld 日間誰も変更していません。"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die eigenen Dateien dieses Projekts hat seit %lld Tagen niemand geändert."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Personne n'a modifié les fichiers de ce projet depuis %lld jours."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nadie ha cambiado los archivos de este proyecto en %lld días."
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld일 동안 아무도 이 프로젝트의 파일을 변경하지 않았습니다."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Файлы этого проекта никто не менял %lld дн."
+          }
+        }
+      }
+    },
     "Nothing to compare yet": {
       "localizations": {
         "zh-Hans": {

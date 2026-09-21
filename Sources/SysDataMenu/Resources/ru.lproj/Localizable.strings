@@ -96,6 +96,7 @@
 "Move safe items to the Trash" = "Перемещать безопасные элементы в Корзину";
 "Moved to the Trash. Empty the Trash to free the space." = "Перемещено в Корзину. Чтобы освободить место, очистите Корзину.";
 "No item matches" = "Нет совпадений";
+"Nobody has changed this project's own files in %lld days." = "Файлы этого проекта никто не менял %lld дн.";
 "Nothing to compare yet" = "Пока нечего сравнивать";
 "Nothing to reclaim" = "Нечего освобождать";
 "Notify about unusual growth" = "Уведомлять о необычном росте";
