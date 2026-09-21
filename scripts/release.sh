@@ -88,7 +88,10 @@ notes=$(mktemp)
 } > "$notes"
 
 # Commit, tag, push, publish.
-git add VERSION
+# The site's llms files state the current version, so they are regenerated
+# with it; left alone they were a release behind on main every time.
+scripts/make-llms.sh >/dev/null
+git add VERSION docs/llms.txt docs/llms-full.txt
 git commit -q -m "chore: release $tag"
 git tag -a "$tag" -m "$tag"
 git push -q origin main "$tag"
