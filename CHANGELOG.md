@@ -5,6 +5,16 @@ What changed in each release, and where it is worth saying, why.
 Versions up to and including v0.3.7 were released under the MIT License; see
 [LICENSE](LICENSE).
 
+## v1.5.1 — 2026-09-23
+
+- **The low-space button no longer spins forever.** It ran `uv cache clean`,
+  which waits for uv's lock, and a tool started with uvx — an MCP server, for
+  one — holds that lock for hours. While uv processes are running, the uv
+  cache is now a manual row that says so, since cleaning it would also remove
+  the environments those tools run from. Every clean command is also stopped
+  after ten minutes, with a message saying why, rather than waiting on a lock
+  without end.
+
 ## v1.5.0 — 2026-09-23
 
 - **A window that says something at a glance.** The list opens on the one
