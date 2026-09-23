@@ -5,6 +5,35 @@ What changed in each release, and where it is worth saying, why.
 Versions up to and including v0.3.7 were released under the MIT License; see
 [LICENSE](LICENSE).
 
+## v1.5.0 — 2026-09-23
+
+- **A window that says something at a glance.** The list opens on the one
+  number you can act on — what is safe to free now — above a bar of the
+  whole disk, split into safe, review, manual, the rest of your files and
+  free space, each with its size. Every category has its own icon and
+  colour, so a folded list reads before a single title does. Select safe
+  sits next to the number it selects, and a batch delete is a button you
+  cannot miss.
+- **Review items really go to the Trash.** Items emptied in place — Xcode
+  archives, game libraries, a pnpm store found without pnpm — were deleted
+  for good while their badge promised the Trash.
+- **Unattended cleans keep to their promise.** The weekly clean, the
+  low-space button and the Free Safe Items shortcut no longer empty the
+  Trash, which holds what this app moved there so you could undo it, and no
+  longer shut down simulators you may be using. They never ask for an
+  administrator password either; what would need one is reported instead.
+- **One delete at a time.** A scheduled clean and a batch you started can no
+  longer run together and delete or count the same item twice, and an item
+  deleted while a scan is running no longer comes back.
+- **Sizes counted once.** CoreSimulator logs, Docker's container, each
+  simulator's caches and the protected part of /Library/Caches were counted
+  twice or promised space no delete could free.
+- **Smaller fixes.** A program that starts helpers can no longer hold a scan
+  past its timeout. A failing `xcode-select` no longer makes every Xcode look
+  inactive. The Free Safe Items shortcut updates the window and the widget.
+  The `sysdata` command uses the same units as the app and prunes only the
+  folders that old files leave empty.
+
 ## v1.4.1 — 2026-09-21
 
 - **The rows behind "Idle 60 days" are marked.** The header link counted the
