@@ -13,7 +13,9 @@ Versions up to and including v0.3.7 were released under the MIT License; see
   free space, each with its size. Every category has its own icon and
   colour, so a folded list reads before a single title does. Select safe
   sits next to the number it selects, and a batch delete is a button you
-  cannot miss.
+  cannot miss. The low-space warning, the update notice and the Full Disk
+  Access request are cards in the same style instead of strips across the
+  window.
 - **Review items really go to the Trash.** Items emptied in place — Xcode
   archives, game libraries, a pnpm store found without pnpm — were deleted
   for good while their badge promised the Trash.
