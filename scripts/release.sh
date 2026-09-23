@@ -53,9 +53,14 @@ echo "==> $current -> $version"
 # Verify before anything is published.
 # The same checks CI would run, plus the disk-walking tests: a release is the
 # one moment those have to happen.
-SYSDATA_SCAN_TESTS=1 scripts/ci.sh
+# Without the notary profile: ci.sh builds the app too, and with the profile
+# exported that build of the old version was notarized and overwrote its zip.
+NOTARY_PROFILE='' SYSDATA_SCAN_TESTS=1 scripts/ci.sh
 
 printf '%s\n' "$version" > VERSION
+# A build that fails from here would leave VERSION bumped, and the next run
+# refuses a tree that is not clean. Put it back until the release commit.
+trap 'printf "%s\n" "$current" > VERSION' ERR
 scripts/build-app.sh
 scripts/make-dmg.sh
 archive="build/SysDataMenu-$version.zip"
@@ -93,6 +98,7 @@ notes=$(mktemp)
 scripts/make-llms.sh >/dev/null
 git add VERSION docs/llms.txt docs/llms-full.txt
 git commit -q -m "chore: release $tag"
+trap - ERR
 git tag -a "$tag" -m "$tag"
 git push -q origin main "$tag"
 cp "$image" "$stable_image"
