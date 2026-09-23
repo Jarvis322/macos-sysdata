@@ -1,4 +1,5 @@
 import Foundation
+import os
 
 struct CommandResult: Sendable {
     let status: Int32
@@ -44,35 +45,69 @@ enum Shell {
         timeout: Duration? = nil
     ) async throws -> CommandResult {
         try await Task.detached(priority: .userInitiated) {
-            let process = Process()
-            process.executableURL = URL(fileURLWithPath: executable)
-            process.arguments = arguments
-            process.environment = environment
-
-            let pipe = Pipe()
-            process.standardOutput = pipe
-            process.standardError = mergeStderr ? pipe : FileHandle.nullDevice
-            process.standardInput = FileHandle.nullDevice
-
-            try process.run()
-            // The process identifier rather than the Process: the timer runs
-            // on another queue, and a pid is a plain number to hand across.
-            let pid = process.processIdentifier
-            let deadline = timeout.map { limit in
-                let item = DispatchWorkItem { kill(pid, SIGTERM) }
-                let seconds = Double(limit.components.seconds) + Double(limit.components.attoseconds) / 1e18
-                DispatchQueue.global(qos: .utility).asyncAfter(deadline: .now() + seconds, execute: item)
-                return item
-            }
-            let data = pipe.fileHandleForReading.readDataToEndOfFile()
-            process.waitUntilExit()
-            deadline?.cancel()
-
-            return CommandResult(
-                status: process.terminationStatus,
-                output: String(decoding: data, as: UTF8.self)
-            )
+            try runBlocking(executable, arguments, mergeStderr: mergeStderr, timeout: timeout)
         }.value
+    }
+
+    /// The blocking half of `run`, kept synchronous because it waits on the
+    /// pipe and the process; it only ever runs on the detached task above.
+    private static func runBlocking(
+        _ executable: String, _ arguments: [String], mergeStderr: Bool, timeout: Duration?
+    ) throws -> CommandResult {
+        let process = Process()
+        process.executableURL = URL(fileURLWithPath: executable)
+        process.arguments = arguments
+        process.environment = environment
+
+        let pipe = Pipe()
+        process.standardOutput = pipe
+        process.standardError = mergeStderr ? pipe : FileHandle.nullDevice
+        process.standardInput = FileHandle.nullDevice
+
+        // Read as it arrives rather than to the end of the pipe. A child
+        // the program started — a version manager's shim runs the real
+        // tool — keeps the pipe open after the program itself is killed,
+        // and reading to the end then waited for that child, timeout or
+        // not.
+        let output = OSAllocatedUnfairLock(initialState: Data())
+        let ended = DispatchSemaphore(value: 0)
+        pipe.fileHandleForReading.readabilityHandler = { handle in
+            let chunk = handle.availableData
+            if chunk.isEmpty {
+                handle.readabilityHandler = nil
+                ended.signal()
+            } else {
+                output.withLock { $0.append(chunk) }
+            }
+        }
+
+        try process.run()
+        // The process identifier rather than the Process: the timer runs
+        // on another queue, and a pid is a plain number to hand across.
+        let pid = process.processIdentifier
+        let timedOut = OSAllocatedUnfairLock(initialState: false)
+        let deadline = timeout.map { limit in
+            let item = DispatchWorkItem {
+                timedOut.withLock { $0 = true }
+                kill(pid, SIGTERM)
+            }
+            let seconds = Double(limit.components.seconds) + Double(limit.components.attoseconds) / 1e18
+            DispatchQueue.global(qos: .utility).asyncAfter(deadline: .now() + seconds, execute: item)
+            return item
+        }
+        process.waitUntilExit()
+        deadline?.cancel()
+        if timedOut.withLock({ $0 }) {
+            // Whatever still holds the pipe is not waited for.
+            pipe.fileHandleForReading.readabilityHandler = nil
+        } else {
+            ended.wait()
+        }
+
+        return CommandResult(
+            status: process.terminationStatus,
+            output: String(decoding: output.withLock { $0 }, as: UTF8.self)
+        )
     }
 
     /// Runs a shell snippet as root through the system authorization dialog.
