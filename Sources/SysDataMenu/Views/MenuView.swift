@@ -67,17 +67,22 @@ struct MenuView: View {
                 filterField
             }
             Divider()
+            // Cards rather than strips, inset like the overview under them,
+            // so a notice reads as part of the window.
             if !model.hasFullDiskAccess {
                 accessBanner
-                Divider()
+                    .padding(.horizontal, 16)
+                    .padding(.top, 8)
             }
             if let version = updates.newVersion {
                 updateBanner(version)
-                Divider()
+                    .padding(.horizontal, 16)
+                    .padding(.top, 8)
             }
             if model.isLowOnSpace, model.safeAutoBytes > 0, !model.isScanning {
                 lowSpaceBanner
-                Divider()
+                    .padding(.horizontal, 16)
+                    .padding(.top, 8)
             }
             if notificationsRefused {
                 feedbackRow(
@@ -114,16 +119,12 @@ struct MenuView: View {
     /// Shown where the Full Disk Access banner goes: the one place in this
     /// window that is already understood as "something needs your attention".
     private func updateBanner(_ version: String) -> some View {
-        HStack(spacing: 8) {
-            Image(systemName: "arrow.down.circle.fill")
-                .foregroundStyle(.tint)
-            Text(L("Version %@ is available.", version))
-                .font(.callout)
-            Spacer()
+        NoticeCard(symbol: "arrow.down", tint: .accentColor, title: L("Version %@ is available.", version)) {
             if updates.isInstalling {
                 ProgressView().controlSize(.small)
             } else if updates.newVersionImage != nil {
                 Button(L("Update")) { Task { await updates.install() } }
+                    .buttonStyle(.borderedProminent)
                     .controlSize(.small)
             } else {
                 // No image on the release: nothing to install, so the release
@@ -132,8 +133,6 @@ struct MenuView: View {
                     .controlSize(.small)
             }
         }
-        .padding(.horizontal, 14)
-        .padding(.vertical, 8)
     }
 
     /// Shown when free space is under the warning threshold. The one place the
@@ -141,19 +140,12 @@ struct MenuView: View {
     /// the safe subset — caches that regenerate, nothing that needs a password
     /// or a second thought.
     private var lowSpaceBanner: some View {
-        HStack(spacing: 8) {
-            Image(systemName: "exclamationmark.triangle.fill")
-                .foregroundStyle(.orange)
-            VStack(alignment: .leading, spacing: 2) {
-                Text(L("Low on disk space"))
-                    .font(.callout.weight(.semibold))
-                Text(L("%@ free · %@ of safe items can go now",
-                       model.freeBytes.byteString, model.safeAutoBytes.byteString))
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-                    .monospacedDigit()
-            }
-            Spacer()
+        NoticeCard(
+            symbol: "externaldrive.fill.badge.exclamationmark", tint: .orange,
+            title: L("Low on disk space"),
+            message: L("%@ free · %@ of safe items can go now",
+                       model.freeBytes.byteString, model.safeAutoBytes.byteString)
+        ) {
             if model.busyItemIDs.isEmpty {
                 Button(L("Free %@", model.safeAutoBytes.byteString)) {
                     Task { await model.reclaimSafeNow() }
@@ -165,9 +157,6 @@ struct MenuView: View {
                 ProgressView().controlSize(.small)
             }
         }
-        .padding(.horizontal, 14)
-        .padding(.vertical, 8)
-        .background(.orange.opacity(0.08))
     }
 
     // MARK: Confirmation
@@ -433,25 +422,16 @@ struct MenuView: View {
     // MARK: Full Disk Access
 
     private var accessBanner: some View {
-        HStack(alignment: .top, spacing: 8) {
-            Image(systemName: "lock.shield")
-                .foregroundStyle(.orange)
-            VStack(alignment: .leading, spacing: 2) {
-                Text(L("Grant Full Disk Access once"))
-                    .font(.caption.weight(.semibold))
-                Text(L("One grant covers everything. Until then this scan leaves the protected places alone — app containers, Desktop, Documents, Music, Photos — rather than asking about them one app at a time, so what you see below is incomplete. Add System Data Unpacked in the settings pane, then reopen the app."))
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-            }
-            Spacer()
+        NoticeCard(
+            symbol: "lock.shield.fill", tint: .orange,
+            title: L("Grant Full Disk Access once"),
+            message: L("One grant covers everything. Until then this scan leaves the protected places alone — app containers, Desktop, Documents, Music, Photos — rather than asking about them one app at a time, so what you see below is incomplete. Add System Data Unpacked in the settings pane, then reopen the app.")
+        ) {
             Button(L("Open Settings")) {
                 NSWorkspace.shared.open(Self.fullDiskAccessPane)
             }
             .controlSize(.small)
         }
-        .padding(.horizontal, 14)
-        .padding(.vertical, 8)
-        .background(.orange.opacity(0.08))
     }
 
     // MARK: Content
