@@ -35,6 +35,7 @@ struct SimulatorProbe: StorageProbe {
     func probe() async -> [StorageItem] {
         var items: [StorageItem] = []
         var cacheDirectories: [URL] = []
+        var cacheBytes: Int64 = 0
         var deviceCount = 0
 
         if let json = await ProbeSupport.json(xcrun, ["simctl", "list", "devices", "-j"]),
@@ -64,20 +65,27 @@ struct SimulatorProbe: StorageProbe {
 
                     deviceCount += 1
                     let data = URL(fileURLWithPath: dataPath)
-                    cacheDirectories += [data.appending(path: "Library/Caches"), data.appending(path: "tmp")]
+                    let deviceCaches = [data.appending(path: "Library/Caches"), data.appending(path: "tmp")]
                         .filter(\.exists)
+                    cacheDirectories += deviceCaches
+                    var deviceCacheBytes: Int64 = 0
+                    for directory in deviceCaches { deviceCacheBytes += await DiskSize.allocated(at: directory) }
+                    cacheBytes += deviceCacheBytes
+                    // The device's caches are their own row above; counted in
+                    // the erase row as well, the total said the same bytes twice.
+                    let eraseBytes = dataSize.map { max($0 - deviceCacheBytes, 0) }
 
                     // Erasing keeps the device, so an erased one comes back on
                     // the next scan at a few megabytes and reads as a delete
                     // that did not happen. Below this there is nothing to reset.
-                    if let dataSize, dataSize < 100 * ProbeSupport.megabyte { continue }
+                    if let eraseBytes, eraseBytes < 100 * ProbeSupport.megabyte { continue }
 
                     items.append(StorageItem(
                         id: "sim-erase-\(udid)",
                         category: .simulators,
                         name: "Erase \(name)",
                         detail: "Resets this \(runtimeName) simulator to factory state. Installed apps and their data are lost.",
-                        sizeBytes: dataSize,
+                        sizeBytes: eraseBytes,
                         safety: .review,
                         action: .eraseSimulator(udid: udid),
                         revealURL: data
@@ -87,11 +95,13 @@ struct SimulatorProbe: StorageProbe {
         }
 
         let sharedDyld = root.appending(path: "Caches/dyld")
-        if sharedDyld.exists { cacheDirectories.append(sharedDyld) }
+        if sharedDyld.exists {
+            cacheDirectories.append(sharedDyld)
+            cacheBytes += await DiskSize.allocated(at: sharedDyld)
+        }
 
         if !cacheDirectories.isEmpty {
-            var total: Int64 = 0
-            for directory in cacheDirectories { total += await DiskSize.allocated(at: directory) }
+            let total = cacheBytes
             if total > 0 {
                 items.insert(StorageItem(
                     id: "sim-caches",
@@ -255,8 +265,9 @@ struct XcodeProbe: StorageProbe {
             items.append(item)
         }
 
-        let active = (try? await Shell.run("/usr/bin/xcode-select", ["-p"], timeout: Shell.probeTimeout))?.output
-            .trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+        // Without an answer there is no telling which Xcode is in use, and
+        // offering the active one for deletion is the mistake to avoid.
+        guard let active = await ProbeSupport.activeDeveloperDirectory() else { return items }
         for app in URL(fileURLWithPath: "/Applications").children()
         where app.lastPathComponent.hasPrefix("Xcode") && app.pathExtension == "app" && !active.hasPrefix(app.path) {
             if let item = await ProbeSupport.directoryItem(

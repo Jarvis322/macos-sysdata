@@ -46,6 +46,16 @@ enum ProbeSupport {
 
     static let megabyte: Int64 = 1_048_576
 
+    /// `xcode-select -p`, or nil when it failed. Its error text used to be
+    /// taken for a path, which made every Xcode read as inactive.
+    static func activeDeveloperDirectory() async -> String? {
+        guard let result = try? await Shell.run(
+            "/usr/bin/xcode-select", ["-p"], mergeStderr: false, timeout: Shell.probeTimeout
+        ), result.succeeded else { return nil }
+        let path = result.output.trimmingCharacters(in: .whitespacesAndNewlines)
+        return path.isEmpty ? nil : path
+    }
+
     /// Whether macOS will let this app read the places it keeps behind TCC.
     ///
     /// Reading `~/Library/Safari` is denied outright rather than prompting, so

@@ -170,6 +170,8 @@ struct AppDataProbe: StorageProbe {
     ]
     private static let coveredContainers: Set<String> = [
         "com.microsoft.teams2", "com.apple.Safari", "com.apple.photolibraryd", "com.utmapp.UTM", "com.apple.mail",
+        // Docker's disk image lives here and is already the Docker rows.
+        "com.docker.docker",
     ]
 
     func probe() async -> [StorageItem] {

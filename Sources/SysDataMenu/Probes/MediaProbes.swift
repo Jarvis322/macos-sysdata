@@ -90,8 +90,6 @@ struct AppCacheProbe: StorageProbe {
               detail: "Launcher caches and downloads.", safety: .review),
         Entry(id: "xcode-device-logs", name: "iOS device logs", path: "Library/Developer/Xcode/iOS Device Logs",
               detail: "Crash logs copied from connected devices.", safety: .safe),
-        Entry(id: "coresim-logs", name: "CoreSimulator logs", path: "Library/Logs/CoreSimulator",
-              detail: "Per-simulator system logs.", safety: .safe),
         Entry(id: "photos-cache", name: "Photos caches", path: "Library/Containers/com.apple.photolibraryd/Data/Library/Caches",
               detail: "Thumbnails and derivatives. Your library is untouched.", safety: .safe),
         Entry(id: "quicklook", name: "Quick Look thumbnails", path: "Library/Caches/com.apple.QuickLook.thumbnailcache",
