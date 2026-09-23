@@ -13,8 +13,15 @@ struct FreeSafeItemsIntent: AppIntent {
 
     @MainActor
     func perform() async throws -> some IntentResult & ReturnsValue<Int> & ProvidesDialog {
-        let model = ScanModel(scansAutomatically: false)
+        // Inside the running app, the app's own model: the list and the
+        // widget then show what the Shortcut freed instead of going stale.
+        let model = MainWindow.shared.model ?? ScanModel(scansAutomatically: false)
         await model.scan()
+        // `scan()` returns at once when one is already under way, and the
+        // list it is building is not the whole picture yet.
+        guard !model.isScanning else {
+            return .result(value: 0, dialog: "System Data Unpacked is still scanning. Try again when it finishes.")
+        }
         let before = model.reclaimedBytes
         await model.reclaimSafeNow()
         let freed = model.reclaimedBytes - before

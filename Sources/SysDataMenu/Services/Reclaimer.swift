@@ -1,5 +1,12 @@
 import Foundation
 
+/// Thrown instead of asking for a password in a run nobody is watching.
+struct NeedsAdministrator: LocalizedError {
+    var errorDescription: String? {
+        L("It needs an administrator password, so it was left for you to delete from the list.")
+    }
+}
+
 /// Executes a `ReclaimAction`. Every filesystem mutation in the app goes
 /// through here.
 enum Reclaimer {
@@ -8,17 +15,32 @@ enum Reclaimer {
     ///
     /// Returns true when anything was moved to the Trash rather than deleted,
     /// because that frees no disk space until the Trash is emptied.
+    ///
+    /// `allowsAdministrator` is false for the runs nobody is watching — the
+    /// weekly clean, the low-space button, the Shortcut. A path the user
+    /// cannot delete is then reported instead of handed to `rm` as root,
+    /// because a password dialog out of nowhere is not something those runs
+    /// may cause.
     @discardableResult
-    static func perform(_ action: ReclaimAction, preferTrash: Bool = false) async throws -> Bool {
+    static func perform(
+        _ action: ReclaimAction, preferTrash: Bool = false, allowsAdministrator: Bool = true
+    ) async throws -> Bool {
         switch action {
         case .removePaths(let urls):
-            return try await remove(urls, toTrash: preferTrash)
+            return try await remove(urls, toTrash: preferTrash, allowsAdministrator: allowsAdministrator)
 
         case .emptyDirectories(let directories):
+            // The Trash preference applies here too: a Review item emptied in
+            // place — Xcode archives, a game library — was deleted for good
+            // while its badge promised the Trash.
+            var trashed = false
             for directory in directories where directory.exists {
-                _ = try await remove(directory.children(includeHidden: true))
+                trashed = try await remove(
+                    directory.children(includeHidden: true), toTrash: preferTrash,
+                    allowsAdministrator: allowsAdministrator
+                ) || trashed
             }
-            return false
+            return trashed
 
         case .pruneOlderThan(let directory, let days):
             await Task.detached(priority: .utility) {
@@ -34,6 +56,7 @@ enum Reclaimer {
             return false
 
         case .privilegedScript(let script):
+            guard allowsAdministrator else { throw NeedsAdministrator() }
             let result = try await Shell.runPrivileged(script)
             guard result.succeeded else {
                 throw CommandError(command: script, result: result)
@@ -64,7 +87,9 @@ enum Reclaimer {
         case .steps(let actions):
             var trashed = false
             for action in actions {
-                trashed = try await perform(action, preferTrash: preferTrash) || trashed
+                trashed = try await perform(
+                    action, preferTrash: preferTrash, allowsAdministrator: allowsAdministrator
+                ) || trashed
             }
             return trashed
 
@@ -76,7 +101,7 @@ enum Reclaimer {
     /// Removes each path directly when the current user owns it and falls
     /// back to a single privileged `rm` for the rest. Returns true when at
     /// least one path was trashed instead of deleted.
-    private static func remove(_ urls: [URL], toTrash: Bool = false) async throws -> Bool {
+    private static func remove(_ urls: [URL], toTrash: Bool, allowsAdministrator: Bool) async throws -> Bool {
         var needsRoot: [URL] = []
         var trashed = false
         let fileManager = FileManager.default
@@ -100,6 +125,7 @@ enum Reclaimer {
         }
 
         guard !needsRoot.isEmpty else { return trashed }
+        guard allowsAdministrator else { throw NeedsAdministrator() }
         let script = "rm -rf " + needsRoot.map { Shell.shellQuote($0.path) }.joined(separator: " ")
         let result = try await Shell.runPrivileged(script)
         guard result.succeeded else {

@@ -18,7 +18,9 @@ final class MainWindow: NSObject, NSWindowDelegate {
 
     private var window: NSWindow?
     private var prompt: NSWindow?
-    private var model: ScanModel?
+    /// The app's one model, so a Shortcut run inside the app acts on the list
+    /// the window shows instead of a second copy nobody sees.
+    private(set) var model: ScanModel?
 
     /// Whether the one-time question about where the app should live has been
     /// answered. Closing the question counts as an answer: it is a question,

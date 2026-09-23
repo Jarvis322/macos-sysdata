@@ -104,6 +104,8 @@ final class ScanModel {
     /// Whether anything in this batch was trashed rather than deleted. The
     /// Trash frees nothing until it is emptied, which the notice already says.
     @ObservationIgnored private var anythingWentToTheTrash = false
+    /// Items deleted while a scan was still running, kept out of its results.
+    @ObservationIgnored private var deletedDuringScan: Set<String> = []
     /// Non-error feedback, such as "moved to the Trash".
     var notice: String?
 
@@ -138,6 +140,13 @@ final class ScanModel {
     private func runBackgroundScans() async {
         while !Task.isCancelled {
             await scan()
+            // A scan the person started was already running, so this pass
+            // found a list still being built. The clean waits for tomorrow
+            // rather than act on part of the picture.
+            if isScanning {
+                try? await Task.sleep(for: Self.rescanInterval)
+                continue
+            }
             // These run only on the unattended scans, never on a Rescan the
             // person is watching: the weekly note, then the optional automatic
             // clean of the safe subset. Both are no-ops unless switched on.
@@ -157,7 +166,7 @@ final class ScanModel {
         let before = DiskSize.freeSpace()
         AutoClean.markRun()
         guard !items.isEmpty else { return }
-        await reclaim(items)
+        await reclaim(items, unattended: true)
         let freed = max(DiskSize.freeSpace() - before, 0)
         await AutoClean.announce(freed: freed, count: items.count)
     }
@@ -238,8 +247,15 @@ final class ScanModel {
     /// the only set the app ever acts on for the person — the one-tap "free
     /// safe items" button and the optional weekly auto-clean — because it is
     /// the set where a mistake costs nothing but a rebuild.
+    ///
+    /// The Trash is left out even though emptying it is marked Safe: it holds
+    /// what this app moved there so a delete could be undone. So is anything
+    /// that shuts simulators down, which would stop a run or a UI test.
     var safeAutoItems: [StorageItem] {
-        visibleItems.filter { $0.safety == .safe && !$0.action.isManual && !$0.action.needsAdministrator }
+        visibleItems.filter {
+            $0.safety == .safe && $0.category != .trash
+                && !$0.action.isManual && !$0.action.needsAdministrator && !$0.action.shutsDownSimulators
+        }
     }
 
     var safeAutoBytes: Int64 {
@@ -473,6 +489,7 @@ final class ScanModel {
         probesFinished = 0
         probesTotal = probes.count
         items = []
+        deletedDuringScan = []
 
         // Each probe's findings land as they arrive rather than all at the
         // end. The scan takes a while on a full disk, and a window that stays
@@ -485,13 +502,14 @@ final class ScanModel {
             }
             for await batch in group {
                 results += batch
-                items = results
+                items = results.filter { !deletedDuringScan.contains($0.id) }
                 probesFinished += 1
                 phase = L("Measuring… %lld of %lld places", probesFinished, probesTotal)
             }
         }
 
         freeBytes = DiskSize.freeSpace()
+        capacityBytes = DiskSize.capacity()
         purgeableBytes = DiskSize.purgeableSpace()
 
         // The catch-all pass needs to know what is already explained, so it
@@ -499,6 +517,7 @@ final class ScanModel {
         phase = L("Looking for anything else over 500 MB…")
         let claimed = results.flatMap(\.claimedURLs)
         items += await LargeFolderProbe(claimed: claimed).probe()
+        items.removeAll { deletedDuringScan.contains($0.id) }
         lastScan = .now
 
         if keepsHistory {
@@ -509,7 +528,6 @@ final class ScanModel {
             await Task.detached(priority: .utility) {
                 ScanHistory.record(measured, freeBytes: free)
             }.value
-        capacityBytes = DiskSize.capacity()
             history = ScanHistory.load()
         }
         await LowSpaceAlert.check(freeBytes: freeBytes, reclaimable: safeBytes)
@@ -544,7 +562,7 @@ final class ScanModel {
     /// confirmation because there is nothing to weigh: every item is
     /// regenerated on demand and none needs a password.
     func reclaimSafeNow() async {
-        await reclaim(safeAutoItems)
+        await reclaim(safeAutoItems, unattended: true)
     }
 
     /// Deletes the selection. Everything that needs root is folded into one
@@ -556,8 +574,28 @@ final class ScanModel {
         await reclaim(chosen)
     }
 
-    func reclaim(_ batch: [StorageItem]) async {
-        let runnable = batch.filter { !busyItemIDs.contains($0.id) && !$0.action.isManual }
+    /// Runs one batch after another, never two at once. The weekly clean and
+    /// a batch the person started could otherwise overlap: each cleared the
+    /// other's failures, and an item in both was deleted and counted twice.
+    func reclaim(_ batch: [StorageItem], unattended: Bool = false) async {
+        let previous = reclaimQueue
+        let run = Task { @MainActor in
+            await previous?.value
+            await self.runBatch(batch, unattended: unattended)
+        }
+        reclaimQueue = run
+        await run.value
+    }
+
+    @ObservationIgnored private var reclaimQueue: Task<Void, Never>?
+
+    private func runBatch(_ batch: [StorageItem], unattended: Bool) async {
+        // Only what is still listed: an earlier batch in the queue may have
+        // deleted part of this one already.
+        let listed = Set(items.map(\.id))
+        let runnable = batch.filter {
+            listed.contains($0.id) && !busyItemIDs.contains($0.id) && !$0.action.isManual
+        }
         errorMessage = nil
         notice = nil
         failures = []
@@ -581,7 +619,12 @@ final class ScanModel {
             }
         }
 
-        if privileged.count == 1 {
+        if unattended {
+            // Kept out of the prompt entirely rather than asked for: the set
+            // these runs use holds no scripts, and a password dialog nobody
+            // expects is exactly what they promise not to show.
+            direct = privileged.map(\.item) + direct
+        } else if privileged.count == 1 {
             direct.insert(privileged[0].item, at: 0)
         } else if privileged.count > 1 {
             let items = privileged.map(\.item)
@@ -596,7 +639,7 @@ final class ScanModel {
 
         var deleted = 0
         for (index, item) in direct.enumerated() {
-            guard await perform(item.action, for: [item]) else {
+            guard await perform(item.action, for: [item], allowsAdministrator: !unattended) else {
                 stopped(after: deleted, remaining: Array(direct[index...]))
                 return
             }
@@ -616,7 +659,9 @@ final class ScanModel {
     /// reported having freed gigabytes while the disk showed less room than
     /// before, which is the one thing a tool like this must never do.
     private func explainAnyShortfall(freeBefore: Int64, askedToFree: Int64) async {
-        guard askedToFree > 0, errorMessage == nil, !anythingWentToTheTrash else { return }
+        // `errorMessage` is only filled in when the batch returns, so it is
+        // always empty here; the failures are what say whether it all went.
+        guard askedToFree > 0, failures.isEmpty, !anythingWentToTheTrash else { return }
         // Half of it, and at least half a gigabyte short: normal background
         // writing is not worth a notice.
         let gained = DiskSize.freeSpace() - freeBefore
@@ -664,7 +709,7 @@ final class ScanModel {
     /// Returns false when the person dismissed the authorization dialog, so
     /// the caller can stop instead of carrying on down the list.
     @discardableResult
-    private func perform(_ action: ReclaimAction, for affected: [StorageItem]) async -> Bool {
+    private func perform(_ action: ReclaimAction, for affected: [StorageItem], allowsAdministrator: Bool = true) async -> Bool {
         let ids = Set(affected.map(\.id))
         busyItemIDs.formUnion(ids)
         defer { busyItemIDs.subtract(ids) }
@@ -677,7 +722,9 @@ final class ScanModel {
             || (movesSafeToTrash && affected.allSatisfy { $0.safety == .safe })
         let before = DiskSize.freeSpace()
         do {
-            let movedToTrash = try await Reclaimer.perform(action, preferTrash: toTrash)
+            let movedToTrash = try await Reclaimer.perform(
+                action, preferTrash: toTrash, allowsAdministrator: allowsAdministrator
+            )
             recordReclaimed(affected, freeBefore: before, movedToTrash: movedToTrash)
         } catch {
             if let command = error as? CommandError, command.wasCancelled { return false }
@@ -709,6 +756,9 @@ final class ScanModel {
             history = ScanHistory.load()
         }
         items.removeAll { ids.contains($0.id) }
+        // A scan still running holds its own copy of what it found and would
+        // put these back as it finishes, ready to be deleted and counted again.
+        if isScanning { deletedDuringScan.formUnion(ids) }
         let after = DiskSize.freeSpace()
         let expected = affected.reduce(0) { $0 + ($1.sizeBytes ?? 0) }
         // A trashed item is renamed onto the same volume, so the drive has

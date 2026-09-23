@@ -65,6 +65,16 @@ enum ReclaimAction: Sendable {
     indirect case steps([ReclaimAction])
     case manual(String)
 
+    /// Whether running it stops simulators that may be in use, which is not
+    /// something a run nobody is watching may do.
+    var shutsDownSimulators: Bool {
+        switch self {
+        case .shutdownSimulators, .eraseSimulator: true
+        case .steps(let actions): actions.contains(where: \.shutsDownSimulators)
+        default: false
+        }
+    }
+
     var isManual: Bool {
         if case .manual = self { return true }
         return false
