@@ -47,3 +47,20 @@ import Testing
         #expect(model.safeAutoItems.map(\.id) == ["npm"])
     }
 }
+
+/// A clean command that waits on another program's lock — `uv cache clean`
+/// behind a running uvx server — left the Free button spinning for good.
+struct CommandTimeoutTests {
+    @Test func aCleanThatNeverFinishesIsStoppedAndSaysWhy() async {
+        do {
+            try await Reclaimer.perform(.command(executable: "/bin/sleep", arguments: ["30"]),
+                                        commandTimeout: .milliseconds(300))
+            Issue.record("the command should have been stopped")
+        } catch let error as CommandError {
+            #expect(error.result.status == SIGTERM)
+            #expect(error.localizedDescription.contains("stopped"))
+        } catch {
+            Issue.record("unexpected \(error)")
+        }
+    }
+}

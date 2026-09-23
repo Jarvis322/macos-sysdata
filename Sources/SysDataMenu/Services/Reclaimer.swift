@@ -23,7 +23,8 @@ enum Reclaimer {
     /// may cause.
     @discardableResult
     static func perform(
-        _ action: ReclaimAction, preferTrash: Bool = false, allowsAdministrator: Bool = true
+        _ action: ReclaimAction, preferTrash: Bool = false, allowsAdministrator: Bool = true,
+        commandTimeout: Duration = .seconds(600)
     ) async throws -> Bool {
         switch action {
         case .removePaths(let urls):
@@ -49,9 +50,20 @@ enum Reclaimer {
             return false
 
         case .command(let executable, let arguments):
-            let result = try await Shell.run(executable, arguments)
+            // A package manager waits for its lock as long as another copy of
+            // it holds one, and a spinner that never stops is worse than a
+            // clear failure. Ten minutes is far past any real clean.
+            let command = ([executable] + arguments).joined(separator: " ")
+            let result = try await Shell.run(executable, arguments, timeout: commandTimeout)
+            if result.status == SIGTERM {
+                throw CommandError(command: command, result: CommandResult(
+                    status: SIGTERM,
+                    output: L("It was still running after %lld minutes, so it was stopped. Another program may be holding it; try again once that one has finished.",
+                              Int(commandTimeout.components.seconds / 60))
+                ))
+            }
             guard result.succeeded else {
-                throw CommandError(command: ([executable] + arguments).joined(separator: " "), result: result)
+                throw CommandError(command: command, result: result)
             }
             return false
 
@@ -88,7 +100,8 @@ enum Reclaimer {
             var trashed = false
             for action in actions {
                 trashed = try await perform(
-                    action, preferTrash: preferTrash, allowsAdministrator: allowsAdministrator
+                    action, preferTrash: preferTrash, allowsAdministrator: allowsAdministrator,
+                    commandTimeout: commandTimeout
                 ) || trashed
             }
             return trashed

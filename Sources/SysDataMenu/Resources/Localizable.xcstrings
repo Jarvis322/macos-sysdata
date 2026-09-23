@@ -4375,6 +4375,58 @@
         }
       }
     },
+    "It was still running after %lld minutes, so it was stopped. Another program may be holding it; try again once that one has finished.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld dakika sonra hâlâ çalışıyordu, bu yüzden durduruldu. Başka bir program onu tutuyor olabilir; o bitince yeniden dene."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Es lief nach %lld Minuten noch und wurde deshalb beendet. Vielleicht blockiert es ein anderes Programm; versuche es erneut, wenn dieses fertig ist."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Il tournait encore après %lld minutes et a donc été arrêté. Un autre programme le bloque peut-être ; réessayez quand celui-ci aura terminé."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seguía ejecutándose tras %lld minutos, así que se detuvo. Puede que otro programa lo esté bloqueando; vuelve a intentarlo cuando termine."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld分経っても実行中だったため停止しました。別のプログラムが使用中の可能性があります。そちらが終わってから再試行してください。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld분이 지나도 실행 중이어서 중지했습니다. 다른 프로그램이 잡고 있을 수 있으니 그 작업이 끝난 뒤 다시 시도하세요."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Команда выполнялась дольше %lld минут и была остановлена. Возможно, её блокирует другая программа; повторите, когда та завершится."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "运行 %lld 分钟后仍未完成，因此已停止。可能有其他程序正在占用它；请在该程序结束后重试。"
+          }
+        }
+      }
+    },
     "Keep a local record of each scan and deletion, so the list can show what changed": {
       "localizations": {
         "zh-Hans": {

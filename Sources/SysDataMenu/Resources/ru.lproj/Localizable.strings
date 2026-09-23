@@ -82,6 +82,7 @@
 "Idle longest" = "Дольше всего не используется";
 "It goes to the Trash first." = "Сначала это отправляется в Корзину.";
 "It needs an administrator password, so it was left for you to delete from the list." = "Нужен пароль администратора, поэтому элемент оставлен в списке, чтобы вы удалили его сами.";
+"It was still running after %lld minutes, so it was stopped. Another program may be holding it; try again once that one has finished." = "Команда выполнялась дольше %lld минут и была остановлена. Возможно, её блокирует другая программа; повторите, когда та завершится.";
 "Keep a local record of each scan and deletion, so the list can show what changed" = "Хранить локальную запись о каждом сканировании и удалении, чтобы список показывал изменения";
 "Keep the menu bar icon" = "Оставить значок в строке меню";
 "Launch at login" = "Запускать при входе в систему";

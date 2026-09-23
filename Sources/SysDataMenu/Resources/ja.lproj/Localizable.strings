@@ -82,6 +82,7 @@
 "Idle longest" = "未使用期間順";
 "It goes to the Trash first." = "まずゴミ箱に移動します。";
 "It needs an administrator password, so it was left for you to delete from the list." = "管理者パスワードが必要なため、リストから手動で削除できるよう残しました。";
+"It was still running after %lld minutes, so it was stopped. Another program may be holding it; try again once that one has finished." = "%lld分経っても実行中だったため停止しました。別のプログラムが使用中の可能性があります。そちらが終わってから再試行してください。";
 "Keep a local record of each scan and deletion, so the list can show what changed" = "各スキャンと削除の記録をこのMac内に保存し、変化をリストに表示できるようにします";
 "Keep the menu bar icon" = "メニューバーに表示したままにする";
 "Launch at login" = "ログイン時に起動";

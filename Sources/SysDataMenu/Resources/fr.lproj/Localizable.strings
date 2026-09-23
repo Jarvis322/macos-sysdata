@@ -82,6 +82,7 @@
 "Idle longest" = "Inactif depuis le plus longtemps";
 "It goes to the Trash first." = "Cela va d'abord à la Corbeille.";
 "It needs an administrator password, so it was left for you to delete from the list." = "Il faut un mot de passe administrateur : l’élément reste dans la liste pour que vous le supprimiez.";
+"It was still running after %lld minutes, so it was stopped. Another program may be holding it; try again once that one has finished." = "Il tournait encore après %lld minutes et a donc été arrêté. Un autre programme le bloque peut-être ; réessayez quand celui-ci aura terminé.";
 "Keep a local record of each scan and deletion, so the list can show what changed" = "Conserver un historique local de chaque analyse et suppression, afin que la liste puisse montrer ce qui a changé";
 "Keep the menu bar icon" = "Garder l'icône du menu";
 "Launch at login" = "Ouvrir à l'ouverture de session";

@@ -82,6 +82,7 @@
 "Idle longest" = "En uzun boşta";
 "It goes to the Trash first." = "Önce Çöp Sepeti'ne gider.";
 "It needs an administrator password, so it was left for you to delete from the list." = "Yönetici parolası gerektiriyor, bu yüzden listeden senin silmen için bırakıldı.";
+"It was still running after %lld minutes, so it was stopped. Another program may be holding it; try again once that one has finished." = "%lld dakika sonra hâlâ çalışıyordu, bu yüzden durduruldu. Başka bir program onu tutuyor olabilir; o bitince yeniden dene.";
 "Keep a local record of each scan and deletion, so the list can show what changed" = "Her taramanın ve silmenin yerel kaydını tut, böylece liste neyin değiştiğini gösterebilir";
 "Keep the menu bar icon" = "Menü çubuğunda kalsın";
 "Launch at login" = "Girişte başlat";

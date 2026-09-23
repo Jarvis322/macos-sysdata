@@ -82,6 +82,7 @@
 "Idle longest" = "最久未变动";
 "It goes to the Trash first." = "会先移到废纸篓。";
 "It needs an administrator password, so it was left for you to delete from the list." = "需要管理员密码，因此已留在列表中，供你手动删除。";
+"It was still running after %lld minutes, so it was stopped. Another program may be holding it; try again once that one has finished." = "运行 %lld 分钟后仍未完成，因此已停止。可能有其他程序正在占用它；请在该程序结束后重试。";
 "Keep a local record of each scan and deletion, so the list can show what changed" = "在本机记录每次扫描和删除操作，以便在列表中显示变化";
 "Keep the menu bar icon" = "保留菜单栏图标";
 "Launch at login" = "登录时启动";

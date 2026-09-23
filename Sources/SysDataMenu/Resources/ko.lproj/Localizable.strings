@@ -82,6 +82,7 @@
 "Idle longest" = "가장 오래 미사용";
 "It goes to the Trash first." = "먼저 휴지통으로 이동합니다.";
 "It needs an administrator password, so it was left for you to delete from the list." = "관리자 암호가 필요하므로 목록에서 직접 삭제하도록 남겨 두었습니다.";
+"It was still running after %lld minutes, so it was stopped. Another program may be holding it; try again once that one has finished." = "%lld분이 지나도 실행 중이어서 중지했습니다. 다른 프로그램이 잡고 있을 수 있으니 그 작업이 끝난 뒤 다시 시도하세요.";
 "Keep a local record of each scan and deletion, so the list can show what changed" = "검사와 삭제 기록을 로컬에 보관하여 목록에서 변경 사항을 확인할 수 있게 합니다";
 "Keep the menu bar icon" = "메뉴 막대 아이콘 유지";
 "Launch at login" = "로그인 시 시작";

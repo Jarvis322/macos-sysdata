@@ -10,7 +10,7 @@ struct PackageProbe: StorageProbe {
         let url: URL
         let tool: String?
         let arguments: [String]
-        let detail: String
+        var detail: String
         /// Almost every cache here is refilled on demand, so deleting one costs
         /// a download. The exception is a store found without its tool, where
         /// the app is inferring rather than knowing.
@@ -72,10 +72,24 @@ struct PackageProbe: StorageProbe {
                                 safety: .review))
         }
 
+        // Programs started with uvx — MCP servers, for one — run for hours
+        // and hold uv's cache lock the whole time. `uv cache clean` then waits
+        // for them without end, and would delete the environments they run
+        // from if it got the lock. While any are running, cleaning is theirs
+        // to allow.
+        let runningUV = await Self.runningUVProcesses()
+        if runningUV > 0, let index = caches.firstIndex(where: { $0.id == "uv" }) {
+            caches[index].safety = .manual
+            let running = runningUV == 1 ? "1 uv process is" : "\(runningUV) uv processes are"
+            caches[index].detail = "\(running) running, such as tools started with uvx. They hold this cache: cleaning it would wait for them and remove the environments they run from. Quit them first."
+        }
+
         var items: [StorageItem] = []
         for cache in caches {
             let action: ReclaimAction
-            if let tool = cache.tool, let executable = Shell.which(tool) {
+            if cache.id == "uv", runningUV > 0 {
+                action = .manual("# Quit the programs started with uvx first, then:\nuv cache clean")
+            } else if let tool = cache.tool, let executable = Shell.which(tool) {
                 action = .command(executable: executable, arguments: cache.arguments)
             } else {
                 action = .emptyDirectories([cache.url])
@@ -105,6 +119,15 @@ struct PackageProbe: StorageProbe {
         }
 
         return items.sorted { ($0.sizeBytes ?? 0) > ($1.sizeBytes ?? 0) }
+    }
+
+    /// How many `uv` processes are running now. Zero when `pgrep` finds none
+    /// or cannot answer.
+    static func runningUVProcesses() async -> Int {
+        guard let result = try? await Shell.run(
+            "/usr/bin/pgrep", ["-x", "uv"], mergeStderr: false, timeout: Shell.probeTimeout
+        ), result.succeeded else { return 0 }
+        return result.output.split(whereSeparator: \.isNewline).count
     }
 
     /// pnpm's default store directories, in the order pnpm itself prefers them.

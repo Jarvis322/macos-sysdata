@@ -82,6 +82,7 @@
 "Idle longest" = "Idle longest";
 "It goes to the Trash first." = "It goes to the Trash first.";
 "It needs an administrator password, so it was left for you to delete from the list." = "It needs an administrator password, so it was left for you to delete from the list.";
+"It was still running after %lld minutes, so it was stopped. Another program may be holding it; try again once that one has finished." = "It was still running after %lld minutes, so it was stopped. Another program may be holding it; try again once that one has finished.";
 "Keep a local record of each scan and deletion, so the list can show what changed" = "Keep a local record of each scan and deletion, so the list can show what changed";
 "Keep the menu bar icon" = "Keep the menu bar icon";
 "Launch at login" = "Launch at login";

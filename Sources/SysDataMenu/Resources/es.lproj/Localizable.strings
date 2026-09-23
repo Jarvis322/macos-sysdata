@@ -82,6 +82,7 @@
 "Idle longest" = "Más tiempo inactivo";
 "It goes to the Trash first." = "Primero va a la Papelera.";
 "It needs an administrator password, so it was left for you to delete from the list." = "Necesita una contraseña de administrador, así que se dejó en la lista para que lo elimines tú.";
+"It was still running after %lld minutes, so it was stopped. Another program may be holding it; try again once that one has finished." = "Seguía ejecutándose tras %lld minutos, así que se detuvo. Puede que otro programa lo esté bloqueando; vuelve a intentarlo cuando termine.";
 "Keep a local record of each scan and deletion, so the list can show what changed" = "Guardar un registro local de cada análisis y eliminación, para que la lista pueda mostrar qué cambió";
 "Keep the menu bar icon" = "Mantener el icono en la barra";
 "Launch at login" = "Abrir al iniciar sesión";
