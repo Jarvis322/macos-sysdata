@@ -3,6 +3,7 @@
 "%@ free on disk" = "磁盘可用空间：%@";
 "%@ free · %@ of safe items can go now" = "%@ 可用 · 现在可清理 %@ 可安全清理的项目";
 "%@ grew %@ beyond its recent size." = "%@ 比近期大小增加了 %@。";
+"%@ purgeable" = "%@ 可清除";
 "%@ safe to free now · %@ free on disk · %@ purgeable" = "当前可安全释放 %@ · 磁盘可用空间 %@ · 可清除空间 %@";
 "%@ safe · %@ to review · %@ manual" = "%@ 可安全清理 · %@ 需检查 · %@ 需手动处理";
 "%@: the simulator is still running. Quit Simulator and Xcode, then try again." = "%@：模拟器仍在运行。请退出 Simulator 和 Xcode 后重试。";
@@ -63,6 +64,7 @@
 "Expand all" = "全部展开";
 "Filter" = "筛选";
 "Forget everything" = "清除所有记录";
+"Free" = "可用";
 "Free %@" = "清理 %@";
 "Free space" = "可用空间";
 "Free space on the startup disk." = "启动磁盘上的可用空间。";
@@ -79,6 +81,7 @@
 "Idle %lld days: %lld" = "闲置 %lld 天：%lld";
 "Idle longest" = "最久未变动";
 "It goes to the Trash first." = "会先移到废纸篓。";
+"It needs an administrator password, so it was left for you to delete from the list." = "需要管理员密码，因此已留在列表中，供你手动删除。";
 "Keep a local record of each scan and deletion, so the list can show what changed" = "在本机记录每次扫描和删除操作，以便在列表中显示变化";
 "Keep the menu bar icon" = "保留菜单栏图标";
 "Launch at login" = "登录时启动";
@@ -110,6 +113,7 @@
 "Open in a window" = "在窗口中打开";
 "Open x.com/yigitech" = "打开 x.com/yigitech";
 "Order rows by size, or by how long they have sat untouched" = "按大小或未变动的时长排列项目";
+"Other files" = "其他文件";
 "Other large folders" = "其他大型文件夹";
 "Package managers" = "软件包管理器";
 "Project build folders" = "项目构建文件夹";
@@ -179,3 +183,4 @@
 "different developer" = "签名开发者不一致";
 "iOS device backups" = "iOS 设备备份";
 "macOS is not allowing notifications from this app. Turn them on in System Settings > Notifications." = "macOS 当前不允许此应用发送通知。请在“系统设置”>“通知”中开启通知。";
+"safe to free now" = "现在可安全释放";

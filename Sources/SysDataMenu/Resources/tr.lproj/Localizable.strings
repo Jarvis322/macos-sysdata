@@ -3,6 +3,7 @@
 "%@ free on disk" = "diskte %@ boş";
 "%@ free · %@ of safe items can go now" = "%@ boş · %@ güvenli öğe şimdi silinebilir";
 "%@ grew %@ beyond its recent size." = "%@ son dönem boyutunun %@ üstüne çıktı.";
+"%@ purgeable" = "%@ temizlenebilir";
 "%@ safe to free now · %@ free on disk · %@ purgeable" = "%@ güvenle boşaltılabilir · diskte %@ boş · %@ temizlenebilir";
 "%@ safe · %@ to review · %@ manual" = "%@ güvenli · %@ incelenecek · %@ manuel";
 "%@: the simulator is still running. Quit Simulator and Xcode, then try again." = "%@: simülatör hâlâ çalışıyor. Simulator'ı ve Xcode'u kapatıp tekrar dene.";
@@ -63,6 +64,7 @@
 "Expand all" = "Tümünü genişlet";
 "Filter" = "Filtrele";
 "Forget everything" = "Hepsini unut";
+"Free" = "Boş";
 "Free %@" = "%@ boşalt";
 "Free space" = "Boş alan";
 "Free space on the startup disk." = "Başlangıç diskindeki boş alan.";
@@ -79,6 +81,7 @@
 "Idle %lld days: %lld" = "%lld gündür boşta: %lld";
 "Idle longest" = "En uzun boşta";
 "It goes to the Trash first." = "Önce Çöp Sepeti'ne gider.";
+"It needs an administrator password, so it was left for you to delete from the list." = "Yönetici parolası gerektiriyor, bu yüzden listeden senin silmen için bırakıldı.";
 "Keep a local record of each scan and deletion, so the list can show what changed" = "Her taramanın ve silmenin yerel kaydını tut, böylece liste neyin değiştiğini gösterebilir";
 "Keep the menu bar icon" = "Menü çubuğunda kalsın";
 "Launch at login" = "Girişte başlat";
@@ -110,6 +113,7 @@
 "Open in a window" = "Pencerede aç";
 "Open x.com/yigitech" = "x.com/yigitech adresini aç";
 "Order rows by size, or by how long they have sat untouched" = "Satırları boyuta ya da ne kadardır dokunulmadığına göre sırala";
+"Other files" = "Diğer dosyalar";
 "Other large folders" = "Diğer büyük klasörler";
 "Package managers" = "Paket yöneticileri";
 "Project build folders" = "Proje derleme klasörleri";
@@ -179,3 +183,4 @@
 "different developer" = "farklı geliştirici";
 "iOS device backups" = "iOS aygıt yedekleri";
 "macOS is not allowing notifications from this app. Turn them on in System Settings > Notifications." = "macOS bu uygulamanın bildirimlerine izin vermiyor. Sistem Ayarları > Bildirimler'den açabilirsin.";
+"safe to free now" = "şimdi güvenle silinebilir";

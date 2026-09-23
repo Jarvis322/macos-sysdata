@@ -3,6 +3,7 @@
 "%@ free on disk" = "%@ free on disk";
 "%@ free · %@ of safe items can go now" = "%@ free · %@ of safe items can go now";
 "%@ grew %@ beyond its recent size." = "%@ grew %@ beyond its recent size.";
+"%@ purgeable" = "%@ purgeable";
 "%@ safe to free now · %@ free on disk · %@ purgeable" = "%@ safe to free now · %@ free on disk · %@ purgeable";
 "%@ safe · %@ to review · %@ manual" = "%@ safe · %@ to review · %@ manual";
 "%@: the simulator is still running. Quit Simulator and Xcode, then try again." = "%@: the simulator is still running. Quit Simulator and Xcode, then try again.";
@@ -63,6 +64,7 @@
 "Expand all" = "Expand all";
 "Filter" = "Filter";
 "Forget everything" = "Forget everything";
+"Free" = "Free";
 "Free %@" = "Free %@";
 "Free space" = "Free space";
 "Free space on the startup disk." = "Free space on the startup disk.";
@@ -79,6 +81,7 @@
 "Idle %lld days: %lld" = "Idle %lld days: %lld";
 "Idle longest" = "Idle longest";
 "It goes to the Trash first." = "It goes to the Trash first.";
+"It needs an administrator password, so it was left for you to delete from the list." = "It needs an administrator password, so it was left for you to delete from the list.";
 "Keep a local record of each scan and deletion, so the list can show what changed" = "Keep a local record of each scan and deletion, so the list can show what changed";
 "Keep the menu bar icon" = "Keep the menu bar icon";
 "Launch at login" = "Launch at login";
@@ -110,6 +113,7 @@
 "Open in a window" = "Open in a window";
 "Open x.com/yigitech" = "Open x.com/yigitech";
 "Order rows by size, or by how long they have sat untouched" = "Order rows by size, or by how long they have sat untouched";
+"Other files" = "Other files";
 "Other large folders" = "Other large folders";
 "Package managers" = "Package managers";
 "Project build folders" = "Project build folders";
@@ -179,3 +183,4 @@
 "different developer" = "different developer";
 "iOS device backups" = "iOS device backups";
 "macOS is not allowing notifications from this app. Turn them on in System Settings > Notifications." = "macOS is not allowing notifications from this app. Turn them on in System Settings > Notifications.";
+"safe to free now" = "safe to free now";

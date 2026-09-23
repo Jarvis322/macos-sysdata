@@ -3,6 +3,7 @@
 "%@ free on disk" = "디스크에 %@ 여유 공간";
 "%@ free · %@ of safe items can go now" = "%@ 여유 공간 · 안전 항목 %@ 삭제 가능";
 "%@ grew %@ beyond its recent size." = "%@이(가) 최근 크기보다 %@ 늘었습니다.";
+"%@ purgeable" = "%@ 제거 가능";
 "%@ safe to free now · %@ free on disk · %@ purgeable" = "지금 안전하게 확보할 수 있는 %@ · 디스크 여유 공간 %@ · 제거 가능한 공간 %@";
 "%@ safe · %@ to review · %@ manual" = "안전 %@ · 검토 필요 %@ · 수동 %@";
 "%@: the simulator is still running. Quit Simulator and Xcode, then try again." = "%@: 시뮬레이터가 아직 실행 중입니다. Simulator와 Xcode를 종료한 후 다시 시도하세요.";
@@ -63,6 +64,7 @@
 "Expand all" = "모두 펼치기";
 "Filter" = "필터";
 "Forget everything" = "모든 기록 지우기";
+"Free" = "여유 공간";
 "Free %@" = "%@ 비우기";
 "Free space" = "여유 공간";
 "Free space on the startup disk." = "시동 디스크의 여유 공간입니다.";
@@ -79,6 +81,7 @@
 "Idle %lld days: %lld" = "%lld일 동안 방치: %lld";
 "Idle longest" = "가장 오래 미사용";
 "It goes to the Trash first." = "먼저 휴지통으로 이동합니다.";
+"It needs an administrator password, so it was left for you to delete from the list." = "관리자 암호가 필요하므로 목록에서 직접 삭제하도록 남겨 두었습니다.";
 "Keep a local record of each scan and deletion, so the list can show what changed" = "검사와 삭제 기록을 로컬에 보관하여 목록에서 변경 사항을 확인할 수 있게 합니다";
 "Keep the menu bar icon" = "메뉴 막대 아이콘 유지";
 "Launch at login" = "로그인 시 시작";
@@ -110,6 +113,7 @@
 "Open in a window" = "창에서 열기";
 "Open x.com/yigitech" = "x.com/yigitech 열기";
 "Order rows by size, or by how long they have sat untouched" = "행을 크기순 또는 방치된 기간순으로 정렬";
+"Other files" = "기타 파일";
 "Other large folders" = "기타 큰 폴더";
 "Package managers" = "패키지 관리자";
 "Project build folders" = "프로젝트 빌드 폴더";
@@ -179,3 +183,4 @@
 "different developer" = "다른 개발자";
 "iOS device backups" = "iOS 기기 백업";
 "macOS is not allowing notifications from this app. Turn them on in System Settings > Notifications." = "macOS에서 이 앱의 알림을 허용하지 않고 있습니다. 시스템 설정 > 알림에서 켜세요.";
+"safe to free now" = "지금 안전하게 확보 가능";

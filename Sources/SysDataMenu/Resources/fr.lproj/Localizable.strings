@@ -3,6 +3,7 @@
 "%@ free on disk" = "%@ disponible sur le disque";
 "%@ free · %@ of safe items can go now" = "%@ de libre · %@ d'éléments sûrs peuvent être supprimés maintenant";
 "%@ grew %@ beyond its recent size." = "%@ a augmenté de %@ au-delà de sa taille récente.";
+"%@ purgeable" = "%@ purgeable";
 "%@ safe to free now · %@ free on disk · %@ purgeable" = "%@ à libérer sans risque · %@ disponible sur le disque · %@ purgeable";
 "%@ safe · %@ to review · %@ manual" = "%@ sûr · %@ à vérifier · %@ manuel";
 "%@: the simulator is still running. Quit Simulator and Xcode, then try again." = "%@ : le simulateur est toujours en cours d’exécution. Quittez Simulator et Xcode, puis réessayez.";
@@ -63,6 +64,7 @@
 "Expand all" = "Tout développer";
 "Filter" = "Filtrer";
 "Forget everything" = "Tout oublier";
+"Free" = "Libre";
 "Free %@" = "Libérer %@";
 "Free space" = "Espace libre";
 "Free space on the startup disk." = "Espace disponible sur le disque de démarrage.";
@@ -79,6 +81,7 @@
 "Idle %lld days: %lld" = "Inactifs %lld jours : %lld";
 "Idle longest" = "Inactif depuis le plus longtemps";
 "It goes to the Trash first." = "Cela va d'abord à la Corbeille.";
+"It needs an administrator password, so it was left for you to delete from the list." = "Il faut un mot de passe administrateur : l’élément reste dans la liste pour que vous le supprimiez.";
 "Keep a local record of each scan and deletion, so the list can show what changed" = "Conserver un historique local de chaque analyse et suppression, afin que la liste puisse montrer ce qui a changé";
 "Keep the menu bar icon" = "Garder l'icône du menu";
 "Launch at login" = "Ouvrir à l'ouverture de session";
@@ -110,6 +113,7 @@
 "Open in a window" = "Ouvrir dans une fenêtre";
 "Open x.com/yigitech" = "Ouvrir x.com/yigitech";
 "Order rows by size, or by how long they have sat untouched" = "Trier les lignes par taille, ou par durée d'inactivité";
+"Other files" = "Autres fichiers";
 "Other large folders" = "Autres dossiers volumineux";
 "Package managers" = "Gestionnaires de paquets";
 "Project build folders" = "Dossiers de build de projets";
@@ -179,3 +183,4 @@
 "different developer" = "développeur différent";
 "iOS device backups" = "Sauvegardes d'appareils iOS";
 "macOS is not allowing notifications from this app. Turn them on in System Settings > Notifications." = "macOS n'autorise pas les notifications de cette app. Activez-les dans Réglages Système > Notifications.";
+"safe to free now" = "à libérer sans risque";

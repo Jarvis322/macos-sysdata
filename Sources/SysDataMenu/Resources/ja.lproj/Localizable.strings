@@ -3,6 +3,7 @@
 "%@ free on disk" = "ディスクの空き容量：%@";
 "%@ free · %@ of safe items can go now" = "%@ の空き · 安全な項目 %@ を今すぐ削除できます";
 "%@ grew %@ beyond its recent size." = "%@ は最近のサイズより %@ 増えました。";
+"%@ purgeable" = "%@ パージ可能";
 "%@ safe to free now · %@ free on disk · %@ purgeable" = "今すぐ安全に解放：%@ · ディスクの空き：%@ · パージ可能：%@";
 "%@ safe · %@ to review · %@ manual" = "安全 %@ · 要確認 %@ · 手動 %@";
 "%@: the simulator is still running. Quit Simulator and Xcode, then try again." = "%@：シミュレータがまだ実行中です。Simulator と Xcode を終了してから、もう一度お試しください。";
@@ -63,6 +64,7 @@
 "Expand all" = "すべて展開";
 "Filter" = "フィルタ";
 "Forget everything" = "すべて消去";
+"Free" = "空き";
 "Free %@" = "%@ を解放";
 "Free space" = "空き容量";
 "Free space on the startup disk." = "起動ディスクの空き容量。";
@@ -79,6 +81,7 @@
 "Idle %lld days: %lld" = "%lld日間放置：%lld";
 "Idle longest" = "未使用期間順";
 "It goes to the Trash first." = "まずゴミ箱に移動します。";
+"It needs an administrator password, so it was left for you to delete from the list." = "管理者パスワードが必要なため、リストから手動で削除できるよう残しました。";
 "Keep a local record of each scan and deletion, so the list can show what changed" = "各スキャンと削除の記録をこのMac内に保存し、変化をリストに表示できるようにします";
 "Keep the menu bar icon" = "メニューバーに表示したままにする";
 "Launch at login" = "ログイン時に起動";
@@ -110,6 +113,7 @@
 "Open in a window" = "ウインドウで開く";
 "Open x.com/yigitech" = "x.com/yigitech を開く";
 "Order rows by size, or by how long they have sat untouched" = "項目をサイズ順、または未使用期間順に並べ替えます";
+"Other files" = "その他のファイル";
 "Other large folders" = "その他の大きいフォルダ";
 "Package managers" = "パッケージマネージャ";
 "Project build folders" = "プロジェクトのビルドフォルダ";
@@ -179,3 +183,4 @@
 "different developer" = "別の開発元";
 "iOS device backups" = "iOSデバイスのバックアップ";
 "macOS is not allowing notifications from this app. Turn them on in System Settings > Notifications." = "macOS がこのAppの通知を許可していません。システム設定 > 通知 で有効にしてください。";
+"safe to free now" = "今すぐ安全に解放可能";

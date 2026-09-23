@@ -163,6 +163,12 @@ enum DiskSize {
         return String(cString: resolved)
     }
 
+    /// Size of the startup volume, the whole the overview bar is drawn against.
+    static func capacity() -> Int64 {
+        let values = try? URL(fileURLWithPath: "/").resourceValues(forKeys: [.volumeTotalCapacityKey])
+        return Int64(values?.volumeTotalCapacity ?? 0)
+    }
+
     static func freeSpace() -> Int64 {
         let values = try? URL(fileURLWithPath: "/").resourceValues(forKeys: [.volumeAvailableCapacityKey])
         return Int64(values?.volumeAvailableCapacity ?? 0)

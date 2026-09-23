@@ -25,6 +25,7 @@ struct MenuView: View {
     @State private var notificationsRefused = false
     @State private var showsPlan = false
     @State private var copiedPlan = false
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     /// What the pending delete will actually do, whether it is one row or a
     /// whole selection.
@@ -271,19 +272,16 @@ struct MenuView: View {
     private var header: some View {
         VStack(alignment: .leading, spacing: 2) {
             headerTitleRow
-            Text(subtitle)
-                .font(.caption)
-                .foregroundStyle(.secondary)
-                .monospacedDigit()
-                // The purgeable figure is the one number here nobody can
-                // act on, and the one people meet in Finder wondering why
-                // free space they can see will not open a file. Measured
-                // on this Mac: writing 6.44 GB cost 6.44 GB of real free
-                // space and took nothing from the pool, which then
-                // refilled itself. See docs/purgeable-measurement.md.
-                .help(model.purgeableBytes > 0
-                      ? L("Purgeable is what macOS estimates it could give back if it had to: caches and local snapshots. It is an estimate, not space you can count on — it moves on its own, and writing a file does not spend it. The items below are the ones you can actually free.")
-                      : L("Free space on the startup disk."))
+            // Once there is a list, the overview under the filter carries
+            // these figures; repeating them here was the noise that made the
+            // header read as a spreadsheet row.
+            if model.isScanning || model.visibleItems.isEmpty {
+                Text(subtitle)
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                    .monospacedDigit()
+                    .help(L("Free space on the startup disk."))
+            }
         }
         .padding(.horizontal, presentation == .window ? 18 : 14)
         .padding(.vertical, presentation == .window ? 14 : 10)
@@ -370,13 +368,6 @@ struct MenuView: View {
                     )
                     .help(model.areAllListedCategoriesCollapsed ? L("Expand all") : L("Collapse all"))
 
-                    Button(model.everyListedSafeItemIsSelected
-                           ? L("Deselect safe")
-                           : L("Select safe")) {
-                        model.selectAllSafe()
-                    }
-                    .controlSize(.small)
-                    .help(L("Select every item that is regenerated automatically"))
                 }
                 Button {
                     Task { await model.scan() }
@@ -499,31 +490,33 @@ struct MenuView: View {
             .frame(maxWidth: .infinity)
         } else {
             VStack(spacing: 6) {
-                pulse
+                overview
                     .padding(.horizontal, 16)
-                    .padding(.top, 2)
+                    .padding(.top, 8)
                 list
             }
         }
     }
 
-    /// One line for "now": how big System Data is, how much room is left and,
-    /// once the history reaches back a week, which way it went. A rise large
-    /// enough to earn the weekly summary gets the amber arrow.
-    private var pulse: some View {
-        HStack(spacing: 4) {
-            if let change = model.weeklyChange, change >= WeeklyDigest.floor {
-                Image(systemName: "arrow.up.right")
-                    .foregroundStyle(.orange)
-                    .accessibilityHidden(true)
-            }
-            Text(pulseText)
-            Spacer(minLength: 0)
-        }
-        .font(.caption)
-        .foregroundStyle(.secondary)
-        .monospacedDigit()
-        .lineLimit(1)
+    /// The number to act on, the disk it sits in, and the pulse line: how big
+    /// System Data is, how much room is left and, once the history reaches
+    /// back a week, which way it went. A rise large enough to earn the weekly
+    /// summary gets the amber arrow.
+    private var overview: some View {
+        DiskOverview(
+            safe: model.bytes(.safe),
+            review: model.bytes(.review),
+            manual: model.bytes(.manual),
+            free: model.freeBytes,
+            capacity: model.capacityBytes,
+            purgeable: model.purgeableBytes,
+            pulse: pulseText,
+            showsGrowthArrow: (model.weeklyChange ?? 0) >= WeeklyDigest.floor,
+            allSafeSelected: model.everyListedSafeItemIsSelected,
+            canSelectSafe: !model.isScanning && model.safeBytes > 0,
+            onSelectSafe: { model.selectAllSafe() }
+        )
+        .animation(reduceMotion ? nil : .spring(response: 0.35, dampingFraction: 0.85), value: model.safeBytes)
     }
 
     private var pulseText: String {
@@ -591,8 +584,9 @@ struct MenuView: View {
                     .help(L("%@ grew %@ beyond its recent size.", category.title, growth.byteString))
             }
         }
-        // Starts under the category name, past the chevron and the checkbox.
-        .padding(.leading, 38)
+        // Starts under the category name, past the chevron, the checkbox and
+        // the icon.
+        .padding(.leading, 67)
     }
 
     private func itemRow(_ item: StorageItem) -> some View {
@@ -646,8 +640,11 @@ struct MenuView: View {
                 get: { model.isCategorySelected(category) },
                 set: { model.setSelection(category, selected: $0) }
             )) {
-                Text(category.title)
-                    .fontWeight(.semibold)
+                HStack(spacing: 7) {
+                    CategoryIcon(category: category)
+                    Text(category.title)
+                        .fontWeight(.semibold)
+                }
             }
             .toggleStyle(.checkbox)
             .controlSize(.small)
@@ -863,10 +860,12 @@ struct MenuView: View {
             }
             HStack {
                 if model.selectedItems.isEmpty {
-                    Text(L("Reclaimed this session: %@", model.reclaimedBytes.byteString))
+                    Label(L("Reclaimed this session: %@", model.reclaimedBytes.byteString),
+                          systemImage: model.reclaimedBytes > 0 ? "checkmark.circle.fill" : "circle.dashed")
                         .font(.caption)
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(model.reclaimedBytes > 0 ? AnyShapeStyle(.green) : AnyShapeStyle(.secondary))
                         .monospacedDigit()
+                        .contentTransition(.numericText(value: Double(model.reclaimedBytes)))
                 } else {
                     Button(role: .destructive) {
                         confirmsBatch = true
@@ -874,6 +873,8 @@ struct MenuView: View {
                         Text(L("Delete %lld selected · %@", model.selectedItems.count, model.selectedBytes.byteString))
                             .monospacedDigit()
                     }
+                    .buttonStyle(.borderedProminent)
+                    .tint(.red)
                     .controlSize(.small)
                     .disabled(!model.busyItemIDs.isEmpty)
                     if model.selectedOffScreenCount > 0 {

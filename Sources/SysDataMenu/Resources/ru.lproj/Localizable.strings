@@ -3,6 +3,7 @@
 "%@ free on disk" = "%@ свободно на диске";
 "%@ free · %@ of safe items can go now" = "%@ свободно · %@ безопасных элементов можно освободить прямо сейчас";
 "%@ grew %@ beyond its recent size." = "%@ вырос на %@ по сравнению с недавним размером.";
+"%@ purgeable" = "%@ очищаемое";
 "%@ safe to free now · %@ free on disk · %@ purgeable" = "%@ можно безопасно освободить сейчас · %@ свободно на диске · %@ вытесняемых данных";
 "%@ safe · %@ to review · %@ manual" = "безопасно: %@ · проверить: %@ · вручную: %@";
 "%@: the simulator is still running. Quit Simulator and Xcode, then try again." = "%@: симулятор всё ещё запущен. Закройте Simulator и Xcode и повторите попытку.";
@@ -63,6 +64,7 @@
 "Expand all" = "Развернуть все";
 "Filter" = "Фильтр";
 "Forget everything" = "Забыть всё";
+"Free" = "Свободно";
 "Free %@" = "Освободить %@";
 "Free space" = "Свободное место";
 "Free space on the startup disk." = "Свободное место на загрузочном диске.";
@@ -79,6 +81,7 @@
 "Idle %lld days: %lld" = "Не трогали %lld дн.: %lld";
 "Idle longest" = "Дольше всего не используется";
 "It goes to the Trash first." = "Сначала это отправляется в Корзину.";
+"It needs an administrator password, so it was left for you to delete from the list." = "Нужен пароль администратора, поэтому элемент оставлен в списке, чтобы вы удалили его сами.";
 "Keep a local record of each scan and deletion, so the list can show what changed" = "Хранить локальную запись о каждом сканировании и удалении, чтобы список показывал изменения";
 "Keep the menu bar icon" = "Оставить значок в строке меню";
 "Launch at login" = "Запускать при входе в систему";
@@ -110,6 +113,7 @@
 "Open in a window" = "Открыть в окне";
 "Open x.com/yigitech" = "Открыть x.com/yigitech";
 "Order rows by size, or by how long they have sat untouched" = "Упорядочить строки по размеру или по времени без использования";
+"Other files" = "Другие файлы";
 "Other large folders" = "Другие крупные папки";
 "Package managers" = "Менеджеры пакетов";
 "Project build folders" = "Папки сборки проектов";
@@ -179,3 +183,4 @@
 "different developer" = "другой разработчик";
 "iOS device backups" = "Резервные копии устройств iOS";
 "macOS is not allowing notifications from this app. Turn them on in System Settings > Notifications." = "macOS не разрешает этому приложению отправлять уведомления. Включите их в разделе «Системные настройки» > «Уведомления».";
+"safe to free now" = "можно освободить сейчас";

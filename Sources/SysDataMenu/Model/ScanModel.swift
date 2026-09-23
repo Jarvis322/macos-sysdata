@@ -11,6 +11,7 @@ final class ScanModel {
     private(set) var isScanning = false
     private(set) var hasScanned = false
     private(set) var freeBytes: Int64 = DiskSize.freeSpace()
+    private(set) var capacityBytes: Int64 = DiskSize.capacity()
     private(set) var reclaimedBytes: Int64 = 0
     private(set) var busyItemIDs: Set<String> = []
     /// Short description of what the scan is doing right now.
@@ -216,7 +217,12 @@ final class ScanModel {
 
     /// What can be freed right now without losing anything.
     var safeBytes: Int64 {
-        visibleItems.filter { $0.safety == .safe }.reduce(0) { $0 + ($1.sizeBytes ?? 0) }
+        bytes(.safe)
+    }
+
+    /// The listed items' total for one safety level, for the overview bar.
+    func bytes(_ safety: Safety) -> Int64 {
+        visibleItems.filter { $0.safety == safety }.reduce(0) { $0 + ($1.sizeBytes ?? 0) }
     }
 
     var selectedItems: [StorageItem] {
@@ -503,6 +509,7 @@ final class ScanModel {
             await Task.detached(priority: .utility) {
                 ScanHistory.record(measured, freeBytes: free)
             }.value
+        capacityBytes = DiskSize.capacity()
             history = ScanHistory.load()
         }
         await LowSpaceAlert.check(freeBytes: freeBytes, reclaimable: safeBytes)
@@ -514,11 +521,9 @@ final class ScanModel {
     /// headless modes, which do not own the user's widget.
     func publishToWidget() {
         guard scansAutomatically else { return }
-        let capacity = (try? URL(fileURLWithPath: "/").resourceValues(forKeys: [.volumeTotalCapacityKey]))?
-            .volumeTotalCapacity ?? 0
         let snapshot = WidgetSnapshot(
             systemDataBytes: measuredBytes, freeBytes: freeBytes, safeBytes: safeBytes,
-            capacityBytes: Int64(capacity), scannedAt: lastScan ?? .now
+            capacityBytes: capacityBytes, scannedAt: lastScan ?? .now
         )
         try? snapshot.save()
         WidgetCenter.shared.reloadTimelines(ofKind: WidgetSnapshot.widgetKind)
