@@ -39,13 +39,16 @@ note() { printf '   %s%s%s\n' "$DIM" "$*" "$RESET"; }
 warn() { printf '   %s%s%s\n' "$YELLOW" "$*" "$RESET" >&2; }
 die()  { printf '%s%s%s\n' "$RED" "$*" "$RESET" >&2; exit 1; }
 
+# `du -k` counts 1024-byte blocks; the figures are shown in decimal units, as
+# Finder and the app show them, so the same folder reads the same everywhere.
 human_kb() {
   awk -v kb="$1" 'BEGIN {
     sign = ""; if (kb < 0) { sign = "-"; kb = -kb }
+    bytes = kb * 1024;
     printf "%s", sign;
-    if (kb >= 1048576) printf "%.2f GB", kb / 1048576;
-    else if (kb >= 1024) printf "%.0f MB", kb / 1024;
-    else printf "%d KB", kb;
+    if (bytes >= 1e9) printf "%.2f GB", bytes / 1e9;
+    else if (bytes >= 1e6) printf "%.0f MB", bytes / 1e6;
+    else printf "%.0f KB", bytes / 1e3;
   }'
 }
 
@@ -421,8 +424,20 @@ clean_temp() {
     [ -d "$dir" ] || continue
     if [ "$APPLY" -eq 1 ]; then
       note "pruning $dir (older than $TEMP_AGE_DAYS days)"
-      find "$dir" -mindepth 1 -type f -mtime +"$TEMP_AGE_DAYS" -delete 2>/dev/null
-      find "$dir" -mindepth 1 -type d -empty -delete 2>/dev/null
+      # Old regular files only, then the folders that removing them emptied.
+      # Every empty folder used to go too, whatever its age, and so did the
+      # ones apps had just made to work in.
+      local -a emptied=()
+      local file folder
+      while IFS= read -r -d '' file; do
+        rm -f -- "$file" 2>/dev/null && emptied+=("${file%/*}")
+      done < <(find "$dir" -mindepth 1 -type f -mtime +"$TEMP_AGE_DAYS" -print0 2>/dev/null)
+      for folder in ${emptied[@]+"${emptied[@]}"}; do
+        while [ "$folder" != "$dir" ] && [ "${folder#"$dir"/}" != "$folder" ] \
+              && rmdir -- "$folder" 2>/dev/null; do
+          folder=${folder%/*}
+        done
+      done
     else
       local kb
       kb=$(find "$dir" -mindepth 1 -type f -mtime +"$TEMP_AGE_DAYS" -print0 2>/dev/null \
@@ -448,7 +463,7 @@ size_docker() {
     docker system df --format '{{.Reclaimable}}' 2>/dev/null \
       | awk '{
           v = $1; gsub(/[^0-9.]/, "", v);
-          if ($1 ~ /GB/) s += v * 1048576; else if ($1 ~ /MB/) s += v * 1024; else if ($1 ~ /kB/) s += v;
+          if ($1 ~ /GB/) s += v * 1e9 / 1024; else if ($1 ~ /MB/) s += v * 1e6 / 1024; else if ($1 ~ /kB/) s += v * 1e3 / 1024;
         } END {printf "%d", s}'
   else
     printf '0'
