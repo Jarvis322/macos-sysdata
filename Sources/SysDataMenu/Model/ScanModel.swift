@@ -139,7 +139,7 @@ final class ScanModel {
     /// meaningful without opening the window.
     private func runBackgroundScans() async {
         while !Task.isCancelled {
-            await scan()
+            await scan(quietly: true)
             // A scan the person started was already running, so this pass
             // found a list still being built. The clean waits for tomorrow
             // rather than act on part of the picture.
@@ -466,17 +466,25 @@ final class ScanModel {
         }
     }
 
-    func scan() async {
+    /// `quietly` is for the daily scan nobody asked for. Once there is a list,
+    /// it keeps showing it — with the person's selection and filter — and
+    /// swaps in the new one when the scan is done. Emptying the window and
+    /// filling it again row by row, with the filter cleared, looked like the
+    /// app had quit and started over.
+    func scan(quietly: Bool = false) async {
         guard !isScanning else { return }
+        let keepsList = quietly && hasScanned
         isScanning = true
-        errorMessage = nil
-        selectedIDs = []
-        filterText = ""
+        if !keepsList {
+            errorMessage = nil
+            selectedIDs = []
+            filterText = ""
+            selectionAnchorID = nil
+        }
         // Folded on the first scan only. Folding on every scan would close
         // whatever the person had opened each time the daily background scan
         // ran with the window up.
         if !hasScanned { collapseAllCategories() }
-        selectionAnchorID = nil
         refreshAccess()
         phase = L("Measuring known locations…")
         defer {
@@ -488,7 +496,7 @@ final class ScanModel {
         let probes = ProbeRegistry.all
         probesFinished = 0
         probesTotal = probes.count
-        items = []
+        if !keepsList { items = [] }
         deletedDuringScan = []
 
         // Each probe's findings land as they arrive rather than all at the
@@ -502,7 +510,7 @@ final class ScanModel {
             }
             for await batch in group {
                 results += batch
-                items = results.filter { !deletedDuringScan.contains($0.id) }
+                if !keepsList { items = results.filter { !deletedDuringScan.contains($0.id) } }
                 probesFinished += 1
                 phase = L("Measuring… %lld of %lld places", probesFinished, probesTotal)
             }
@@ -516,8 +524,14 @@ final class ScanModel {
         // runs after everything else and streams in as a second update.
         phase = L("Looking for anything else over 500 MB…")
         let claimed = results.flatMap(\.claimedURLs)
-        items += await LargeFolderProbe(claimed: claimed).probe()
-        items.removeAll { deletedDuringScan.contains($0.id) }
+        let found = (results + (await LargeFolderProbe(claimed: claimed).probe()))
+            .filter { !deletedDuringScan.contains($0.id) }
+        items = found
+        if keepsList {
+            // Only what still exists stays selected.
+            selectedIDs.formIntersection(found.map(\.id))
+            if let anchor = selectionAnchorID, !selectedIDs.contains(anchor) { selectionAnchorID = nil }
+        }
         lastScan = .now
 
         if keepsHistory {
