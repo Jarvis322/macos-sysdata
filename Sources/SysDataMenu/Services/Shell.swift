@@ -92,7 +92,10 @@ enum Shell {
                 kill(pid, SIGTERM)
             }
             let seconds = Double(limit.components.seconds) + Double(limit.components.attoseconds) / 1e18
-            DispatchQueue.global(qos: .utility).asyncAfter(deadline: .now() + seconds, execute: item)
+            // Not .utility: the disk walk runs at that level, and while a scan
+            // kept it busy the deadline fired twenty seconds late — the very
+            // moment a timeout is there for.
+            DispatchQueue.global(qos: .userInitiated).asyncAfter(deadline: .now() + seconds, execute: item)
             return item
         }
         process.waitUntilExit()

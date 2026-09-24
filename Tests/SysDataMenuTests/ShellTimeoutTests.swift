@@ -18,16 +18,18 @@ struct ShellTimeoutTests {
     }
 
     /// A shell that started a child: killing the shell left the child holding
-    /// the output pipe, and reading to the end of it waited the child's full
-    /// thirty seconds. The bound is loose on purpose — it only has to tell
-    /// "stopped at the timeout" from "waited for the child".
+    /// the output pipe, and reading to the end of it waited for the child.
+    /// Judged by what reached the output, not by a stopwatch — a wall-clock
+    /// bound failed the release run while the disk-walking tests loaded the
+    /// machine. The child writes "late" twenty seconds in and only then lets
+    /// go of the pipe, so a reader that waited for the pipe to close has it.
     @Test func aChildHoldingThePipeDoesNotOutliveTheTimeout() async throws {
-        let started = ContinuousClock.now
-        let result = try await Shell.run("/bin/sh", ["-c", "sleep 30; echo done"], timeout: .milliseconds(300))
+        let result = try await Shell.run(
+            "/bin/sh", ["-c", "(sleep 20; echo late) & sleep 60"], timeout: .milliseconds(300)
+        )
 
-        #expect(ContinuousClock.now - started < .seconds(15))
         #expect(!result.succeeded)
-        #expect(!result.output.contains("done"))
+        #expect(!result.output.contains("late"))
     }
 
     @Test func aProgramThatFinishesInTimeIsUnaffected() async throws {
