@@ -5,6 +5,16 @@ What changed in each release, and where it is worth saying, why.
 Versions up to and including v0.3.7 were released under the MIT License; see
 [LICENSE](LICENSE).
 
+## v1.5.2 — 2026-09-24
+
+- **The daily scan no longer looks like a restart.** Once a day the app
+  rescans on its own. With the window open, that scan emptied the list,
+  cleared the filter and the selection, and filled everything in again row
+  by row, which looked as if the app had quit and started over. It now
+  keeps the current list on screen and swaps in the new one when it is
+  done, keeping your filter and whatever of your selection still exists. A
+  scan you start with Rescan still fills in as it goes.
+
 ## v1.5.1 — 2026-09-23
 
 - **The low-space button no longer spins forever.** It ran `uv cache clean`,
