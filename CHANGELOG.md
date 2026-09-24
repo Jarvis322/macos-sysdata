@@ -14,6 +14,9 @@ Versions up to and including v0.3.7 were released under the MIT License; see
   keeps the current list on screen and swaps in the new one when it is
   done, keeping your filter and whatever of your selection still exists. A
   scan you start with Rescan still fills in as it goes.
+- **Timeouts that fire on time.** A program that hangs during a scan is
+  stopped after 20 seconds, but while the scan kept the Mac busy that
+  deadline could fire many seconds late. It no longer waits behind the scan.
 
 ## v1.5.1 — 2026-09-23
 
