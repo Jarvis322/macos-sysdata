@@ -4,7 +4,7 @@
 
 Site: https://macos-sysdata.yigitech.dev/
 Source: https://github.com/Jarvis322/macos-sysdata
-Version: 1.5.2
+Version: 1.5.3
 Author: Yigit Can Polat (https://yigitech.dev, https://x.com/yigitech, https://github.com/Jarvis322)
 
 Everything below is the project's README, the same text the repository carries.
