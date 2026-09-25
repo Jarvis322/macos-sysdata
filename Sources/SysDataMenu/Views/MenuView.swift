@@ -89,13 +89,15 @@ struct MenuView: View {
                     L("macOS is not allowing notifications from this app. Turn them on in System Settings > Notifications."),
                     symbol: "bell.slash", tint: .orange
                 ) { notificationsRefused = false }
-                Divider()
+                .padding(.horizontal, 16)
+                .padding(.top, 8)
             }
             if let failure = updates.installError {
                 feedbackRow(failure, symbol: "exclamationmark.triangle.fill", tint: .orange) {
                     updates.installError = nil
                 }
-                Divider()
+                .padding(.horizontal, 16)
+                .padding(.top, 8)
             }
             if showsHistory {
                 HistoryPanel(log: model.history) { model.keepsHistory = false; showsHistory = false }
@@ -906,25 +908,43 @@ struct MenuView: View {
         .layoutPriority(1)
     }
 
+    /// A notice after an action: what happened, and a way to dismiss it.
+    ///
+    /// Only as tall as its text. It used to sit in a scroll view capped at
+    /// 96 points, and on macOS a scroll view takes all the height it is
+    /// allowed, so a one-line "Moved to the Trash" held a box three times its
+    /// size. The scroll view is kept for what needs it: a batch's failures,
+    /// one per line, can run long.
     private func feedbackRow(_ message: String, symbol: String, tint: Color, dismiss: @escaping () -> Void) -> some View {
-        HStack(alignment: .top, spacing: 6) {
+        HStack(alignment: .top, spacing: 8) {
             Image(systemName: symbol)
                 .foregroundStyle(tint)
-            ScrollView {
-                Text(message)
-                    .font(.caption)
-                    .textSelection(.enabled)
-                    .fixedSize(horizontal: false, vertical: true)
-                    .frame(maxWidth: .infinity, alignment: .leading)
+                .accessibilityHidden(true)
+            if message.count > 280 || message.split(whereSeparator: \.isNewline).count > 4 {
+                ScrollView { feedbackText(message) }
+                    .frame(height: 96)
+            } else {
+                feedbackText(message)
             }
-            .frame(maxHeight: 96)
             Button(action: dismiss) {
                 Image(systemName: "xmark")
+                    .font(.caption.weight(.semibold))
             }
             .buttonStyle(.borderless)
+            .foregroundStyle(.secondary)
             .accessibilityLabel(L("Dismiss"))
         }
-        .padding(.bottom, 4)
+        .padding(.horizontal, 10)
+        .padding(.vertical, 8)
+        .background(tint.opacity(0.10), in: RoundedRectangle(cornerRadius: 10, style: .continuous))
+    }
+
+    private func feedbackText(_ message: String) -> some View {
+        Text(message)
+            .font(.caption)
+            .textSelection(.enabled)
+            .fixedSize(horizontal: false, vertical: true)
+            .frame(maxWidth: .infinity, alignment: .leading)
     }
 
     private var authorBadge: some View {
