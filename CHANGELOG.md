@@ -5,6 +5,19 @@ What changed in each release, and where it is worth saying, why.
 Versions up to and including v0.3.7 were released under the MIT License; see
 [LICENSE](LICENSE).
 
+## v1.5.3 — 2026-09-25
+
+- **Your language again on macOS 27.** On macOS 27 the app showed English
+  on every system, even though it ships in nine languages. macOS now only
+  matches an app's translations against your languages when the app itself
+  declares which ones it has, and this one did not. It does now, and the
+  list is taken from the translations in the app, so it cannot fall out of
+  step. Found and fixed by @VailElla in #22, with the same diagnosis from
+  @Souitou-iop in #23. Thank you both.
+- **Smaller notices.** "Moved to the Trash" and other one-line notices sat
+  in a box three lines tall and pushed the list up. They are now a
+  one-line card; only a long message, such as a list of failures, scrolls.
+
 ## v1.5.2 — 2026-09-24
 
 - **The daily scan no longer looks like a restart.** Once a day the app
