@@ -48,6 +48,23 @@ test -f "$app/Contents/Info.plist"
 # Bundle.module reads this; without it the app aborts on its first localized
 # string, which is how it shipped broken once already.
 test -d "$app/Contents/Resources/SysDataMenu_SysDataMenu.bundle"
+# Nested resource bundles must not silently fall back to English because the
+# main app forgot to declare the languages it ships.
+python3 - "$app" <<'PYTHON'
+import pathlib
+import plistlib
+import sys
+
+contents = pathlib.Path(sys.argv[1]) / "Contents"
+with (contents / "Info.plist").open("rb") as source:
+    info = plistlib.load(source)
+resources = contents / "Resources/SysDataMenu_SysDataMenu.bundle/Contents/Resources"
+languages = {path.stem for path in resources.glob("*.lproj")}
+assert languages, "No packaged localizations found"
+assert set(info["CFBundleLocalizations"]) == languages, "App and resource languages differ"
+assert info["CFBundleDevelopmentRegion"] == "en"
+assert info["CFBundleAllowMixedLocalizations"] is True
+PYTHON
 # The widget and the Shortcuts actions live in files SwiftPM does not make;
 # build-app.sh writes both, and a bundle without them still launches fine,
 # which is exactly why it is checked.
