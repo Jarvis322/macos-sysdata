@@ -116,6 +116,15 @@ cp "$root/assets/AppIcon.icns" "$bundle/Contents/Resources/AppIcon.icns"
 
 # The bundle identifier never changes: macOS keys Full Disk Access, the
 # preferences and the login item to it, and a new one would reset all three.
+#
+# The interface strings live in the SwiftPM resource bundle, and macOS only
+# matches its .lproj folders against the user's languages when the main
+# bundle declares its own localizations (reproduced on macOS 27.0: without
+# this list every language but English falls back to the English keys).
+# Generated from the .lproj folders so it cannot drift from the catalog.
+localizations=$(for d in "$root/Sources/SysDataMenu/Resources/"*.lproj; do
+  basename "$d" .lproj
+done | sort | sed 's|^|\t\t<string>|; s|$|</string>|')
 cat > "$bundle/Contents/Info.plist" <<EOF
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
@@ -127,6 +136,10 @@ cat > "$bundle/Contents/Info.plist" <<EOF
 	<string>AppIcon</string>
 	<key>CFBundleIdentifier</key>
 	<string>local.sysdata.menu</string>
+	<key>CFBundleLocalizations</key>
+	<array>
+$localizations
+	</array>
 	<key>CFBundleName</key>
 	<string>Unpacked</string>
 	<key>CFBundleDisplayName</key>
