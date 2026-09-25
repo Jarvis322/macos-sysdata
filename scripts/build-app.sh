@@ -139,11 +139,25 @@ cat > "$bundle/Contents/Info.plist" <<EOF
 	<string>$version</string>
 	<key>LSMinimumSystemVersion</key>
 	<string>$minimum_macos</string>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>en</string>
+	<key>CFBundleAllowMixedLocalizations</key>
+	<true/>
 	<key>LSUIElement</key>
 	<true/>
 </dict>
 </plist>
 EOF
+
+# The translations live in a nested SwiftPM bundle. Declare its languages on
+# the main app too, so macOS does not constrain resource lookup to English.
+# Derive the list from the packaged tables so new translations stay in sync.
+plist="$bundle/Contents/Info.plist"
+/usr/libexec/PlistBuddy -c "Add :CFBundleLocalizations array" "$plist"
+for localization in "$bundle/Contents/Resources/${name}_${name}.bundle/Contents/Resources/"*.lproj; do
+  language=$(basename "$localization" .lproj)
+  /usr/libexec/PlistBuddy -c "Add :CFBundleLocalizations: string $language" "$plist"
+done
 
 # macOS remembers privacy grants (Full Disk Access, folder access) by the
 # app's designated requirement. An ad-hoc signature is a cdhash that changes
