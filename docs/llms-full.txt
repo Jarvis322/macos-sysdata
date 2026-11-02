@@ -20,6 +20,11 @@ This app opens the bucket. It is not a cache cleaner: `~/Library/Caches` is
 one small line among fifty, and the app never deletes anything you did not
 click.
 
+To understand it before installing anything, the
+[guide to macOS System Data](https://macos-sysdata.yigitech.dev/macos-system-data/)
+explains what fills it, how to see each part from Terminal, and what is
+safe to clear, with the measurements behind this app.
+
 Every release is listed in [CHANGELOG.md](https://github.com/Jarvis322/macos-sysdata/blob/main/CHANGELOG.md), including the two
 that shipped a broken updater and what to do if you are on one of them. There
 is a short tour at [macos-sysdata.yigitech.dev](https://macos-sysdata.yigitech.dev/),
