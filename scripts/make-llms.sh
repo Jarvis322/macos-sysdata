@@ -17,7 +17,7 @@ site="https://macos-sysdata.yigitech.dev"
 blob="https://github.com/Jarvis322/macos-sysdata/blob/main"
 version=$(tr -d '[:space:]' < VERSION)
 
-summary="A free Mac app that opens macOS \"System Data\" — the largest, least explained line in Storage settings — and lets you delete what is inside it, item by item, with every command shown before it runs. Menu bar or window, macOS 14 or later, no account and no analytics."
+summary="A free Mac app that opens macOS \"System Data\" — the largest, least explained line in Storage settings — and lets you delete what is inside it item by item, or shrink it without deleting anything, with every command shown before it runs. Menu bar or window, macOS 14 or later, no account and no analytics."
 
 index_file() {
   cat <<EOF
@@ -25,13 +25,14 @@ index_file() {
 
 > $summary
 
-System Data is what macOS calls everything Storage settings cannot file under Apps, Photos or Documents: simulator runtimes, Xcode caches, package-manager stores, virtual machine disks, local Time Machine snapshots, logs, per-app data folders. macOS shows the total and nothing else. This app measures each item on disk, labels it Safe, Review or Manual, and deletes only what you tick.
+System Data is what macOS calls everything Storage settings cannot file under Apps, Photos or Documents: simulator runtimes, Xcode caches, package-manager stores, virtual machine disks, local Time Machine snapshots, logs, per-app data folders. macOS shows the total and nothing else. This app measures each item on disk, labels it Safe, Review or Manual, and deletes only what you tick. Folders that are only ever read, such as SDKs, archives and a project's dependencies, can instead be shrunk with the file system compression macOS uses for its own files: a real node_modules went from 454 MB to 224 MB with every file unchanged.
 
 Current version: $version. Install: \`brew install --cask Jarvis322/tap/sysdata\`
 
 ## Pages
 
 - [Home]($site/): what the app does, what it finds, and what System Data actually is
+- [macOS System Data guide]($site/macos-system-data/): what System Data is, what fills it on a real Mac, Terminal commands to see each part, what is safe to clear, purgeable space and compression measured
 - [Full text]($site/llms-full.txt): the README in full, for a model that needs the detail
 
 ## Source and releases

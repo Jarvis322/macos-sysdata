@@ -1,6 +1,6 @@
 # System Data Unpacked
 
-> A free Mac app that opens macOS "System Data" — the largest, least explained line in Storage settings — and lets you delete what is inside it, item by item, with every command shown before it runs. Menu bar or window, macOS 14 or later, no account and no analytics.
+> A free Mac app that opens macOS "System Data" — the largest, least explained line in Storage settings — and lets you delete what is inside it item by item, or shrink it without deleting anything, with every command shown before it runs. Menu bar or window, macOS 14 or later, no account and no analytics.
 
 Site: https://macos-sysdata.yigitech.dev/
 Source: https://github.com/Jarvis322/macos-sysdata
