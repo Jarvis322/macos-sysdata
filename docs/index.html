@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>System Data Unpacked — see and clear macOS System Data</title>
-<meta name="description" content="A free Mac app that opens macOS System Data and lets you delete it, item by item, with every command shown first. Window or menu bar, your choice.">
+<meta name="description" content="A free Mac app that opens macOS System Data and lets you delete it item by item, or shrink it without deleting anything, with every command shown first.">
 <link rel="canonical" href="https://macos-sysdata.yigitech.dev/">
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
 <meta name="author" content="Yigit Can Polat">
@@ -16,7 +16,7 @@
 <meta property="og:site_name" content="System Data Unpacked">
 <meta property="og:url" content="https://macos-sysdata.yigitech.dev/">
 <meta property="og:title" content="System Data Unpacked — see and clear macOS System Data">
-<meta property="og:description" content="A free Mac app that opens macOS System Data and lets you delete it, item by item, with every command shown first. Window or menu bar, your choice.">
+<meta property="og:description" content="A free Mac app that opens macOS System Data and lets you delete it item by item, or shrink it without deleting anything, with every command shown first.">
 <meta property="og:image" content="https://macos-sysdata.yigitech.dev/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -25,7 +25,7 @@
 <meta name="twitter:site" content="@yigitech">
 <meta name="twitter:creator" content="@yigitech">
 <meta name="twitter:title" content="System Data Unpacked — see and clear macOS System Data">
-<meta name="twitter:description" content="A free Mac app that opens macOS System Data and lets you delete it, item by item, with every command shown first.">
+<meta name="twitter:description" content="A free Mac app that opens macOS System Data and lets you delete it item by item, or shrink it without deleting anything.">
 <meta name="twitter:image" content="https://macos-sysdata.yigitech.dev/og.png">
 <meta name="twitter:image:alt" content="System Data Unpacked: the disk as a ring with the space safe to free in its middle, and the categories of System Data listed largest first.">
 <link rel="icon" type="image/png" sizes="64x64" href="favicon.png">
@@ -213,6 +213,37 @@
     .tour img { position: static; max-width: 420px; margin: 0 auto; display: block; }
   }
 
+  /* Shrink: the same folder, before and after, measured */
+  .shrink { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 56px; align-items: start; margin-top: 40px; }
+  .measured { margin: 0; background: var(--sheet); border: 1px solid var(--rule); border-radius: 18px; padding: 26px 26px 22px; }
+  .measured-head { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; margin-bottom: 18px; }
+  .measured-head b { font-size: 17px; }
+  .measured-head span { color: var(--soft); font-size: 15px; }
+  .compare { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 12px 14px; align-items: center; }
+  .compare dt { color: var(--soft); font-size: 15px; }
+  /* Both bars on one scale: the figures sit in a column of their own. */
+  .compare dd { margin: 0; display: grid; grid-template-columns: minmax(0, 1fr) 152px; align-items: center; gap: 14px; }
+  .compare .track { display: block; }
+  .compare i { display: block; height: 34px; border-radius: 9px; background: var(--mystery); }
+  .compare .after i { background: var(--apps); }
+  .compare dd > span:last-child { display: flex; gap: 8px; white-space: nowrap; }
+  .compare b { font-weight: 600; }
+  .compare em { font-style: normal; font-weight: 600; color: var(--safe); }
+  .shrink ul { list-style: none; margin: 0; padding: 0; border-top: 2px solid var(--ink); }
+  .shrink li { padding: 14px 0; border-bottom: 1px solid var(--rule); color: var(--soft); }
+  .shrink li b { color: var(--ink); font-weight: 600; }
+  @media (max-width: 860px) {
+    .shrink { grid-template-columns: 1fr; gap: 36px; }
+  }
+  /* On a phone the figures go above their bar, so the bars keep the width. */
+  @media (max-width: 600px) {
+    .measured { padding: 20px 16px 16px; border-radius: 14px; }
+    .compare { grid-template-columns: 52px minmax(0, 1fr); align-items: end; }
+    .compare dd { grid-template-columns: minmax(0, 1fr); gap: 6px; }
+    .compare dd > span:last-child { order: -1; }
+    .compare i { height: 26px; }
+  }
+
   /* What it finds */
   .finds { margin: 36px 0 0; padding: 0; list-style: none; columns: 3 240px; column-gap: 40px; }
   .finds li { break-inside: avoid; padding: 9px 0; border-bottom: 1px solid var(--rule); }
@@ -246,7 +277,7 @@
     .sysdata span, .parts li, .sysdata-tag .now, .sysdata-tag .was { animation-duration: 0s !important; animation-delay: 0s !important; }
   }
 </style>
-<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://macos-sysdata.yigitech.dev/#website","url":"https://macos-sysdata.yigitech.dev/","name":"System Data Unpacked","inLanguage":"en","publisher":{"@id":"https://yigitech.dev/#person"}},{"@type":"Person","@id":"https://yigitech.dev/#person","name":"Yigit Can Polat","url":"https://yigitech.dev","sameAs":["https://x.com/yigitech","https://github.com/Jarvis322"]},{"@type":"SoftwareApplication","@id":"https://macos-sysdata.yigitech.dev/#app","name":"System Data Unpacked","alternateName":"macos-sysdata","description":"A free Mac app that opens macOS System Data and lets you delete it, item by item, with every command shown first.","applicationCategory":"UtilitiesApplication","applicationSubCategory":"Disk cleanup","operatingSystem":"macOS 14 or later","softwareVersion":"1.11.1","url":"https://macos-sysdata.yigitech.dev/","downloadUrl":"https://github.com/Jarvis322/macos-sysdata/releases/latest/download/SystemDataUnpacked.dmg","installUrl":"https://github.com/Jarvis322/macos-sysdata/releases/latest/download/SystemDataUnpacked.dmg","releaseNotes":"https://github.com/Jarvis322/macos-sysdata/blob/main/CHANGELOG.md","softwareHelp":{"@type":"CreativeWork","url":"https://github.com/Jarvis322/macos-sysdata"},"isAccessibleForFree":true,"license":"https://github.com/Jarvis322/macos-sysdata/blob/main/LICENSE","image":"https://macos-sysdata.yigitech.dev/og.png","screenshot":{"@type":"ImageObject","url":"https://macos-sysdata.yigitech.dev/screenshot.png","width":920,"height":1280},"featureList":["Lists macOS System Data by category with real sizes","Labels every item Safe, Review or Manual","Shows every command before it runs","Frees an amount by selecting the least worrying items","Groups build output by project","Lists Ollama and Hugging Face models one by one","Optional Touch ID before a delete","Charts System Data over time"],"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@id":"https://yigitech.dev/#person"},"publisher":{"@id":"https://yigitech.dev/#person"},"sameAs":["https://github.com/Jarvis322/macos-sysdata"]},{"@type":"FAQPage","@id":"https://macos-sysdata.yigitech.dev/#faq","mainEntity":[{"@type":"Question","name":"What is System Data on a Mac?","acceptedAnswer":{"@type":"Answer","text":"System Data is the name Storage settings gives to everything it cannot file under Apps, Photos or Documents: caches, logs, simulator runtimes, local Time Machine snapshots, disk images, mail attachments and application support folders."}},{"@type":"Question","name":"Why is my System Data so large?","acceptedAnswer":{"@type":"Answer","text":"On a Mac used for development it is usually a handful of folders: Xcode DerivedData and archives, simulator runtimes, npm and Homebrew caches, Docker disks and downloaded models. Each regenerates on demand, and together they pass 100 GB."}},{"@type":"Question","name":"Can I delete System Data?","acceptedAnswer":{"@type":"Answer","text":"Parts of it. Caches and build folders regenerate on their own. Snapshots and device backups are a decision rather than a cleanup. System Data Unpacked labels every item and shows the command before it runs."}},{"@type":"Question","name":"How do I clear System Data on a Mac?","acceptedAnswer":{"@type":"Answer","text":"Find out what it is made of first, because it differs from Mac to Mac. System Data Unpacked lists every part with its size and a badge: delete the Safe items, which rebuild on their own, review the rest, and empty the Trash to get the space back."}},{"@type":"Question","name":"Why does it ask for Full Disk Access?","acceptedAnswer":{"@type":"Answer","text":"Most of System Data sits in folders macOS protects, and without the grant they cannot be measured. The app reads sizes and dates, not the contents of files, and never mail, messages or browsing history. It also works without the grant, with those places left out."}}]},{"@type":"SoftwareSourceCode","@id":"https://github.com/Jarvis322/macos-sysdata#code","name":"macos-sysdata","codeRepository":"https://github.com/Jarvis322/macos-sysdata","programmingLanguage":"Swift","runtimePlatform":"macOS 14 or later","license":"https://github.com/Jarvis322/macos-sysdata/blob/main/LICENSE","targetProduct":{"@id":"https://macos-sysdata.yigitech.dev/#app"},"author":{"@id":"https://yigitech.dev/#person"},"interactionStatistic":{"@type":"InteractionCounter","interactionType":"https://schema.org/LikeAction","userInteractionCount":1697}}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://macos-sysdata.yigitech.dev/#website","url":"https://macos-sysdata.yigitech.dev/","name":"System Data Unpacked","inLanguage":"en","publisher":{"@id":"https://yigitech.dev/#person"}},{"@type":"Person","@id":"https://yigitech.dev/#person","name":"Yigit Can Polat","url":"https://yigitech.dev","sameAs":["https://x.com/yigitech","https://github.com/Jarvis322"]},{"@type":"SoftwareApplication","@id":"https://macos-sysdata.yigitech.dev/#app","name":"System Data Unpacked","alternateName":"macos-sysdata","description":"A free Mac app that opens macOS System Data and lets you delete it item by item, or shrink it without deleting anything, with every command shown first.","applicationCategory":"UtilitiesApplication","applicationSubCategory":"Disk cleanup","operatingSystem":"macOS 14 or later","softwareVersion":"1.11.1","url":"https://macos-sysdata.yigitech.dev/","downloadUrl":"https://github.com/Jarvis322/macos-sysdata/releases/latest/download/SystemDataUnpacked.dmg","installUrl":"https://github.com/Jarvis322/macos-sysdata/releases/latest/download/SystemDataUnpacked.dmg","releaseNotes":"https://github.com/Jarvis322/macos-sysdata/blob/main/CHANGELOG.md","softwareHelp":{"@type":"CreativeWork","url":"https://github.com/Jarvis322/macos-sysdata"},"isAccessibleForFree":true,"license":"https://github.com/Jarvis322/macos-sysdata/blob/main/LICENSE","image":"https://macos-sysdata.yigitech.dev/og.png","screenshot":{"@type":"ImageObject","url":"https://macos-sysdata.yigitech.dev/screenshot.png","width":920,"height":1280},"featureList":["Lists macOS System Data by category with real sizes","Labels every item Safe, Review or Manual","Shows every command before it runs","Shrinks folders that are only read with macOS file system compression, deleting nothing","Names every item in the delete confirmation","Frees an amount by selecting the least worrying items","Groups build output by project","Lists Ollama and Hugging Face models one by one","Optional Touch ID before a delete","Charts System Data over time"],"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@id":"https://yigitech.dev/#person"},"publisher":{"@id":"https://yigitech.dev/#person"},"sameAs":["https://github.com/Jarvis322/macos-sysdata"]},{"@type":"FAQPage","@id":"https://macos-sysdata.yigitech.dev/#faq","mainEntity":[{"@type":"Question","name":"What is System Data on a Mac?","acceptedAnswer":{"@type":"Answer","text":"System Data is the name Storage settings gives to everything it cannot file under Apps, Photos or Documents: caches, logs, simulator runtimes, local Time Machine snapshots, disk images, mail attachments and application support folders."}},{"@type":"Question","name":"Why is my System Data so large?","acceptedAnswer":{"@type":"Answer","text":"On a Mac used for development it is usually a handful of folders: Xcode DerivedData and archives, simulator runtimes, npm and Homebrew caches, Docker disks and downloaded models. Each regenerates on demand, and together they pass 100 GB."}},{"@type":"Question","name":"Can I delete System Data?","acceptedAnswer":{"@type":"Answer","text":"Parts of it. Caches and build folders regenerate on their own. Snapshots and device backups are a decision rather than a cleanup. System Data Unpacked labels every item and shows the command before it runs."}},{"@type":"Question","name":"How do I clear System Data on a Mac?","acceptedAnswer":{"@type":"Answer","text":"Find out what it is made of first, because it differs from Mac to Mac. System Data Unpacked lists every part with its size and a badge: delete the Safe items, which rebuild on their own, review the rest, and empty the Trash to get the space back."}},{"@type":"Question","name":"Can I free space without deleting anything?","acceptedAnswer":{"@type":"Answer","text":"Yes, for folders that are mostly read, such as SDKs, archives, old IDE versions and a project's dependencies. System Data Unpacked can shrink them with the file system compression macOS uses for its own files, often to around half their size. The files stay where they are and nothing is deleted."}},{"@type":"Question","name":"Why does it ask for Full Disk Access?","acceptedAnswer":{"@type":"Answer","text":"Most of System Data sits in folders macOS protects, and without the grant they cannot be measured. The app reads sizes and dates, not the contents of files, and never mail, messages or browsing history. It also works without the grant, with those places left out."}}]},{"@type":"SoftwareSourceCode","@id":"https://github.com/Jarvis322/macos-sysdata#code","name":"macos-sysdata","codeRepository":"https://github.com/Jarvis322/macos-sysdata","programmingLanguage":"Swift","runtimePlatform":"macOS 14 or later","license":"https://github.com/Jarvis322/macos-sysdata/blob/main/LICENSE","targetProduct":{"@id":"https://macos-sysdata.yigitech.dev/#app"},"author":{"@id":"https://yigitech.dev/#person"},"interactionStatistic":{"@type":"InteractionCounter","interactionType":"https://schema.org/LikeAction","userInteractionCount":1701}}]}</script>
 </head>
 <body>
 <div class="wrap">
@@ -254,6 +285,7 @@
     <a class="brand" href="/"><img src="apple-touch-icon.png" width="180" height="180" alt="">System Data Unpacked</a>
     <nav aria-label="Site">
       <a class="hide-sm" href="#how">How it works</a>
+      <a class="hide-sm" href="#shrink">Shrink</a>
       <a class="hide-sm" href="#questions">Questions</a>
       <a href="https://github.com/Jarvis322/macos-sysdata">GitHub</a>
     </nav>
@@ -262,7 +294,7 @@
   <main>
     <div class="hero">
       <h1>macOS calls it System Data. <span class="quiet">This app opens it.</span></h1>
-      <p class="lede">Storage settings puts everything it cannot name into one grey bar. System Data Unpacked shows what is inside — simulators, Xcode builds, package caches, AI models, backups — and lets you delete it item by item, with every command shown first.</p>
+      <p class="lede">Storage settings puts everything it cannot name into one grey bar. System Data Unpacked shows what is inside — simulators, Xcode builds, package caches, AI models, backups — and lets you delete it item by item, or shrink it without deleting anything, with every command shown first.</p>
 
       <figure class="storage" aria-labelledby="storage-caption">
         <div class="storage-head">
@@ -310,7 +342,7 @@
         </div>
         <div class="install-meta">
           <p class="fine">Free and open source. Signed and notarized by Apple. macOS 14 or later.</p>
-          <a class="stars" href="https://github.com/Jarvis322/macos-sysdata/stargazers"><svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path fill="currentColor" d="M8 .25a.75.75 0 0 1 .673.418l1.882 3.815 4.21.612a.75.75 0 0 1 .416 1.279l-3.046 2.97.719 4.192a.75.75 0 0 1-1.088.791L8 12.347l-3.766 1.98a.75.75 0 0 1-1.088-.79l.72-4.194L.818 6.374a.75.75 0 0 1 .416-1.28l4.21-.611L7.327.668A.75.75 0 0 1 8 .25Z"/></svg><span><span id="star-count">1690+</span> stars on GitHub</span></a>
+          <a class="stars" href="https://github.com/Jarvis322/macos-sysdata/stargazers"><svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path fill="currentColor" d="M8 .25a.75.75 0 0 1 .673.418l1.882 3.815 4.21.612a.75.75 0 0 1 .416 1.279l-3.046 2.97.719 4.192a.75.75 0 0 1-1.088.791L8 12.347l-3.766 1.98a.75.75 0 0 1-1.088-.79l.72-4.194L.818 6.374a.75.75 0 0 1 .416-1.28l4.21-.611L7.327.668A.75.75 0 0 1 8 .25Z"/></svg><span><span id="star-count">1700+</span> stars on GitHub</span></a>
         </div>
       </div>
     </div>
@@ -334,6 +366,31 @@
       </div>
     </section>
 
+    <section id="shrink" aria-labelledby="shrink-title">
+      <h2 id="shrink-title">Or keep it, at half the size.</h2>
+      <p class="intro">Some of it you would rather not delete: an SDK, an archive, a project you will come back to. Shrink stores the same files compressed, the way macOS stores its own. They stay where they are and open as before.</p>
+      <div class="shrink">
+        <figure class="measured" aria-labelledby="measured-caption">
+          <div class="measured-head">
+            <b>node_modules</b>
+            <span>22,241 files</span>
+          </div>
+          <dl class="compare">
+            <dt>Before</dt>
+            <dd><span class="track"><i style="width: 100%"></i></span><span><b>454 MB</b></span></dd>
+            <dt>After</dt>
+            <dd class="after"><span class="track"><i style="width: 49.3%"></i></span><span><b>224 MB</b><em>−230 MB</em></span></dd>
+          </dl>
+          <figcaption id="measured-caption" class="note">Measured on a real project. Every byte of every file came out the same.</figcaption>
+        </figure>
+        <ul>
+          <li><b>Offered where it lasts.</b> SDKs, Xcode archives, old IDE versions and toolchains, dependencies a week after install, build output once a project goes quiet.</li>
+          <li><b>Nothing is deleted.</b> A compressed copy is written beside the folder, checked against it, and swapped in at once. If anything goes wrong, the folder stays as it was.</li>
+          <li><b>It says no when it should.</b> Folders that share their files with others, such as pnpm's hard links, are left alone, because compressing them would take more space, not less.</li>
+        </ul>
+      </div>
+    </section>
+
     <section aria-labelledby="tour-title">
       <h2 id="tour-title">One window for the whole disk.</h2>
       <p class="intro">Open it from Applications or keep it in the menu bar. It scans in the background and remembers what changed.</p>
@@ -344,7 +401,8 @@
           <div><dt>Projects, not folders</dt><dd>One row per project with everything it costs: node_modules, build output, its DerivedData, its Docker images. Archive one in a click; source files are never touched.</dd></div>
           <div><dt>Why it grew</dt><dd>A trend on every row, System Data over time, and a note when a category grows unusually fast, with the items behind it.</dd></div>
           <div><dt>AI models, one by one</dt><dd>Ollama and Hugging Face models listed separately, sized without double counting shared layers, removed the way each tool expects.</dd></div>
-          <div><dt>Touch ID before a delete</dt><dd>An optional check with Touch ID, your Apple Watch or your password, so a click at an unlocked Mac is not enough.</dd></div>
+          <div><dt>See it before it goes</dt><dd>The confirmation names every item with its size and badge, lets you pick the Trash or delete now, and shows the exact commands.</dd></div>
+          <div><dt>Touch ID before a delete</dt><dd>An optional check with Touch ID, your Apple Watch or your password, so a click at an unlocked Mac is not enough. When macOS asks for your password anyway, it asks once.</dd></div>
           <div><dt>External drives</dt><dd>Optionally looks for projects on plugged-in drives too. Time Machine disks and network shares are never walked.</dd></div>
           <div><dt>Stays on your Mac</dt><dd>No account and no analytics. The only request it can make is an update check, off by default.</dd></div>
           <div><dt>Scriptable</dt><dd><code>--json</code> prints the inventory, <code>--clean</code> shows the weekly clean and <code>--clean --apply</code> runs it. Shortcuts and a desktop widget too.</dd></div>
@@ -366,6 +424,10 @@
         <li>Logs, diagnostics and temporary files</li>
         <li>Project build folders: node_modules, .build, Pods, .next</li>
         <li>Android SDKs and emulators</li>
+        <li>JetBrains IDE caches and old versions</li>
+        <li>Unity caches and editors</li>
+        <li>Logic Pro and GarageBand sound libraries</li>
+        <li>WhatsApp chats and media</li>
         <li>Anything else large it cannot explain</li>
       </ul>
     </section>
@@ -388,6 +450,10 @@
         <details>
           <summary>How do I clear System Data on a Mac?</summary>
           <p>Find out what it is made of first, because the answer differs from Mac to Mac. Storage settings cannot tell you, so open System Data Unpacked: it lists every part with its size and a badge. Delete the ones marked Safe, which rebuild on their own, look at the ones marked Review, and leave snapshots and backups for last. Emptying the Trash afterwards is what gives the space back.</p>
+        </details>
+        <details>
+          <summary>Can I free space without deleting anything?</summary>
+          <p>Yes, for folders that are mostly read: SDKs, archives, old IDE versions, a project's dependencies. Shrink stores them compressed with the same file system compression macOS uses for its own files, often at around half the size. The files stay where they are and open as before; nothing is deleted.</p>
         </details>
         <details>
           <summary>Why does it ask for Full Disk Access?</summary>
