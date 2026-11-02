@@ -5,6 +5,13 @@ What changed in each release, and where it is worth saying, why.
 Versions up to and including v0.3.7 were released under the MIT License; see
 [LICENSE](LICENSE).
 
+## v1.11.1 — 2026-11-02
+
+- **Nothing is left behind by an interrupted Shrink.** If the app quit,
+  crashed or the Mac lost power while a folder was being shrunk, a hidden
+  copy could stay beside it. The folder itself was always whole; the copy
+  is now deleted the next time the app opens.
+
 ## v1.11.0 — 2026-11-02
 
 - **Shrink instead of delete.** Rows whose folders are only ever read get
