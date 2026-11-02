@@ -214,15 +214,12 @@ struct MenuView: View {
         Task {
             defer { isAuthenticating = false }
             guard await DeleteAuthentication.authorize(
-                isRequired: model.requiresAuthenticationToDelete,
+                isRequired: model.requiresAuthenticationToDelete
+                    && !ScanModel.passwordGuardsWholeBatch(pendingItems),
                 reason: L("Confirm the delete.")
             ) else { return }
             let item = pendingDeletion
-            pendingDeletion = nil
-            confirmsBatch = false
-            archivingProject = nil
-            showsPlan = false
-            copiedPlan = false
+            dismissConfirmation()
             if let item {
                 await model.reclaim(item)
             } else {

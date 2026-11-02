@@ -786,6 +786,21 @@ final class ScanModel {
             : L("Cancelled. %d already deleted, the rest left alone.", deleted)
     }
 
+    /// Whether macOS's own administrator prompt will come before anything in
+    /// this batch is deleted, so that dismissing it stops all of it.
+    ///
+    /// `runBatch` runs privileged scripts first, and a dismissed password
+    /// stops the whole batch. The Touch ID check before it would then ask the
+    /// same question twice in a row, and macOS's prompt cannot take Touch ID.
+    /// A root-owned path deleted through `rm` does not count: its password is
+    /// asked in the middle of the batch, after other items are already gone.
+    nonisolated static func passwordGuardsWholeBatch(_ items: [StorageItem]) -> Bool {
+        items.contains {
+            if case .privilegedScript = $0.action { return true }
+            return false
+        }
+    }
+
     /// Whether a batch is moved to the Trash rather than deleted.
     ///
     /// Never for the Trash itself: moving an item that is already in the

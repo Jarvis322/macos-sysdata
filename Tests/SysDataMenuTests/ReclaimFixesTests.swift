@@ -78,4 +78,16 @@ import Testing
         #expect(result.status == 15)
         #expect(!result.timedOut)
     }
+
+    /// The password prompt comes first and stops everything when dismissed,
+    /// so Touch ID before it is the same question asked twice.
+    @Test func touchIDIsSkippedOnlyWhenThePasswordComesFirst() {
+        let script = item("logs", action: .privilegedScript("log erase --all"))
+        let cache = item("cache", action: .removePaths([URL(fileURLWithPath: "/tmp/x")]))
+        #expect(ScanModel.passwordGuardsWholeBatch([cache, script]))
+        #expect(!ScanModel.passwordGuardsWholeBatch([cache]))
+        // A root-owned folder is asked for mid-batch, after others are gone.
+        let rootFolder = item("root", action: .removePaths([URL(fileURLWithPath: "/Library/Caches")]))
+        #expect(!ScanModel.passwordGuardsWholeBatch([cache, rootFolder]))
+    }
 }
