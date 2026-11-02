@@ -159,11 +159,22 @@ prompt, which is why it asks each time and shows you the command first.
   together. Folding a category keeps it too. Neither one quietly edits the
   batch: the footer says how many selected rows are not on screen, next to
   the button that would take them.
-- **Batch delete.** Tick rows and use **Delete N selected**. **Select safe**
+- **Batch delete.** Tick rows and the tray under the list shows what they
+  come to, with **Deselect** and **Delete N items**. **Select safe**
   ticks everything regenerable that is on screen, and unticks it on a second
-  press. Root actions are folded into one script where they can be, and the
+  press. The confirmation lists every item with its size and badge before
+  anything runs. Root actions are folded into one script where they can be, and the
   confirmation says so — including when they cannot, because a delete of
   something you do not own is run on its own and asks again.
+- **Shrink instead of delete.** Rows whose folders are only ever read — SDK
+  components, Xcode archives and device support, old JetBrains versions,
+  toolchains, a project's dependencies a week after install, an idle
+  project's build output — carry a Shrink button beside Delete. It stores
+  the same files compressed, the way macOS stores its own, and nothing is
+  deleted: a real `node_modules` went from 454 MB to 224 MB. It leaves a
+  folder alone when its files share blocks with others (pnpm hard links,
+  clones), when it is already compressed, when there is no room for the
+  compressed copy it writes first, or when the folder changes meanwhile.
 - **Read the command first.** The confirmation shows every operation
   verbatim before anything runs — `As administrator: rm -rf
   /Library/Logs/DiagnosticReports/*`, not a count of items. The source is

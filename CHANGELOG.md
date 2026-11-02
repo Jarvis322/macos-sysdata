@@ -5,6 +5,30 @@ What changed in each release, and where it is worth saying, why.
 Versions up to and including v0.3.7 were released under the MIT License; see
 [LICENSE](LICENSE).
 
+## v1.11.0 — 2026-11-02
+
+- **Shrink instead of delete.** Rows whose folders are only ever read get
+  a Shrink button beside Delete: SDK components, Xcode archives and device
+  support, old JetBrains versions, version-manager toolchains, a project's
+  dependencies a week after its last install, and an idle project's build
+  output. It stores the same files compressed, the way macOS stores its
+  own, and deletes nothing. A real `node_modules` went from 454 MB to
+  224 MB with every byte the same. The folder is copied beside itself,
+  checked and swapped in one step, so a failure leaves it as it was. It
+  says why and leaves the folder alone when its files share blocks with
+  others (pnpm's hard links, clones), when it is compressed already, when
+  there is no room for the copy, or when the folder changes meanwhile.
+- **A new delete confirmation.** It names every item it will delete, with
+  its size and badge, offers the Trash or an immediate delete as two
+  described choices, keeps the command list in its own scrolling box
+  instead of pushing the window's header off screen, and has one red
+  button. A selection shows a tray with its size, **Deselect** and
+  **Delete**, and the footer is down to one line.
+- **One prompt, not two.** With Touch ID required before a delete, a batch
+  that also needed an administrator password asked twice in a row. The
+  password prompt comes first and stops the whole batch when dismissed, so
+  Touch ID is skipped then.
+
 ## v1.10.0 — 2026-10-23
 
 - **More of System Data has a name.** JetBrains IDEs: the current
