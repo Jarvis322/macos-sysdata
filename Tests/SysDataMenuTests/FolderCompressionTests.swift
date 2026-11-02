@@ -117,4 +117,52 @@ import Testing
         #expect(ScanModel.shrinkIdleDays(for: row("vm-x", .vms)) == nil)
         #expect(ScanModel.shrinkIdleDays(for: row("ai-model", .ai)) == nil)
     }
+
+    private func journal() -> UserDefaults {
+        let name = "sysdata-shrink-tests-\(UUID().uuidString)"
+        let defaults = UserDefaults(suiteName: name)!
+        defaults.removePersistentDomain(forName: name)
+        return defaults
+    }
+
+    @Test func aFinishedShrinkLeavesNothingInTheJournal() async throws {
+        let root = try folder("journal")
+        defer { try? FileManager.default.removeItem(at: root) }
+        let defaults = journal()
+
+        _ = try await FolderCompression.shrink(root, freeSpace: plenty, journal: defaults)
+
+        #expect((defaults.stringArray(forKey: FolderCompression.journalKey) ?? []).isEmpty)
+    }
+
+    /// What a crash mid-shrink leaves: a copy beside the folder and its path
+    /// in the journal.
+    @Test func anInterruptedShrinksCopyIsRemovedAtLaunch() throws {
+        let parent = FileManager.default.temporaryDirectory.appending(path: "sysdata-leftover-\(UUID().uuidString)")
+        defer { try? FileManager.default.removeItem(at: parent) }
+        let copy = parent.appending(path: ".node_modules.sysdata-shrink-\(UUID().uuidString)")
+        try FileManager.default.createDirectory(at: copy, withIntermediateDirectories: true)
+        try Data("x".utf8).write(to: copy.appending(path: "file"))
+        let defaults = journal()
+        defaults.set([copy.path], forKey: FolderCompression.journalKey)
+
+        #expect(FolderCompression.removeLeftovers(in: defaults).map(\.path) == [copy.path])
+        #expect(!FileManager.default.fileExists(atPath: copy.path))
+        #expect((defaults.stringArray(forKey: FolderCompression.journalKey) ?? []).isEmpty)
+    }
+
+    /// The journal is a list of paths to delete. Whatever ends up in it,
+    /// only a folder named the way a shrink names its copy goes.
+    @Test func onlyShrinkCopiesAreEverRemoved() throws {
+        let precious = FileManager.default.temporaryDirectory.appending(path: "sysdata-precious-\(UUID().uuidString)")
+        try FileManager.default.createDirectory(at: precious, withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(at: precious) }
+        let defaults = journal()
+        defaults.set([precious.path], forKey: FolderCompression.journalKey)
+
+        #expect(FolderCompression.removeLeftovers(in: defaults).isEmpty)
+        #expect(FileManager.default.fileExists(atPath: precious.path))
+        #expect(!FolderCompression.isShrinkCopy(URL(fileURLWithPath: "/Users/me/node_modules")))
+        #expect(FolderCompression.isShrinkCopy(URL(fileURLWithPath: "/x/.a.sysdata-shrink-\(UUID().uuidString)")))
+    }
 }

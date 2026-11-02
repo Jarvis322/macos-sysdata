@@ -156,6 +156,8 @@ final class ScanModel {
         self.items = items
         hiddenIDs = Set(UserDefaults.standard.stringArray(forKey: Self.hiddenKey) ?? [])
         if scansAutomatically {
+            // Before the first scan measures them as part of their folders.
+            Task.detached(priority: .utility) { FolderCompression.removeLeftovers() }
             Task { await runBackgroundScans() }
         }
     }

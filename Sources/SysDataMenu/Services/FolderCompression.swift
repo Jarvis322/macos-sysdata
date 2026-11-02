@@ -83,7 +83,9 @@ enum FolderCompression {
     /// Shrinks `folder` and returns what it took before and after. Runs off
     /// the main actor; throws a `Refusal` without touching the folder when
     /// it is not safe or not worth doing.
-    static func shrink(_ folder: URL, freeSpace: Int64 = DiskSize.freeSpace()) async throws -> Outcome {
+    static func shrink(
+        _ folder: URL, freeSpace: Int64 = DiskSize.freeSpace(), journal: UserDefaults = .standard
+    ) async throws -> Outcome {
         let name = folder.lastPathComponent
         let values = try? folder.resourceValues(forKeys: [.volumeSupportsCompressionKey])
         guard values?.volumeSupportsCompression == true else { throw Refusal.unsupportedVolume }
@@ -102,7 +104,15 @@ enum FolderCompression {
         // volume and Finder never shows the copy.
         let copy = folder.deletingLastPathComponent()
             .appending(path: ".\(name).sysdata-shrink-\(UUID().uuidString)")
-        defer { try? FileManager.default.removeItem(at: copy) }
+        // Written down before the copy exists, so a crash at any point
+        // leaves a note of what to clean up at the next launch.
+        record(copy, inProgress: true, in: journal)
+        defer {
+            try? FileManager.default.removeItem(at: copy)
+            if !FileManager.default.fileExists(atPath: copy.path) {
+                record(copy, inProgress: false, in: journal)
+            }
+        }
 
         // `--noclone` is what makes this work: on APFS, ditto otherwise clones
         // each file and the compression step never runs.
@@ -131,6 +141,49 @@ enum FolderCompression {
         }
         // The deferred removal now deletes the original, uncompressed tree.
         return Outcome(before: original.allocatedBytes, after: copied.allocatedBytes)
+    }
+
+    // MARK: Leftovers
+
+    /// Copies being written or swapped right now. A shrink cut short — the
+    /// app quit, crashed or the Mac lost power — leaves its copy beside the
+    /// folder: a partial compressed copy before the swap, the old original
+    /// after it. The folder itself is whole either way, because the swap is
+    /// one rename, so the copy is always safe to delete.
+    static let journalKey = "shrinkCopiesInProgress"
+    private static let journalLock = NSLock()
+
+    private static func record(_ copy: URL, inProgress: Bool, in defaults: UserDefaults) {
+        journalLock.withLock {
+            var paths = Set(defaults.stringArray(forKey: journalKey) ?? [])
+            if inProgress { paths.insert(copy.path) } else { paths.remove(copy.path) }
+            defaults.set(paths.sorted(), forKey: journalKey)
+        }
+    }
+
+    /// Whether a path is named the way `shrink` names its copies. Nothing
+    /// else is ever deleted from the journal, whatever it says.
+    static func isShrinkCopy(_ url: URL) -> Bool {
+        url.lastPathComponent.wholeMatch(of: /\..+\.sysdata-shrink-[0-9A-F]{8}(-[0-9A-F]{4}){3}-[0-9A-F]{12}/) != nil
+    }
+
+    /// Deletes the copies an interrupted shrink left behind. Called once at
+    /// launch. Returns what it removed.
+    @discardableResult
+    static func removeLeftovers(in defaults: UserDefaults = .standard) -> [URL] {
+        let paths = journalLock.withLock { defaults.stringArray(forKey: journalKey) ?? [] }
+        var removed: [URL] = []
+        for path in paths {
+            let copy = URL(fileURLWithPath: path)
+            // Called at launch, before this app can have started a shrink of
+            // its own, so nothing on the list is still being written.
+            if isShrinkCopy(copy), FileManager.default.fileExists(atPath: copy.path) {
+                guard (try? FileManager.default.removeItem(at: copy)) != nil else { continue }
+                removed.append(copy)
+            }
+            record(copy, inProgress: false, in: defaults)
+        }
+        return removed
     }
 
     /// Walks `folder` without following links, the way `DiskSize` does.
