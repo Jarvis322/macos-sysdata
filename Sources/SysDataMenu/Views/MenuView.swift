@@ -117,12 +117,10 @@ struct MenuView: View {
                 content
             }
             Divider()
-            if pendingDeletion != nil || confirmsBatch {
-                confirmationBar
-                Divider()
-            }
             footer
         }
+        .overlay { confirmationOverlay }
+        .animation(reduceMotion ? nil : .spring(response: 0.35, dampingFraction: 0.85), value: isConfirming)
         .modifier(PanelSize(presentation: presentation))
         .onChange(of: model.reclaimedBytes) { old, new in
             if new > old { freedFlash = new - old }
@@ -193,8 +191,8 @@ struct MenuView: View {
 
     // MARK: Confirmation
 
-    private var pendingBytes: Int64 {
-        pendingItems.reduce(0) { $0 + ($1.sizeBytes ?? 0) }
+    private var isConfirming: Bool {
+        pendingDeletion != nil || confirmsBatch
     }
 
     private var hasReviewItems: Bool {
@@ -207,57 +205,8 @@ struct MenuView: View {
         return L("Delete %lld items?", model.selectedItems.count)
     }
 
-    /// What is in the batch, at a glance: how many are safe, how many need a
-    /// look, and whether a password is going to be asked for.
-    private var confirmationChips: some View {
-        let safe = pendingItems.filter { $0.safety == .safe }.count
-        let review = pendingItems.filter { $0.safety == .review }.count
-        return HStack(spacing: 6) {
-            if safe > 0 { chip(L("%lld safe", safe), tint: .green) }
-            if review > 0 { chip(L("%lld to review", review), tint: .orange) }
-            if needsAdministrator {
-                chip(L("Asks for your password"), tint: .secondary, symbol: "lock.fill")
-            }
-        }
-    }
-
-    private func chip(_ text: String, tint: Color, symbol: String? = nil) -> some View {
-        HStack(spacing: 3) {
-            if let symbol { Image(systemName: symbol).font(.system(size: 9, weight: .semibold)) }
-            Text(text)
-        }
-        .font(.caption2.weight(.medium))
-        .foregroundStyle(tint)
-        .padding(.horizontal, 7)
-        .padding(.vertical, 2)
-        .background(tint.opacity(0.14), in: Capsule())
-    }
-
-    /// Where Review items go, said before the click rather than in a notice
-    /// after it. The Trash is the undo and frees nothing until it is emptied;
-    /// the other choice is the opposite, and both are one tap away.
-    private var destinationChoice: some View {
-        VStack(alignment: .leading, spacing: 5) {
-            Picker("", selection: Binding(
-                get: { model.deletesReviewItemsImmediately },
-                set: { model.deletesReviewItemsImmediately = $0 }
-            )) {
-                Text(L("Move to the Trash")).tag(false)
-                Text(L("Delete now")).tag(true)
-            }
-            .pickerStyle(.segmented)
-            .labelsHidden()
-            Text(model.deletesReviewItemsImmediately
-                 ? L("Deleted for good. The space is free at once.")
-                 : L("Recoverable from the Trash until you empty it. Frees nothing yet."))
-                .font(.caption)
-                .foregroundStyle(.secondary)
-                .fixedSize(horizontal: false, vertical: true)
-        }
-    }
-
-    /// Runs what the bar is asking about, after the Mac's own check when the
-    /// person has asked for one. A cancelled check leaves the bar open, so
+    /// Runs what the card is asking about, after the Mac's own check when the
+    /// person has asked for one. A cancelled check leaves the card open, so
     /// nothing is lost by trying again or pressing Cancel.
     private func confirmDeletion() {
         guard !isAuthenticating else { return }
@@ -282,105 +231,51 @@ struct MenuView: View {
         }
     }
 
-    /// Inline rather than a sheet: the menu bar panel is not a regular window,
-    /// so sheets and confirmation dialogs never appear on it.
-    private var confirmationBar: some View {
-        VStack(alignment: .leading, spacing: 10) {
-            HStack(alignment: .firstTextBaseline) {
-                VStack(alignment: .leading, spacing: 5) {
-                    Text(confirmationTitle)
-                        .font(.subheadline.weight(.semibold))
-                    confirmationChips
-                }
-                Spacer(minLength: 8)
-                Text(pendingBytes.byteString)
-                    .font(.title3.weight(.semibold))
-                    .monospacedDigit()
+    private func dismissConfirmation() {
+        pendingDeletion = nil
+        confirmsBatch = false
+        archivingProject = nil
+        showsPlan = false
+        copiedPlan = false
+    }
+
+    /// The list behind the card is dimmed and inert while the question is
+    /// open; clicking it is the same as Cancel.
+    @ViewBuilder
+    private var confirmationOverlay: some View {
+        if isConfirming {
+            ZStack(alignment: .bottom) {
+                Rectangle()
+                    .fill(.black.opacity(0.4))
+                    .ignoresSafeArea()
+                    .onTapGesture { if !isAuthenticating { dismissConfirmation() } }
+                    .accessibilityHidden(true)
+                    .transition(.opacity)
+                DeleteConfirmation(
+                    title: confirmationTitle,
+                    items: pendingItems,
+                    message: pendingDeletion.flatMap { $0.safety == .review ? nil : confirmationMessage(for: $0) },
+                    confirmTitle: pendingDeletion != nil ? L("Delete")
+                        : archivingProject != nil ? L("Archive")
+                        : L("Delete %lld items", model.selectedItems.count),
+                    needsAdministrator: needsAdministrator,
+                    offersDestination: hasReviewItems,
+                    deletesImmediately: Binding(
+                        get: { model.deletesReviewItemsImmediately },
+                        set: { model.deletesReviewItemsImmediately = $0 }
+                    ),
+                    showsPlan: $showsPlan,
+                    plan: plannedOperations,
+                    copiedPlan: copiedPlan,
+                    isAuthenticating: isAuthenticating,
+                    onCopyPlan: copyPlan,
+                    onCancel: dismissConfirmation,
+                    onConfirm: confirmDeletion
+                )
+                .padding(12)
+                .transition(reduceMotion ? .opacity : .move(edge: .bottom).combined(with: .opacity))
             }
-            if let item = pendingDeletion, item.safety != .review {
-                Text(confirmationMessage(for: item))
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-                    .fixedSize(horizontal: false, vertical: true)
-            }
-            if hasReviewItems {
-                destinationChoice
-            }
-            if !plannedOperations.isEmpty {
-                DisclosureGroup(isExpanded: $showsPlan) {
-                    ScrollView {
-                        VStack(alignment: .leading, spacing: 2) {
-                            ForEach(plannedOperations, id: \.self) { line in
-                                Text(line)
-                                    .font(.caption.monospaced())
-                                    .foregroundStyle(.secondary)
-                                    .textSelection(.enabled)
-                                    .frame(maxWidth: .infinity, alignment: .leading)
-                            }
-                        }
-                        .padding(.top, 4)
-                    }
-                    .frame(maxHeight: 120)
-                } label: {
-                    HStack(spacing: 6) {
-                        Text(needsAdministrator
-                             ? L("Show the commands that run as administrator")
-                             : L("Show exactly what runs"))
-                            .font(.caption)
-                        if showsPlan {
-                            Spacer()
-                            // The list scrolls inside 120pt and paths are long,
-                            // so reading the whole plan often means taking it
-                            // somewhere else. Selecting 58 lines by hand inside
-                            // a scroll view is not that.
-                            Button(action: copyPlan) {
-                                Label(copiedPlan ? L("Copied") : L("Copy"),
-                                      systemImage: copiedPlan ? "checkmark" : "doc.on.doc")
-                                    .font(.caption)
-                            }
-                            .buttonStyle(.borderless)
-                            .foregroundStyle(copiedPlan ? Color.green : Color.accentColor)
-                            .accessibilityLabel(L("Copy the plan"))
-                        }
-                    }
-                }
-                .font(.caption)
-            }
-            HStack {
-                Spacer()
-                Button(L("Cancel")) {
-                    pendingDeletion = nil
-                    confirmsBatch = false
-                    archivingProject = nil
-                    showsPlan = false
-                    copiedPlan = false
-                }
-                .keyboardShortcut(.cancelAction)
-                Button(role: .destructive) {
-                    confirmDeletion()
-                } label: {
-                    if isAuthenticating {
-                        // The button used to go grey with no reason given,
-                        // which looked like the app had stopped.
-                        HStack(spacing: 6) {
-                            ProgressView().controlSize(.small)
-                            Text(L("Waiting for Touch ID…"))
-                        }
-                    } else {
-                        Text(pendingDeletion != nil ? L("Delete")
-                             : archivingProject != nil ? L("Archive")
-                             : L("Delete %lld items", model.selectedItems.count))
-                    }
-                }
-                .keyboardShortcut(.defaultAction)
-                .tint(.red)
-                .disabled(isAuthenticating)
-            }
-            .controlSize(.small)
         }
-        .padding(.horizontal, 14)
-        .padding(.vertical, 10)
-        .background(.red.opacity(0.06))
     }
 
     // MARK: Header
@@ -1132,47 +1027,21 @@ struct MenuView: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
                 }
             }
-            HStack {
-                if model.selectedItems.isEmpty || pendingDeletion != nil || confirmsBatch {
+            if !model.selectedItems.isEmpty, !isConfirming {
+                selectionTray
+                    .transition(.move(edge: .bottom).combined(with: .opacity))
+            }
+            HStack(spacing: 10) {
+                // Said only once there is something to say: "0 bytes" on
+                // every launch was a line of noise under the list.
+                if model.reclaimedBytes > 0 {
                     Label(L("Reclaimed this session: %@", model.reclaimedBytes.byteString),
-                          systemImage: model.reclaimedBytes > 0 ? "sparkles" : "circle.dashed")
+                          systemImage: "sparkles")
                         .font(.caption)
-                        .foregroundStyle(model.reclaimedBytes > 0 ? AnyShapeStyle(.green) : AnyShapeStyle(.secondary))
+                        .foregroundStyle(.green)
                         .monospacedDigit()
                         .contentTransition(.numericText(value: Double(model.reclaimedBytes)))
                         .symbolEffect(.bounce, value: model.reclaimedBytes)
-                } else {
-                    Button(role: .destructive) {
-                        confirmsBatch = true
-                    } label: {
-                        Label(L("Delete %lld selected · %@", model.selectedItems.count, model.selectedBytes.byteString),
-                              systemImage: "trash.fill")
-                            .monospacedDigit()
-                    }
-                    .buttonStyle(.borderedProminent)
-                    .buttonBorderShape(.capsule)
-                    .tint(.red)
-                    .controlSize(.small)
-                    .disabled(!model.busyItemIDs.isEmpty)
-                    // In the Projects view the rows are projects, and an
-                    // archive's items are in them, not off screen.
-                    if !listsByProject, model.selectedOffScreenCount > 0 {
-                        // The batch reaches further than the window does. Say
-                        // so, rather than deleting rows nobody can see.
-                        Text(L("%lld not on screen", model.selectedOffScreenCount))
-                            .font(.caption)
-                            .foregroundStyle(.secondary)
-                            .monospacedDigit()
-                    }
-                    // "Deselect", not "Clear": in a cleaner the word "Clear"
-                    // reads as the app's own verb — free space now — so people
-                    // pressed it expecting a delete and reported that nothing
-                    // happened. This only ever unticks the selection.
-                    Button(L("Deselect")) {
-                        model.clearSelection()
-                    }
-                    .controlSize(.small)
-                    .help(L("Untick the selected items. It deletes nothing."))
                 }
                 if model.hiddenCount > 0 {
                     Button(L("%lld hidden", model.hiddenCount)) {
@@ -1183,6 +1052,7 @@ struct MenuView: View {
                     .help(L("Show all"))
                 }
                 Spacer()
+                authorBadge
                 // The window has an app menu, and a Quit button under a list
                 // of delete buttons is one more thing to press by accident.
                 if presentation == .menuBar {
@@ -1193,16 +1063,66 @@ struct MenuView: View {
                     .keyboardShortcut("q")
                 }
             }
-            HStack {
-                authorBadge
-                Spacer()
-            }
         }
+        .animation(reduceMotion ? nil : .spring(response: 0.3, dampingFraction: 0.8), value: model.selectedItems.isEmpty)
         .padding(.horizontal, 14)
         .padding(.vertical, 10)
         // The list above is greedy; the footer must keep its full height so
         // a long error never overlaps the status line.
         .layoutPriority(1)
+    }
+
+    /// What is ticked, how much it comes to, and the two things to do with
+    /// it. It used to be one more capsule in a footer row already holding
+    /// the off-screen count, Deselect and Quit.
+    private var selectionTray: some View {
+        HStack(spacing: 10) {
+            VStack(alignment: .leading, spacing: 1) {
+                Text(model.selectedBytes.byteString)
+                    .font(.title3.weight(.bold))
+                    .monospacedDigit()
+                    .contentTransition(.numericText(value: Double(model.selectedBytes)))
+                // In the Projects view the rows are projects, and an
+                // archive's items are in them, not off screen.
+                if !listsByProject, model.selectedOffScreenCount > 0 {
+                    // The batch reaches further than the window does. Say
+                    // so, rather than deleting rows nobody can see.
+                    Text(L("%lld not on screen", model.selectedOffScreenCount))
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                        .monospacedDigit()
+                }
+            }
+            Spacer(minLength: 8)
+            // "Deselect", not "Clear": in a cleaner the word "Clear" reads as
+            // the app's own verb — free space now — so people pressed it
+            // expecting a delete and reported that nothing happened. This
+            // only ever unticks the selection.
+            Button(L("Deselect")) {
+                model.clearSelection()
+            }
+            .buttonStyle(PanelButtonStyle(kind: .secondary, compact: true))
+            .help(L("Untick the selected items. It deletes nothing."))
+            Button(role: .destructive) {
+                confirmsBatch = true
+            } label: {
+                Label(L("Delete %lld items", model.selectedItems.count), systemImage: "trash.fill")
+                    .monospacedDigit()
+            }
+            .buttonStyle(PanelButtonStyle(kind: .destructive, compact: true))
+            .disabled(!model.busyItemIDs.isEmpty)
+        }
+        .padding(.leading, 14)
+        .padding(.trailing, 8)
+        .padding(.vertical, 8)
+        .background {
+            RoundedRectangle(cornerRadius: 14, style: .continuous)
+                .fill(.red.opacity(0.08))
+                .overlay {
+                    RoundedRectangle(cornerRadius: 14, style: .continuous)
+                        .strokeBorder(.red.opacity(0.25))
+                }
+        }
     }
 
     /// A notice after an action: what happened, and a way to dismiss it.

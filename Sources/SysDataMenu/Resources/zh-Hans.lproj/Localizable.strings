@@ -66,7 +66,6 @@
 "Delete %@?" = "确定要删除“%@”吗？";
 "Delete %lld items" = "删除 %lld 个项目";
 "Delete %lld items?" = "确定要删除 %lld 个项目吗？";
-"Delete %lld selected · %@" = "删除所选的 %lld 项 · %@";
 "Delete everything inside %@" = "删除%@中的所有内容";
 "Delete files older than %lld days in %@" = "删除 %2$@ 中超过 %1$lld 天的文件";
 "Delete local snapshots…" = "删除本地快照…";

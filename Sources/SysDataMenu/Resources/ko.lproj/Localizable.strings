@@ -66,7 +66,6 @@
 "Delete %@?" = "%@ 삭제하시겠습니까?";
 "Delete %lld items" = "%lld개 항목 삭제";
 "Delete %lld items?" = "%lld개 항목을 삭제하시겠습니까?";
-"Delete %lld selected · %@" = "선택한 %lld개 삭제 · %@";
 "Delete everything inside %@" = "%@ 안의 모든 항목 삭제";
 "Delete files older than %lld days in %@" = "%2$@ 안에서 %1$lld일이 지난 파일 삭제";
 "Delete local snapshots…" = "로컬 스냅샷 삭제…";

@@ -66,7 +66,6 @@
 "Delete %@?" = "Supprimer %@ ?";
 "Delete %lld items" = "Supprimer %lld éléments";
 "Delete %lld items?" = "Supprimer %lld éléments ?";
-"Delete %lld selected · %@" = "Supprimer %lld sélectionnés · %@";
 "Delete everything inside %@" = "Supprimer tout le contenu de %@";
 "Delete files older than %lld days in %@" = "Supprimer les fichiers de plus de %lld jours dans %@";
 "Delete local snapshots…" = "Supprimer les instantanés locaux…";
