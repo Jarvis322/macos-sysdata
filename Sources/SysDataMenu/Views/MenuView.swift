@@ -741,7 +741,8 @@ struct MenuView: View {
                 )
             },
             onDelete: { pendingDeletion = item },
-            onHide: { model.hide(item) }
+            onHide: { model.hide(item) },
+            onShrink: model.canShrink(item) ? { Task { await model.shrink(item) } } : nil
         )
     }
 

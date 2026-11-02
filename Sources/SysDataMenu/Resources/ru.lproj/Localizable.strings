@@ -1,12 +1,17 @@
+"%1$@ could not be shrunk: %2$@" = "Не удалось сжать %1$@: %2$@";
+"%1$@ now takes %2$@ instead of %3$@. Nothing was deleted." = "%1$@ теперь занимает %2$@ вместо %3$@. Ничего не удалено.";
 "%@ System Data · %@ free" = "Данные системы: %@ · свободно %@";
 "%@ System Data · %@ free · %@ this week" = "Данные системы: %@ · свободно %@ · за неделю %@";
+"%@ changed while it was being shrunk, so it was left as it was." = "%@ изменилась во время сжатия, поэтому оставлена как есть.";
 "%@ free on disk" = "%@ свободно на диске";
 "%@ free · %@ of safe items can go now" = "%@ свободно · %@ безопасных элементов можно освободить прямо сейчас";
 "%@ grew %@ beyond its recent size." = "%@ вырос на %@ по сравнению с недавним размером.";
+"%@ is already stored compressed." = "%@ уже хранится в сжатом виде.";
 "%@ of it belongs to projects nobody has touched in %lld+ days." = "Из них %@ — проекты, к которым никто не прикасался %lld+ дней.";
 "%@ purgeable" = "%@ очищаемое";
 "%@ safe to free now · %@ free on disk · %@ purgeable" = "%@ можно безопасно освободить сейчас · %@ свободно на диске · %@ вытесняемых данных";
 "%@ safe · %@ to review · %@ manual" = "безопасно: %@ · проверить: %@ · вручную: %@";
+"%@ shares files with other folders, so compressing it could take more space. It was left as it was." = "%@ делит файлы с другими папками, поэтому сжатие может занять больше места. Папка оставлена как есть.";
 "%@ this week" = "%@ за неделю";
 "%@: the simulator is still running. Quit Simulator and Xcode, then try again." = "%@: симулятор всё ещё запущен. Закройте Simulator и Xcode и повторите попытку.";
 "%lld days idle" = "%lld дн. без использования";
@@ -190,6 +195,8 @@
 "Show in menu bar" = "Показывать в строке меню";
 "Show largest entries" = "Показать самые крупные объекты";
 "Show the commands that run as administrator" = "Показать команды, выполняемые от имени администратора";
+"Shrink %@ without deleting" = "Сжать %@ без удаления";
+"Shrink without deleting" = "Сжать без удаления";
 "Shut down simulators at power off" = "Выключать симуляторы при завершении работы";
 "Shut every simulator down first" = "Сначала выключить все симуляторы";
 "Simulator devices" = "Устройства симулятора";
@@ -198,6 +205,7 @@
 "Size" = "Размер";
 "Size trend over recent scans" = "Динамика размера по последним сканированиям";
 "Sort by" = "Сортировать по";
+"Stores these files compressed, the way macOS stores its own. Nothing is deleted and everything opens as before." = "Хранит эти файлы в сжатом виде, как macOS хранит свои. Ничего не удаляется, всё открывается как прежде.";
 "System" = "Система";
 "System Data" = "Данные системы";
 "System Data found: %@" = "Найдено данных системы: %@";
@@ -207,6 +215,7 @@
 "Temporary files" = "Временные файлы";
 "That is %@ short of %@." = "Не хватает %1$@ до %2$@.";
 "The app could not be replaced: %@" = "Не удалось заменить приложение: %@";
+"The compressed copy did not match the original." = "Сжатая копия не совпала с оригиналом.";
 "The download did not finish. Nothing was installed." = "Загрузка не завершилась. Ничего не установлено.";
 "The download does not come from GitHub. Nothing was installed." = "Загрузка получена не с GitHub. Ничего не установлено.";
 "The download is not signed by this app's developer, so it was discarded. (%@)" = "Загрузка не подписана разработчиком этого приложения, поэтому она отклонена. (%@)";
@@ -215,6 +224,8 @@
 "The project folder no longer exists, so nothing will rebuild or use this." = "Папки проекта больше нет, поэтому это ничто не пересоздаст и не использует.";
 "The same panel either way: the menu bar keeps the size in sight, the window opens from Applications like any other app." = "В обоих случаях это одна и та же панель: в строке меню размер всегда на виду, а окно открывается из «Программ», как любое приложение.";
 "The same panel, as a window you can resize and leave open" = "Та же панель в виде окна, размер которого можно менять и оставлять открытым";
+"There is not enough free space to shrink %@ safely. It needs room for a compressed copy first." = "Недостаточно свободного места, чтобы безопасно сжать %@. Сначала нужно место для сжатой копии.";
+"This drive cannot store compressed files." = "Этот диск не поддерживает сжатые файлы.";
 "This is regenerated automatically when needed." = "Это создаётся заново автоматически при необходимости.";
 "Time Machine snapshots" = "Снимки Time Machine";
 "Trash" = "Корзина";

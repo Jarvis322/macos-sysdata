@@ -1,12 +1,17 @@
+"%1$@ could not be shrunk: %2$@" = "%1$@ を圧縮できませんでした: %2$@";
+"%1$@ now takes %2$@ instead of %3$@. Nothing was deleted." = "%1$@ は %3$@ から %2$@ になりました。何も削除されていません。";
 "%@ System Data · %@ free" = "システムデータ %@ · 空き %@";
 "%@ System Data · %@ free · %@ this week" = "システムデータ %@ · 空き %@ · 今週 %@";
+"%@ changed while it was being shrunk, so it was left as it was." = "%@ は圧縮中に変更されたため、そのままにしました。";
 "%@ free on disk" = "ディスクの空き容量：%@";
 "%@ free · %@ of safe items can go now" = "%@ の空き · 安全な項目 %@ を今すぐ削除できます";
 "%@ grew %@ beyond its recent size." = "%@ は最近のサイズより %@ 増えました。";
+"%@ is already stored compressed." = "%@ はすでに圧縮して保存されています。";
 "%@ of it belongs to projects nobody has touched in %lld+ days." = "そのうち %1$@ は %2$lld 日以上誰も触っていないプロジェクトのものです。";
 "%@ purgeable" = "%@ パージ可能";
 "%@ safe to free now · %@ free on disk · %@ purgeable" = "今すぐ安全に解放：%@ · ディスクの空き：%@ · パージ可能：%@";
 "%@ safe · %@ to review · %@ manual" = "安全 %@ · 要確認 %@ · 手動 %@";
+"%@ shares files with other folders, so compressing it could take more space. It was left as it was." = "%@ は他のフォルダとファイルを共有しているため、圧縮すると逆に容量が増える可能性があります。そのままにしました。";
 "%@ this week" = "今週 %@";
 "%@: the simulator is still running. Quit Simulator and Xcode, then try again." = "%@：シミュレータがまだ実行中です。Simulator と Xcode を終了してから、もう一度お試しください。";
 "%lld days idle" = "%lld 日未使用";
@@ -190,6 +195,8 @@
 "Show in menu bar" = "メニューバーに表示";
 "Show largest entries" = "最大の項目を表示";
 "Show the commands that run as administrator" = "管理者として実行されるコマンドを表示";
+"Shrink %@ without deleting" = "%@ を削除せずに圧縮";
+"Shrink without deleting" = "削除せずに圧縮";
 "Shut down simulators at power off" = "電源オフ時にシミュレータを終了";
 "Shut every simulator down first" = "先にすべてのシミュレータを終了";
 "Simulator devices" = "シミュレータデバイス";
@@ -198,6 +205,7 @@
 "Size" = "サイズ";
 "Size trend over recent scans" = "最近のスキャンでのサイズの推移";
 "Sort by" = "並べ替え";
+"Stores these files compressed, the way macOS stores its own. Nothing is deleted and everything opens as before." = "macOS が自身のファイルを保存するのと同じ方法で、これらのファイルを圧縮して保存します。何も削除されず、すべて今までどおり開けます。";
 "System" = "システム";
 "System Data" = "システムデータ";
 "System Data found: %@" = "見つかったシステムデータ：%@";
@@ -207,6 +215,7 @@
 "Temporary files" = "一時ファイル";
 "That is %@ short of %@." = "目標の %2$@ に対して %1$@ 足りません。";
 "The app could not be replaced: %@" = "Appを置き換えられませんでした：%@";
+"The compressed copy did not match the original." = "圧縮コピーが元のデータと一致しませんでした。";
 "The download did not finish. Nothing was installed." = "ダウンロードが完了しませんでした。何もインストールされていません。";
 "The download does not come from GitHub. Nothing was installed." = "ダウンロード元が GitHub ではありません。何もインストールされていません。";
 "The download is not signed by this app's developer, so it was discarded. (%@)" = "ダウンロードがこのAppの開発元によって署名されていないため、破棄しました。(%@)";
@@ -215,6 +224,8 @@
 "The project folder no longer exists, so nothing will rebuild or use this." = "プロジェクトフォルダはもう存在しないため、これを再作成・使用するものはありません。";
 "The same panel either way: the menu bar keeps the size in sight, the window opens from Applications like any other app." = "どちらも同じパネルです。メニューバーは容量を常に表示し、ウインドウは他のアプリと同じように「アプリケーション」から開きます。";
 "The same panel, as a window you can resize and leave open" = "同じパネルを、サイズを変更でき開いたままにできるウインドウとして表示します";
+"There is not enough free space to shrink %@ safely. It needs room for a compressed copy first." = "%@ を安全に圧縮するための空き容量が足りません。先に圧縮コピーを置く場所が必要です。";
+"This drive cannot store compressed files." = "このドライブは圧縮ファイルを保存できません。";
 "This is regenerated automatically when needed." = "これは必要に応じて自動的に再生成されます。";
 "Time Machine snapshots" = "Time Machine スナップショット";
 "Trash" = "ゴミ箱";

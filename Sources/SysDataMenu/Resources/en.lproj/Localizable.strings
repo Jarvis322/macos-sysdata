@@ -1,12 +1,17 @@
+"%1$@ could not be shrunk: %2$@" = "%1$@ could not be shrunk: %2$@";
+"%1$@ now takes %2$@ instead of %3$@. Nothing was deleted." = "%1$@ now takes %2$@ instead of %3$@. Nothing was deleted.";
 "%@ System Data · %@ free" = "%@ System Data · %@ free";
 "%@ System Data · %@ free · %@ this week" = "%@ System Data · %@ free · %@ this week";
+"%@ changed while it was being shrunk, so it was left as it was." = "%@ changed while it was being shrunk, so it was left as it was.";
 "%@ free on disk" = "%@ free on disk";
 "%@ free · %@ of safe items can go now" = "%@ free · %@ of safe items can go now";
 "%@ grew %@ beyond its recent size." = "%@ grew %@ beyond its recent size.";
+"%@ is already stored compressed." = "%@ is already stored compressed.";
 "%@ of it belongs to projects nobody has touched in %lld+ days." = "%@ of it belongs to projects nobody has touched in %lld+ days.";
 "%@ purgeable" = "%@ purgeable";
 "%@ safe to free now · %@ free on disk · %@ purgeable" = "%@ safe to free now · %@ free on disk · %@ purgeable";
 "%@ safe · %@ to review · %@ manual" = "%@ safe · %@ to review · %@ manual";
+"%@ shares files with other folders, so compressing it could take more space. It was left as it was." = "%@ shares files with other folders, so compressing it could take more space. It was left as it was.";
 "%@ this week" = "%@ this week";
 "%@: the simulator is still running. Quit Simulator and Xcode, then try again." = "%@: the simulator is still running. Quit Simulator and Xcode, then try again.";
 "%lld days idle" = "%lld days idle";
@@ -190,6 +195,8 @@
 "Show in menu bar" = "Show in menu bar";
 "Show largest entries" = "Show largest entries";
 "Show the commands that run as administrator" = "Show the commands that run as administrator";
+"Shrink %@ without deleting" = "Shrink %@ without deleting";
+"Shrink without deleting" = "Shrink without deleting";
 "Shut down simulators at power off" = "Shut down simulators at power off";
 "Shut every simulator down first" = "Shut every simulator down first";
 "Simulator devices" = "Simulator devices";
@@ -198,6 +205,7 @@
 "Size" = "Size";
 "Size trend over recent scans" = "Size trend over recent scans";
 "Sort by" = "Sort by";
+"Stores these files compressed, the way macOS stores its own. Nothing is deleted and everything opens as before." = "Stores these files compressed, the way macOS stores its own. Nothing is deleted and everything opens as before.";
 "System" = "System";
 "System Data" = "System Data";
 "System Data found: %@" = "System Data found: %@";
@@ -207,6 +215,7 @@
 "Temporary files" = "Temporary files";
 "That is %@ short of %@." = "That is %@ short of %@.";
 "The app could not be replaced: %@" = "The app could not be replaced: %@";
+"The compressed copy did not match the original." = "The compressed copy did not match the original.";
 "The download did not finish. Nothing was installed." = "The download did not finish. Nothing was installed.";
 "The download does not come from GitHub. Nothing was installed." = "The download does not come from GitHub. Nothing was installed.";
 "The download is not signed by this app's developer, so it was discarded. (%@)" = "The download is not signed by this app's developer, so it was discarded. (%@)";
@@ -215,6 +224,8 @@
 "The project folder no longer exists, so nothing will rebuild or use this." = "The project folder no longer exists, so nothing will rebuild or use this.";
 "The same panel either way: the menu bar keeps the size in sight, the window opens from Applications like any other app." = "The same panel either way: the menu bar keeps the size in sight, the window opens from Applications like any other app.";
 "The same panel, as a window you can resize and leave open" = "The same panel, as a window you can resize and leave open";
+"There is not enough free space to shrink %@ safely. It needs room for a compressed copy first." = "There is not enough free space to shrink %@ safely. It needs room for a compressed copy first.";
+"This drive cannot store compressed files." = "This drive cannot store compressed files.";
 "This is regenerated automatically when needed." = "This is regenerated automatically when needed.";
 "Time Machine snapshots" = "Time Machine snapshots";
 "Trash" = "Trash";

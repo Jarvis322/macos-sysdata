@@ -126,12 +126,17 @@ final class ScanModel {
     @ObservationIgnored private var deletedDuringScan: Set<String> = []
     /// Non-error feedback, such as "moved to the Trash".
     var notice: String?
+    /// When each item was last shrunk, so the button does not come back
+    /// until the folder has been written to since.
+    private var shrunkDates: [String: Date] =
+        (UserDefaults.standard.dictionary(forKey: ScanModel.shrunkKey) as? [String: Date]) ?? [:]
 
     /// False for the headless modes and the Shortcuts actions, which run a
     /// model of their own and must not overwrite what the widget shows.
     @ObservationIgnored private let scansAutomatically: Bool
 
     private static let hiddenKey = "hiddenItemIDs"
+    private static let shrunkKey = "shrunkItemDates"
     private static let sortKey = "sortOrder"
     private static let historyKey = "keepsHistory"
     private static let menuBarKey = "menuBarContent"
@@ -784,6 +789,118 @@ final class ScanModel {
         notice = deleted == 0
             ? L("Cancelled. Nothing was deleted.")
             : L("Cancelled. %d already deleted, the rest left alone.", deleted)
+    }
+
+    // MARK: Shrink
+
+    static let shrinkMinimumBytes: Int64 = 50 * 1_048_576
+
+    /// How long a row's folder must have gone unwritten before Shrink is
+    /// offered, or nil when it never is.
+    ///
+    /// Compression lasts until a file is rewritten. An SDK, an archive or an
+    /// old IDE version is installed once and only read, so its age does not
+    /// matter. A dependency tree changes only on install. Build output is
+    /// rewritten by every build, so only an abandoned project's is worth it.
+    /// Emulator disks are written in place, caches by every run of their
+    /// tool, and model weights and unrecognised folders are either dense
+    /// already or unknown: none of them is offered.
+    nonisolated static func shrinkIdleDays(for item: StorageItem) -> Int? {
+        let id = item.id
+        switch item.category {
+        case .android:
+            return id.hasPrefix("android-avd-") || id.hasPrefix("android-studio-cache-") ? nil : 0
+        case .xcode:
+            if id.hasPrefix("xcode-deriveddata-") || id == "xcode-DerivedData" { return 30 }
+            return id == "xcode-Archives" || id.hasSuffix("DeviceSupport") || id.hasPrefix("xcode-app-") ? 0 : nil
+        case .tools:
+            return id.hasPrefix("jetbrains-old-") || shrinkableToolInstalls.contains(id) ? 0 : nil
+        case .projects:
+            return ["node_modules", "Pods"].contains(item.revealURL?.lastPathComponent ?? "") ? 7 : 30
+        default:
+            return nil
+        }
+    }
+
+    /// Toolchains a version manager installs once and only reads.
+    private nonisolated static let shrinkableToolInstalls: Set<String> = [
+        "tool-.nvm/versions", "tool-.rustup/toolchains", "tool-.pyenv/versions", "tool-.rbenv/versions",
+        "tool-.sdkman/candidates", "tool-.gradle/wrapper/dists",
+    ]
+
+    /// The folders a Shrink would compress: the item's own, when this user
+    /// can replace them.
+    nonisolated static func shrinkTargets(of item: StorageItem) -> [URL] {
+        switch item.action {
+        case .removePaths(let urls), .emptyDirectories(let urls):
+            urls.filter { $0.isDirectory && FileManager.default.isDeletableFile(atPath: $0.path) }
+        default:
+            []
+        }
+    }
+
+    func canShrink(_ item: StorageItem) -> Bool {
+        guard let idleDays = Self.shrinkIdleDays(for: item),
+              (item.sizeBytes ?? 0) >= Self.shrinkMinimumBytes,
+              !item.action.isManual
+        else { return false }
+        if idleDays > 0 {
+            // A project's dependencies age from the last install, its build
+            // output from the last change to the project itself.
+            let since = item.category == .projects && idleDays < 30 ? item.builtAt : item.lastModified
+            let days = since.map { Calendar.current.dateComponents([.day], from: $0, to: .now).day ?? 0 } ?? 0
+            guard days >= idleDays else { return false }
+        }
+        // Shrunk already, and nothing written since.
+        if let shrunk = shrunkDates[item.id], (item.builtAt ?? item.lastModified ?? .distantPast) <= shrunk {
+            return false
+        }
+        return !Self.shrinkTargets(of: item).isEmpty
+    }
+
+    /// Compresses the item's folders in place. Nothing is deleted: the space
+    /// comes from storing the same files compressed.
+    func shrink(_ item: StorageItem) async {
+        let targets = Self.shrinkTargets(of: item)
+        guard !targets.isEmpty, !busyItemIDs.contains(item.id) else { return }
+        busyItemIDs.insert(item.id)
+        defer { busyItemIDs.remove(item.id) }
+        errorMessage = nil
+        notice = nil
+
+        var saved: Int64 = 0
+        var refusal: Error?
+        for folder in targets {
+            do {
+                saved += try await FolderCompression.shrink(folder).saved
+            } catch {
+                refusal = error
+            }
+        }
+
+        // Already compressed is an answer too: the button has nothing left
+        // to offer until the folder changes.
+        var alreadyCompressed = false
+        if case .alreadyCompressed = refusal as? FolderCompression.Refusal { alreadyCompressed = true }
+        if saved > 0 || alreadyCompressed {
+            shrunkDates[item.id] = .now
+            UserDefaults.standard.set(shrunkDates, forKey: Self.shrunkKey)
+        }
+        if saved > 0, let before = item.sizeBytes {
+            let after = max(before - saved, 0)
+            if let index = items.firstIndex(where: { $0.id == item.id }) {
+                items[index] = item.resized(to: after)
+            }
+            reclaimedBytes += saved
+            freeBytes = DiskSize.freeSpace()
+            purgeableBytes = DiskSize.purgeableSpace()
+            publishToWidget()
+            notice = L("%1$@ now takes %2$@ instead of %3$@. Nothing was deleted.",
+                       item.name, after.byteString, before.byteString)
+        }
+        if let refusal {
+            errorMessage = refusal.localizedDescription
+        }
     }
 
     /// Whether macOS's own administrator prompt will come before anything in

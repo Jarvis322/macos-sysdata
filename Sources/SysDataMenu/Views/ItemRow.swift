@@ -13,6 +13,8 @@ struct ItemRow: View {
     let onToggle: (Bool) -> Void
     let onDelete: () -> Void
     let onHide: () -> Void
+    /// Set when the row can be shrunk instead of deleted.
+    var onShrink: (() -> Void)?
 
     @State private var showsInstructions = false
     @State private var isExpanded = false
@@ -147,6 +149,10 @@ struct ItemRow: View {
             }
         }
         Button(L("Don't show this item again"), action: onHide)
+        if let onShrink {
+            Divider()
+            Button(L("Shrink without deleting"), action: onShrink)
+        }
         if !item.action.isManual {
             Divider()
             Button(L("Delete"), role: .destructive, action: onDelete)
@@ -336,6 +342,17 @@ struct ItemRow: View {
                     .controlSize(.small)
                     .frame(width: 20)
             } else {
+                // Shown at rest, unlike the hover controls: it is the one
+                // alternative to the delete beside it, and nobody looks for
+                // a way to keep files on a row that only offers to delete.
+                if let onShrink {
+                    Button(action: onShrink) {
+                        Image(systemName: "arrow.down.right.and.arrow.up.left")
+                    }
+                    .foregroundStyle(Color.accentColor)
+                    .accessibilityLabel(L("Shrink %@ without deleting", item.name))
+                    .help(L("Stores these files compressed, the way macOS stores its own. Nothing is deleted and everything opens as before."))
+                }
                 Button(role: .destructive, action: onDelete) {
                     Image(systemName: "trash")
                 }

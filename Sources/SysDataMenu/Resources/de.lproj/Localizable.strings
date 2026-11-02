@@ -1,12 +1,17 @@
+"%1$@ could not be shrunk: %2$@" = "%1$@ konnte nicht verkleinert werden: %2$@";
+"%1$@ now takes %2$@ instead of %3$@. Nothing was deleted." = "%1$@ belegt jetzt %2$@ statt %3$@. Nichts wurde gelöscht.";
 "%@ System Data · %@ free" = "%@ Systemdaten · %@ frei";
 "%@ System Data · %@ free · %@ this week" = "%@ Systemdaten · %@ frei · %@ diese Woche";
+"%@ changed while it was being shrunk, so it was left as it was." = "%@ hat sich während des Verkleinerns geändert und wurde daher unverändert gelassen.";
 "%@ free on disk" = "%@ frei auf der Festplatte";
 "%@ free · %@ of safe items can go now" = "%@ frei · %@ an sicheren Elementen können jetzt entfernt werden";
 "%@ grew %@ beyond its recent size." = "%@ ist um %@ über seine jüngste Größe gewachsen.";
+"%@ is already stored compressed." = "%@ ist bereits komprimiert gespeichert.";
 "%@ of it belongs to projects nobody has touched in %lld+ days." = "%@ davon gehören zu Projekten, die seit %lld+ Tagen niemand angefasst hat.";
 "%@ purgeable" = "%@ löschbar";
 "%@ safe to free now · %@ free on disk · %@ purgeable" = "%@ sicher freizugeben · %@ frei auf der Festplatte · %@ löschbar";
 "%@ safe · %@ to review · %@ manual" = "%@ sicher · %@ zu prüfen · %@ manuell";
+"%@ shares files with other folders, so compressing it could take more space. It was left as it was." = "%@ teilt Dateien mit anderen Ordnern, Komprimieren könnte also mehr Platz belegen. Es wurde unverändert gelassen.";
 "%@ this week" = "%@ diese Woche";
 "%@: the simulator is still running. Quit Simulator and Xcode, then try again." = "%@: Der Simulator läuft noch. Beende Simulator und Xcode und versuche es erneut.";
 "%lld days idle" = "%lld Tage inaktiv";
@@ -190,6 +195,8 @@
 "Show in menu bar" = "In der Menüleiste anzeigen";
 "Show largest entries" = "Größte Einträge anzeigen";
 "Show the commands that run as administrator" = "Zeige die Befehle, die als Administrator ausgeführt werden";
+"Shrink %@ without deleting" = "%@ verkleinern, ohne zu löschen";
+"Shrink without deleting" = "Verkleinern, ohne zu löschen";
 "Shut down simulators at power off" = "Simulatoren beim Ausschalten herunterfahren";
 "Shut every simulator down first" = "Zuerst alle Simulatoren herunterfahren";
 "Simulator devices" = "Simulator-Geräte";
@@ -198,6 +205,7 @@
 "Size" = "Größe";
 "Size trend over recent scans" = "Größenverlauf der letzten Scans";
 "Sort by" = "Sortieren nach";
+"Stores these files compressed, the way macOS stores its own. Nothing is deleted and everything opens as before." = "Speichert diese Dateien komprimiert, so wie macOS seine eigenen speichert. Nichts wird gelöscht, alles öffnet sich wie zuvor.";
 "System" = "System";
 "System Data" = "Systemdaten";
 "System Data found: %@" = "Systemdaten gefunden: %@";
@@ -207,6 +215,7 @@
 "Temporary files" = "Temporäre Dateien";
 "That is %@ short of %@." = "Das sind %1$@ weniger als %2$@.";
 "The app could not be replaced: %@" = "Die App konnte nicht ersetzt werden: %@";
+"The compressed copy did not match the original." = "Die komprimierte Kopie stimmte nicht mit dem Original überein.";
 "The download did not finish. Nothing was installed." = "Der Download wurde nicht abgeschlossen. Es wurde nichts installiert.";
 "The download does not come from GitHub. Nothing was installed." = "Der Download stammt nicht von GitHub. Es wurde nichts installiert.";
 "The download is not signed by this app's developer, so it was discarded. (%@)" = "Der Download ist nicht vom Entwickler dieser App signiert und wurde deshalb verworfen. (%@)";
@@ -215,6 +224,8 @@
 "The project folder no longer exists, so nothing will rebuild or use this." = "Den Projektordner gibt es nicht mehr, nichts wird dies neu erzeugen oder nutzen.";
 "The same panel either way: the menu bar keeps the size in sight, the window opens from Applications like any other app." = "In beiden Fällen dasselbe Panel: Die Menüleiste hält die Größe im Blick, das Fenster öffnet sich wie jede andere App über „Programme“.";
 "The same panel, as a window you can resize and leave open" = "Dasselbe Panel als Fenster, das sich in der Größe ändern und geöffnet lassen lässt";
+"There is not enough free space to shrink %@ safely. It needs room for a compressed copy first." = "Es ist nicht genug freier Speicher vorhanden, um %@ sicher zu verkleinern. Zuerst wird Platz für eine komprimierte Kopie benötigt.";
+"This drive cannot store compressed files." = "Dieses Laufwerk kann keine komprimierten Dateien speichern.";
 "This is regenerated automatically when needed." = "Dies wird bei Bedarf automatisch neu erzeugt.";
 "Time Machine snapshots" = "Time Machine-Snapshots";
 "Trash" = "Papierkorb";

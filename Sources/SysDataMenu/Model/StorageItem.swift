@@ -219,6 +219,15 @@ struct StorageItem: Identifiable, Sendable {
         self.hiddenWith = hiddenWith
     }
 
+    /// The same item at a new size, after it was shrunk in place.
+    func resized(to bytes: Int64) -> StorageItem {
+        StorageItem(
+            id: id, category: category, name: name, detail: detail, sizeBytes: bytes,
+            safety: safety, action: action, revealURL: revealURL, lastModified: lastModified,
+            alsoClaims: alsoClaims, project: project, builtAt: builtAt, hiddenWith: hiddenWith
+        )
+    }
+
     /// Whole days since anything inside changed.
     var idleDays: Int? {
         guard let lastModified else { return nil }

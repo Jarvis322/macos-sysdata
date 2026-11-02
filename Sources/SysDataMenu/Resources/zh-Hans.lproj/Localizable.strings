@@ -1,12 +1,17 @@
+"%1$@ could not be shrunk: %2$@" = "无法压缩 %1$@：%2$@";
+"%1$@ now takes %2$@ instead of %3$@. Nothing was deleted." = "%1$@ 现在占用 %2$@，而不是 %3$@。没有删除任何内容。";
 "%@ System Data · %@ free" = "%@ 系统数据 · %@ 可用";
 "%@ System Data · %@ free · %@ this week" = "%@ 系统数据 · %@ 可用 · 本周 %@";
+"%@ changed while it was being shrunk, so it was left as it was." = "%@ 在压缩过程中发生了变化，因此已保持原样。";
 "%@ free on disk" = "磁盘可用空间：%@";
 "%@ free · %@ of safe items can go now" = "%@ 可用 · 现在可清理 %@ 可安全清理的项目";
 "%@ grew %@ beyond its recent size." = "%@ 比近期大小增加了 %@。";
+"%@ is already stored compressed." = "%@ 已经以压缩形式存储。";
 "%@ of it belongs to projects nobody has touched in %lld+ days." = "其中 %1$@ 属于 %2$lld 天以上无人改动的项目。";
 "%@ purgeable" = "%@ 可清除";
 "%@ safe to free now · %@ free on disk · %@ purgeable" = "当前可安全释放 %@ · 磁盘可用空间 %@ · 可清除空间 %@";
 "%@ safe · %@ to review · %@ manual" = "%@ 可安全清理 · %@ 需检查 · %@ 需手动处理";
+"%@ shares files with other folders, so compressing it could take more space. It was left as it was." = "%@ 与其他文件夹共享文件，压缩反而可能占用更多空间。已保持原样。";
 "%@ this week" = "本周 %@";
 "%@: the simulator is still running. Quit Simulator and Xcode, then try again." = "%@：模拟器仍在运行。请退出 Simulator 和 Xcode 后重试。";
 "%lld days idle" = "%lld 天未变动";
@@ -190,6 +195,8 @@
 "Show in menu bar" = "在菜单栏中显示";
 "Show largest entries" = "显示最大的项目";
 "Show the commands that run as administrator" = "显示以管理员身份执行的命令";
+"Shrink %@ without deleting" = "压缩 %@ 而不删除";
+"Shrink without deleting" = "压缩而不删除";
 "Shut down simulators at power off" = "关机时关闭模拟器";
 "Shut every simulator down first" = "先关闭所有模拟器";
 "Simulator devices" = "模拟器设备";
@@ -198,6 +205,7 @@
 "Size" = "大小";
 "Size trend over recent scans" = "近期扫描的大小趋势";
 "Sort by" = "排序方式";
+"Stores these files compressed, the way macOS stores its own. Nothing is deleted and everything opens as before." = "以 macOS 存储自身文件的方式压缩存储这些文件。不会删除任何内容，所有文件照常打开。";
 "System" = "系统";
 "System Data" = "系统数据";
 "System Data found: %@" = "发现的系统数据：%@";
@@ -207,6 +215,7 @@
 "Temporary files" = "临时文件";
 "That is %@ short of %@." = "距离 %2$@ 还差 %1$@。";
 "The app could not be replaced: %@" = "无法替换应用：%@";
+"The compressed copy did not match the original." = "压缩副本与原始数据不一致。";
 "The download did not finish. Nothing was installed." = "下载未完成。未安装任何内容。";
 "The download does not come from GitHub. Nothing was installed." = "下载内容并非来自 GitHub。未安装任何内容。";
 "The download is not signed by this app's developer, so it was discarded. (%@)" = "下载内容并非由此应用的开发者签名，已丢弃。（%@）";
@@ -215,6 +224,8 @@
 "The project folder no longer exists, so nothing will rebuild or use this." = "项目文件夹已不存在，任何东西都不会重建或使用它。";
 "The same panel either way: the menu bar keeps the size in sight, the window opens from Applications like any other app." = "两种方式都是同一个面板：菜单栏让大小始终可见，窗口则像其他应用一样从“应用程序”打开。";
 "The same panel, as a window you can resize and leave open" = "同一个面板，以可调整大小并可一直开着的窗口呈现";
+"There is not enough free space to shrink %@ safely. It needs room for a compressed copy first." = "可用空间不足，无法安全压缩 %@。需要先有存放压缩副本的空间。";
+"This drive cannot store compressed files." = "此磁盘无法存储压缩文件。";
 "This is regenerated automatically when needed." = "需要时会自动重新生成。";
 "Time Machine snapshots" = "时间机器快照";
 "Trash" = "废纸篓";

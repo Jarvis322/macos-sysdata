@@ -1,12 +1,17 @@
+"%1$@ could not be shrunk: %2$@" = "%1$@ küçültülemedi: %2$@";
+"%1$@ now takes %2$@ instead of %3$@. Nothing was deleted." = "%1$@ artık %3$@ yerine %2$@ yer kaplıyor. Hiçbir şey silinmedi.";
 "%@ System Data · %@ free" = "%@ Sistem Verileri · %@ boş";
 "%@ System Data · %@ free · %@ this week" = "%@ Sistem Verileri · %@ boş · bu hafta %@";
+"%@ changed while it was being shrunk, so it was left as it was." = "%@ küçültülürken değişti, bu yüzden olduğu gibi bırakıldı.";
 "%@ free on disk" = "diskte %@ boş";
 "%@ free · %@ of safe items can go now" = "%@ boş · %@ güvenli öğe şimdi silinebilir";
 "%@ grew %@ beyond its recent size." = "%@ son dönem boyutunun %@ üstüne çıktı.";
+"%@ is already stored compressed." = "%@ zaten sıkıştırılmış olarak saklanıyor.";
 "%@ of it belongs to projects nobody has touched in %lld+ days." = "Bunun %1$@ kadarı %2$lld+ gündür dokunulmamış projelere ait.";
 "%@ purgeable" = "%@ temizlenebilir";
 "%@ safe to free now · %@ free on disk · %@ purgeable" = "%@ güvenle boşaltılabilir · diskte %@ boş · %@ temizlenebilir";
 "%@ safe · %@ to review · %@ manual" = "%@ güvenli · %@ incelenecek · %@ manuel";
+"%@ shares files with other folders, so compressing it could take more space. It was left as it was." = "%@ dosyalarını başka klasörlerle paylaşıyor; sıkıştırmak daha fazla yer kaplatabilir. Olduğu gibi bırakıldı.";
 "%@ this week" = "bu hafta %@";
 "%@: the simulator is still running. Quit Simulator and Xcode, then try again." = "%@: simülatör hâlâ çalışıyor. Simulator'ı ve Xcode'u kapatıp tekrar dene.";
 "%lld days idle" = "%lld gündür boşta";
@@ -190,6 +195,8 @@
 "Show in menu bar" = "Menü çubuğunda göster";
 "Show largest entries" = "En büyük girdileri göster";
 "Show the commands that run as administrator" = "Yönetici olarak çalışacak komutları göster";
+"Shrink %@ without deleting" = "%@ öğesini silmeden küçült";
+"Shrink without deleting" = "Silmeden küçült";
 "Shut down simulators at power off" = "Kapanışta simülatörleri kapat";
 "Shut every simulator down first" = "Önce bütün simulator'lar kapatılır";
 "Simulator devices" = "Simülatör aygıtları";
@@ -198,6 +205,7 @@
 "Size" = "Boyut";
 "Size trend over recent scans" = "Son taramalardaki boyut eğilimi";
 "Sort by" = "Sıralama";
+"Stores these files compressed, the way macOS stores its own. Nothing is deleted and everything opens as before." = "Bu dosyaları macOS'un kendi dosyalarını sakladığı gibi sıkıştırılmış olarak saklar. Hiçbir şey silinmez, her şey eskisi gibi açılır.";
 "System" = "Sistem";
 "System Data" = "Sistem Verileri";
 "System Data found: %@" = "Bulunan Sistem Verileri: %@";
@@ -207,6 +215,7 @@
 "Temporary files" = "Geçici dosyalar";
 "That is %@ short of %@." = "Bu, %2$@ hedefinden %1$@ eksik.";
 "The app could not be replaced: %@" = "Uygulama değiştirilemedi: %@";
+"The compressed copy did not match the original." = "Sıkıştırılmış kopya orijinalle eşleşmedi.";
 "The download did not finish. Nothing was installed." = "İndirme tamamlanmadı. Hiçbir şey kurulmadı.";
 "The download does not come from GitHub. Nothing was installed." = "İndirilen dosya GitHub'dan gelmiyor. Hiçbir şey kurulmadı.";
 "The download is not signed by this app's developer, so it was discarded. (%@)" = "İndirilen dosya bu uygulamanın geliştiricisi tarafından imzalanmamış, bu yüzden atıldı. (%@)";
@@ -215,6 +224,8 @@
 "The project folder no longer exists, so nothing will rebuild or use this." = "Proje klasörü artık yok; bunu hiçbir şey yeniden oluşturmayacak ya da kullanmayacak.";
 "The same panel either way: the menu bar keeps the size in sight, the window opens from Applications like any other app." = "İkisinde de aynı panel: menü çubuğu boyutu hep görünür tutar, pencere ise Uygulamalar klasöründen her uygulama gibi açılır.";
 "The same panel, as a window you can resize and leave open" = "Aynı panel; boyutunu değiştirebileceğin ve açık bırakabileceğin bir pencere olarak";
+"There is not enough free space to shrink %@ safely. It needs room for a compressed copy first." = "%@ güvenle küçültmek için yeterli boş alan yok. Önce sıkıştırılmış bir kopya için yer gerekiyor.";
+"This drive cannot store compressed files." = "Bu disk sıkıştırılmış dosya saklayamıyor.";
 "This is regenerated automatically when needed." = "Gerektiğinde kendiliğinden yeniden oluşturulur.";
 "Time Machine snapshots" = "Time Machine anlık görüntüleri";
 "Trash" = "Çöp Sepeti";

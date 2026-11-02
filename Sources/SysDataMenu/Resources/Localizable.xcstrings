@@ -12651,6 +12651,578 @@
           }
         }
       }
+    },
+    "Shrink without deleting": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "压缩而不删除"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Silmeden küçült"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "削除せずに圧縮"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verkleinern, ohne zu löschen"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Réduire sans supprimer"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reducir sin borrar"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "삭제하지 않고 압축"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Сжать без удаления"
+          }
+        }
+      }
+    },
+    "Shrink %@ without deleting": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "压缩 %@ 而不删除"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ öğesini silmeden küçült"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ を削除せずに圧縮"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ verkleinern, ohne zu löschen"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Réduire %@ sans supprimer"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reducir %@ sin borrar"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ 삭제하지 않고 압축"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Сжать %@ без удаления"
+          }
+        }
+      }
+    },
+    "Stores these files compressed, the way macOS stores its own. Nothing is deleted and everything opens as before.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "以 macOS 存储自身文件的方式压缩存储这些文件。不会删除任何内容，所有文件照常打开。"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu dosyaları macOS'un kendi dosyalarını sakladığı gibi sıkıştırılmış olarak saklar. Hiçbir şey silinmez, her şey eskisi gibi açılır."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "macOS が自身のファイルを保存するのと同じ方法で、これらのファイルを圧縮して保存します。何も削除されず、すべて今までどおり開けます。"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Speichert diese Dateien komprimiert, so wie macOS seine eigenen speichert. Nichts wird gelöscht, alles öffnet sich wie zuvor."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stocke ces fichiers compressés, comme macOS stocke les siens. Rien n'est supprimé et tout s'ouvre comme avant."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Guarda estos archivos comprimidos, como macOS guarda los suyos. No se borra nada y todo se abre como antes."
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "macOS가 자체 파일을 저장하는 방식으로 이 파일들을 압축해 저장합니다. 아무것도 삭제되지 않으며 모든 파일이 이전처럼 열립니다."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Хранит эти файлы в сжатом виде, как macOS хранит свои. Ничего не удаляется, всё открывается как прежде."
+          }
+        }
+      }
+    },
+    "%1$@ now takes %2$@ instead of %3$@. Nothing was deleted.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ 现在占用 %2$@，而不是 %3$@。没有删除任何内容。"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ artık %3$@ yerine %2$@ yer kaplıyor. Hiçbir şey silinmedi."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ は %3$@ から %2$@ になりました。何も削除されていません。"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ belegt jetzt %2$@ statt %3$@. Nichts wurde gelöscht."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ occupe maintenant %2$@ au lieu de %3$@. Rien n'a été supprimé."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ ahora ocupa %2$@ en lugar de %3$@. No se borró nada."
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@의 크기가 %3$@에서 %2$@(으)로 줄었습니다. 삭제된 것은 없습니다."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ теперь занимает %2$@ вместо %3$@. Ничего не удалено."
+          }
+        }
+      }
+    },
+    "%@ shares files with other folders, so compressing it could take more space. It was left as it was.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ 与其他文件夹共享文件，压缩反而可能占用更多空间。已保持原样。"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ dosyalarını başka klasörlerle paylaşıyor; sıkıştırmak daha fazla yer kaplatabilir. Olduğu gibi bırakıldı."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ は他のフォルダとファイルを共有しているため、圧縮すると逆に容量が増える可能性があります。そのままにしました。"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ teilt Dateien mit anderen Ordnern, Komprimieren könnte also mehr Platz belegen. Es wurde unverändert gelassen."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ partage des fichiers avec d'autres dossiers ; le compresser pourrait prendre plus de place. Il a été laissé tel quel."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ comparte archivos con otras carpetas, así que comprimirla podría ocupar más espacio. Se dejó como estaba."
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@은(는) 다른 폴더와 파일을 공유하므로 압축하면 오히려 공간을 더 차지할 수 있습니다. 그대로 두었습니다."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ делит файлы с другими папками, поэтому сжатие может занять больше места. Папка оставлена как есть."
+          }
+        }
+      }
+    },
+    "%@ is already stored compressed.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ 已经以压缩形式存储。"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ zaten sıkıştırılmış olarak saklanıyor."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ はすでに圧縮して保存されています。"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ ist bereits komprimiert gespeichert."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ est déjà stocké compressé."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ ya está guardado comprimido."
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@은(는) 이미 압축되어 저장되어 있습니다."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ уже хранится в сжатом виде."
+          }
+        }
+      }
+    },
+    "There is not enough free space to shrink %@ safely. It needs room for a compressed copy first.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "可用空间不足，无法安全压缩 %@。需要先有存放压缩副本的空间。"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ güvenle küçültmek için yeterli boş alan yok. Önce sıkıştırılmış bir kopya için yer gerekiyor."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ を安全に圧縮するための空き容量が足りません。先に圧縮コピーを置く場所が必要です。"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Es ist nicht genug freier Speicher vorhanden, um %@ sicher zu verkleinern. Zuerst wird Platz für eine komprimierte Kopie benötigt."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Il n'y a pas assez d'espace libre pour réduire %@ en toute sécurité. Il faut d'abord de la place pour une copie compressée."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No hay espacio libre suficiente para reducir %@ con seguridad. Primero necesita sitio para una copia comprimida."
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@을(를) 안전하게 압축할 여유 공간이 부족합니다. 먼저 압축된 사본을 둘 공간이 필요합니다."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Недостаточно свободного места, чтобы безопасно сжать %@. Сначала нужно место для сжатой копии."
+          }
+        }
+      }
+    },
+    "%@ changed while it was being shrunk, so it was left as it was.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ 在压缩过程中发生了变化，因此已保持原样。"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ küçültülürken değişti, bu yüzden olduğu gibi bırakıldı."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ は圧縮中に変更されたため、そのままにしました。"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ hat sich während des Verkleinerns geändert und wurde daher unverändert gelassen."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ a changé pendant la réduction, il a donc été laissé tel quel."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ cambió mientras se reducía, así que se dejó como estaba."
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@이(가) 압축 중에 변경되어 그대로 두었습니다."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ изменилась во время сжатия, поэтому оставлена как есть."
+          }
+        }
+      }
+    },
+    "This drive cannot store compressed files.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "此磁盘无法存储压缩文件。"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu disk sıkıştırılmış dosya saklayamıyor."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "このドライブは圧縮ファイルを保存できません。"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dieses Laufwerk kann keine komprimierten Dateien speichern."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ce disque ne peut pas stocker de fichiers compressés."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Esta unidad no puede guardar archivos comprimidos."
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "이 드라이브는 압축 파일을 저장할 수 없습니다."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Этот диск не поддерживает сжатые файлы."
+          }
+        }
+      }
+    },
+    "%1$@ could not be shrunk: %2$@": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "无法压缩 %1$@：%2$@"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ küçültülemedi: %2$@"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ を圧縮できませんでした: %2$@"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ konnte nicht verkleinert werden: %2$@"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ n'a pas pu être réduit : %2$@"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No se pudo reducir %1$@: %2$@"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@을(를) 압축할 수 없습니다: %2$@"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Не удалось сжать %1$@: %2$@"
+          }
+        }
+      }
+    },
+    "The compressed copy did not match the original.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "压缩副本与原始数据不一致。"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sıkıştırılmış kopya orijinalle eşleşmedi."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "圧縮コピーが元のデータと一致しませんでした。"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die komprimierte Kopie stimmte nicht mit dem Original überein."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La copie compressée ne correspondait pas à l'original."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La copia comprimida no coincidía con el original."
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "압축된 사본이 원본과 일치하지 않았습니다."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Сжатая копия не совпала с оригиналом."
+          }
+        }
+      }
     }
   }
 }
