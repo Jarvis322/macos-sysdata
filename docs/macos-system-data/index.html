@@ -1,0 +1,316 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>macOS System Data: What It Is and How to Clear It Safely</title>
+<meta name="description" content="What macOS System Data is, what fills it on a real Mac, how to see each part with Terminal, and which parts are safe to clear, with measurements, not guesses.">
+<link rel="canonical" href="https://macos-sysdata.yigitech.dev/macos-system-data/">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+<meta name="author" content="Yigit Can Polat">
+<meta name="theme-color" content="#eceef1" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#131518" media="(prefers-color-scheme: dark)">
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="System Data Unpacked">
+<meta property="og:url" content="https://macos-sysdata.yigitech.dev/macos-system-data/">
+<meta property="og:title" content="macOS System Data: what it is and how to clear it safely">
+<meta property="og:description" content="What fills System Data on a real Mac, how to see each part, and which parts are safe to clear, with measurements, not guesses.">
+<meta property="og:image" content="https://macos-sysdata.yigitech.dev/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="article:published_time" content="2026-11-02">
+<meta property="article:modified_time" content="2026-11-02">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@yigitech">
+<meta name="twitter:creator" content="@yigitech">
+<meta name="twitter:title" content="macOS System Data: what it is and how to clear it safely">
+<meta name="twitter:description" content="What fills System Data on a real Mac, how to see each part, and which parts are safe to clear.">
+<meta name="twitter:image" content="https://macos-sysdata.yigitech.dev/og.png">
+<link rel="icon" type="image/png" sizes="64x64" href="/favicon.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<style>
+  :root {
+    --paper: #eceef1;
+    --sheet: #f8f9fa;
+    --ink: #16181b;
+    --soft: #5d636b;
+    --rule: #d6d9de;
+    --mystery: #a3a8ae;
+    --safe: #2a9d4b;
+    --review: #e08a2b;
+    --manual: #6f7782;
+    --apps: #3c7be0;
+    --link: #2563d4;
+    color-scheme: light dark;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --paper: #131518;
+      --sheet: #1b1e22;
+      --ink: #e9ecef;
+      --soft: #9aa1a9;
+      --rule: #2b2f35;
+      --mystery: #6b7178;
+      --safe: #43c06a;
+      --review: #f0a04b;
+      --manual: #8a929c;
+      --apps: #5b95f0;
+      --link: #6ea2ff;
+    }
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font: 18px/1.65 -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+    font-variant-numeric: tabular-nums;
+  }
+  a { color: var(--link); text-underline-offset: 2px; }
+  a:focus-visible { outline: 2px solid var(--link); outline-offset: 3px; border-radius: 6px; }
+  .wrap { max-width: 1040px; margin: 0 auto; padding: 0 28px; }
+  .top { display: flex; align-items: center; justify-content: space-between; padding: 22px 0; }
+  .brand { display: flex; align-items: center; gap: 10px; font-weight: 600; color: var(--ink); text-decoration: none; }
+  .brand img { width: 30px; height: 30px; border-radius: 7px; }
+  .top nav { display: flex; gap: 22px; font-size: 15px; }
+  .top nav a { color: var(--soft); text-decoration: none; }
+  .top nav a:hover { color: var(--ink); }
+
+  article { max-width: 720px; margin: 0 auto; padding: 40px 0 0; }
+  .crumbs { font-size: 14px; color: var(--soft); margin: 0 0 18px; }
+  .crumbs a { color: inherit; }
+  h1 {
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", Arial, sans-serif;
+    font-size: clamp(36px, 6vw, 56px); line-height: 1.05; letter-spacing: -0.03em; font-weight: 700; margin: 0;
+  }
+  .byline { color: var(--soft); font-size: 15px; margin: 18px 0 0; }
+  .answer {
+    margin: 34px 0 0; padding: 22px 24px; background: var(--sheet); border: 1px solid var(--rule); border-radius: 16px;
+  }
+  .answer p { margin: 0; }
+  .answer b { font-weight: 650; }
+  h2 { font-size: clamp(26px, 3.4vw, 34px); line-height: 1.15; letter-spacing: -0.02em; margin: 64px 0 14px; }
+  h3 { font-size: 20px; line-height: 1.3; margin: 34px 0 6px; }
+  p { margin: 0 0 18px; }
+  ul, ol { padding-left: 22px; margin: 0 0 18px; }
+  li { margin: 0 0 8px; }
+  code { font: 15px ui-monospace, "SF Mono", Menlo, monospace; background: var(--sheet); border: 1px solid var(--rule); padding: 1px 6px; border-radius: 6px; }
+  pre { margin: 0 0 20px; padding: 16px 18px; background: var(--sheet); border: 1px solid var(--rule); border-radius: 12px; overflow-x: auto; }
+  pre code { background: none; border: 0; padding: 0; font-size: 14.5px; line-height: 1.6; }
+  .note { color: var(--soft); font-size: 15px; }
+
+  .table-wrap { overflow-x: auto; margin: 0 0 20px; border: 1px solid var(--rule); border-radius: 14px; background: var(--sheet); }
+  table { width: 100%; border-collapse: collapse; font-size: 16px; }
+  th, td { text-align: left; padding: 11px 14px; border-bottom: 1px solid var(--rule); vertical-align: top; }
+  tr:last-child td { border-bottom: 0; }
+  th { font-size: 14px; color: var(--soft); font-weight: 600; }
+  td.num { text-align: right; white-space: nowrap; font-weight: 600; }
+  .chip { display: inline-block; font-size: 13px; font-weight: 600; padding: 1px 9px; border-radius: 999px; color: var(--c); background: color-mix(in srgb, var(--c) 15%, transparent); white-space: nowrap; }
+
+  .qa { border-top: 2px solid var(--ink); margin-top: 18px; }
+  .qa details { border-bottom: 1px solid var(--rule); }
+  .qa summary { cursor: pointer; list-style: none; padding: 18px 36px 18px 0; font-weight: 600; font-size: 18px; position: relative; }
+  .qa summary::-webkit-details-marker { display: none; }
+  .qa summary::after { content: "+"; position: absolute; right: 4px; top: 13px; font-size: 26px; font-weight: 300; color: var(--soft); transition: transform .2s; }
+  .qa details[open] summary::after { transform: rotate(45deg); }
+  .qa p { color: var(--soft); }
+
+  .cta { margin: 64px 0 0; padding: 28px; background: var(--sheet); border: 1px solid var(--rule); border-radius: 18px; }
+  .cta h2 { margin: 0 0 10px; font-size: 26px; }
+  .cta p { color: var(--soft); }
+  .btn {
+    display: inline-flex; align-items: center; gap: 9px; height: 48px; padding: 0 22px; border-radius: 12px;
+    font-size: 16px; font-weight: 600; text-decoration: none; background: var(--ink); color: var(--paper);
+  }
+  .cta .more { margin-left: 16px; font-size: 15px; }
+
+  footer { margin: 96px 0 0; padding: 26px 0 44px; border-top: 1px solid var(--rule); color: var(--soft); font-size: 15px; display: flex; flex-wrap: wrap; gap: 14px 28px; justify-content: space-between; }
+  footer a { color: inherit; }
+  footer nav { display: flex; flex-wrap: wrap; gap: 22px; }
+  @media (max-width: 600px) {
+    /* Each part as a small card: name, badge and size on one line, where
+       it lives under them. Nothing is hidden, only rearranged. */
+    table.parts thead { display: none; }
+    table.parts tr { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; gap: 4px 10px; align-items: baseline; padding: 12px 14px; border-bottom: 1px solid var(--rule); }
+    table.parts tr:last-child { border-bottom: 0; }
+    table.parts td { padding: 0; border: 0; }
+    table.parts td:nth-child(1) { grid-area: 1 / 1; font-weight: 600; }
+    table.parts td:nth-child(3) { grid-area: 1 / 2; }
+    table.parts td:nth-child(4) { grid-area: 1 / 3; }
+    table.parts td:nth-child(2) { grid-area: 2 / 1 / 3 / 4; color: var(--soft); font-size: 15px; }
+    table.parts code { overflow-wrap: anywhere; }
+    .wrap { padding: 0 18px; }
+    body { font-size: 17px; }
+    .top nav a.hide-sm { display: none; }
+    article { padding-top: 18px; }
+    .cta { padding: 20px; }
+    .cta .more { display: block; margin: 14px 0 0; }
+  }
+</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Article","@id":"https://macos-sysdata.yigitech.dev/macos-system-data/#article","headline":"macOS System Data: what it is and how to clear it safely","description":"What macOS System Data is, what fills it on a real Mac, how to see each part with Terminal, and which parts are safe to clear.","datePublished":"2026-11-02","dateModified":"2026-11-02","inLanguage":"en","mainEntityOfPage":"https://macos-sysdata.yigitech.dev/macos-system-data/","image":"https://macos-sysdata.yigitech.dev/og.png","author":{"@id":"https://yigitech.dev/#person"},"publisher":{"@id":"https://yigitech.dev/#person"},"about":{"@type":"Thing","name":"macOS System Data"},"isPartOf":{"@id":"https://macos-sysdata.yigitech.dev/#website"}},{"@type":"Person","@id":"https://yigitech.dev/#person","name":"Yigit Can Polat","url":"https://yigitech.dev","sameAs":["https://x.com/yigitech","https://github.com/Jarvis322"]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"System Data Unpacked","item":"https://macos-sysdata.yigitech.dev/"},{"@type":"ListItem","position":2,"name":"macOS System Data","item":"https://macos-sysdata.yigitech.dev/macos-system-data/"}]},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Is it safe to delete System Data on a Mac?","acceptedAnswer":{"@type":"Answer","text":"Parts of it. Caches, build products and old logs rebuild on their own, so deleting them costs only a rebuild. Device backups, simulators with apps on them, virtual machines and downloaded models hold things you may want. The macOS system files are on a read-only volume and are not something to try to delete."}},{"@type":"Question","name":"Why does System Data come back after I clear it?","acceptedAnswer":{"@type":"Answer","text":"Most of what is safe to delete is a cache, and caches refill as you work: the next build recreates DerivedData, the next install refills the package cache. What does not come back is what you stopped using, such as an old simulator runtime or a finished project's build folder. That is where clearing pays for longest."}},{"@type":"Question","name":"Does restarting a Mac reduce System Data?","acceptedAnswer":{"@type":"Answer","text":"Sometimes, by a little. A restart clears some temporary files and swap, and macOS may remove local snapshots on its own schedule. It does not touch developer caches, simulators, backups or application data, which are usually most of the total."}},{"@type":"Question","name":"How much System Data is normal?","acceptedAnswer":{"@type":"Answer","text":"There is no normal figure, because it depends on what the Mac is used for. A Mac used for mail and browsing may hold 10 to 20 GB; a developer's Mac with Xcode, simulators and a few projects commonly holds 60 to 150 GB without anything being wrong. What matters is whether the parts are things you still use."}},{"@type":"Question","name":"Why is System Data so large on a Mac with a small disk?","acceptedAnswer":{"@type":"Answer","text":"It is not larger, it is more noticeable. The caches and tools are the same size on a 256 GB Mac as on a 2 TB one, so they take a much bigger share of a small disk and fill it sooner."}},{"@type":"Question","name":"Do cleaner apps delete System Data?","acceptedAnswer":{"@type":"Answer","text":"Many delete caches, which is a small part of it. The larger parts, such as simulators, build folders, models, backups and snapshots, need someone to decide, which is why a list of what is there is more useful than a single Clean button."}}]}]}</script>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <a class="brand" href="/"><img src="/apple-touch-icon.png" width="180" height="180" alt="">System Data Unpacked</a>
+    <nav aria-label="Site">
+      <a class="hide-sm" href="/">The app</a>
+      <a href="https://github.com/Jarvis322/macos-sysdata">GitHub</a>
+    </nav>
+  </div>
+
+  <article>
+    <p class="crumbs"><a href="/">System Data Unpacked</a> › macOS System Data</p>
+    <h1>macOS System Data: what it is and how to clear it safely</h1>
+    <p class="byline">By <a href="https://yigitech.dev">Yigit Can Polat</a>, who builds a Mac app that measures it · Updated 2 November 2026</p>
+
+    <div class="answer">
+      <p><b>The short answer.</b> System Data is the catch-all line in macOS Storage settings: everything macOS cannot file under Apps, Documents, Photos or the system itself. On a developer's Mac it is mostly caches, simulators, build folders and downloaded models, which rebuild or can be downloaded again. On any Mac it also holds local Time Machine snapshots, logs and device backups. Some of it is safe to delete, some is a decision, and the only reliable way to tell which is to measure what is actually in it.</p>
+    </div>
+
+    <h2 id="what">What System Data is</h2>
+    <p>Open <b>System Settings › General › Storage</b> (on macOS Monterey and earlier, <b>About This Mac › Storage</b>) and the bar is split into Applications, Documents, Photos, macOS and a few more. System Data is what is left over. It is not a folder and not a type of file. It is a category, and it is defined by exclusion: whatever Storage settings cannot attribute to one of the named categories ends up there.</p>
+    <p>Until macOS Monterey the same category was called <b>Other</b>. The rename did not change what goes into it, and it did not make it any easier to see inside: Storage settings still shows one total and no list.</p>
+    <p>That is why the number is confusing. It is not one thing that grew, it is a few dozen unrelated things that each grew a little, and macOS adds them up without saying what they are.</p>
+
+    <h2 id="inside">What is actually inside it</h2>
+    <p>Here is a real one: a developer's Mac, 245 GB disk, System Data at 107.9 GB, measured item by item. The badges say how much thought deleting each part needs.</p>
+    <div class="table-wrap">
+      <table class="parts">
+        <thead><tr><th>Part</th><th>Where it lives</th><th>Safety</th><th class="num">Size</th></tr></thead>
+        <tbody>
+          <tr><td>Project build folders</td><td><code>node_modules</code>, <code>.next</code>, <code>.build</code>, <code>Pods</code> inside your projects</td><td><span class="chip" style="--c:var(--review)">Review</span></td><td class="num">23.8 GB</td></tr>
+          <tr><td>Simulator devices</td><td><code>~/Library/Developer/CoreSimulator/Devices</code></td><td><span class="chip" style="--c:var(--review)">Review</span></td><td class="num">19.5 GB</td></tr>
+          <tr><td>Simulator runtimes</td><td>managed by <code>xcrun simctl runtime</code></td><td><span class="chip" style="--c:var(--review)">Review</span></td><td class="num">15.9 GB</td></tr>
+          <tr><td>Package managers</td><td>Homebrew, npm, pip, uv, Cargo caches and installs</td><td><span class="chip" style="--c:var(--manual)">Manual</span></td><td class="num">13.3 GB</td></tr>
+          <tr><td>AI models and tools</td><td><code>~/.ollama</code>, <code>~/.cache/huggingface</code>, LM Studio</td><td><span class="chip" style="--c:var(--review)">Review</span></td><td class="num">8.1 GB</td></tr>
+          <tr><td>Caches that rebuild</td><td><code>~/Library/Caches</code>, Xcode caches, logs</td><td><span class="chip" style="--c:var(--safe)">Safe</span></td><td class="num">6.6 GB</td></tr>
+          <tr><td>Everything else</td><td>app data, containers, snapshots, smaller folders</td><td><span class="chip" style="--c:var(--mystery)">Mixed</span></td><td class="num">20.7 GB</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">Measured with System Data Unpacked on one Mac. Yours will differ, which is the point: the parts change from machine to machine, so no fixed list of folders to delete is right for everyone.</p>
+    <p>On a Mac that is not used for development the mix is different but the idea is the same. The usual large parts are:</p>
+    <ul>
+      <li><b>Local Time Machine snapshots.</b> Hourly APFS snapshots kept on the startup disk while the backup drive is away. macOS deletes them on its own when it needs room, but until then they count.</li>
+      <li><b>iPhone and iPad backups</b> made to the Mac, in <code>~/Library/Application Support/MobileSync/Backup</code>. Often tens of gigabytes each, and often the only local copy of a device.</li>
+      <li><b>Application data.</b> Chat apps keep every photo and video they receive; creative apps keep media caches and render files; Logic Pro and GarageBand sound libraries can reach tens of gigabytes.</li>
+      <li><b>Caches and logs</b> in <code>~/Library/Caches</code>, <code>~/Library/Logs</code> and <code>/Library/Caches</code>.</li>
+      <li><b>Virtual machine disks</b> from Parallels, UTM, VMware Fusion or Docker, which are single files of tens of gigabytes.</li>
+      <li><b>Software update files</b> while an update is downloading or waiting to install.</li>
+    </ul>
+
+    <h2 id="why">Why System Data gets so large</h2>
+    <p>Almost nothing in it is a leak. Each part is a cache or a store that some tool fills on purpose and nobody empties: Xcode keeps every build product in case you build again, a package manager keeps every version it downloaded, a simulator keeps every app you installed on it, and every Xcode update leaves the previous simulator runtime behind. Each of them is reasonable on its own. Together, over a year, they pass 100 GB without anything being wrong.</p>
+    <p>It also grows in bursts. A new Xcode, a new project, a model download or a phone backup can add 10 to 30 GB in an afternoon, which is why the number seems to jump rather than creep.</p>
+
+    <h2 id="see">How to see what is inside</h2>
+    <p>Storage settings will not list the parts, but Terminal will. These commands only read; none of them deletes anything.</p>
+    <h3>The largest folders in your Library</h3>
+    <pre><code>du -sh ~/Library/* ~/Library/Application\ Support/* 2&gt;/dev/null | sort -h | tail -20</code></pre>
+    <h3>Local Time Machine snapshots</h3>
+    <pre><code>tmutil listlocalsnapshots /</code></pre>
+    <h3>Simulator runtimes and devices (if you have Xcode)</h3>
+    <pre><code>xcrun simctl runtime list
+du -sh ~/Library/Developer/CoreSimulator/Devices ~/Library/Developer/Xcode/* 2&gt;/dev/null</code></pre>
+    <h3>Docker</h3>
+    <pre><code>docker system df</code></pre>
+    <p>Two things make doing this by hand slow. Some of the largest folders sit inside other apps' containers, which macOS will not let Terminal read until Terminal has Full Disk Access. And a list of sizes does not say what each folder is or whether deleting it is safe. That second question is the one that matters.</p>
+
+    <h2 id="clear">How to clear System Data safely</h2>
+    <p>Go from the parts that cost nothing to delete towards the ones that need a decision, and stop when you have the space you need.</p>
+    <h3>1. Caches and build output that rebuild on their own</h3>
+    <p>Xcode's DerivedData, package manager caches and app caches are recreated the next time they are needed. Deleting them costs a slower next build and nothing else.</p>
+    <pre><code>rm -rf ~/Library/Developer/Xcode/DerivedData
+brew cleanup --prune=all
+npm cache clean --force</code></pre>
+    <h3>2. Simulators and runtimes you no longer use</h3>
+    <p>Every Xcode update leaves the previous runtime behind. Remove the devices Xcode itself marks unavailable, then any runtime you no longer build for.</p>
+    <pre><code>xcrun simctl delete unavailable
+xcrun simctl runtime list
+xcrun simctl runtime delete &lt;identifier&gt;</code></pre>
+    <h3>3. Build folders of projects you stopped working on</h3>
+    <p>A <code>node_modules</code> or <code>.build</code> folder in a project you have not opened for months is pure cost. It comes back with <code>npm install</code> or the next build if you ever return.</p>
+    <h3>4. Local snapshots, if you need room right now</h3>
+    <p>macOS removes local snapshots when it runs short of space, so this is rarely needed. When it is, delete them by date from the list above:</p>
+    <pre><code>sudo tmutil deletelocalsnapshots &lt;date&gt;</code></pre>
+    <h3>5. Decisions, not cleanup</h3>
+    <p>Device backups, virtual machines, downloaded models and app data are things you may want back. Check that a phone is backed up to iCloud before removing its local backup (Finder › your device › Manage Backups), and remove chat media from inside the chat app rather than from its folder, which also holds your login and message history.</p>
+    <h3>What not to delete</h3>
+    <ul>
+      <li>Anything under <code>/System</code>. Since macOS Catalina the system lives on its own read-only volume, sealed since Big Sur; it is not where your System Data is, and trying to change it achieves nothing good.</li>
+      <li>Whole folders under <code>~/Library/Containers</code> or <code>~/Library/Group Containers</code> belonging to Apple apps. They hold the local copy of Notes, Messages, Mail and others, part of which may not have reached iCloud yet.</li>
+      <li>Anything you cannot name. A folder you do not recognise is a reason to find out what made it, not a reason to delete it.</li>
+    </ul>
+
+    <h2 id="purgeable">Purgeable space is not free space</h2>
+    <p>Finder and Storage settings show a <b>purgeable</b> figure: the space macOS estimates it could free from caches and snapshots if something needed room. It is tempting to count it as free. Measured, it is not.</p>
+    <p>On a MacBook with 55.38 GB free, 3.55 GB purgeable and no local snapshots, 6.44 GB was written in 1 GB steps and then deleted. Free space fell by 6.45 GB, every byte of it from real free space and none from the purgeable pool. The purgeable figure dropped to 1.11 GB along the way, which was macOS lowering its estimate rather than handing anything over, and it returned to 3.55 GB on its own once the files were gone. <a href="https://github.com/Jarvis322/macos-sysdata/blob/main/docs/purgeable-measurement.md">The full measurement</a> is published.</p>
+    <p>macOS may evict more when a disk is genuinely close to full. At ordinary free-space levels, though, purgeable is an estimate that moves on its own, not space to plan around.</p>
+
+    <h2 id="compress">Reducing it without deleting anything</h2>
+    <p>Some of System Data you would rather keep: an SDK, an archive, a project you will come back to. macOS can store files compressed and decompress them transparently when they are read. It does this to much of the system itself. Applied to folders that are mostly read, it frees a lot of space and changes nothing about how they behave. Measured on copies of real folders, with every file compared afterwards:</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Folder</th><th class="num">Before</th><th class="num">After</th><th class="num">Saved</th></tr></thead>
+        <tbody>
+          <tr><td><code>node_modules</code> (22,241 files)</td><td class="num">454 MB</td><td class="num">224 MB</td><td class="num">51%</td></tr>
+          <tr><td>Xcode DerivedData</td><td class="num">413 MB</td><td class="num">214 MB</td><td class="num">48%</td></tr>
+          <tr><td>npm cache</td><td class="num">110 MB</td><td class="num">61 MB</td><td class="num">45%</td></tr>
+          <tr><td>Xcode archives</td><td class="num">20 MB</td><td class="num">13 MB</td><td class="num">33%</td></tr>
+          <tr><td>Android SDK platforms</td><td class="num">130 MB</td><td class="num">101 MB</td><td class="num">23%</td></tr>
+          <tr><td>Apple's iOS SDK</td><td class="num">79 MB</td><td class="num">79 MB</td><td class="num">0%</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>The last row is the useful warning: data Apple already ships compressed, and dense data such as media or model weights, gains nothing. And folders whose files are shared with others, as a pnpm <code>node_modules</code> made of hard links is, can grow rather than shrink if they are compressed one copy at a time.</p>
+
+    <h2 id="faq">Questions</h2>
+    <div class="qa">
+      <details open>
+        <summary>Is it safe to delete System Data on a Mac?</summary>
+        <p>Parts of it. Caches, build products and old logs rebuild on their own, so deleting them costs only a rebuild. Device backups, simulators with apps on them, virtual machines and downloaded models hold things you may want. The macOS system files are on a read-only volume and are not something to try to delete.</p>
+      </details>
+      <details>
+        <summary>Why does System Data come back after I clear it?</summary>
+        <p>Most of what is safe to delete is a cache, and caches refill as you work: the next build recreates DerivedData, the next install refills the package cache. What does not come back is what you stopped using, such as an old simulator runtime or a finished project's build folder. That is where clearing pays for longest.</p>
+      </details>
+      <details>
+        <summary>Does restarting a Mac reduce System Data?</summary>
+        <p>Sometimes, by a little. A restart clears some temporary files and swap, and macOS may remove local snapshots on its own schedule. It does not touch developer caches, simulators, backups or application data, which are usually most of the total.</p>
+      </details>
+      <details>
+        <summary>How much System Data is normal?</summary>
+        <p>There is no normal figure, because it depends on what the Mac is used for. A Mac used for mail and browsing may hold 10 to 20 GB; a developer's Mac with Xcode, simulators and a few projects commonly holds 60 to 150 GB without anything being wrong. What matters is whether the parts are things you still use.</p>
+      </details>
+      <details>
+        <summary>Why is System Data so large on a Mac with a small disk?</summary>
+        <p>It is not larger, it is more noticeable. The caches and tools are the same size on a 256 GB Mac as on a 2 TB one, so they take a much bigger share of a small disk and fill it sooner.</p>
+      </details>
+      <details>
+        <summary>Do cleaner apps delete System Data?</summary>
+        <p>Many delete caches, which is a small part of it. The larger parts, such as simulators, build folders, models, backups and snapshots, need someone to decide, which is why a list of what is there is more useful than a single Clean button.</p>
+      </details>
+    </div>
+
+    <section class="cta" aria-labelledby="cta-title">
+      <h2 id="cta-title">See your own System Data, item by item</h2>
+      <p>System Data Unpacked is a free, open-source Mac app that does everything on this page for you: it measures each part of System Data, labels it Safe, Review or Manual, shows the exact command before anything runs, and can shrink folders instead of deleting them. macOS 14 or later.</p>
+      <a class="btn" href="https://github.com/Jarvis322/macos-sysdata/releases/latest/download/SystemDataUnpacked.dmg">Download for Mac</a>
+      <a class="more" href="/">How the app works</a>
+    </section>
+  </article>
+
+  <footer>
+    <span>Made by <a href="https://x.com/yigitech">@yigitech</a> for macOS 14 and later.</span>
+    <nav aria-label="More">
+      <a href="/">The app</a>
+      <a href="https://github.com/Jarvis322/macos-sysdata/blob/main/CHANGELOG.md">Changelog</a>
+      <a href="https://github.com/Jarvis322/macos-sysdata">Source</a>
+    </nav>
+  </footer>
+</div>
+</body>
+</html>

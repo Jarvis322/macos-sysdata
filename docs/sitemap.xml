@@ -12,4 +12,10 @@
       <image:title>System Data Unpacked</image:title>
     </image:image>
   </url>
+  <url>
+    <loc>https://macos-sysdata.yigitech.dev/macos-system-data/</loc>
+    <lastmod>2026-11-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
 </urlset>
