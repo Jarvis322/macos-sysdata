@@ -5,6 +5,14 @@ What changed in each release, and where it is worth saying, why.
 Versions up to and including v0.3.7 were released under the MIT License; see
 [LICENSE](LICENSE).
 
+## v1.11.2 — 2026-11-06
+
+- **A scan no longer stops at its last place.** When a command the app
+  runs to measure something left a background process behind, such as a
+  daemon a developer tool starts on first use, the app waited for that
+  process to end, which could be never, and the scan stayed at "22 of 23"
+  (#27). It now waits two seconds at most after the command finishes.
+
 ## v1.11.1 — 2026-11-02
 
 - **Nothing is left behind by an interrupted Shrink.** If the app quit,
