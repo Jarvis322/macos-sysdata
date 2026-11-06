@@ -1,4 +1,5 @@
 import Foundation
+import os
 
 enum DiskSize {
     /// What one walk of a location reports: how much it takes up, and when
@@ -14,6 +15,104 @@ enum DiskSize {
         /// Newest modification date under the location, or nil when it holds
         /// no regular files.
         var lastModified: Date?
+        /// The walk stopped getting answers and was given up on, so `bytes`
+        /// is not the size of the location (see `watched`).
+        var stalled = false
+    }
+
+    /// Counts the entries a walk has read, so a walk that has stopped reading
+    /// can be told apart from one that is merely long.
+    final class WalkProgress: Sendable {
+        private let entries = OSAllocatedUnfairLock(initialState: 0)
+
+        func advance() { entries.withLock { $0 += 1 } }
+        var count: Int { entries.withLock { $0 } }
+    }
+
+    /// How many walks read the disk at once. The concurrency pool used to
+    /// set this by having one thread per core; dispatch has no such limit,
+    /// and forty walks at once made the scan slower, not faster.
+    private static let walkSlots = WalkSlots(count: ProcessInfo.processInfo.activeProcessorCount)
+
+    /// A counting gate for walks. A slot is given back when its walk ends or
+    /// is given up on, whichever comes first, so walks stuck in the kernel
+    /// never hold slots the rest of the scan needs.
+    private actor WalkSlots {
+        private var free: Int
+        private var waiting: [CheckedContinuation<Void, Never>] = []
+
+        init(count: Int) { free = max(count, 1) }
+
+        func acquire() async {
+            if free > 0 {
+                free -= 1
+                return
+            }
+            await withCheckedContinuation { waiting.append($0) }
+        }
+
+        func release() {
+            if waiting.isEmpty {
+                free += 1
+            } else {
+                waiting.removeFirst().resume()
+            }
+        }
+    }
+
+    /// How long a walk may go without reading a single entry before the scan
+    /// stops waiting for it. A large folder keeps reading; this only ever
+    /// catches one whose file system has stopped answering.
+    static let stallLimit: Duration = .seconds(30)
+
+    /// Runs a walk off the concurrency pool and returns its result, or nil if
+    /// it read nothing for `stallLimit`.
+    ///
+    /// A directory read on a file system that has stopped answering — a
+    /// network share that went away, a cloud-synced folder waiting on its
+    /// provider, a stuck FUSE mount — blocks in the kernel and never returns,
+    /// and nothing can cancel it. The scan used to wait with it and sit at
+    /// "22 of 23" for good (#27). The walk still blocks, on a dispatch thread
+    /// that is left to it; the scan goes on without that location.
+    static func watched<T: Sendable>(
+        stallLimit: Duration = DiskSize.stallLimit, checkEvery: Duration = .seconds(2),
+        _ walk: @escaping @Sendable (WalkProgress) -> T
+    ) async -> T? {
+        let progress = WalkProgress()
+        let slots = walkSlots
+        await slots.acquire()
+        return await withCheckedContinuation { (continuation: CheckedContinuation<T?, Never>) in
+            let resumed = OSAllocatedUnfairLock(initialState: false)
+            let finish: @Sendable (T?) -> Void = { value in
+                let first = resumed.withLock { done in
+                    defer { done = true }
+                    return !done
+                }
+                guard first else { return }
+                continuation.resume(returning: value)
+                Task { await slots.release() }
+            }
+            // Not a detached task: a walk blocked in the kernel would hold one
+            // of the concurrency pool's few threads for good, and enough of
+            // them would stall every other probe. Dispatch adds threads.
+            // User-initiated, not utility: on a dispatch queue utility walks
+            // had their disk reads throttled, and the scan took 30% longer
+            // than the same walks run as utility tasks had.
+            DispatchQueue.global(qos: .userInitiated).async { finish(walk(progress)) }
+            Task.detached(priority: .utility) {
+                var lastCount = -1
+                var quietFor: Duration = .zero
+                while !resumed.withLock({ $0 }) {
+                    try? await Task.sleep(for: checkEvery)
+                    let count = progress.count
+                    if count == lastCount { quietFor += checkEvery } else { lastCount = count; quietFor = .zero }
+                    if quietFor >= stallLimit {
+                        finish(nil)
+                        return
+                    }
+                }
+            }
+        }
     }
 
     /// Allocated bytes under `url`, following the same rules Finder uses for
@@ -23,16 +122,15 @@ enum DiskSize {
     }
 
     static func measure(at url: URL, olderThan cutoff: Date? = nil) async -> Measurement {
-        await Task.detached(priority: .utility) {
-            measureSync(at: url, olderThan: cutoff)
-        }.value
+        await watched { progress in measureSync(at: url, olderThan: cutoff, progress: progress) }
+            ?? Measurement(bytes: 0, lastModified: nil, stalled: true)
     }
 
     static func allocatedSync(at url: URL, olderThan cutoff: Date? = nil) -> Int64 {
         measureSync(at: url, olderThan: cutoff).bytes
     }
 
-    static func measureSync(at url: URL, olderThan cutoff: Date? = nil) -> Measurement {
+    static func measureSync(at url: URL, olderThan cutoff: Date? = nil, progress: WalkProgress? = nil) -> Measurement {
         let fileManager = FileManager.default
         var isDirectory: ObjCBool = false
         guard fileManager.fileExists(atPath: url.path, isDirectory: &isDirectory) else {
@@ -56,6 +154,7 @@ enum DiskSize {
 
         var total = Measurement(bytes: 0, lastModified: nil)
         for case let child as URL in enumerator {
+            progress?.advance()
             let child = measure(of: child, keys: keys, cutoff: cutoff)
             total.bytes += child.bytes
             if let modified = child.lastModified,
@@ -74,7 +173,9 @@ enum DiskSize {
     /// the locations it will refuse to report anyway — the ones another probe
     /// already explains, and the ones Finder counts as Photos or Mail rather
     /// than System Data — which is most of the files on a developer Mac.
-    static func directorySizes(under root: URL, maxDepth: Int, skipping: Set<String> = []) -> [String: Int64] {
+    static func directorySizes(
+        under root: URL, maxDepth: Int, skipping: Set<String> = [], progress: WalkProgress? = nil
+    ) -> [String: Int64] {
         // The enumerator hands back the paths realpath(3) would produce, and
         // those are what the arithmetic below and the skip test are compared
         // against. `resolvingSymlinksInPath` is not the same thing: it strips a
@@ -102,6 +203,7 @@ enum DiskSize {
 
         var sizes: [String: Int64] = [:]
         for case let file as URL in enumerator {
+            progress?.advance()
             guard let values = try? file.resourceValues(forKeys: keys) else { continue }
             guard values.isRegularFile == true else {
                 if let rootVolume, let volume = values.volumeIdentifier, !volume.isEqual(rootVolume) {

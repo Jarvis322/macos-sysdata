@@ -18,8 +18,16 @@ enum ProbeSupport {
         action: ReclaimAction,
         minimumBytes: Int64 = 1
     ) async -> StorageItem? {
+        // Checked before the walk rather than inside it: most locations a
+        // probe asks about do not exist on a given Mac, and each would
+        // otherwise wait for a walk slot behind the real walks. What hangs
+        // on a file system that has stopped answering is reading a folder's
+        // entries, which the walk does and is watched for (#27).
         guard url.exists else { return nil }
         let measured = await DiskSize.measure(at: url)
+        if measured.stalled {
+            return unansweredItem(id: id, category: category, name: name, url: url)
+        }
         guard measured.bytes >= minimumBytes else { return nil }
         return StorageItem(
             id: id,
@@ -51,6 +59,21 @@ enum ProbeSupport {
             }
             return items
         }
+    }
+
+    /// A location whose file system stopped answering while it was measured.
+    ///
+    /// Listed rather than dropped, so the scan says where it gave up instead
+    /// of quietly showing less, and claimed, so the catch-all does not walk
+    /// into the same place. It has no size, so nothing offers to delete it.
+    static func unansweredItem(id: String, category: StorageCategory, name: String, url: URL) -> StorageItem {
+        StorageItem(
+            id: id, category: category, name: name,
+            detail: "Could not be measured: reading this folder stopped getting answers. It may be on a network drive, a disconnected disk, or in a cloud-synced folder.",
+            sizeBytes: nil, safety: .manual,
+            action: .manual("Open it in Finder to see what it is. If it is on a network or cloud drive, check that the drive is connected or the files are downloaded, then scan again."),
+            revealURL: url
+        )
     }
 
     /// Runs a JSON-producing command and decodes its top-level object.

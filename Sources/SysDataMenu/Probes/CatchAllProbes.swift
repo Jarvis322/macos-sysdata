@@ -218,22 +218,27 @@ struct LargeFolderProbe: StorageProbe {
                     guard DiskSize.isOnBootVolume(child),
                           !skipping.contains(DiskSize.realPath(child.path)) else { continue }
                     group.addTask {
-                        await Task.detached(priority: .utility) {
-                            // Nothing under a claimed or excluded directory can
-                            // ever be reported: `visit` returns on both before it
-                            // looks at a size. Their bytes only ever fed the totals
-                            // of parents, and a parent holding a claimed child is
-                            // recursed into rather than listed, so leaving those
-                            // bytes out cannot hide an item — a child that survives
-                            // the filters is smaller than the reduced parent total
-                            // by definition.
-                            let sizes = DiskSize.directorySizes(
-                                under: child, maxDepth: Self.maxDepth - 1, skipping: skipping
+                        // Nothing under a claimed or excluded directory can
+                        // ever be reported: `visit` returns on both before it
+                        // looks at a size. Their bytes only ever fed the totals
+                        // of parents, and a parent holding a claimed child is
+                        // recursed into rather than listed, so leaving those
+                        // bytes out cannot hide an item — a child that survives
+                        // the filters is smaller than the reduced parent total
+                        // by definition.
+                        let walked = await DiskSize.watched { progress in
+                            DiskSize.directorySizes(
+                                under: child, maxDepth: Self.maxDepth - 1, skipping: skipping, progress: progress
                             )
-                            var items: [StorageItem] = []
-                            Self.visit(child, depth: 1, sizes: sizes, claimed: claimedPaths, excluded: excludedPaths, apps: apps, into: &items)
-                            return items
-                        }.value
+                        }
+                        guard let sizes = walked else {
+                            return [ProbeSupport.unansweredItem(
+                                id: "other-\(child.path)", category: .other, name: child.abbreviatedPath, url: child
+                            )]
+                        }
+                        var items: [StorageItem] = []
+                        Self.visit(child, depth: 1, sizes: sizes, claimed: claimedPaths, excluded: excludedPaths, apps: apps, into: &items)
+                        return items
                     }
                 }
             }
