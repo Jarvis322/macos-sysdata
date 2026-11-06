@@ -5,6 +5,16 @@ What changed in each release, and where it is worth saying, why.
 Versions up to and including v0.3.7 were released under the MIT License; see
 [LICENSE](LICENSE).
 
+## v1.11.3 — 2026-11-06
+
+- **A folder that stops answering no longer stops the scan.** A folder on
+  a network share that went away, in a cloud-synced folder waiting on its
+  provider, or on a stuck FUSE mount can block a read forever, and the
+  scan stayed at its last place with it (#27). The scan now gives up on a
+  folder once it has read nothing for 30 seconds, finishes, and lists that
+  folder as could not be measured rather than hiding it. A large folder
+  that keeps reading is never cut short, and the scan is as fast as before.
+
 ## v1.11.2 — 2026-11-06
 
 - **A scan no longer stops at its last place.** When a command the app
