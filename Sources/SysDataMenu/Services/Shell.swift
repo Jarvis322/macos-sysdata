@@ -63,6 +63,8 @@ enum Shell {
 
     /// How long a program has to exit after SIGTERM before it is killed.
     private static let terminationGrace: Double = 5
+    /// How long the output pipe may stay open after the program has exited.
+    private static let pipeGrace: Double = 2
 
     /// The blocking half of `run`, kept synchronous because it waits on the
     /// pipe and the process; it only ever runs on the queue above.
@@ -123,11 +125,15 @@ enum Shell {
         exited.withLock { $0 = true }
         deadline?.cancel()
         let wasStopped = timedOut.withLock { $0 }
-        if wasStopped {
-            // Whatever still holds the pipe is not waited for.
+        // Whatever still holds the pipe is not waited for. After a timeout
+        // that is the program's own children; after a normal exit it is a
+        // child the program left behind — a daemon a CLI starts on first
+        // use, a shim's helper — which can live for as long as the Mac is
+        // up, and waiting for it held the scan at its last place (#27).
+        // What the program itself wrote is in the pipe by the time it
+        // exits, so a short grace reads all of it.
+        if wasStopped || ended.wait(timeout: .now() + pipeGrace) == .timedOut {
             pipe.fileHandleForReading.readabilityHandler = nil
-        } else {
-            ended.wait()
         }
 
         return CommandResult(

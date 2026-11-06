@@ -37,4 +37,19 @@ struct ShellTimeoutTests {
         #expect(result.succeeded)
         #expect(result.output == "hello\n")
     }
+
+    /// A program that exits normally but leaves a child holding the output
+    /// pipe — a daemon a CLI starts on first use, a shim's helper — used to
+    /// leave the scan on "22 of 23" for as long as that child lived (#27).
+    /// The child here sleeps for 60 seconds; the run must not wait for it.
+    @Test(.timeLimit(.minutes(1))) func aChildLeftRunningAfterANormalExitIsNotWaitedFor() async throws {
+        let clock = ContinuousClock()
+        let start = clock.now
+        let result = try await Shell.run(
+            "/bin/sh", ["-c", "echo done; sleep 60 &"], timeout: .seconds(20)
+        )
+        #expect(result.succeeded)
+        #expect(result.output.contains("done"))
+        #expect(clock.now - start < .seconds(15))
+    }
 }
