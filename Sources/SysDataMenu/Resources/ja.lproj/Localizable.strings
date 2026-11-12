@@ -115,6 +115,7 @@
 "History" = "履歴";
 "History and settings" = "履歴と設定";
 "How to remove %@" = "%@ の削除方法";
+"How to remove this item" = "この項目を削除する方法";
 "Icon only" = "アイコンのみ";
 "Idle %lld days: %lld" = "%lld日間放置：%lld";
 "Idle longest" = "未使用期間順";
@@ -145,6 +146,7 @@
 "No project build output found" = "プロジェクトのビルド出力は見つかりません";
 "No single item stands out. Many small ones grew together." = "目立つ項目はありません。小さな項目が多数まとめて増えました。";
 "Nobody has changed this project's own files in %lld days." = "このプロジェクト自体のファイルは %lld 日間誰も変更していません。";
+"Not selected" = "未選択";
 "Nothing here can be freed by this app." = "このアプリで解放できるものはありません。";
 "Nothing to compare yet" = "まだ比較できるものがありません";
 "Nothing to reclaim" = "解放できるものがありません";
@@ -186,6 +188,7 @@
 "Select every item that is regenerated automatically" = "自動的に再生成される項目をすべて選択";
 "Select safe" = "安全な項目を選択";
 "Select the build folders of projects whose own files nobody has changed in this long. Each is recreated by its build or install command." = "この期間、誰もファイルを変更していないプロジェクトのビルドフォルダを選択します。どれもビルドまたはインストールのコマンドで作り直せます。";
+"Selected" = "選択済み";
 "Selects the least worrying items that add up to this much. Nothing is deleted until you confirm." = "合計がこの容量になる、最も心配の少ない項目を選びます。確認するまで何も削除されません。";
 "Settings" = "設定";
 "Shared & other users" = "共有と他のユーザ";

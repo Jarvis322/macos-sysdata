@@ -115,6 +115,7 @@
 "History" = "История";
 "History and settings" = "История и настройки";
 "How to remove %@" = "Как удалить %@";
+"How to remove this item" = "Как удалить этот объект";
 "Icon only" = "Только значок";
 "Idle %lld days: %lld" = "Не трогали %lld дн.: %lld";
 "Idle longest" = "Дольше всего не используется";
@@ -145,6 +146,7 @@
 "No project build output found" = "Результаты сборки проектов не найдены";
 "No single item stands out. Many small ones grew together." = "Ничего одного выдающегося нет. Выросло много мелких элементов.";
 "Nobody has changed this project's own files in %lld days." = "Файлы этого проекта никто не менял %lld дн.";
+"Not selected" = "Не выбрано";
 "Nothing here can be freed by this app." = "Это приложение здесь ничего освободить не может.";
 "Nothing to compare yet" = "Пока нечего сравнивать";
 "Nothing to reclaim" = "Нечего освобождать";
@@ -186,6 +188,7 @@
 "Select every item that is regenerated automatically" = "Выбрать все объекты, которые создаются автоматически заново";
 "Select safe" = "Выбрать безопасные";
 "Select the build folders of projects whose own files nobody has changed in this long. Each is recreated by its build or install command." = "Выбирает папки сборки проектов, файлы которых никто не менял всё это время. Каждая пересоздаётся командой сборки или установки.";
+"Selected" = "Выбрано";
 "Selects the least worrying items that add up to this much. Nothing is deleted until you confirm." = "Выбирает самые безопасные элементы, которые в сумме дают столько места. Ничего не удаляется без вашего подтверждения.";
 "Settings" = "Настройки";
 "Shared & other users" = "Общие данные и другие пользователи";

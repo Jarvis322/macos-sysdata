@@ -115,6 +115,7 @@
 "History" = "Geçmiş";
 "History and settings" = "Geçmiş ve ayarlar";
 "How to remove %@" = "%@ nasıl kaldırılır";
+"How to remove this item" = "Bu öğe nasıl kaldırılır";
 "Icon only" = "Yalnızca simge";
 "Idle %lld days: %lld" = "%lld gündür boşta: %lld";
 "Idle longest" = "En uzun boşta";
@@ -145,6 +146,7 @@
 "No project build output found" = "Proje derleme çıktısı bulunamadı";
 "No single item stands out. Many small ones grew together." = "Öne çıkan tek bir öğe yok. Birçok küçük öğe birlikte büyüdü.";
 "Nobody has changed this project's own files in %lld days." = "Bu projenin kendi dosyalarına %lld gündür kimse dokunmadı.";
+"Not selected" = "Seçili değil";
 "Nothing here can be freed by this app." = "Burada bu uygulamanın boşaltabileceği bir şey yok.";
 "Nothing to compare yet" = "Henüz karşılaştıracak bir şey yok";
 "Nothing to reclaim" = "Geri kazanılacak bir şey yok";
@@ -186,6 +188,7 @@
 "Select every item that is regenerated automatically" = "Kendiliğinden yeniden oluşan her kalemi seç";
 "Select safe" = "Güvenlileri seç";
 "Select the build folders of projects whose own files nobody has changed in this long. Each is recreated by its build or install command." = "Kendi dosyalarına bu süre boyunca kimsenin dokunmadığı projelerin build klasörlerini seçer. Her biri kendi build veya kurulum komutuyla yeniden oluşur.";
+"Selected" = "Seçili";
 "Selects the least worrying items that add up to this much. Nothing is deleted until you confirm." = "Toplamı bu kadar eden, en az endişe verici öğeleri seçer. Sen onaylamadan hiçbir şey silinmez.";
 "Settings" = "Ayarlar";
 "Shared & other users" = "Paylaşılan ve diğer kullanıcılar";

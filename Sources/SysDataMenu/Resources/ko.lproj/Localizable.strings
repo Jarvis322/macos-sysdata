@@ -115,6 +115,7 @@
 "History" = "기록";
 "History and settings" = "기록 및 설정";
 "How to remove %@" = "%@ 제거 방법";
+"How to remove this item" = "이 항목을 제거하는 방법";
 "Icon only" = "아이콘만";
 "Idle %lld days: %lld" = "%lld일 동안 방치: %lld";
 "Idle longest" = "가장 오래 미사용";
@@ -145,6 +146,7 @@
 "No project build output found" = "프로젝트 빌드 결과물이 없습니다";
 "No single item stands out. Many small ones grew together." = "두드러지는 항목이 없습니다. 작은 항목 여러 개가 함께 늘었습니다.";
 "Nobody has changed this project's own files in %lld days." = "%lld일 동안 아무도 이 프로젝트의 파일을 변경하지 않았습니다.";
+"Not selected" = "선택 안 됨";
 "Nothing here can be freed by this app." = "이 앱이 여기서 확보할 수 있는 것은 없습니다.";
 "Nothing to compare yet" = "아직 비교할 항목 없음";
 "Nothing to reclaim" = "확보할 공간 없음";
@@ -186,6 +188,7 @@
 "Select every item that is regenerated automatically" = "자동으로 다시 생성되는 모든 항목 선택";
 "Select safe" = "안전 항목 선택";
 "Select the build folders of projects whose own files nobody has changed in this long. Each is recreated by its build or install command." = "이 기간 동안 아무도 파일을 변경하지 않은 프로젝트의 빌드 폴더를 선택합니다. 각 폴더는 빌드 또는 설치 명령으로 다시 만들어집니다.";
+"Selected" = "선택됨";
 "Selects the least worrying items that add up to this much. Nothing is deleted until you confirm." = "합계가 이만큼 되는 가장 부담 적은 항목을 선택합니다. 확인하기 전에는 아무것도 삭제되지 않습니다.";
 "Settings" = "설정";
 "Shared & other users" = "공유 및 다른 사용자";

@@ -115,6 +115,7 @@
 "History" = "历史记录";
 "History and settings" = "历史记录与设置";
 "How to remove %@" = "如何移除%@";
+"How to remove this item" = "如何移除此项目";
 "Icon only" = "仅图标";
 "Idle %lld days: %lld" = "闲置 %lld 天：%lld";
 "Idle longest" = "最久未变动";
@@ -145,6 +146,7 @@
 "No project build output found" = "未找到项目构建输出";
 "No single item stands out. Many small ones grew together." = "没有特别突出的单个项目，是许多小项目一起增长。";
 "Nobody has changed this project's own files in %lld days." = "%lld 天内没有人修改过这个项目自己的文件。";
+"Not selected" = "未选择";
 "Nothing here can be freed by this app." = "此应用在这里无法释放任何空间。";
 "Nothing to compare yet" = "暂无可比较的记录";
 "Nothing to reclaim" = "没有可释放的空间";
@@ -186,6 +188,7 @@
 "Select every item that is regenerated automatically" = "选择所有会自动重新生成的项目";
 "Select safe" = "选择可安全清理的项目";
 "Select the build folders of projects whose own files nobody has changed in this long. Each is recreated by its build or install command." = "选择在这段时间内无人修改过其文件的项目的构建文件夹。每个文件夹都可由对应的构建或安装命令重新生成。";
+"Selected" = "已选择";
 "Selects the least worrying items that add up to this much. Nothing is deleted until you confirm." = "选择合计达到该大小、风险最小的项目。在你确认之前不会删除任何内容。";
 "Settings" = "设置";
 "Shared & other users" = "共享与其他用户";

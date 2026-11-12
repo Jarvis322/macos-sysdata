@@ -115,6 +115,7 @@
 "History" = "Verlauf";
 "History and settings" = "Verlauf und Einstellungen";
 "How to remove %@" = "So entfernst du %@";
+"How to remove this item" = "So entfernen Sie dieses Objekt";
 "Icon only" = "Nur Symbol";
 "Idle %lld days: %lld" = "%lld Tage unberührt: %lld";
 "Idle longest" = "Am längsten inaktiv";
@@ -145,6 +146,7 @@
 "No project build output found" = "Keine Build-Ausgabe von Projekten gefunden";
 "No single item stands out. Many small ones grew together." = "Kein einzelner Eintrag fällt auf. Viele kleine sind gemeinsam gewachsen.";
 "Nobody has changed this project's own files in %lld days." = "Die eigenen Dateien dieses Projekts hat seit %lld Tagen niemand geändert.";
+"Not selected" = "Nicht ausgewählt";
 "Nothing here can be freed by this app." = "Hier kann diese App nichts freigeben.";
 "Nothing to compare yet" = "Noch nichts zum Vergleichen";
 "Nothing to reclaim" = "Nichts freizugeben";
@@ -186,6 +188,7 @@
 "Select every item that is regenerated automatically" = "Wähle jedes Objekt aus, das automatisch neu erzeugt wird";
 "Select safe" = "Sichere auswählen";
 "Select the build folders of projects whose own files nobody has changed in this long. Each is recreated by its build or install command." = "Wählt die Build-Ordner von Projekten, deren eigene Dateien so lange niemand geändert hat. Jeder entsteht durch seinen Build- oder Installationsbefehl neu.";
+"Selected" = "Ausgewählt";
 "Selects the least worrying items that add up to this much. Nothing is deleted until you confirm." = "Wählt die unbedenklichsten Einträge aus, die zusammen so viel ergeben. Gelöscht wird erst nach Ihrer Bestätigung.";
 "Settings" = "Einstellungen";
 "Shared & other users" = "Geteilt & andere Benutzer";
