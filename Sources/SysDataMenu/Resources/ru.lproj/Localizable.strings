@@ -3,10 +3,12 @@
 "%@ System Data · %@ free" = "Данные системы: %@ · свободно %@";
 "%@ System Data · %@ free · %@ this week" = "Данные системы: %@ · свободно %@ · за неделю %@";
 "%@ changed while it was being shrunk, so it was left as it was." = "%@ изменилась во время сжатия, поэтому оставлена как есть.";
+"%@ does not come back on its own." = "%@ само не вернётся.";
 "%@ free on disk" = "%@ свободно на диске";
 "%@ free · %@ of safe items can go now" = "%@ свободно · %@ безопасных элементов можно освободить прямо сейчас";
 "%@ grew %@ beyond its recent size." = "%@ вырос на %@ по сравнению с недавним размером.";
 "%@ is already stored compressed." = "%@ уже хранится в сжатом виде.";
+"%@ needs an internet connection to come back." = "Для восстановления %@ нужно подключение к интернету.";
 "%@ of it belongs to projects nobody has touched in %lld+ days." = "Из них %@ — проекты, к которым никто не прикасался %lld+ дней.";
 "%@ purgeable" = "%@ очищаемое";
 "%@ safe to free now · %@ free on disk · %@ purgeable" = "%@ можно безопасно освободить сейчас · %@ свободно на диске · %@ вытесняемых данных";
@@ -87,8 +89,10 @@
 "Developer tool data" = "Данные инструментов разработчика";
 "Dismiss" = "Скрыть";
 "Docker" = "Docker";
+"Doesn't come back" = "Само не вернётся";
 "Don't show this item again" = "Больше не показывать этот элемент";
 "Download" = "Загрузить";
+"Downloads again" = "Скачивается заново";
 "Empty folder" = "Пустая папка";
 "Empty the Trash…" = "Очистить Корзину…";
 "Everything this app can free is %@" = "Всё, что может освободить это приложение, — %@";
@@ -146,6 +150,7 @@
 "No project build output found" = "Результаты сборки проектов не найдены";
 "No single item stands out. Many small ones grew together." = "Ничего одного выдающегося нет. Выросло много мелких элементов.";
 "Nobody has changed this project's own files in %lld days." = "Файлы этого проекта никто не менял %lld дн.";
+"Not needed again" = "Больше не понадобится";
 "Not selected" = "Не выбрано";
 "Nothing here can be freed by this app." = "Это приложение здесь ничего освободить не может.";
 "Nothing to compare yet" = "Пока нечего сравнивать";
@@ -172,6 +177,7 @@
 "Project deleted" = "Проект удалён";
 "Purgeable is what macOS estimates it could give back if it had to: caches and local snapshots. It is an estimate, not space you can count on — it moves on its own, and writing a file does not spend it. The items below are the ones you can actually free." = "Вытесняемые данные — это то, что, по оценке macOS, можно освободить при необходимости: кэши и локальные снимки. Это лишь оценка, а не место, на которое можно рассчитывать, — оно меняется само по себе, и запись файла его не расходует. Ниже перечислены объекты, которые можно освободить на самом деле.";
 "Quit" = "Завершить";
+"Rebuilds on this Mac" = "Восстановится на этом Mac";
 "Reclaimed this session: %@" = "Освобождено за этот сеанс: %@";
 "Recoverable from the Trash until you empty it. Frees nothing yet." = "Можно восстановить из Корзины, пока вы её не очистите. Место пока не освобождается.";
 "Remember what changed" = "Запоминать изменения";

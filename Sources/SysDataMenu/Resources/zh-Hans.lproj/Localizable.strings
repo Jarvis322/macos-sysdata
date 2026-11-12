@@ -3,10 +3,12 @@
 "%@ System Data · %@ free" = "%@ 系统数据 · %@ 可用";
 "%@ System Data · %@ free · %@ this week" = "%@ 系统数据 · %@ 可用 · 本周 %@";
 "%@ changed while it was being shrunk, so it was left as it was." = "%@ 在压缩过程中发生了变化，因此已保持原样。";
+"%@ does not come back on its own." = "其中 %@ 不会自动恢复。";
 "%@ free on disk" = "磁盘可用空间：%@";
 "%@ free · %@ of safe items can go now" = "%@ 可用 · 现在可清理 %@ 可安全清理的项目";
 "%@ grew %@ beyond its recent size." = "%@ 比近期大小增加了 %@。";
 "%@ is already stored compressed." = "%@ 已经以压缩形式存储。";
+"%@ needs an internet connection to come back." = "其中 %@ 需要联网才能恢复。";
 "%@ of it belongs to projects nobody has touched in %lld+ days." = "其中 %1$@ 属于 %2$lld 天以上无人改动的项目。";
 "%@ purgeable" = "%@ 可清除";
 "%@ safe to free now · %@ free on disk · %@ purgeable" = "当前可安全释放 %@ · 磁盘可用空间 %@ · 可清除空间 %@";
@@ -87,8 +89,10 @@
 "Developer tool data" = "开发者工具数据";
 "Dismiss" = "关闭";
 "Docker" = "Docker";
+"Doesn't come back" = "不会自动恢复";
 "Don't show this item again" = "不再显示此项目";
 "Download" = "下载";
+"Downloads again" = "需重新下载";
 "Empty folder" = "空文件夹";
 "Empty the Trash…" = "清倒废纸篓…";
 "Everything this app can free is %@" = "此应用能释放的全部空间为 %@";
@@ -146,6 +150,7 @@
 "No project build output found" = "未找到项目构建输出";
 "No single item stands out. Many small ones grew together." = "没有特别突出的单个项目，是许多小项目一起增长。";
 "Nobody has changed this project's own files in %lld days." = "%lld 天内没有人修改过这个项目自己的文件。";
+"Not needed again" = "不再需要";
 "Not selected" = "未选择";
 "Nothing here can be freed by this app." = "此应用在这里无法释放任何空间。";
 "Nothing to compare yet" = "暂无可比较的记录";
@@ -172,6 +177,7 @@
 "Project deleted" = "项目已删除";
 "Purgeable is what macOS estimates it could give back if it had to: caches and local snapshots. It is an estimate, not space you can count on — it moves on its own, and writing a file does not spend it. The items below are the ones you can actually free." = "可清除空间是 macOS 估计在必要时可释放的空间，包括缓存和本地快照。这只是估计值，不能当作确定可用的空间；它会自行变化，写入文件也不会直接消耗这部分空间。下方列出的项目才是你可以实际清理以释放空间的内容。";
 "Quit" = "退出";
+"Rebuilds on this Mac" = "会在这台 Mac 上重新生成";
 "Reclaimed this session: %@" = "本次已释放：%@";
 "Recoverable from the Trash until you empty it. Frees nothing yet." = "清倒废纸篓之前可以恢复。暂时不会释放空间。";
 "Remember what changed" = "记录变化";

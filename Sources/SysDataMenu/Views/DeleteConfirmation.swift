@@ -48,7 +48,10 @@ struct DeleteConfirmation: View {
             }
             if items.count > 1 {
                 itemList
+            } else if let item = items.first {
+                RecoveryLabel(recovery: item.recovery)
             }
+            recoverySummary
             if offersDestination {
                 destination
             }
@@ -117,6 +120,37 @@ struct DeleteConfirmation: View {
         .lineLimit(1)
     }
 
+    // MARK: Recovery
+
+    /// What a delete would cost someone who then goes offline: how much of
+    /// it needs a network to come back, and how much nothing brings back.
+    /// Said once for the batch, under the per-row labels, because that is
+    /// the number they will act on.
+    @ViewBuilder
+    private var recoverySummary: some View {
+        let needsNetwork = bytes(.downloads)
+        let lost = bytes(.gone)
+        if needsNetwork > 0 || lost > 0 {
+            VStack(alignment: .leading, spacing: 4) {
+                if needsNetwork > 0 {
+                    Label(L("%@ needs an internet connection to come back.", needsNetwork.byteString),
+                          systemImage: Recovery.downloads.symbol)
+                }
+                if lost > 0 {
+                    Label(L("%@ does not come back on its own.", lost.byteString),
+                          systemImage: Recovery.gone.symbol)
+                }
+            }
+            .font(.caption)
+            .foregroundStyle(.secondary)
+            .monospacedDigit()
+        }
+    }
+
+    private func bytes(_ recovery: Recovery) -> Int64 {
+        items.filter { $0.recovery == recovery }.reduce(0) { $0 + ($1.sizeBytes ?? 0) }
+    }
+
     // MARK: Items
 
     /// Every item in the batch, largest first, so "5 items" is never the
@@ -131,7 +165,7 @@ struct DeleteConfirmation: View {
             .padding(.vertical, 4)
         }
         .scrollBounceBehavior(.basedOnSize)
-        .frame(maxHeight: min(CGFloat(items.count) * 30 + 8, 160))
+        .frame(maxHeight: min(CGFloat(items.count) * 44 + 8, 200))
         .background(.quaternary.opacity(0.5), in: RoundedRectangle(cornerRadius: 12, style: .continuous))
     }
 
@@ -250,10 +284,13 @@ private struct ConfirmationItemRow: View {
     var body: some View {
         HStack(spacing: 9) {
             CategoryIcon(category: item.category, size: 18)
-            Text(item.name)
-                .font(.callout)
-                .lineLimit(1)
-                .truncationMode(.middle)
+            VStack(alignment: .leading, spacing: 1) {
+                Text(item.name)
+                    .font(.callout)
+                    .lineLimit(1)
+                    .truncationMode(.middle)
+                RecoveryLabel(recovery: item.recovery)
+            }
             Spacer(minLength: 6)
             Circle()
                 .fill(item.safety == .safe ? Color.green : item.safety == .review ? .orange : .secondary)
@@ -350,5 +387,29 @@ struct PanelButtonStyle: ButtonStyle {
             .opacity(configuration.isPressed ? 0.8 : isEnabled ? 1 : 0.6)
             .scaleEffect(configuration.isPressed ? 0.98 : 1)
             .contentShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+    }
+}
+
+/// Whether an item comes back after it is deleted, and how.
+private struct RecoveryLabel: View {
+    let recovery: Recovery
+
+    var body: some View {
+        Label(recovery.label, systemImage: recovery.symbol)
+            .font(.caption)
+            .foregroundStyle(tint)
+            .lineLimit(1)
+    }
+
+    /// Green and blue for what returns, orange for what does not; grey for
+    /// what nothing will miss. The symbol carries it too, for anyone who
+    /// cannot tell the colours apart.
+    private var tint: Color {
+        switch recovery {
+        case .rebuilds: .green
+        case .downloads: .blue
+        case .notNeeded: .secondary
+        case .gone: .orange
+        }
     }
 }

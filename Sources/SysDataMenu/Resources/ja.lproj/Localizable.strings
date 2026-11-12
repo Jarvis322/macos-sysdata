@@ -3,10 +3,12 @@
 "%@ System Data · %@ free" = "システムデータ %@ · 空き %@";
 "%@ System Data · %@ free · %@ this week" = "システムデータ %@ · 空き %@ · 今週 %@";
 "%@ changed while it was being shrunk, so it was left as it was." = "%@ は圧縮中に変更されたため、そのままにしました。";
+"%@ does not come back on its own." = "%@ は自動では戻りません。";
 "%@ free on disk" = "ディスクの空き容量：%@";
 "%@ free · %@ of safe items can go now" = "%@ の空き · 安全な項目 %@ を今すぐ削除できます";
 "%@ grew %@ beyond its recent size." = "%@ は最近のサイズより %@ 増えました。";
 "%@ is already stored compressed." = "%@ はすでに圧縮して保存されています。";
+"%@ needs an internet connection to come back." = "%@ は戻すのにインターネット接続が必要です。";
 "%@ of it belongs to projects nobody has touched in %lld+ days." = "そのうち %1$@ は %2$lld 日以上誰も触っていないプロジェクトのものです。";
 "%@ purgeable" = "%@ パージ可能";
 "%@ safe to free now · %@ free on disk · %@ purgeable" = "今すぐ安全に解放：%@ · ディスクの空き：%@ · パージ可能：%@";
@@ -87,8 +89,10 @@
 "Developer tool data" = "開発ツールのデータ";
 "Dismiss" = "閉じる";
 "Docker" = "Docker";
+"Doesn't come back" = "自動では戻りません";
 "Don't show this item again" = "この項目を今後表示しない";
 "Download" = "ダウンロード";
+"Downloads again" = "再ダウンロードが必要";
 "Empty folder" = "空のフォルダ";
 "Empty the Trash…" = "ゴミ箱を空にする…";
 "Everything this app can free is %@" = "このアプリで解放できるのはすべてで %@ です";
@@ -146,6 +150,7 @@
 "No project build output found" = "プロジェクトのビルド出力は見つかりません";
 "No single item stands out. Many small ones grew together." = "目立つ項目はありません。小さな項目が多数まとめて増えました。";
 "Nobody has changed this project's own files in %lld days." = "このプロジェクト自体のファイルは %lld 日間誰も変更していません。";
+"Not needed again" = "再び必要になりません";
 "Not selected" = "未選択";
 "Nothing here can be freed by this app." = "このアプリで解放できるものはありません。";
 "Nothing to compare yet" = "まだ比較できるものがありません";
@@ -172,6 +177,7 @@
 "Project deleted" = "プロジェクト削除済み";
 "Purgeable is what macOS estimates it could give back if it had to: caches and local snapshots. It is an estimate, not space you can count on — it moves on its own, and writing a file does not spend it. The items below are the ones you can actually free." = "パージ可能とは、必要になればmacOSが解放できると見積もっている容量です——キャッシュやローカルスナップショットなど。これは見積もりであり、当てにできる空き容量ではありません。ひとりでに変動し、ファイルを書き込んでも消費されません。下の項目こそ、実際に解放できるものです。";
 "Quit" = "終了";
+"Rebuilds on this Mac" = "このMacで再生成されます";
 "Reclaimed this session: %@" = "今回解放した容量：%@";
 "Recoverable from the Trash until you empty it. Frees nothing yet." = "ゴミ箱を空にするまで復元できます。まだ容量は空きません。";
 "Remember what changed" = "変化を記録する";

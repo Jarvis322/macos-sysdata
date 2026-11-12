@@ -3,10 +3,12 @@
 "%@ System Data · %@ free" = "시스템 데이터 %@ · 여유 공간 %@";
 "%@ System Data · %@ free · %@ this week" = "시스템 데이터 %@ · 여유 공간 %@ · 이번 주 %@";
 "%@ changed while it was being shrunk, so it was left as it was." = "%@이(가) 압축 중에 변경되어 그대로 두었습니다.";
+"%@ does not come back on its own." = "%@은(는) 자동으로 복구되지 않습니다.";
 "%@ free on disk" = "디스크에 %@ 여유 공간";
 "%@ free · %@ of safe items can go now" = "%@ 여유 공간 · 안전 항목 %@ 삭제 가능";
 "%@ grew %@ beyond its recent size." = "%@이(가) 최근 크기보다 %@ 늘었습니다.";
 "%@ is already stored compressed." = "%@은(는) 이미 압축되어 저장되어 있습니다.";
+"%@ needs an internet connection to come back." = "%@은(는) 복구하려면 인터넷 연결이 필요합니다.";
 "%@ of it belongs to projects nobody has touched in %lld+ days." = "그중 %1$@는 %2$lld일 넘게 아무도 건드리지 않은 프로젝트입니다.";
 "%@ purgeable" = "%@ 제거 가능";
 "%@ safe to free now · %@ free on disk · %@ purgeable" = "지금 안전하게 확보할 수 있는 %@ · 디스크 여유 공간 %@ · 제거 가능한 공간 %@";
@@ -87,8 +89,10 @@
 "Developer tool data" = "개발자 도구 데이터";
 "Dismiss" = "닫기";
 "Docker" = "Docker";
+"Doesn't come back" = "자동으로 복구되지 않음";
 "Don't show this item again" = "이 항목 다시 표시 안 함";
 "Download" = "다운로드";
+"Downloads again" = "다시 다운로드됨";
 "Empty folder" = "빈 폴더";
 "Empty the Trash…" = "휴지통 비우기…";
 "Everything this app can free is %@" = "이 앱이 확보할 수 있는 전부는 %@입니다";
@@ -146,6 +150,7 @@
 "No project build output found" = "프로젝트 빌드 결과물이 없습니다";
 "No single item stands out. Many small ones grew together." = "두드러지는 항목이 없습니다. 작은 항목 여러 개가 함께 늘었습니다.";
 "Nobody has changed this project's own files in %lld days." = "%lld일 동안 아무도 이 프로젝트의 파일을 변경하지 않았습니다.";
+"Not needed again" = "다시 필요하지 않음";
 "Not selected" = "선택 안 됨";
 "Nothing here can be freed by this app." = "이 앱이 여기서 확보할 수 있는 것은 없습니다.";
 "Nothing to compare yet" = "아직 비교할 항목 없음";
@@ -172,6 +177,7 @@
 "Project deleted" = "프로젝트 삭제됨";
 "Purgeable is what macOS estimates it could give back if it had to: caches and local snapshots. It is an estimate, not space you can count on — it moves on its own, and writing a file does not spend it. The items below are the ones you can actually free." = "제거 가능 공간은 macOS가 필요할 때 돌려줄 수 있다고 추정하는 캐시와 로컬 스냅샷의 용량입니다. 이는 추정치일 뿐 확실히 믿을 수 있는 공간이 아니며, 저절로 변동하고 파일을 저장한다고 해서 줄어들지도 않습니다. 아래 항목이 실제로 확보할 수 있는 공간입니다.";
 "Quit" = "종료";
+"Rebuilds on this Mac" = "이 Mac에서 다시 생성됨";
 "Reclaimed this session: %@" = "이번 세션에서 확보한 공간: %@";
 "Recoverable from the Trash until you empty it. Frees nothing yet." = "휴지통을 비우기 전까지 복구할 수 있습니다. 아직 공간은 확보되지 않습니다.";
 "Remember what changed" = "변경 사항 기억하기";

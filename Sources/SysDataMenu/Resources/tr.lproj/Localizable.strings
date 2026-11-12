@@ -3,10 +3,12 @@
 "%@ System Data · %@ free" = "%@ Sistem Verileri · %@ boş";
 "%@ System Data · %@ free · %@ this week" = "%@ Sistem Verileri · %@ boş · bu hafta %@";
 "%@ changed while it was being shrunk, so it was left as it was." = "%@ küçültülürken değişti, bu yüzden olduğu gibi bırakıldı.";
+"%@ does not come back on its own." = "%@ kendiliğinden geri gelmez.";
 "%@ free on disk" = "diskte %@ boş";
 "%@ free · %@ of safe items can go now" = "%@ boş · %@ güvenli öğe şimdi silinebilir";
 "%@ grew %@ beyond its recent size." = "%@ son dönem boyutunun %@ üstüne çıktı.";
 "%@ is already stored compressed." = "%@ zaten sıkıştırılmış olarak saklanıyor.";
+"%@ needs an internet connection to come back." = "%@ geri gelmek için internet bağlantısı gerektirir.";
 "%@ of it belongs to projects nobody has touched in %lld+ days." = "Bunun %1$@ kadarı %2$lld+ gündür dokunulmamış projelere ait.";
 "%@ purgeable" = "%@ temizlenebilir";
 "%@ safe to free now · %@ free on disk · %@ purgeable" = "%@ güvenle boşaltılabilir · diskte %@ boş · %@ temizlenebilir";
@@ -87,8 +89,10 @@
 "Developer tool data" = "Geliştirici araç verileri";
 "Dismiss" = "Kapat";
 "Docker" = "Docker";
+"Doesn't come back" = "Kendiliğinden geri gelmez";
 "Don't show this item again" = "Bu kalemi bir daha gösterme";
 "Download" = "İndir";
+"Downloads again" = "Yeniden indirilir";
 "Empty folder" = "Boş klasör";
 "Empty the Trash…" = "Çöp Sepeti'ni boşalt…";
 "Everything this app can free is %@" = "Bu uygulamanın boşaltabileceği her şey %@";
@@ -146,6 +150,7 @@
 "No project build output found" = "Proje derleme çıktısı bulunamadı";
 "No single item stands out. Many small ones grew together." = "Öne çıkan tek bir öğe yok. Birçok küçük öğe birlikte büyüdü.";
 "Nobody has changed this project's own files in %lld days." = "Bu projenin kendi dosyalarına %lld gündür kimse dokunmadı.";
+"Not needed again" = "Bir daha gerekmez";
 "Not selected" = "Seçili değil";
 "Nothing here can be freed by this app." = "Burada bu uygulamanın boşaltabileceği bir şey yok.";
 "Nothing to compare yet" = "Henüz karşılaştıracak bir şey yok";
@@ -172,6 +177,7 @@
 "Project deleted" = "Proje silinmiş";
 "Purgeable is what macOS estimates it could give back if it had to: caches and local snapshots. It is an estimate, not space you can count on — it moves on its own, and writing a file does not spend it. The items below are the ones you can actually free." = "Temizlenebilir alan, macOS'in gerekirse geri verebileceğini tahmin ettiği yerdir: önbellekler ve yerel anlık görüntüler. Bu bir tahmindir, güvenebileceğin bir alan değil — kendiliğinden değişir ve dosya yazmak onu harcamaz. Aşağıdaki öğeler gerçekten boşaltabileceklerin.";
 "Quit" = "Çık";
+"Rebuilds on this Mac" = "Bu Mac'te yeniden oluşur";
 "Reclaimed this session: %@" = "Bu oturumda kazanılan: %@";
 "Recoverable from the Trash until you empty it. Frees nothing yet." = "Çöp Sepeti'ni boşaltana kadar geri alınabilir. Henüz yer açmaz.";
 "Remember what changed" = "Neyin değiştiğini hatırla";

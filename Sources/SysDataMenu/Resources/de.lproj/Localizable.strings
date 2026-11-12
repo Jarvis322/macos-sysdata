@@ -3,10 +3,12 @@
 "%@ System Data · %@ free" = "%@ Systemdaten · %@ frei";
 "%@ System Data · %@ free · %@ this week" = "%@ Systemdaten · %@ frei · %@ diese Woche";
 "%@ changed while it was being shrunk, so it was left as it was." = "%@ hat sich während des Verkleinerns geändert und wurde daher unverändert gelassen.";
+"%@ does not come back on its own." = "%@ kommt nicht von selbst zurück.";
 "%@ free on disk" = "%@ frei auf der Festplatte";
 "%@ free · %@ of safe items can go now" = "%@ frei · %@ an sicheren Elementen können jetzt entfernt werden";
 "%@ grew %@ beyond its recent size." = "%@ ist um %@ über seine jüngste Größe gewachsen.";
 "%@ is already stored compressed." = "%@ ist bereits komprimiert gespeichert.";
+"%@ needs an internet connection to come back." = "%@ braucht eine Internetverbindung, um zurückzukommen.";
 "%@ of it belongs to projects nobody has touched in %lld+ days." = "%@ davon gehören zu Projekten, die seit %lld+ Tagen niemand angefasst hat.";
 "%@ purgeable" = "%@ löschbar";
 "%@ safe to free now · %@ free on disk · %@ purgeable" = "%@ sicher freizugeben · %@ frei auf der Festplatte · %@ löschbar";
@@ -87,8 +89,10 @@
 "Developer tool data" = "Daten von Entwicklertools";
 "Dismiss" = "Schließen";
 "Docker" = "Docker";
+"Doesn't come back" = "Kommt nicht von selbst zurück";
 "Don't show this item again" = "Dieses Objekt nicht mehr anzeigen";
 "Download" = "Herunterladen";
+"Downloads again" = "Wird neu geladen";
 "Empty folder" = "Leerer Ordner";
 "Empty the Trash…" = "Papierkorb leeren…";
 "Everything this app can free is %@" = "Alles, was diese App freigeben kann, sind %@";
@@ -146,6 +150,7 @@
 "No project build output found" = "Keine Build-Ausgabe von Projekten gefunden";
 "No single item stands out. Many small ones grew together." = "Kein einzelner Eintrag fällt auf. Viele kleine sind gemeinsam gewachsen.";
 "Nobody has changed this project's own files in %lld days." = "Die eigenen Dateien dieses Projekts hat seit %lld Tagen niemand geändert.";
+"Not needed again" = "Wird nicht mehr gebraucht";
 "Not selected" = "Nicht ausgewählt";
 "Nothing here can be freed by this app." = "Hier kann diese App nichts freigeben.";
 "Nothing to compare yet" = "Noch nichts zum Vergleichen";
@@ -172,6 +177,7 @@
 "Project deleted" = "Projekt gelöscht";
 "Purgeable is what macOS estimates it could give back if it had to: caches and local snapshots. It is an estimate, not space you can count on — it moves on its own, and writing a file does not spend it. The items below are the ones you can actually free." = "Löschbar ist das, was macOS schätzungsweise zurückgeben könnte, wenn es müsste: Caches und lokale Snapshots. Das ist eine Schätzung, kein Speicherplatz, auf den du dich verlassen kannst — er verändert sich von selbst, und das Schreiben einer Datei verbraucht ihn nicht. Die Objekte unten sind die, die du tatsächlich freigeben kannst.";
 "Quit" = "Beenden";
+"Rebuilds on this Mac" = "Wird auf diesem Mac neu erstellt";
 "Reclaimed this session: %@" = "In dieser Sitzung freigegeben: %@";
 "Recoverable from the Trash until you empty it. Frees nothing yet." = "Bis zum Leeren des Papierkorbs wiederherstellbar. Gibt noch nichts frei.";
 "Remember what changed" = "Änderungen merken";

@@ -3,10 +3,12 @@
 "%@ System Data · %@ free" = "%@ System Data · %@ free";
 "%@ System Data · %@ free · %@ this week" = "%@ System Data · %@ free · %@ this week";
 "%@ changed while it was being shrunk, so it was left as it was." = "%@ changed while it was being shrunk, so it was left as it was.";
+"%@ does not come back on its own." = "%@ does not come back on its own.";
 "%@ free on disk" = "%@ free on disk";
 "%@ free · %@ of safe items can go now" = "%@ free · %@ of safe items can go now";
 "%@ grew %@ beyond its recent size." = "%@ grew %@ beyond its recent size.";
 "%@ is already stored compressed." = "%@ is already stored compressed.";
+"%@ needs an internet connection to come back." = "%@ needs an internet connection to come back.";
 "%@ of it belongs to projects nobody has touched in %lld+ days." = "%@ of it belongs to projects nobody has touched in %lld+ days.";
 "%@ purgeable" = "%@ purgeable";
 "%@ safe to free now · %@ free on disk · %@ purgeable" = "%@ safe to free now · %@ free on disk · %@ purgeable";
@@ -87,8 +89,10 @@
 "Developer tool data" = "Developer tool data";
 "Dismiss" = "Dismiss";
 "Docker" = "Docker";
+"Doesn't come back" = "Doesn't come back";
 "Don't show this item again" = "Don't show this item again";
 "Download" = "Download";
+"Downloads again" = "Downloads again";
 "Empty folder" = "Empty folder";
 "Empty the Trash…" = "Empty the Trash…";
 "Everything this app can free is %@" = "Everything this app can free is %@";
@@ -146,6 +150,7 @@
 "No project build output found" = "No project build output found";
 "No single item stands out. Many small ones grew together." = "No single item stands out. Many small ones grew together.";
 "Nobody has changed this project's own files in %lld days." = "Nobody has changed this project's own files in %lld days.";
+"Not needed again" = "Not needed again";
 "Not selected" = "Not selected";
 "Nothing here can be freed by this app." = "Nothing here can be freed by this app.";
 "Nothing to compare yet" = "Nothing to compare yet";
@@ -172,6 +177,7 @@
 "Project deleted" = "Project deleted";
 "Purgeable is what macOS estimates it could give back if it had to: caches and local snapshots. It is an estimate, not space you can count on — it moves on its own, and writing a file does not spend it. The items below are the ones you can actually free." = "Purgeable is what macOS estimates it could give back if it had to: caches and local snapshots. It is an estimate, not space you can count on — it moves on its own, and writing a file does not spend it. The items below are the ones you can actually free.";
 "Quit" = "Quit";
+"Rebuilds on this Mac" = "Rebuilds on this Mac";
 "Reclaimed this session: %@" = "Reclaimed this session: %@";
 "Recoverable from the Trash until you empty it. Frees nothing yet." = "Recoverable from the Trash until you empty it. Frees nothing yet.";
 "Remember what changed" = "Remember what changed";
