@@ -30,9 +30,18 @@ enum Entry {
     }
 }
 
+/// The one model the menu bar panel and the window both use. A fresh
+/// `ScanModel()` per App initialization gave the window and the panel
+/// separate settings, which is how the icon switch could take effect while
+/// the other surface still showed the old state.
+@MainActor
+private enum AppModel {
+    static let shared = ScanModel()
+}
+
 struct SysDataMenuApp: App {
     @NSApplicationDelegateAdaptor(PowerOffGuard.self) private var powerOffGuard
-    @State private var model = ScanModel()
+    @State private var model = AppModel.shared
 
     init() {
         // No Dock icon while the app is only a menu bar item; MainWindow puts
