@@ -5,6 +5,13 @@ What changed in each release, and where it is worth saying, why.
 Versions up to and including v0.3.7 were released under the MIT License; see
 [LICENSE](LICENSE).
 
+## v1.13.1 — 2026-11-12
+
+- **The menu bar switch works from the window.** Turning off "Show in
+  menu bar" from the window's settings now removes the icon straight away,
+  and turning it back on brings it back, instead of waiting for a
+  relaunch. Thanks to @MaiwulanjiangMaiming (#30).
+
 ## v1.13.0 — 2026-11-12
 
 - **Know what comes back before you delete it.** Every item in the delete
