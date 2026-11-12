@@ -13223,6 +13223,9 @@
           }
         }
       }
-    }
+    },
+    "Selected": {},
+    "Not selected": {},
+    "How to remove this item": {}
   }
 }

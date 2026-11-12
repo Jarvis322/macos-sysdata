@@ -33,6 +33,16 @@ struct MenuView: View {
     /// The project an archive is being confirmed for; nil for any other batch.
     @State private var archivingProject: String?
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    /// The list's viewport, for deciding once whether the safety chips have
+    /// room for their words. Zero until the first layout.
+    @State private var listWidth: CGFloat = 0
+
+    /// The 460pt panel needs the compact chip even on a wide screen; a window
+    /// needs it only when it is narrow enough to cut a long name. One decision
+    /// for the list, rather than a second layout pass in every row.
+    private var usesCompactBadges: Bool {
+        presentation == .menuBar || (listWidth > 0 && listWidth < 620)
+    }
 
     /// What the pending delete will actually do, whether it is one row or a
     /// whole selection.
@@ -610,6 +620,13 @@ struct MenuView: View {
             .padding(.horizontal, 12)
             .padding(.vertical, 8)
         }
+        .background {
+            GeometryReader { proxy in
+                Color.clear
+                    .onAppear { listWidth = proxy.size.width }
+                    .onChange(of: proxy.size.width) { _, width in listWidth = width }
+            }
+        }
         .modifier(ClearHoverOnScroll())
     }
 
@@ -723,6 +740,7 @@ struct MenuView: View {
         ItemRow(
             item: item,
             canExpand: model.canExpand(item),
+            compactBadge: usesCompactBadges,
             change: model.change(since: item),
             trend: model.series(for: item),
             isBusy: model.busyItemIDs.contains(item.id),

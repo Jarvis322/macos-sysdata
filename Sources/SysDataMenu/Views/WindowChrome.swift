@@ -145,10 +145,6 @@ final class CardHover {
     /// still pointer would otherwise schedule a glow that outlives the scroll.
     @ObservationIgnored private static var scrolling = false
 
-    init() {
-        Self.live.add(self)
-    }
-
     /// Waits for the pointer to settle: scrolling moves a new card under a
     /// still pointer, and each one would otherwise re-light and un-light.
     func update(_ inside: Bool) {
@@ -159,6 +155,10 @@ final class CardHover {
             return
         }
         guard !isRaised, task == nil else { return }
+        // Registered only when the card might actually light. The state
+        // initializer makes a throwaway instance every time a card is
+        // rebuilt, and those should not sit in the live table.
+        Self.live.add(self)
         task = Task { @MainActor [weak self] in
             try? await Task.sleep(for: .milliseconds(60))
             guard !Task.isCancelled else { return }

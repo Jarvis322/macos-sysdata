@@ -7,6 +7,10 @@ struct ItemRow: View {
     /// asking the disk while the row is built made every redraw a filesystem
     /// call.
     let canExpand: Bool
+    /// Whether the safety chip drops its word. Decided once from the list's
+    /// width, not per row: a second layout pass in every row was one of the
+    /// costs of scrolling, but the name still has to win in a narrow panel.
+    let compactBadge: Bool
     /// Growth since the previous scan, when there is one to compare against.
     let change: Int64?
     /// This item's size over the recent scans, for the sparkline. Fewer than
@@ -81,7 +85,27 @@ struct ItemRow: View {
         // context menu — or hiding them takes them away from the people
         // least able to spare them.
         .contextMenu { rowMenu }
+        // The hover-only buttons are not in the tree at rest any more, so the
+        // same actions are exposed here. VoiceOver gets them without the
+        // layers, and without opening the context menu first.
+        .modifier(RowAccessibilityAction(
+            name: Text(L("Show largest entries")),
+            action: canExpand ? { toggleExpanded() } : nil
+        ))
+        .modifier(RowAccessibilityAction(
+            name: Text(L("Reveal in Finder")),
+            action: revealAction
+        ))
+        .modifier(RowAccessibilityAction(
+            name: Text(L("Don't show this item again")),
+            action: onHide
+        ))
         .opacity(isBusy ? 0.5 : 1)
+    }
+
+    private var revealAction: (() -> Void)? {
+        guard let url = item.revealURL else { return nil }
+        return { NSWorkspace.shared.activateFileViewerSelecting([url]) }
     }
 
     /// Drawn rather than a `Toggle`: a native checkbox is an AppKit view, and
@@ -122,14 +146,14 @@ struct ItemRow: View {
         let isIdleProject = item.category == .projects && (idleDays ?? 0) >= ScanModel.idleProjectDays
         let idle = idleDays.flatMap(StorageItem.idlePhrase)
         return VStack(alignment: .leading, spacing: 3) {
-            // The name comes first and gives way before the badge does: the
-            // badge's word is fixed, so a narrow window truncates the name
-            // rather than spelling out "Reviewed" as "Rev…".
+            // The name comes first. In a narrow list the chip gives up its
+            // word and keeps its symbol, the way it did before the title was
+            // measured twice per row; a wide list shows both.
             HStack(spacing: 6) {
                 Text(item.name)
                     .lineLimit(1)
                     .truncationMode(.tail)
-                safetyBadge
+                safetyBadge(compact: compactBadge)
                 if isIdleProject, let idle {
                     idleBadge(idle)
                 }
@@ -267,11 +291,15 @@ struct ItemRow: View {
 
     /// The safety as a chip with its own symbol, so it reads by shape as well
     /// as by colour: a shield for Safe, an eye for Review, a hand for Manual.
-    private var safetyBadge: some View {
+    /// The word is dropped in a narrow list, where it would take the space a
+    /// long name needs.
+    private func safetyBadge(compact: Bool) -> some View {
         HStack(spacing: 3) {
             Image(systemName: badgeSymbol)
                 .font(.system(size: 8, weight: .bold))
-            Text(item.safety.label)
+            if !compact {
+                Text(item.safety.label)
+            }
         }
         .font(.caption2.weight(.semibold))
         .padding(.horizontal, 6)
@@ -460,5 +488,21 @@ private struct RowAction: View {
             .accessibilityLabel(label)
             .accessibilityAddTraits(.isButton)
             .accessibilityAction { action() }
+    }
+}
+
+
+/// Adds a named accessibility action only when the row can do it, so a row of
+/// a file does not announce a breakdown it cannot show.
+private struct RowAccessibilityAction: ViewModifier {
+    let name: Text
+    let action: (() -> Void)?
+
+    func body(content: Content) -> some View {
+        if let action {
+            content.accessibilityAction(named: name, action)
+        } else {
+            content
+        }
     }
 }
