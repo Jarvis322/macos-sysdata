@@ -5,6 +5,16 @@ What changed in each release, and where it is worth saying, why.
 Versions up to and including v0.3.7 were released under the MIT License; see
 [LICENSE](LICENSE).
 
+## v1.13.0 — 2026-11-12
+
+- **Know what comes back before you delete it.** Every item in the delete
+  confirmation now says whether it rebuilds on this Mac, downloads again,
+  is not needed again, or does not come back on its own, and the card
+  totals how much would need an internet connection to return. Useful
+  before a flight: a simulator runtime or a model you cannot download
+  offline is worth keeping. Where an item could go either way, it is put
+  in the less hopeful group.
+
 ## v1.12.0 — 2026-11-12
 
 - **A smoother list.** Scrolling a large scan, opening a category and
