@@ -168,10 +168,10 @@ prompt, which is why it asks each time and shows you the command first.
   come to, with **Deselect** and **Delete N items**. **Select safe**
   ticks everything regenerable that is on screen, and unticks it on a second
   press. The confirmation lists every item with its size and badge before
-  anything runs. Root actions are folded into one script where they can be, and the Each item also says whether it rebuilds on this Mac,
-  downloads again, is not needed again or does not come back, with a
-  total of what would need a network to return.
-  confirmation says so — including when they cannot, because a delete of
+  anything runs, and whether each one rebuilds on this Mac, downloads
+  again, is not needed again or does not come back, with a total of what
+  would need a network to return. Root actions are folded into one script
+  where they can be, and the confirmation says so — including when they cannot, because a delete of
   something you do not own is run on its own and asks again.
 - **Shrink instead of delete.** Rows whose folders are only ever read — SDK
   components, Xcode archives and device support, old JetBrains versions,
