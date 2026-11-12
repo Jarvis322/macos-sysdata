@@ -40,6 +40,7 @@ final class MainWindow: NSObject, NSWindowDelegate {
     /// and nothing to show in it.
     func use(_ model: ScanModel) {
         self.model = model
+        MenuBarIcon.apply(model.showsMenuBarIcon)
         syncActivationPolicy(windowIsOpen: window?.isVisible ?? false)
     }
 
@@ -129,6 +130,9 @@ final class MainWindow: NSObject, NSWindowDelegate {
     private var hasOpenMenuBarPanel: Bool {
         NSApplication.shared.windows.contains {
             $0 !== window && $0 !== prompt && $0.isVisible
+                // The status item's own windows are always visible; they are
+                // not the panel this waits for.
+                && !$0.className.contains("NSStatusBarWindow")
         }
     }
 
@@ -136,7 +140,15 @@ final class MainWindow: NSObject, NSWindowDelegate {
     /// app in the Dock: an app with no icon and no Dock tile cannot be
     /// reached again, which is not a preference, it is a disappearance.
     func menuBarPreferenceChanged() {
+        applyMenuBarIconPreference()
         syncActivationPolicy(windowIsOpen: window?.isVisible ?? false)
+    }
+
+    /// Puts the status item in the state the preference asks for. Called after
+    /// launch as well as on the switch, because the item does not exist yet
+    /// when the app is being built.
+    func applyMenuBarIconPreference() {
+        MenuBarIcon.apply(model?.showsMenuBarIcon ?? true)
     }
 
     func windowWillClose(_ notification: Notification) {

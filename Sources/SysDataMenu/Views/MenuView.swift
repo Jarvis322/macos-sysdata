@@ -973,13 +973,17 @@ struct MenuView: View {
             Toggle(L("Show in menu bar"), isOn: Binding(
                 get: { model.showsMenuBarIcon },
                 set: { wanted in
-                    // Taking the icon away while it is the only way into the
-                    // app would leave it with nowhere to appear, so the window
-                    // opens before the icon goes — and when the switch is
-                    // thrown from the menu bar panel, the icon waits for that
-                    // panel to close.
                     guard wanted else {
-                        MainWindow.shared.openWindowLeavingTheMenuBar()
+                        // From the panel, the window opens first: the icon is
+                        // the panel's anchor, and the switch waits for the
+                        // panel to close. From the window there is nothing to
+                        // wait for.
+                        if presentation == .menuBar {
+                            MainWindow.shared.openWindowLeavingTheMenuBar()
+                            return
+                        }
+                        model.showsMenuBarIcon = false
+                        MainWindow.shared.menuBarPreferenceChanged()
                         return
                     }
                     model.showsMenuBarIcon = true
