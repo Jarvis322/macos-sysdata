@@ -5,6 +5,20 @@ What changed in each release, and where it is worth saying, why.
 Versions up to and including v0.3.7 were released under the MIT License; see
 [LICENSE](LICENSE).
 
+## v1.12.0 — 2026-11-12
+
+- **A smoother list.** Scrolling a large scan, opening a category and
+  pointing at cards no longer rebuild the whole list. Rows draw their own
+  checkbox and icons instead of hosting a native control each, a card's
+  hover lights only that card, the scan's progress no longer redraws the
+  list as each place finishes, and results arrive at most four times a
+  second. Opening a category is instant; the chevron still turns. Thanks to
+  @MaiwulanjiangMaiming for the report and the change (#28, #29).
+- **Names stay whole in the menu bar panel.** The safety chip shows its
+  symbol there and keeps its word in a wide window.
+- **VoiceOver** reaches a row's Show largest entries, Reveal in Finder and
+  Don't show this item again directly, without opening the context menu.
+
 ## v1.11.3 — 2026-11-06
 
 - **A folder that stops answering no longer stops the scan.** A folder on
