@@ -115,6 +115,7 @@
 "History" = "History";
 "History and settings" = "History and settings";
 "How to remove %@" = "How to remove %@";
+"How to remove this item" = "How to remove this item";
 "Icon only" = "Icon only";
 "Idle %lld days: %lld" = "Idle %lld days: %lld";
 "Idle longest" = "Idle longest";
@@ -145,6 +146,7 @@
 "No project build output found" = "No project build output found";
 "No single item stands out. Many small ones grew together." = "No single item stands out. Many small ones grew together.";
 "Nobody has changed this project's own files in %lld days." = "Nobody has changed this project's own files in %lld days.";
+"Not selected" = "Not selected";
 "Nothing here can be freed by this app." = "Nothing here can be freed by this app.";
 "Nothing to compare yet" = "Nothing to compare yet";
 "Nothing to reclaim" = "Nothing to reclaim";
@@ -186,6 +188,7 @@
 "Select every item that is regenerated automatically" = "Select every item that is regenerated automatically";
 "Select safe" = "Select safe";
 "Select the build folders of projects whose own files nobody has changed in this long. Each is recreated by its build or install command." = "Select the build folders of projects whose own files nobody has changed in this long. Each is recreated by its build or install command.";
+"Selected" = "Selected";
 "Selects the least worrying items that add up to this much. Nothing is deleted until you confirm." = "Selects the least worrying items that add up to this much. Nothing is deleted until you confirm.";
 "Settings" = "Settings";
 "Shared & other users" = "Shared & other users";

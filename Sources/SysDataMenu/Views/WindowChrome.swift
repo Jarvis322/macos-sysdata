@@ -1,3 +1,4 @@
+import Observation
 import SwiftUI
 
 // The pieces the window is built from, so the header, the list and the footer
@@ -123,32 +124,144 @@ struct ModeSwitch: View {
     }
 }
 
-/// The card every group in the list sits on: a soft fill, an edge that
-/// catches the light, and a slight lift while it is pointed at.
-struct ListCard: ViewModifier {
-    var isRaised = false
+/// The card every group in the list sits on: a soft fill and an edge that
+/// catches the light. Pointed at, it brightens and its category icon lifts.
+///
+/// The pointer state is a small observable object, read only by the card's
+/// surface and its icon. The rows inside are not rebuilt when the pointer
+/// crosses the card, which is what made the first version of the hover
+/// expensive; and the lift is a brighter edge rather than a shadow over a
+/// card that can be a thousand points tall.
+@MainActor
+@Observable
+final class CardHover {
+    private(set) var isRaised = false
+    @ObservationIgnored private var task: Task<Void, Never>?
+    /// Every card that could still be lit. A card can slide out from under a
+    /// still pointer while the list scrolls without the hover system ever
+    /// reporting an exit, so scrolling clears them all.
+    @ObservationIgnored private static var live = NSHashTable<CardHover>.weakObjects()
+    /// While the list is moving, no card may light up: a card sliding under a
+    /// still pointer would otherwise schedule a glow that outlives the scroll.
+    @ObservationIgnored private static var scrolling = false
+
+    /// Waits for the pointer to settle: scrolling moves a new card under a
+    /// still pointer, and each one would otherwise re-light and un-light.
+    func update(_ inside: Bool) {
+        guard inside, !Self.scrolling else {
+            task?.cancel()
+            task = nil
+            if isRaised { isRaised = false }
+            return
+        }
+        guard !isRaised, task == nil else { return }
+        // Registered only when the card might actually light. The state
+        // initializer makes a throwaway instance every time a card is
+        // rebuilt, and those should not sit in the live table.
+        Self.live.add(self)
+        task = Task { @MainActor [weak self] in
+            try? await Task.sleep(for: .milliseconds(60))
+            guard !Task.isCancelled else { return }
+            self?.isRaised = true
+            self?.task = nil
+        }
+    }
+
+    static func clearAll() {
+        for card in live.allObjects {
+            card.task?.cancel()
+            card.task = nil
+            card.isRaised = false
+        }
+    }
+
+    static func setScrolling(_ value: Bool) {
+        scrolling = value
+        if value { clearAll() }
+    }
+}
+
+/// The surface under a category card. It reads `isRaised` itself, so only
+/// this view redraws when the pointer arrives; the rows above it do not.
+private struct CardSurface: View {
+    var hover: CardHover?
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
-    func body(content: Content) -> some View {
-        content
-            .background {
-                RoundedRectangle(cornerRadius: 14, style: .continuous)
-                    .fill(.quaternary.opacity(isRaised ? 0.42 : 0.24))
-                    .overlay {
-                        RoundedRectangle(cornerRadius: 14, style: .continuous)
-                            .strokeBorder(LinearGradient(
-                                colors: [.white.opacity(0.12), .white.opacity(0.03)],
-                                startPoint: .top, endPoint: .bottom
-                            ))
-                    }
-                    .shadow(color: .black.opacity(isRaised ? 0.16 : 0), radius: 8, y: 3)
+    private var isRaised: Bool { hover?.isRaised ?? false }
+
+    var body: some View {
+        let shape = RoundedRectangle(cornerRadius: 14, style: .continuous)
+        shape
+            .fill(.quaternary.opacity(isRaised ? 0.34 : 0.24))
+            .overlay {
+                shape.strokeBorder(LinearGradient(
+                    colors: isRaised
+                        ? [.white.opacity(0.30), .white.opacity(0.10)]
+                        : [.white.opacity(0.12), .white.opacity(0.03)],
+                    startPoint: .top, endPoint: .bottom
+                ))
+            }
+            .overlay {
+                // The glow: a wider, faint edge instead of a large shadow.
+                if isRaised {
+                    shape.strokeBorder(.white.opacity(0.10), lineWidth: 3)
+                }
             }
             .animation(reduceMotion ? nil : .easeOut(duration: 0.15), value: isRaised)
     }
 }
 
+struct ListCard: ViewModifier {
+    var hover: CardHover?
+
+    func body(content: Content) -> some View {
+        content.background { CardSurface(hover: hover) }
+    }
+}
+
+/// A category card that owns its hover state. The content closure receives
+/// the state and hands it to the icon; nothing in the row tree reads it, so
+/// hovering never rebuilds the rows.
+struct CategoryCard<Content: View>: View {
+    @State private var hover = CardHover()
+    @ViewBuilder var content: (_ hover: CardHover) -> Content
+
+    var body: some View {
+        content(hover)
+            // `onContinuousHover` reports the end of a hover as well as its
+            // start, including when the pointer leaves through a row.
+            .onContinuousHover { phase in
+                switch phase {
+                case .active:
+                    hover.update(true)
+                case .ended:
+                    hover.update(false)
+                }
+            }
+            .listCard(hover: hover)
+    }
+}
+
 extension View {
-    func listCard(raised: Bool = false) -> some View {
-        modifier(ListCard(isRaised: raised))
+    func listCard(hover: CardHover? = nil) -> some View {
+        modifier(ListCard(hover: hover))
+    }
+}
+
+/// Drops every card glow as soon as the list scrolls. A card whose frame
+/// moves under a stationary pointer can otherwise stay lit after the pointer
+/// is no longer over it.
+struct ClearHoverOnScroll: ViewModifier {
+    func body(content: Content) -> some View {
+        Group {
+            if #available(macOS 15.0, *) {
+                content.onScrollPhaseChange { _, phase in
+                    CardHover.setScrolling(phase.isScrolling)
+                }
+            } else {
+                content
+            }
+        }
+        .onDisappear { CardHover.setScrolling(false) }
     }
 }

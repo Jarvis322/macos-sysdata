@@ -105,13 +105,18 @@ struct DepthTile: View {
     }
 }
 
-/// The category's symbol, as a lit tile in the category's colour.
+/// The category's symbol, as a lit tile in the category's colour. Reads the
+/// card's hover state here rather than being handed a `Bool`, so the card's
+/// rows are not rebuilt when the pointer arrives.
 struct CategoryIcon: View {
     let category: StorageCategory
+    var hover: CardHover?
     var size: CGFloat = 24
-    var isRaised = false
 
     var body: some View {
-        DepthTile(symbol: category.symbol, tint: category.tint, size: size, isRaised: isRaised)
+        DepthTile(
+            symbol: category.symbol, tint: category.tint, size: size,
+            isRaised: hover?.isRaised ?? false
+        )
     }
 }
