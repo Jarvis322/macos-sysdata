@@ -30,6 +30,12 @@ final class ScanModel {
     private(set) var lastScan: Date?
     /// Items the user chose not to see again. Persisted; ids are path-based.
     private(set) var hiddenIDs: Set<String>
+    /// Answers about a row that need the disk: whether its folder can be
+    /// expanded, and whether it can be shrunk. They used to be worked out
+    /// while the view was built, once per row and per redraw, so a scroll
+    /// that laid rows out again was also making filesystem calls. The disk
+    /// changes between scans far less often than the list redraws.
+    @ObservationIgnored private var rowFacts: [String: RowFacts] = [:]
     var selectedIDs: Set<String> = []
     /// Narrows the list to matching items. The selection survives it: ticking
     /// "Select safe" and then typing a filter to untick two of them is the
@@ -60,6 +66,11 @@ final class ScanModel {
     /// What previous scans and deletions recorded. Read once per scan rather
     /// than per row, because the list redraws far more often than it changes.
     private(set) var history = ScanHistory.load()
+    /// Bumped whenever `history` is replaced, so the answers derived from it
+    /// can be kept instead of walking the log again for every redraw.
+    @ObservationIgnored private var historyRevision = 0
+    @ObservationIgnored private var growthCache: (revision: Int, value: [StorageCategory: Int64])?
+    @ObservationIgnored private var weeklyChangeCache: (revision: Int, value: Int64?)?
     /// Whether scans and deletions are written down at all. On by default:
     /// the app already knows everything the log holds, and without it the
     /// list cannot say anything about change. Turning it off deletes the file.
@@ -68,7 +79,7 @@ final class ScanModel {
             UserDefaults.standard.set(keepsHistory, forKey: Self.historyKey)
             if !keepsHistory {
                 ScanHistory.forget()
-                history = ScanHistory.Log()
+                setHistory(ScanHistory.Log())
             }
         }
     }
@@ -441,7 +452,11 @@ final class ScanModel {
     }
 
     var areAllListedCategoriesCollapsed: Bool {
-        !categories.isEmpty && categories.allSatisfy { collapsedCategories.contains($0.category) }
+        // Asked on every redraw, from the header. Grouping and sorting every
+        // category to answer a question about the items alone was work the
+        // header did not need.
+        let listed = listedItems
+        return !listed.isEmpty && listed.allSatisfy { collapsedCategories.contains($0.category) }
     }
 
     /// Selected rows that are not on screen, whether a filter or a folded
@@ -501,15 +516,30 @@ final class ScanModel {
     /// The same test the growth notification uses, so the list and the
     /// notification never disagree about what is unusual.
     var unusualGrowth: [StorageCategory: Int64] {
-        Dictionary(uniqueKeysWithValues: ScanHistory.unusualCategoryGrowth(in: history).map {
+        if let growthCache, growthCache.revision == historyRevision { return growthCache.value }
+        let value = Dictionary(uniqueKeysWithValues: ScanHistory.unusualCategoryGrowth(in: history).map {
             ($0.category, $0.growthBytes)
         })
+        growthCache = (historyRevision, value)
+        return value
     }
 
     /// How much System Data changed since a scan about a week old, or nil when
     /// the history does not reach back that far.
     var weeklyChange: Int64? {
-        ScanHistory.totalChange(overPastDays: 7, in: history)?.delta
+        if let weeklyChangeCache, weeklyChangeCache.revision == historyRevision {
+            return weeklyChangeCache.value
+        }
+        let value = ScanHistory.totalChange(overPastDays: 7, in: history)?.delta
+        weeklyChangeCache = (historyRevision, value)
+        return value
+    }
+
+    /// Replaces the log and drops the answers derived from the old one in the
+    /// same step, so a view can never read the new log with the old growth.
+    private func setHistory(_ log: ScanHistory.Log) {
+        history = log
+        historyRevision += 1
     }
 
     private func sorted(_ items: [StorageItem]) -> [StorageItem] {
@@ -540,6 +570,8 @@ final class ScanModel {
         guard !isScanning else { return }
         let keepsList = quietly && hasScanned
         isScanning = true
+        // The previous scan's sizes and folders are about to be replaced.
+        forgetRowFacts()
         if !keepsList {
             errorMessage = nil
             selectedIDs = []
@@ -569,16 +601,33 @@ final class ScanModel {
         // empty until every probe has finished cannot be told apart from one
         // that has hung.
         var results: [StorageItem] = []
+        // Results still arrive as they are measured, but the list is rebuilt
+        // at most four times a second. One rebuild per probe, twenty-three of
+        // them close together, was enough to make scrolling during the first
+        // scan stutter even on an idle machine.
+        var lastListPublish = Date.distantPast
         await withTaskGroup(of: [StorageItem].self) { group in
             for probe in probes {
                 group.addTask { await probe.probe() }
             }
             for await batch in group {
                 results += batch
-                if !keepsList { items = results.filter { !deletedDuringScan.contains($0.id) } }
+                if !keepsList {
+                    let now = Date()
+                    if now.timeIntervalSince(lastListPublish) >= 0.25 {
+                        items = results.filter { !deletedDuringScan.contains($0.id) }
+                        forgetRowFacts()
+                        lastListPublish = now
+                    }
+                }
                 probesFinished += 1
                 phase = L("Measuring… %lld of %lld places", probesFinished, probesTotal)
             }
+        }
+        // Whatever arrived after the last publish, before the catch-all runs.
+        if !keepsList {
+            items = results.filter { !deletedDuringScan.contains($0.id) }
+            forgetRowFacts()
         }
 
         freeBytes = DiskSize.freeSpace()
@@ -593,6 +642,7 @@ final class ScanModel {
         let found = (results + (await LargeFolderProbe(claimed: claimed).probe()))
             .filter { !deletedDuringScan.contains($0.id) }
         items = found
+        forgetRowFacts()
         if keepsList {
             // Only what still exists stays selected.
             selectedIDs.formIntersection(found.map(\.id))
@@ -608,7 +658,7 @@ final class ScanModel {
             await Task.detached(priority: .utility) {
                 ScanHistory.record(measured, freeBytes: free)
             }.value
-            history = ScanHistory.load()
+            setHistory(ScanHistory.load())
         }
         await LowSpaceAlert.check(freeBytes: freeBytes, reclaimable: safeBytes)
         publishToWidget()
@@ -841,7 +891,41 @@ final class ScanModel {
         }
     }
 
+    /// What the row needs to know about the item on disk, asked once per scan
+    /// rather than once per redraw.
+    private struct RowFacts {
+        let canExpand: Bool
+        let canShrink: Bool
+    }
+
     func canShrink(_ item: StorageItem) -> Bool {
+        facts(for: item).canShrink
+    }
+
+    /// Whether tapping the row's title opens its breakdown. A folder that is
+    /// not there opens nothing, so the chevron is not offered for it.
+    func canExpand(_ item: StorageItem) -> Bool {
+        facts(for: item).canExpand
+    }
+
+    private func facts(for item: StorageItem) -> RowFacts {
+        if let known = rowFacts[item.id] { return known }
+        let facts = RowFacts(
+            canExpand: item.revealURL?.isDirectory ?? false,
+            canShrink: shrinkable(item)
+        )
+        rowFacts[item.id] = facts
+        return facts
+    }
+
+    /// The disk changes between scans, and a scan replaces `items`; this is
+    /// called at those points so a newly measured size is not answered with
+    /// the old verdict.
+    private func forgetRowFacts() {
+        rowFacts.removeAll(keepingCapacity: true)
+    }
+
+    private func shrinkable(_ item: StorageItem) -> Bool {
         guard let idleDays = Self.shrinkIdleDays(for: item),
               (item.sizeBytes ?? 0) >= Self.shrinkMinimumBytes,
               !item.action.isManual
@@ -887,6 +971,8 @@ final class ScanModel {
         if saved > 0 || alreadyCompressed {
             shrunkDates[item.id] = .now
             UserDefaults.standard.set(shrunkDates, forKey: Self.shrunkKey)
+            // The row no longer offers Shrink, and its size may have changed.
+            forgetRowFacts()
         }
         if saved > 0, let before = item.sizeBytes {
             let after = max(before - saved, 0)
@@ -989,7 +1075,7 @@ final class ScanModel {
             // space is re-read, so it records what was asked for even if
             // the disk disagrees about what it got.
             ScanHistory.record(deleted: affected.map { ($0, $0.sizeBytes ?? 0) })
-            history = ScanHistory.load()
+            setHistory(ScanHistory.load())
         }
         items.removeAll { ids.contains($0.id) }
         // A scan still running holds its own copy of what it found and would

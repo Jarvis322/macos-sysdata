@@ -3,6 +3,10 @@ import SwiftUI
 
 struct ItemRow: View {
     let item: StorageItem
+    /// Whether the folder can be opened here. Worked out once by the model:
+    /// asking the disk while the row is built made every redraw a filesystem
+    /// call.
+    let canExpand: Bool
     /// Growth since the previous scan, when there is one to compare against.
     let change: Int64?
     /// This item's size over the recent scans, for the sparkline. Fewer than
@@ -19,31 +23,26 @@ struct ItemRow: View {
     @State private var showsInstructions = false
     @State private var isExpanded = false
     @State private var isHovered = false
+    /// Waits for the pointer to settle before revealing the secondary
+    /// actions. Scrolling moves a new row under a still pointer many times a
+    /// second; without the wait, each one re-rendered its row just to hide
+    /// the buttons again.
+    @State private var hoverTask: Task<Void, Never>?
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var breakdown: [(url: URL, bytes: Int64)]?
 
     var body: some View {
+        // Asked once for the row instead of by every line that shows an age.
+        let idleDays = item.idleDays
         VStack(alignment: .leading, spacing: 6) {
             HStack(alignment: .top, spacing: 10) {
-                Toggle(isOn: Binding(get: { isSelected }, set: { onToggle($0) })) {
-                    EmptyView()
-                }
-                .toggleStyle(.checkbox)
-                .labelsHidden()
-                .disabled(item.action.isManual || isBusy)
-                .opacity(item.action.isManual ? 0 : 1)
-                .accessibilityLabel(L("Select %@", item.name))
-                .padding(.top, 2)
-
+                checkbox
                 // Everything between the checkbox and the buttons opens the
                 // breakdown, which is most of the row — aiming at a 13pt label
                 // was work the pointer should not have had. The checkbox and
-                // the action buttons stay outside it: whether a tap gesture or
-                // the control under the pointer wins is SwiftUI's to
-                // arbitrate, and the selection checkbox is not the place to
-                // find out.
+                // the action buttons stay outside it.
                 HStack(alignment: .top, spacing: 10) {
-                    details
+                    details(idleDays: idleDays)
                     Spacer(minLength: 8)
                     sizeColumn
                 }
@@ -60,26 +59,83 @@ struct ItemRow: View {
         }
         .padding(.vertical, 4)
         .background(rowBackground)
-        .onHover { isHovered = $0 }
-        // Hover is a pointer idea. The same three controls have to be
-        // reachable without one — by right-click, and by the keyboard through
-        // the context menu — or hiding them takes them away from the people
+        .onHover { inside in
+            hoverTask?.cancel()
+            guard inside else {
+                withAnimation(reduceMotion ? nil : .easeOut(duration: 0.12)) {
+                    isHovered = false
+                }
+                return
+            }
+            hoverTask = Task { @MainActor in
+                try? await Task.sleep(for: .milliseconds(60))
+                guard !Task.isCancelled else { return }
+                withAnimation(reduceMotion ? nil : .easeOut(duration: 0.12)) {
+                    isHovered = true
+                }
+            }
+        }
+        .onDisappear { hoverTask?.cancel() }
+        // Hover is a pointer idea. The same controls have to be reachable
+        // without one — by right-click, and by the keyboard through the
+        // context menu — or hiding them takes them away from the people
         // least able to spare them.
         .contextMenu { rowMenu }
         .opacity(isBusy ? 0.5 : 1)
     }
 
-    private var details: some View {
-        VStack(alignment: .leading, spacing: 3) {
-            // The name comes first. When the row is narrow the chip gives up
-            // its word and keeps its symbol, rather than the name being cut
-            // to "Erase iPhone 18 Pr…".
-            ViewThatFits(in: .horizontal) {
-                titleLine(compactBadge: false)
-                titleLine(compactBadge: true)
+    /// Drawn rather than a `Toggle`: a native checkbox is an AppKit view, and
+    /// a list of rows each carrying one put hundreds of them inside the
+    /// scroll view. A `Canvas` keeps the box and its tick in one layer.
+    private var checkbox: some View {
+        Canvas { context, size in
+            let box = CGRect(origin: .zero, size: size).insetBy(dx: 0.5, dy: 0.5)
+            let shape = Path(roundedRect: box, cornerRadius: 3.5)
+            if isSelected {
+                context.fill(shape, with: .color(.accentColor))
+                var tick = Path()
+                tick.move(to: CGPoint(x: size.width * 0.24, y: size.height * 0.52))
+                tick.addLine(to: CGPoint(x: size.width * 0.43, y: size.height * 0.70))
+                tick.addLine(to: CGPoint(x: size.width * 0.78, y: size.height * 0.31))
+                context.stroke(
+                    tick, with: .color(.white),
+                    style: StrokeStyle(lineWidth: 1.7, lineCap: .round, lineJoin: .round)
+                )
+            } else {
+                context.stroke(shape, with: .color(.secondary.opacity(0.55)), lineWidth: 1)
+            }
+        }
+        .frame(width: 14, height: 14)
+        .contentShape(Rectangle())
+        .opacity(item.action.isManual ? 0 : 1)
+        .allowsHitTesting(!item.action.isManual && !isBusy)
+        .onTapGesture { onToggle(!isSelected) }
+        .padding(.top, 2)
+        .accessibilityElement()
+        .accessibilityLabel(L("Select %@", item.name))
+        .accessibilityValue(isSelected ? L("Selected") : L("Not selected"))
+        .accessibilityAddTraits(.isButton)
+        .accessibilityAction { onToggle(!isSelected) }
+    }
+
+    private func details(idleDays: Int?) -> some View {
+        let isIdleProject = item.category == .projects && (idleDays ?? 0) >= ScanModel.idleProjectDays
+        let idle = idleDays.flatMap(StorageItem.idlePhrase)
+        return VStack(alignment: .leading, spacing: 3) {
+            // The name comes first and gives way before the badge does: the
+            // badge's word is fixed, so a narrow window truncates the name
+            // rather than spelling out "Reviewed" as "Rev…".
+            HStack(spacing: 6) {
+                Text(item.name)
+                    .lineLimit(1)
+                    .truncationMode(.tail)
+                safetyBadge
+                if isIdleProject, let idle {
+                    idleBadge(idle)
+                }
             }
             HStack(alignment: .firstTextBaseline, spacing: 4) {
-                if !isIdleProject, let idle = item.idleLabel {
+                if !isIdleProject, let idle {
                     // Only appears past a fortnight, so it marks the rows
                     // where age is the deciding fact rather than repeating
                     // "in use" on every line.
@@ -94,20 +150,6 @@ struct ItemRow: View {
                     .font(.caption)
                     .foregroundStyle(.secondary)
                     .lineLimit(2)
-            }
-        }
-    }
-
-    private func titleLine(compactBadge: Bool) -> some View {
-        HStack(spacing: 6) {
-            if compactBadge {
-                Text(item.name).lineLimit(1)
-            } else {
-                Text(item.name).lineLimit(1).fixedSize()
-            }
-            safetyBadge(compact: compactBadge)
-            if isIdleProject, let idle = item.idleLabel {
-                idleBadge(idle)
             }
         }
     }
@@ -130,7 +172,6 @@ struct ItemRow: View {
                 // Coloured by direction, like the overview's line: growth is
                 // the news, so it is the one that is warm.
                 Sparkline(values: trend)
-                    .frame(width: 46, height: 12)
                     .foregroundStyle((trend.last ?? 0) > (trend.first ?? 0) ? Color.orange.opacity(0.8) : Color.green.opacity(0.8))
                     .accessibilityLabel(L("Size trend over recent scans"))
             }
@@ -170,10 +211,6 @@ struct ItemRow: View {
                 .fill(.quaternary.opacity(0.5))
                 .padding(.horizontal, -6)
         }
-    }
-
-    private var canExpand: Bool {
-        item.revealURL?.isDirectory ?? false
     }
 
     private func toggleExpanded() {
@@ -228,14 +265,13 @@ struct ItemRow: View {
 
     // MARK: Badge
 
-    /// The safety as a chip with its own symbol, so it reads by shape as
-    /// well as by colour: a shield for Safe, an eye for Review, a hand for
-    /// Manual.
-    private func safetyBadge(compact: Bool) -> some View {
+    /// The safety as a chip with its own symbol, so it reads by shape as well
+    /// as by colour: a shield for Safe, an eye for Review, a hand for Manual.
+    private var safetyBadge: some View {
         HStack(spacing: 3) {
             Image(systemName: badgeSymbol)
                 .font(.system(size: 8, weight: .bold))
-            if !compact { Text(item.safety.label) }
+            Text(item.safety.label)
         }
         .font(.caption2.weight(.semibold))
         .padding(.horizontal, 6)
@@ -243,6 +279,7 @@ struct ItemRow: View {
         .background(badgeColor.opacity(0.16), in: Capsule())
         .overlay { Capsule().strokeBorder(badgeColor.opacity(0.25), lineWidth: 0.5) }
         .foregroundStyle(badgeColor)
+        .fixedSize()
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(L("Safety: %@", item.safety.label))
     }
@@ -253,14 +290,6 @@ struct ItemRow: View {
         case .review: "eye.fill"
         case .manual: "hand.raised.fill"
         }
-    }
-
-    /// One of the rows the header's "Idle 60 days" link selects. The link
-    /// counted them, but the rows only said their age in the grey detail
-    /// line, where "2 months idle" looked the same as "1 month idle" — so
-    /// nothing showed which rows the count meant.
-    private var isIdleProject: Bool {
-        item.category == .projects && (item.idleDays ?? 0) >= ScanModel.idleProjectDays
     }
 
     /// The link's colour, so the rows and the count visibly belong together.
@@ -290,50 +319,68 @@ struct ItemRow: View {
     /// well over five hundred icons at rest, which made the one control that
     /// matters — delete — no more prominent than the rest.
     ///
-    /// They stay in the view tree at zero opacity rather than being removed, so
-    /// VoiceOver still reaches them; hit testing goes with the opacity so an
-    /// invisible "hide this item" button cannot be clicked by accident.
+    /// They are built only while they are shown, with a placeholder of the
+    /// same width holding their place otherwise: at rest every row was still
+    /// a handful of image layers inside the scroll view. The row's context
+    /// menu carries the same actions for assistive technology.
     private var showsSecondaryActions: Bool {
         isHovered || isExpanded
+    }
+
+    /// The three hover-only controls, in points, so the placeholder that
+    /// replaces them keeps the row the same width.
+    private var secondaryActionsWidth: CGFloat {
+        // The chevron, the folder button and Hide, as the actions above.
+        let count = (canExpand ? 1 : 0) + 1 + (item.revealURL != nil ? 1 : 0)
+        return CGFloat(count) * 18 + CGFloat(max(count - 1, 0)) * 4
     }
 
     @ViewBuilder
     private var actions: some View {
         HStack(spacing: 4) {
-            Group {
-                if canExpand {
-                    Button(action: toggleExpanded) {
-                        Image(systemName: isExpanded ? "chevron.up" : "chevron.down")
+            if showsSecondaryActions {
+                // One HStack so the three fade in and out as a group; the
+                // placeholder below is the same width, so the row does not
+                // change size while they cross-fade.
+                HStack(spacing: 4) {
+                    if canExpand {
+                        RowAction(
+                            symbol: isExpanded ? "chevron.up" : "chevron.down",
+                            label: isExpanded ? L("Hide breakdown") : L("Show largest entries"),
+                            help: isExpanded ? L("Hide breakdown") : L("Show largest entries"),
+                            action: toggleExpanded
+                        )
                     }
-                    .accessibilityLabel(isExpanded ? L("Hide breakdown") : L("Show largest entries"))
-                }
 
-                if let url = item.revealURL {
-                    Button {
-                        NSWorkspace.shared.activateFileViewerSelecting([url])
-                    } label: {
-                        Image(systemName: "folder")
+                    if let url = item.revealURL {
+                        RowAction(
+                            symbol: "folder",
+                            label: L("Reveal %@ in Finder", item.name),
+                            help: L("Reveal in Finder"),
+                            action: { NSWorkspace.shared.activateFileViewerSelecting([url]) }
+                        )
                     }
-                    .accessibilityLabel(L("Reveal %@ in Finder", item.name))
-                }
 
-                Button(action: onHide) {
-                    Image(systemName: "eye.slash")
+                    RowAction(
+                        symbol: "eye.slash",
+                        label: L("Hide %@ from future scans", item.name),
+                        help: L("Don't show this item again"),
+                        action: onHide
+                    )
                 }
-                .accessibilityLabel(L("Hide %@ from future scans", item.name))
-                .help(L("Don't show this item again"))
+                .transition(.opacity)
+            } else {
+                Spacer()
+                    .frame(width: secondaryActionsWidth, height: 18)
             }
-            .opacity(showsSecondaryActions ? 1 : 0)
-            .allowsHitTesting(showsSecondaryActions)
-            .animation(reduceMotion ? nil : .easeOut(duration: 0.12), value: showsSecondaryActions)
 
             if let instructions = item.action.manualInstructions {
-                Button {
-                    showsInstructions.toggle()
-                } label: {
-                    Image(systemName: "info.circle")
-                }
-                .accessibilityLabel(L("How to remove %@", item.name))
+                RowAction(
+                    symbol: "info.circle",
+                    label: L("How to remove %@", item.name),
+                    help: L("How to remove this item"),
+                    action: { showsInstructions.toggle() }
+                )
                 .popover(isPresented: $showsInstructions, arrowEdge: .trailing) {
                     instructionsPopover(instructions)
                 }
@@ -346,20 +393,22 @@ struct ItemRow: View {
                 // alternative to the delete beside it, and nobody looks for
                 // a way to keep files on a row that only offers to delete.
                 if let onShrink {
-                    Button(action: onShrink) {
-                        Image(systemName: "arrow.down.right.and.arrow.up.left")
-                    }
-                    .foregroundStyle(Color.accentColor)
-                    .accessibilityLabel(L("Shrink %@ without deleting", item.name))
-                    .help(L("Stores these files compressed, the way macOS stores its own. Nothing is deleted and everything opens as before."))
+                    RowAction(
+                        symbol: "arrow.down.right.and.arrow.up.left",
+                        label: L("Shrink %@ without deleting", item.name),
+                        help: L("Stores these files compressed, the way macOS stores its own. Nothing is deleted and everything opens as before."),
+                        tint: Color.accentColor,
+                        action: onShrink
+                    )
                 }
-                Button(role: .destructive, action: onDelete) {
-                    Image(systemName: "trash")
-                }
-                .accessibilityLabel(L("Delete %@", item.name))
+                RowAction(
+                    symbol: "trash",
+                    label: L("Delete %@", item.name),
+                    help: L("Delete"),
+                    action: onDelete
+                )
             }
         }
-        .buttonStyle(.borderless)
     }
 
     private func instructionsPopover(_ instructions: String) -> some View {
@@ -383,5 +432,33 @@ struct ItemRow: View {
         }
         .padding(12)
         .frame(width: 340)
+    }
+}
+
+/// One icon in a row's action column.
+///
+/// A `Button` would be an AppKit button on macOS, hosted inside the scroll
+/// view; several per row made scrolling stutter as new rows arrived. This is
+/// drawn by SwiftUI and carries the same label and action for assistive
+/// technology.
+private struct RowAction: View {
+    let symbol: String
+    let label: String
+    let help: String
+    var tint: Color = .primary
+    let action: () -> Void
+
+    var body: some View {
+        Image(systemName: symbol)
+            .font(.system(size: 13))
+            .foregroundStyle(tint)
+            .frame(width: 18, height: 18)
+            .contentShape(Rectangle())
+            .onTapGesture(perform: action)
+            .help(help)
+            .accessibilityElement()
+            .accessibilityLabel(label)
+            .accessibilityAddTraits(.isButton)
+            .accessibilityAction { action() }
     }
 }

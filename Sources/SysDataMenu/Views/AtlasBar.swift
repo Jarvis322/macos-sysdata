@@ -5,8 +5,10 @@ import SwiftUI
 ///
 /// Read down the folded list, the bars are a map of the disk — which group is
 /// big, and how much of it is safe to take. The colours are the badges' own,
-/// so green means Safe here exactly as it does on a row. A single split bar
-/// rather than a striped texture, because a texture is unreadable at 4 points.
+/// so green means Safe here exactly as it does on a row.
+///
+/// Drawn in one `Canvas`. As six stacked shapes it was six layer-backed views
+/// per category, and a folded list is mostly these cards.
 struct AtlasBar: View {
     let safe: Int64
     let review: Int64
@@ -15,34 +17,39 @@ struct AtlasBar: View {
     let scale: Int64
 
     var body: some View {
-        GeometryReader { geometry in
+        Canvas { context, size in
             let total = safe + review + manual
-            let length = geometry.size.width * CGFloat(total) / CGFloat(max(scale, 1))
-            ZStack(alignment: .leading) {
-                // The track is the largest category, so every bar is read
-                // against the same full length.
-                Capsule().fill(.quaternary.opacity(0.35))
-                HStack(spacing: 0) {
-                    segment(safe, of: total, length: length, color: .green)
-                    segment(review, of: total, length: length, color: .orange)
-                    segment(manual, of: total, length: length, color: .secondary)
+            let length = size.width * CGFloat(total) / CGFloat(max(scale, 1))
+            let track = Path(roundedRect: CGRect(origin: .zero, size: size), cornerRadius: size.height / 2)
+            context.fill(track, with: .color(.secondary.opacity(0.14)))
+            guard total > 0, length > 0 else { return }
+
+            context.drawLayer { layer in
+                layer.clip(to: track)
+                var x: CGFloat = 0
+                for (bytes, color) in [(safe, Color.green), (review, Color.orange), (manual, Color.secondary)] {
+                    let width = length * CGFloat(bytes) / CGFloat(total)
+                    guard width > 0 else { continue }
+                    let rect = CGRect(x: x, y: 0, width: width, height: size.height)
+                    layer.fill(
+                        Path(rect),
+                        with: .linearGradient(
+                            Gradient(colors: [color.opacity(0.92), color]),
+                            startPoint: CGPoint(x: rect.midX, y: 0),
+                            endPoint: CGPoint(x: rect.midX, y: size.height)
+                        )
+                    )
+                    x += width
                 }
-                .frame(width: length, alignment: .leading)
-                .clipShape(Capsule())
-                .overlay(alignment: .top) {
-                    // A highlight along the top edge, so the bar has the same
-                    // light from above as the icons.
-                    Capsule().fill(.white.opacity(0.22)).frame(width: length, height: 1.5).padding(.top, 0.5)
-                }
+                // A highlight along the top edge, so the bar has the same
+                // light from above as the icons.
+                let highlight = Path(roundedRect: CGRect(x: 0, y: 0.5, width: length, height: 1.5), cornerRadius: 0.75)
+                layer.fill(highlight, with: .color(.white.opacity(0.22)))
             }
         }
         .frame(height: 6)
         .accessibilityElement()
         .accessibilityLabel(L("%@ safe · %@ to review · %@ manual",
                               safe.byteString, review.byteString, manual.byteString))
-    }
-
-    private func segment(_ bytes: Int64, of total: Int64, length: CGFloat, color: Color) -> some View {
-        Rectangle().fill(color.gradient).frame(width: total > 0 ? length * CGFloat(bytes) / CGFloat(total) : 0)
     }
 }

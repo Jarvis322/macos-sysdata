@@ -19,8 +19,6 @@ struct MenuView: View {
     @State private var isAuthenticating = false
     /// What the last delete gave back, kept on screen for a few seconds.
     @State private var freedFlash: Int64?
-    @State private var hoveredCategory: StorageCategory?
-    @State private var hoveredProject: String?
     @State private var showsHistory = false
     @State private var warnsAboutLowSpace = LowSpaceAlert.isEnabled
     @State private var lowSpaceThreshold = LowSpaceAlert.threshold
@@ -66,6 +64,11 @@ struct MenuView: View {
     private static let fullDiskAccessPane = URL(
         string: "x-apple.systempreferences:com.apple.preference.security?Privacy_AllFiles"
     )!
+
+    /// Asking LocalAuthentication opens a connection to its agent, which is
+    /// not something to do while a row is being built. The answer cannot
+    /// change without the Mac gaining or losing its owner authentication.
+    private static let authenticationAvailable = DeleteAuthentication.isAvailable
 
     var body: some View {
         VStack(spacing: 0) {
@@ -286,14 +289,10 @@ struct MenuView: View {
             headerTitleRow
             // Once there is a list, the overview under the filter carries
             // these figures; repeating them here was the noise that made the
-            // header read as a spreadsheet row.
-            if model.isScanning || model.visibleItems.isEmpty {
-                Text(subtitle)
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-                    .monospacedDigit()
-                    .help(L("Free space on the startup disk."))
-            }
+            // header read as a spreadsheet row. Kept in its own view: it
+            // reads the scan's live phase, and reading that here rebuilt the
+            // whole list every time a probe finished.
+            HeaderStatus(model: model)
         }
         .padding(.horizontal, presentation == .window ? 18 : 14)
         .padding(.vertical, presentation == .window ? 14 : 10)
@@ -348,12 +347,10 @@ struct MenuView: View {
                     .help(L("Order rows by size, or by how long they have sat untouched"))
 
                     Button {
-                        withAnimation {
-                            if model.areAllListedCategoriesCollapsed {
-                                model.expandAllCategories()
-                            } else {
-                                model.collapseAllCategories()
-                            }
+                        if model.areAllListedCategoriesCollapsed {
+                            model.expandAllCategories()
+                        } else {
+                            model.collapseAllCategories()
                         }
                     } label: {
                         Label(
@@ -374,14 +371,10 @@ struct MenuView: View {
                 }
                 // Determinate while the probes run: the first scan on a full
                 // disk is slow enough that a spinner alone cannot be told
-                // apart from a hang. The ring around the button is that count.
-                ScanButton(
-                    isScanning: model.isScanning,
-                    progress: model.probesTotal > 0 && model.probesFinished < model.probesTotal
-                        ? Double(model.probesFinished) / Double(model.probesTotal) : nil
-                ) {
-                    Task { await model.scan() }
-                }
+                // apart from a hang. The ring around the button is that count,
+                // read in the button's own body so a probe finishing does not
+                // rebuild the list behind it.
+                HeaderScanButton(model: model)
                 settingsMenu
             }
         }
@@ -428,17 +421,6 @@ struct MenuView: View {
             .padding(.horizontal, presentation == .window ? 18 : 14)
             .padding(.bottom, 8)
         }
-    }
-
-    private var subtitle: String {
-        if model.isScanning, !model.phase.isEmpty {
-            return model.phase
-        }
-        if model.visibleItems.isEmpty {
-            return L("%@ free on disk", model.freeBytes.byteString)
-        }
-        return L("%@ safe to free now · %@ free on disk · %@ purgeable",
-                 model.safeBytes.byteString, model.freeBytes.byteString, model.purgeableBytes.byteString)
     }
 
     // MARK: Full Disk Access
@@ -579,8 +561,7 @@ struct MenuView: View {
     /// while the person scrolls. On macOS 26.5 that sent the window into
     /// constraint pass after constraint pass until AppKit threw
     /// NSGenericException and the app quit (the report and stack are in #18).
-    /// A stack has no table to fall into that loop, and `LazyVStack` still
-    /// builds rows only as they scroll into view.
+    /// A stack has no table to fall into that loop.
     private var list: some View {
         // Read once per redraw rather than once per header: both walk the
         // history or every item.
@@ -588,34 +569,48 @@ struct MenuView: View {
         let groups = model.categories
         let scale = groups.map(\.total).max() ?? 0
         return ScrollView {
+            // Lazy again, now that a row is cheap to build: it hosts no
+            // AppKit controls, so a card coming into view no longer costs a
+            // screenful of buttons. The history panel has been a lazy stack
+            // all along and is smooth, while eagerly building every card made
+            // the longer list the heavier of the two.
             LazyVStack(alignment: .leading, spacing: 8) {
                 ForEach(groups, id: \.category) { group in
                     let isOpen = !model.collapsedCategories.contains(group.category)
                     // One card per group: the header, its bar and, when it is
                     // open, its rows, so a group reads as one thing.
-                    VStack(alignment: .leading, spacing: 0) {
-                        categoryHeader(group.category, total: group.total, items: group.items)
-                        atlasRow(group.category, items: group.items, scale: scale, growth: growth[group.category])
-                            .padding(.top, 5)
-                            .padding(.bottom, isOpen ? 8 : 0)
-                        if isOpen {
-                            ForEach(group.items) { item in
-                                Divider().opacity(0.6)
-                                itemRow(item)
-                                    .padding(.vertical, 4)
+                    CategoryCard { hover in
+                        VStack(alignment: .leading, spacing: 0) {
+                            categoryHeader(
+                                group.category, total: group.total,
+                                items: group.items, hover: hover
+                            )
+                            atlasRow(group.category, items: group.items, scale: scale, growth: growth[group.category])
+                                .padding(.top, 5)
+                                .padding(.bottom, isOpen ? 8 : 0)
+                            if isOpen {
+                                // No transition: the rows are inside a scroll
+                                // view with every other card, and animating
+                                // one card's height made SwiftUI animate the
+                                // whole list's layout. Opening a two-row
+                                // group was more expensive than scrolling
+                                // the window.
+                                ForEach(group.items) { item in
+                                    Divider().opacity(0.6)
+                                    itemRow(item)
+                                        .padding(.vertical, 4)
+                                }
                             }
-                            .transition(reduceMotion ? .opacity : .opacity.combined(with: .move(edge: .top)))
                         }
+                        .padding(.horizontal, 10)
+                        .padding(.vertical, 10)
                     }
-                    .padding(.horizontal, 10)
-                    .padding(.vertical, 10)
-                    .listCard(raised: hoveredCategory == group.category)
-                    .onHover { hoveredCategory = $0 ? group.category : (hoveredCategory == group.category ? nil : hoveredCategory) }
                 }
             }
             .padding(.horizontal, 12)
             .padding(.vertical, 8)
         }
+        .modifier(ClearHoverOnScroll())
     }
 
     /// Every project the scan found build output for, largest first. Each row
@@ -649,8 +644,7 @@ struct MenuView: View {
                         ) { archive(project) }
                         .padding(.horizontal, 12)
                         .padding(.vertical, 4)
-                        .listCard(raised: hoveredProject == project.id)
-                        .onHover { hoveredProject = $0 ? project.id : (hoveredProject == project.id ? nil : hoveredProject) }
+                        .listCard()
                     }
                 }
                 .padding(.horizontal, 16)
@@ -728,6 +722,7 @@ struct MenuView: View {
     private func itemRow(_ item: StorageItem) -> some View {
         ItemRow(
             item: item,
+            canExpand: model.canExpand(item),
             change: model.change(since: item),
             trend: model.series(for: item),
             isBusy: model.busyItemIDs.contains(item.id),
@@ -746,19 +741,24 @@ struct MenuView: View {
         )
     }
 
-    private func categoryHeader(_ category: StorageCategory, total: Int64, items: [StorageItem]) -> some View {
+    private func categoryHeader(
+        _ category: StorageCategory, total: Int64, items: [StorageItem], hover: CardHover?
+    ) -> some View {
         HStack {
             Button {
-                withAnimation {
-                    // Folding keeps the selection. A fold and a filter do the
-                    // same thing to a row, and the footer counts what either
-                    // one has taken off screen rather than either of them
-                    // quietly editing the batch.
-                    if model.collapsedCategories.contains(category) {
-                        model.collapsedCategories.remove(category)
-                    } else {
-                        model.collapsedCategories.insert(category)
-                    }
+                // Folding keeps the selection. A fold and a filter do the
+                // same thing to a row, and the footer counts what either one
+                // has taken off screen rather than either of them quietly
+                // editing the batch.
+                //
+                // Deliberately not in `withAnimation`: the rows are siblings
+                // of every other card in the scroll view, so animating this
+                // one card's height made the whole list re-lay out frame by
+                // frame. The chevron still turns; the rows appear at once.
+                if model.collapsedCategories.contains(category) {
+                    model.collapsedCategories.remove(category)
+                } else {
+                    model.collapsedCategories.insert(category)
                 }
             } label: {
                 Image(systemName: "chevron.right")
@@ -766,6 +766,10 @@ struct MenuView: View {
                     .foregroundStyle(.secondary)
                     .rotationEffect(.degrees(model.collapsedCategories.contains(category) ? 0 : 90))
                     .frame(width: 10)
+                    // The turn is the only part of opening a group that is
+                    // animated: animating the rows moved the whole list.
+                    .animation(reduceMotion ? nil : .easeOut(duration: 0.15),
+                               value: model.collapsedCategories.contains(category))
             }
             .buttonStyle(.borderless)
             .accessibilityLabel(
@@ -779,7 +783,7 @@ struct MenuView: View {
                 set: { model.setSelection(category, selected: $0) }
             )) {
                 HStack(spacing: 7) {
-                    CategoryIcon(category: category, isRaised: hoveredCategory == category)
+                    CategoryIcon(category: category, hover: hover)
                     Text(category.title)
                         .fontWeight(.semibold)
                 }
@@ -868,7 +872,7 @@ struct MenuView: View {
                 }
             ))
             .help(L("Searches the Developer, Projects, Projeler, Code and dev folders of drives that are plugged in. Time Machine disks and network shares are never searched."))
-            if DeleteAuthentication.isAvailable {
+            if Self.authenticationAvailable {
                 Toggle(L("Ask for Touch ID before deleting"), isOn: Binding(
                     get: { model.requiresAuthenticationToDelete },
                     set: { model.requiresAuthenticationToDelete = $0 }
@@ -1217,6 +1221,48 @@ struct MenuView: View {
             lines.append(L("1 item needs root."))
         }
         return lines.joined(separator: "\n")
+    }
+}
+
+/// The line under the title while a scan runs, or while there is no list.
+/// Its own view so the live phase does not invalidate the list.
+private struct HeaderStatus: View {
+    let model: ScanModel
+
+    var body: some View {
+        if model.isScanning || model.visibleItems.isEmpty {
+            Text(subtitle)
+                .font(.caption)
+                .foregroundStyle(.secondary)
+                .monospacedDigit()
+                .help(L("Free space on the startup disk."))
+        }
+    }
+
+    private var subtitle: String {
+        if model.isScanning, !model.phase.isEmpty {
+            return model.phase
+        }
+        if model.visibleItems.isEmpty {
+            return L("%@ free on disk", model.freeBytes.byteString)
+        }
+        return L("%@ safe to free now · %@ free on disk · %@ purgeable",
+                 model.safeBytes.byteString, model.freeBytes.byteString, model.purgeableBytes.byteString)
+    }
+}
+
+/// Rescan, with its progress read here rather than in the list's body.
+private struct HeaderScanButton: View {
+    let model: ScanModel
+
+    var body: some View {
+        ScanButton(
+            isScanning: model.isScanning,
+            progress: model.probesTotal > 0 && model.probesFinished < model.probesTotal
+                ? Double(model.probesFinished) / Double(model.probesTotal) : nil
+        ) {
+            Task { await model.scan() }
+        }
     }
 }
 
