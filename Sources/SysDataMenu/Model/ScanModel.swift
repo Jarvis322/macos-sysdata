@@ -734,7 +734,14 @@ final class ScanModel {
         // batch removed. They are not the same number as often as one would
         // hope, and the difference is the thing worth saying out loud.
         let freeBeforeBatch = DiskSize.freeSpace()
-        let askedToFree = runnable.reduce(0) { $0 + ($1.sizeBytes ?? 0) }
+        // An item whose folders are already gone (its tool cleared them since
+        // the scan) frees nothing, and counting it made the shortfall notice
+        // blame local snapshots for space that was never there.
+        let askedToFree = runnable.reduce(Int64(0)) { total, item in
+            let paths = item.action.paths
+            let vanished = !paths.isEmpty && paths.allSatisfy { !FileManager.default.fileExists(atPath: $0.path) }
+            return total + (vanished ? 0 : (item.sizeBytes ?? 0))
+        }
         anythingWentToTheTrash = false
         offersSnapshotCleanup = false
         // Every failure in the batch, one per line, once it is over.
@@ -768,7 +775,13 @@ final class ScanModel {
             }
         }
 
-        var deleted = 0
+        // The password scripts have run by now when there were several, and
+        // what they removed is off the list. Counting from zero said "Nothing
+        // was deleted" when the person stopped at the next prompt.
+        let stillListed = Set(items.map(\.id))
+        var deleted = unattended || privileged.count < 2
+            ? 0
+            : privileged.filter { !stillListed.contains($0.item.id) }.count
         for (index, item) in direct.enumerated() {
             guard await perform(item.action, for: [item], allowsAdministrator: !unattended) else {
                 stopped(after: deleted, remaining: Array(direct[index...]))

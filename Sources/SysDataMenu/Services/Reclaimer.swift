@@ -116,6 +116,28 @@ enum Reclaimer {
         }
     }
 
+    /// Whether deleting the tree needs more than the current user may do: a
+    /// directory below it that is not writable, so its entries cannot be
+    /// unlinked. Symlinks are not followed; removing one only needs its parent.
+    static func containsEntryNeedingRoot(_ root: URL) -> Bool {
+        guard root.isDirectory, !Self.isSymlink(root) else { return false }
+        let fileManager = FileManager.default
+        guard let walk = fileManager.enumerator(
+            at: root, includingPropertiesForKeys: [.isDirectoryKey, .isSymbolicLinkKey], options: []
+        ) else { return true }
+        if !fileManager.isWritableFile(atPath: root.path) { return true }
+        for case let url as URL in walk {
+            let values = try? url.resourceValues(forKeys: [.isDirectoryKey, .isSymbolicLinkKey])
+            guard values?.isDirectory == true, values?.isSymbolicLink != true else { continue }
+            if !fileManager.isWritableFile(atPath: url.path) { return true }
+        }
+        return false
+    }
+
+    private static func isSymlink(_ url: URL) -> Bool {
+        (try? url.resourceValues(forKeys: [.isSymbolicLinkKey]))?.isSymbolicLink == true
+    }
+
     /// Removes each path directly when the current user owns it and falls
     /// back to a single privileged `rm` for the rest. Returns true when at
     /// least one path was trashed instead of deleted.
@@ -125,7 +147,14 @@ enum Reclaimer {
         let fileManager = FileManager.default
 
         for url in urls where url.exists {
-            guard fileManager.isDeletableFile(atPath: url.path) else {
+            // `removeItem` stops at the first entry it cannot delete and leaves
+            // the rest of the tree half gone. With an administrator to finish
+            // the job that is fine; without one (the weekly clean, the
+            // low-space button, Shortcuts) the folder would end up partly
+            // deleted, still listed at its old size, and reported as left
+            // alone. So those runs look first and leave such a folder whole.
+            guard fileManager.isDeletableFile(atPath: url.path),
+                  allowsAdministrator || !containsEntryNeedingRoot(url) else {
                 needsRoot.append(url)
                 continue
             }

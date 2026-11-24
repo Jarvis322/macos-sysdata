@@ -32,6 +32,28 @@ import Testing
         #expect(locked.appending(path: "file.bin").exists)
     }
 
+    /// A folder the user can delete holding one they cannot: `removeItem`
+    /// used to delete everything it reached first and stop half way.
+    @Test func aFolderWithALockedDirectoryInsideIsLeftWhole() async throws {
+        let root = FileManager.default.temporaryDirectory.appending(path: "sysdata-unattended-\(UUID().uuidString)")
+        let cache = root.appending(path: "cache")
+        let locked = cache.appending(path: "zz-locked")
+        try FileManager.default.createDirectory(at: locked, withIntermediateDirectories: true)
+        try Data(count: 8).write(to: cache.appending(path: "aa-loose.bin"))
+        try Data(count: 8).write(to: locked.appending(path: "file.bin"))
+        try FileManager.default.setAttributes([.posixPermissions: 0o555], ofItemAtPath: locked.path)
+        defer {
+            try? FileManager.default.setAttributes([.posixPermissions: 0o755], ofItemAtPath: locked.path)
+            try? FileManager.default.removeItem(at: root)
+        }
+
+        await #expect(throws: NeedsAdministrator.self) {
+            try await Reclaimer.perform(.removePaths([cache]), allowsAdministrator: false)
+        }
+        #expect(cache.appending(path: "aa-loose.bin").exists)
+        #expect(locked.appending(path: "file.bin").exists)
+    }
+
     private func item(_ id: String, category: StorageCategory, action: ReclaimAction) -> StorageItem {
         StorageItem(id: id, category: category, name: id, detail: "detail", sizeBytes: 1, safety: .safe, action: action)
     }
