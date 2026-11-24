@@ -45,7 +45,10 @@ struct DeveloperToolProbe: StorageProbe {
         Known("anaconda3", "Anaconda", "Conda environments and packages.", .review),
         Known(".conda/pkgs", "Conda package cache", "Downloaded packages.", .safe, tool: ("conda", ["clean", "--all", "-y"])),
         Known(".m2/repository", "Maven repository", "Downloaded jars. Re-fetched on the next build.", .safe),
-        Known(".ivy2", "Ivy cache", "Downloaded jars for sbt.", .safe),
+        // Only the cache: the rest of ~/.ivy2 holds `sbt publishLocal`
+        // artifacts that exist nowhere else, and the credentials file sbt's
+        // documentation tells people to keep there.
+        Known(".ivy2/cache", "Ivy cache", "Downloaded jars for sbt.", .safe),
         Known(".cocoapods/repos", "CocoaPods specs repos", "`pod setup` rebuilds them.", .safe),
         Known(".gradle/wrapper/dists", "Gradle distributions", "Downloaded Gradle versions.", .safe),
         Known(".android/cache", "Android SDK download cache", "Re-downloaded on demand.", .safe),
@@ -54,7 +57,10 @@ struct DeveloperToolProbe: StorageProbe {
         // Found unexplained under "Other large folders" at 0.8 GB. `npm cache
         // clean` does not touch it.
         Known(".npm/_npx", "npx cache", "Packages npx downloaded to run once. npx fetches them again the next time.", .safe),
-        Known(".deno", "Deno cache", "Cached modules.", .safe),
+        // Deno's installer puts the deno binary and `deno install -g` tools
+        // here; its module cache is ~/Library/Caches/deno, which the app cache
+        // scan already lists. Safe would have let auto-clean uninstall Deno.
+        Known(".deno", "Deno installation", "The deno binary and globally installed Deno tools. Run the installer again to get them back.", .review),
         Known(".vscode/extensions", "VS Code extensions", "Installed extensions. Reinstall from the marketplace.", .review),
         Known(".cursor/extensions", "Cursor extensions", "Installed extensions.", .review),
         Known(".docker", "Docker CLI data", "Contexts and build history, not images.", .review),
@@ -133,8 +139,11 @@ struct DeveloperToolProbe: StorageProbe {
             if let item = await ProbeSupport.directoryItem(
                 id: "tool-cache-\(folder.lastPathComponent)", category: .tools,
                 name: "Cache: \(folder.lastPathComponent)",
-                detail: "~/.cache entry. Tools rebuild their caches on demand.",
-                url: folder, safety: .safe, action: .removePaths([folder]), minimumBytes: Self.threshold
+                detail: "~/.cache entry. Usually a cache, but some tools keep downloaded models or their own data here.",
+                // Review, not Safe: unknown tools use ~/.cache for models
+                // (Whisper) and even chats (older LM Studio), and Safe rows are
+                // what the unattended clean deletes without asking.
+                url: folder, safety: .review, action: .removePaths([folder]), minimumBytes: Self.threshold
             ) {
                 items.append(item)
             }

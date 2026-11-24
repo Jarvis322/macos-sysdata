@@ -344,6 +344,10 @@ struct XcodeProbe: StorageProbe {
         // Without an answer there is no telling which Xcode is in use, and
         // offering the active one for deletion is the mistake to avoid.
         guard let active = await ProbeSupport.activeDeveloperDirectory() else { return items }
+        // With the Command Line Tools selected no Xcode is the active one, but
+        // none is unused either: calling the only Xcode "Inactive" offered it
+        // for deletion.
+        guard !active.hasPrefix("/Library/Developer/CommandLineTools") else { return items }
         // Compared with symlinks resolved: Xcodes.app can make Xcode.app a
         // link to Xcode-16.0.app and select the link, and the real bundle
         // behind it must not read as inactive.

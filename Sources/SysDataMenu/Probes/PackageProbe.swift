@@ -19,8 +19,11 @@ struct PackageProbe: StorageProbe {
 
     func probe() async -> [StorageItem] {
         var caches: [Cache] = [
+            // The folder itself rather than `brew cleanup`, which also
+            // uninstalls older versions of installed formulae from the Cellar:
+            // more than this row measures, and more than a Safe row should do.
             Cache(id: "brew", name: "Homebrew downloads", url: .home("Library/Caches/Homebrew"),
-                  tool: "brew", arguments: ["cleanup", "--prune=all", "-s"], detail: "Bottles and source tarballs."),
+                  tool: nil, arguments: [], detail: "Bottles and source tarballs. Homebrew downloads them again when needed."),
             Cache(id: "npm", name: "npm cache", url: .home(".npm/_cacache"),
                   tool: "npm", arguments: ["cache", "clean", "--force"], detail: "Package tarballs and metadata."),
             Cache(id: "yarn", name: "Yarn cache", url: .home("Library/Caches/Yarn"),
