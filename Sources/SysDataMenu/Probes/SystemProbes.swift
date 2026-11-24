@@ -110,11 +110,47 @@ struct DockerProbe: StorageProbe {
             )].compactMap { $0 }
         }
 
-        var items = Self.items(fromSystemDF: df.output, docker: docker, reveal: vms)
+        // Colima and OrbStack keep everything `docker system df` reports in a
+        // VM disk of their own, which the hidden-folder scan also lists whole.
+        // Claiming inside it lets that row drop out instead of counting the
+        // same images twice.
+        let endpoint = try? await Shell.run(
+            docker, ["context", "inspect", "--format", "{{.Endpoints.docker.Host}}"],
+            mergeStderr: false, timeout: Shell.probeTimeout
+        )
+        let engine = endpoint.flatMap { $0.succeeded ? Self.engineData(forEndpoint: $0.output) : nil } ?? []
+        var items = Self.items(fromSystemDF: df.output, docker: docker, reveal: engine.first ?? vms, claims: engine)
         if let usage = await DockerProjects.usage(docker: docker) {
-            items += DockerProjects.items(from: usage, docker: docker)
+            items += DockerProjects.items(from: usage, docker: docker, engineData: engine)
         }
         return items
+    }
+
+    /// The folders holding the VM disk of the engine behind a Docker endpoint,
+    /// or none for Docker Desktop (its `vms` folder is handled above) and for
+    /// anything unrecognised.
+    nonisolated static func engineData(
+        forEndpoint endpoint: String, resolve: (String) -> String = DiskSize.realPath
+    ) -> [URL] {
+        let host = endpoint.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard host.hasPrefix("unix://") else { return [] }
+        // OrbStack points /var/run/docker.sock at its own socket, so the
+        // default context names the link rather than ~/.orbstack.
+        let socket = URL(fileURLWithPath: resolve(String(host.dropFirst("unix://".count))))
+        let path = socket.path
+        if path.contains("/.colima/") {
+            // ~/.colima/<profile>/docker.sock. The VM disk itself is in
+            // ~/.colima/_lima, which the catch-all otherwise lists on its own.
+            let profile = socket.deletingLastPathComponent()
+            return [profile, profile.deletingLastPathComponent().appending(path: "_lima")]
+        }
+        if path.contains("/.orbstack/") {
+            // ~/.orbstack/run/docker.sock, with the VM disk at
+            // ~/.orbstack/data/data.img (OrbStack's FAQ).
+            let run = socket.deletingLastPathComponent()
+            return [run, run.deletingLastPathComponent().appending(path: "data")]
+        }
+        return []
     }
 
     /// One row per kind of thing Docker can let go of, each with the prune
@@ -126,7 +162,7 @@ struct DockerProbe: StorageProbe {
     /// dangling build cache, so the row promised gigabytes of unused images it
     /// would never touch. Split, each size is what its own command frees, and
     /// volumes — where databases live — are a separate decision.
-    static func items(fromSystemDF output: String, docker: String, reveal: URL?) -> [StorageItem] {
+    static func items(fromSystemDF output: String, docker: String, reveal: URL?, claims: [URL] = []) -> [StorageItem] {
         let reclaimable = reclaimableByType(output)
         let kinds: [(type: String, id: String, name: String, detail: String, safety: Safety, arguments: [String])] = [
             ("Build Cache", "docker-build-cache", "Docker build cache",
@@ -147,7 +183,8 @@ struct DockerProbe: StorageProbe {
             return StorageItem(
                 id: kind.id, category: .docker, name: kind.name, detail: kind.detail,
                 sizeBytes: bytes, safety: kind.safety,
-                action: .command(executable: docker, arguments: kind.arguments), revealURL: reveal
+                action: .command(executable: docker, arguments: kind.arguments), revealURL: reveal,
+                alsoClaims: claims
             )
         }
     }

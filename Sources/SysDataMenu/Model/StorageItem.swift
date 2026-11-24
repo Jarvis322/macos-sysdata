@@ -254,7 +254,12 @@ struct StorageItem: Identifiable, Sendable {
 
     /// Every location this item accounts for, so the catch-all scan can skip it.
     var claimedURLs: [URL] {
-        action.paths + (revealURL.map { [$0] } ?? []) + alsoClaims
+        // A Compose project's row reveals the project folder, but its bytes
+        // are images and volumes inside Docker's VM. Claiming the folder hid
+        // everything in it from the catch-all — the whole home folder, when a
+        // project's working directory was home.
+        let revealClaims = category == .docker && project != nil ? nil : revealURL
+        return action.paths + (revealClaims.map { [$0] } ?? []) + alsoClaims
     }
 
     /// Whether the filter keeps this item. The category title is matched too,

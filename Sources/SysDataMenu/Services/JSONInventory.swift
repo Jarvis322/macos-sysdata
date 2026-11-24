@@ -27,6 +27,9 @@ enum ProbeRegistry {
     /// claims, so one of these can contain a location another probe names.
     private static let genericPrefixes = [
         "tool-hidden-", "tool-cache-", "app-support-", "app-cache-", "app-container-", "app-group-",
+        // A container engine's whole folder, measured as one row, while the
+        // Docker rows report what is inside its VM disk.
+        "tool-.colima", "tool-.orbstack",
     ]
 
     /// Drops every generic row that contains another row's location: its

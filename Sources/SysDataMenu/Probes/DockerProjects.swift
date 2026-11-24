@@ -130,7 +130,7 @@ enum DockerProjects {
     /// is that project's: a postgres image two projects run belongs to
     /// neither, and removing it for one would break the other.
     static func items(
-        from usage: Usage, docker: String, now: Date = .now,
+        from usage: Usage, docker: String, now: Date = .now, engineData: [URL] = [],
         projectRoot: (URL) -> URL = { ProjectProbe.projectRoot(of: $0) }
     ) -> [StorageItem] {
         struct Compose {
@@ -182,7 +182,7 @@ enum DockerProjects {
                             .command(executable: docker, arguments: ["container", "rm"] + compose.containerIDs),
                             .command(executable: docker, arguments: ["image", "rm"] + references),
                         ]),
-                    revealURL: compose.folder, project: root, builtAt: created
+                    revealURL: compose.folder, alsoClaims: engineData, project: root, builtAt: created
                 ))
             }
 
@@ -197,7 +197,7 @@ enum DockerProjects {
                     detail: "\(compose.folder.abbreviatedPath). Data its containers keep, often a database. Not archived.",
                     sizeBytes: volumeBytes, safety: .manual,
                     action: .manual("Once nothing in it is needed:\ndocker compose -p \(name) down --volumes"),
-                    revealURL: compose.folder, project: root
+                    revealURL: compose.folder, alsoClaims: engineData, project: root
                 ))
             }
         }
