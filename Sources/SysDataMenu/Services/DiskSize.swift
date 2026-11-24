@@ -29,6 +29,30 @@ enum DiskSize {
         var count: Int { entries.withLock { $0 } }
     }
 
+    /// Files a walk has already counted that have more than one hard link.
+    ///
+    /// Every link to a file reports the file's full allocated size, so a walk
+    /// that summed them all counted the same blocks once per link: Spotlight's
+    /// store under ~/Library/Metadata showed 11 GB for 2.5 GB on disk (#31).
+    /// Like `du`, the first link a walk meets is counted and the rest are not.
+    /// Only multi-link files reach the `lstat`, so an ordinary tree pays nothing.
+    struct HardLinks {
+        private struct Inode: Hashable {
+            let device: dev_t
+            let inode: ino_t
+        }
+
+        private var seen: Set<Inode> = []
+
+        /// Whether this is the first time the walk meets the file at `url`.
+        mutating func isFirstSighting(of url: URL, linkCount: Int?) -> Bool {
+            guard let linkCount, linkCount > 1 else { return true }
+            var info = stat()
+            guard lstat(url.path, &info) == 0 else { return true }
+            return seen.insert(Inode(device: info.st_dev, inode: info.st_ino)).inserted
+        }
+    }
+
     /// How many walks read the disk at once. The concurrency pool used to
     /// set this by having one thread per core; dispatch has no such limit,
     /// and forty walks at once made the scan slower, not faster.
@@ -138,11 +162,12 @@ enum DiskSize {
         }
 
         let keys: Set<URLResourceKey> = [
-            .totalFileAllocatedSizeKey, .isRegularFileKey, .contentModificationDateKey,
+            .totalFileAllocatedSizeKey, .isRegularFileKey, .contentModificationDateKey, .linkCountKey,
         ]
 
         if !isDirectory.boolValue {
-            return measure(of: url, keys: keys, cutoff: cutoff)
+            var hardLinks = HardLinks()
+            return measure(of: url, keys: keys, cutoff: cutoff, hardLinks: &hardLinks)
         }
 
         guard let enumerator = fileManager.enumerator(
@@ -153,9 +178,10 @@ enum DiskSize {
         ) else { return Measurement(bytes: 0, lastModified: nil) }
 
         var total = Measurement(bytes: 0, lastModified: nil)
+        var hardLinks = HardLinks()
         for case let child as URL in enumerator {
             progress?.advance()
-            let child = measure(of: child, keys: keys, cutoff: cutoff)
+            let child = measure(of: child, keys: keys, cutoff: cutoff, hardLinks: &hardLinks)
             total.bytes += child.bytes
             if let modified = child.lastModified,
                modified > (total.lastModified ?? .distantPast) {
@@ -185,7 +211,7 @@ enum DiskSize {
         let rootPath = realPath(root.path)
         let skipped = Set(skipping.map(realPath))
         let keys: Set<URLResourceKey> = [
-            .totalFileAllocatedSizeKey, .isRegularFileKey, .volumeIdentifierKey,
+            .totalFileAllocatedSizeKey, .isRegularFileKey, .volumeIdentifierKey, .linkCountKey,
         ]
         let rootURL = URL(fileURLWithPath: rootPath)
         // The walk stays on the volume it started on. A directory on another
@@ -202,6 +228,7 @@ enum DiskSize {
         ) else { return [:] }
 
         var sizes: [String: Int64] = [:]
+        var hardLinks = HardLinks()
         for case let file as URL in enumerator {
             progress?.advance()
             guard let values = try? file.resourceValues(forKeys: keys) else { continue }
@@ -215,7 +242,9 @@ enum DiskSize {
                 }
                 continue
             }
-            guard let size = values.totalFileAllocatedSize, size > 0 else { continue }
+            guard let size = values.totalFileAllocatedSize, size > 0,
+                  hardLinks.isFirstSighting(of: file, linkCount: values.linkCount)
+            else { continue }
 
             let relative = file.path.dropFirst(rootPath.count + 1)
             let components = relative.split(separator: "/", omittingEmptySubsequences: true).dropLast()
@@ -302,10 +331,15 @@ enum DiskSize {
     /// One file's contribution. A file excluded by `cutoff` contributes
     /// neither its bytes nor its date, so a pruning item's age describes what
     /// it would actually delete.
-    private static func measure(of url: URL, keys: Set<URLResourceKey>, cutoff: Date?) -> Measurement {
+    private static func measure(
+        of url: URL, keys: Set<URLResourceKey>, cutoff: Date?, hardLinks: inout HardLinks
+    ) -> Measurement {
         guard let values = try? url.resourceValues(forKeys: keys),
               values.isRegularFile == true else { return Measurement(bytes: 0, lastModified: nil) }
         if let cutoff, let modified = values.contentModificationDate, modified > cutoff {
+            return Measurement(bytes: 0, lastModified: nil)
+        }
+        guard hardLinks.isFirstSighting(of: url, linkCount: values.linkCount) else {
             return Measurement(bytes: 0, lastModified: nil)
         }
         return Measurement(
