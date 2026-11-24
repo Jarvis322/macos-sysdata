@@ -149,7 +149,7 @@ final class ScanModel {
     private static let hiddenKey = "hiddenItemIDs"
     private static let shrunkKey = "shrunkItemDates"
     private static let sortKey = "sortOrder"
-    private static let historyKey = "keepsHistory"
+    private static let historyKey = ScanHistory.enabledKey
     private static let menuBarKey = "menuBarContent"
     /// Read by the app scene too, which needs `@AppStorage` to notice the
     /// change: an app scene does not track this model the way a view does.
@@ -658,7 +658,8 @@ final class ScanModel {
             await Task.detached(priority: .utility) {
                 ScanHistory.record(measured, freeBytes: free)
             }.value
-            setHistory(ScanHistory.load())
+            // Switched off while the record was being written: keep it empty.
+            if keepsHistory { setHistory(ScanHistory.load()) }
         }
         await LowSpaceAlert.check(freeBytes: freeBytes, reclaimable: safeBytes)
         publishToWidget()

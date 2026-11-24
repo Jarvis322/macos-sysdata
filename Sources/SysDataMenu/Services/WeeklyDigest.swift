@@ -33,8 +33,12 @@ enum WeeklyDigest {
 
         let content = UNMutableNotificationContent()
         content.title = L("System Data grew %@ this week", change.delta.byteString)
-        if let top = ScanHistory.fastestGrowing(in: log, limit: 1).first {
-            content.body = L("Mostly %@, up %@.", top.name, top.bytes.byteString)
+        // Measured against the same week-old scan as the title. The all-time
+        // leader could have grown 40 GB over months and none of it this week.
+        if let top = ScanHistory.itemChanges(overPastDays: 7, in: log).max(by: { $0.value < $1.value }),
+           top.value > 0 {
+            let name = log.scans.last?.names[top.key] ?? top.key
+            content.body = L("Mostly %@, up %@.", name, top.value.byteString)
         } else {
             content.body = L("Open Unpacked to see what grew.")
         }

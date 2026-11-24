@@ -105,10 +105,21 @@ enum ScanHistory {
 
     // MARK: Writing
 
+    /// The setting the app writes when history is switched on or off.
+    static let enabledKey = "keepsHistory"
+
+    /// Read under the write lock by every writer. A scan that began while
+    /// history was on records from a background task when it ends; checking
+    /// only at the start let it write the file again after it was turned off
+    /// and deleted.
+    private static var isEnabled: Bool {
+        UserDefaults.standard.object(forKey: enabledKey) as? Bool ?? true
+    }
+
     static func record(_ items: [StorageItem], freeBytes: Int64, at date: Date = .now) {
         writeLock.lock()
         defer { writeLock.unlock() }
-        guard var log = loadForWriting() else { return }
+        guard isEnabled, var log = loadForWriting() else { return }
         var sizes: [String: Int64] = [:]
         var names: [String: String] = [:]
         var categories: [String: String] = [:]
@@ -138,7 +149,7 @@ enum ScanHistory {
         guard !batch.isEmpty else { return }
         writeLock.lock()
         defer { writeLock.unlock() }
-        guard var log = loadForWriting() else { return }
+        guard isEnabled, var log = loadForWriting() else { return }
         for (item, bytes) in batch {
             log.deletions.append(Deletion(
                 date: date,
@@ -153,6 +164,8 @@ enum ScanHistory {
     }
 
     static func forget() {
+        writeLock.lock()
+        defer { writeLock.unlock() }
         try? FileManager.default.removeItem(at: fileURL)
     }
 

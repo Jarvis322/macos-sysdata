@@ -123,7 +123,7 @@ struct HistoryPanel: View {
                 .chartYAxis {
                     AxisMarks(position: .trailing, values: .automatic(desiredCount: 3)) { value in
                         AxisGridLine().foregroundStyle(.quaternary)
-                        AxisValueLabel { if let gb = value.as(Double.self) { Text(verbatim: "\(Int(gb.rounded())) GB") } }
+                        AxisValueLabel { if let gb = value.as(Double.self) { Text(verbatim: Int64(gb * 1e9).byteString) } }
                     }
                 }
                 .chartXAxis {
@@ -147,7 +147,9 @@ struct HistoryPanel: View {
                     }
                     .chartYAxis {
                         AxisMarks(position: .trailing, values: .automatic(desiredCount: 2)) { value in
-                            AxisValueLabel { if let gb = value.as(Double.self) { Text(verbatim: String(format: "%.0f GB", gb)) } }
+                            // Formatted like every other size in the app: in the reader's
+                            // locale, and a day that freed 300 MB no longer reads "0 GB".
+                            AxisValueLabel { if let gb = value.as(Double.self) { Text(verbatim: Int64(gb * 1e9).byteString) } }
                         }
                     }
                     .chartXAxis(.hidden)
@@ -171,7 +173,8 @@ struct HistoryPanel: View {
     /// the app around rather than clean once and forget.
     private var returnedSection: some View {
         HistoryCard {
-            ForEach(returned, id: \.name) { entry in
+            // Names repeat (two projects' node_modules), so position is the identity.
+            ForEach(Array(returned.enumerated()), id: \.offset) { _, entry in
                 row(
                     entry.name,
                     detail: L("Deleted %@, back by %@", Self.day(entry.deleted), Self.day(entry.seen)),
@@ -192,7 +195,7 @@ struct HistoryPanel: View {
 
     private var growthSection: some View {
         HistoryCard {
-            ForEach(growth, id: \.name) { entry in
+            ForEach(Array(growth.enumerated()), id: \.offset) { _, entry in
                 row(
                     entry.name,
                     detail: L("Since %@", Self.day(entry.since)),
@@ -209,7 +212,8 @@ struct HistoryPanel: View {
 
     private var deletionsSection: some View {
         HistoryCard {
-            ForEach(log.deletions.reversed(), id: \.date) { entry in
+            // A batch shares one timestamp, so the date cannot tell its rows apart.
+            ForEach(Array(log.deletions.reversed().enumerated()), id: \.offset) { _, entry in
                 row(
                     entry.name,
                     detail: entry.paths.isEmpty
