@@ -5,6 +5,34 @@ What changed in each release, and where it is worth saying, why.
 Versions up to and including v0.3.7 were released under the MIT License; see
 [LICENSE](LICENSE).
 
+## v1.13.2 — 2026-11-24
+
+- **Safer automatic cleaning.** A few folders were marked safe that are
+  not: `~/.deno` (where Deno itself is installed), all of `~/.ivy2`
+  (which also holds `sbt publishLocal` artifacts and credentials) and
+  unknown `~/.cache` folders (some tools keep models or chats there).
+  They now ask first, and only the Ivy download cache is treated as one.
+  With the Command Line Tools selected, the only Xcode is no longer
+  offered as inactive. The Homebrew row empties the download cache
+  instead of also removing older installed versions it never counted.
+- **Nothing counted twice, nothing missed.** With Colima or OrbStack, the
+  virtual machine's disk was listed on its own next to the Docker images
+  inside it. Folders under `/private/var` were scanned but never shown,
+  and a Docker Compose project hid everything else in its folder.
+- **Deletes report what happened.** Stopping at a second password prompt
+  no longer says nothing was deleted when part was. An item that was
+  already gone no longer triggers the "local snapshots hold the rest"
+  notice. Unattended cleans leave a folder whole when part of it needs an
+  administrator, rather than deleting half of it.
+- **The widget speaks your language.** It used to be English everywhere.
+- **Smaller fixes.** Cancelling an archive gives back your own selection.
+  Hidden model stores no longer leave their models selected. "Free up…"
+  waits for the scan to finish and its empty result can be dismissed.
+  Reopening the window starts fresh instead of showing an old
+  confirmation. History rows no longer repeat, chart sizes follow your
+  locale, turning history off stays off, and the weekly summary names
+  what grew this week.
+
 ## v1.13.1 — 2026-11-12
 
 - **The menu bar switch works from the window.** Turning off "Show in
