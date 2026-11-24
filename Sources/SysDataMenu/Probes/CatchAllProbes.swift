@@ -268,7 +268,10 @@ struct LargeFolderProbe: StorageProbe {
         // Inside something already listed.
         if claimed.contains(where: { $0 == path || prefix.hasPrefix($0 + "/") }) { return }
 
-        guard let size = sizes[path], size >= threshold else { return }
+        // The walk keys its sizes by realpath(3), which keeps /private;
+        // `standardizedFileURL` drops it. Looking up `path` found nothing for
+        // any folder under /private/var, so that whole root reported nothing.
+        guard let size = sizes[path] ?? sizes[DiskSize.realPath(path)], size >= threshold else { return }
 
         let containsClaimed = claimed.contains { $0.hasPrefix(prefix) }
         if containsClaimed || url.lastPathComponent == "Library" || url.lastPathComponent == "Application Support" {
