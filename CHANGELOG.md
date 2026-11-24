@@ -5,6 +5,14 @@ What changed in each release, and where it is worth saying, why.
 Versions up to and including v0.3.7 were released under the MIT License; see
 [LICENSE](LICENSE).
 
+## v1.13.3 — 2026-11-24
+
+- **Hard-linked files are counted once.** Every link to a file reports
+  the file's full size, and the scan added them all up, so folders made
+  of hard links looked several times their real size. Spotlight's store
+  under `~/Library/Metadata` showed 11 GB for 2.5 GB on disk. Sizes now
+  match `du` (#31).
+
 ## v1.13.2 — 2026-11-24
 
 - **Safer automatic cleaning.** A few folders were marked safe that are
