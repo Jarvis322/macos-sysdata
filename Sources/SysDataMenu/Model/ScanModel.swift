@@ -36,7 +36,14 @@ final class ScanModel {
     /// that laid rows out again was also making filesystem calls. The disk
     /// changes between scans far less often than the list redraws.
     @ObservationIgnored private var rowFacts: [String: RowFacts] = [:]
-    var selectedIDs: Set<String> = []
+    var selectedIDs: Set<String> = [] {
+        // A plan ends the moment the selection stops being it. Checking only
+        // at read time kept an empty plan ("nothing here can be freed") alive
+        // whenever nothing was ticked, so its Clear button did nothing.
+        didSet {
+            if let plan = spacePlan, selectedIDs != Set(plan.items.map(\.id)) { spacePlan = nil }
+        }
+    }
     /// Narrows the list to matching items. The selection survives it: ticking
     /// "Select safe" and then typing a filter to untick two of them is the
     /// obvious way to use the two together, and dropping the selection on the
@@ -237,14 +244,19 @@ final class ScanModel {
 
     func hide(_ item: StorageItem) {
         hiddenIDs.insert(item.id)
-        selectedIDs.remove(item.id)
-        if selectionAnchorID == item.id { selectionAnchorID = nil }
+        // Rows hidden along with it (a model store's models) leave the
+        // selection too, or they come back ticked and join the next batch.
+        let nowHidden = Set(items.filter(isHidden).map(\.id))
+        selectedIDs.subtract(nowHidden)
+        if let anchor = selectionAnchorID, nowHidden.contains(anchor) { selectionAnchorID = nil }
         UserDefaults.standard.set(Array(hiddenIDs).sorted(), forKey: Self.hiddenKey)
+        publishToWidget()
     }
 
     func unhideAll() {
         hiddenIDs = []
         UserDefaults.standard.removeObject(forKey: Self.hiddenKey)
+        publishToWidget()
     }
 
     /// Registers or removes the app as a login item. macOS quits the app when
@@ -469,6 +481,7 @@ final class ScanModel {
     }
 
     func clearSelection() {
+        spacePlan = nil
         selectedIDs = []
         selectionAnchorID = nil
     }

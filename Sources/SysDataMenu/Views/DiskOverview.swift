@@ -25,6 +25,9 @@ struct DiskOverview: View {
     let onSelectSafe: () -> Void
     /// Asked for from the "Free up…" menu: how much space is wanted.
     var onPlan: (Int64) -> Void = { _ in }
+    /// Off while a scan is filling the list: a plan built from half a list
+    /// counts overlapping rows the finished scan drops, or misses items.
+    var canPlan = true
     /// What the last delete gave back, shown for a few seconds in the middle
     /// of the ring. Nil the rest of the time.
     var justFreed: Int64?
@@ -190,6 +193,7 @@ struct DiskOverview: View {
             .menuStyle(.borderlessButton)
             .controlSize(.small)
             .fixedSize()
+            .disabled(!canPlan)
             .help(L("Selects the least worrying items that add up to this much. Nothing is deleted until you confirm."))
         }
     }

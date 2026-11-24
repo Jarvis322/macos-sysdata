@@ -32,6 +32,9 @@ struct MenuView: View {
     @AppStorage("listsByProject") private var listsByProject = false
     /// The project an archive is being confirmed for; nil for any other batch.
     @State private var archivingProject: String?
+    /// What was ticked before Archive replaced it with the project's items,
+    /// so cancelling the archive gives the person their own batch back.
+    @State private var selectionBeforeArchive: Set<String>?
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     /// The list's viewport, for deciding once whether the safety chips have
     /// room for their words. Zero until the first layout.
@@ -157,6 +160,16 @@ struct MenuView: View {
             if !model.hasScanned, !model.isScanning { await model.scan() }
             await updates.checkIfDue()
         }
+        // The panel and the window each hold their own copy of these, read
+        // once. Re-reading on every showing keeps a switch flipped in one from
+        // reading the old way in the other.
+        .onAppear {
+            warnsAboutLowSpace = LowSpaceAlert.isEnabled
+            lowSpaceThreshold = LowSpaceAlert.threshold
+            showsWeeklySummary = WeeklyDigest.isEnabled
+            warnsAboutUnusualGrowth = GrowthAlert.isEnabled
+            autoCleansSafeItems = AutoClean.isEnabled
+        }
     }
 
     /// Shown where the Full Disk Access banner goes: the one place in this
@@ -224,6 +237,9 @@ struct MenuView: View {
     private func confirmDeletion() {
         guard !isAuthenticating else { return }
         isAuthenticating = true
+        // Read before the check, not after: whatever happens to the view while
+        // the Mac's dialog is up, the delete is the one the card showed.
+        let item = pendingDeletion
         Task {
             defer { isAuthenticating = false }
             guard await DeleteAuthentication.authorize(
@@ -231,7 +247,7 @@ struct MenuView: View {
                     && !ScanModel.passwordGuardsWholeBatch(pendingItems),
                 reason: L("Confirm the delete.")
             ) else { return }
-            let item = pendingDeletion
+            selectionBeforeArchive = nil
             dismissConfirmation()
             if let item {
                 await model.reclaim(item)
@@ -242,6 +258,10 @@ struct MenuView: View {
     }
 
     private func dismissConfirmation() {
+        if let selection = selectionBeforeArchive {
+            model.selectedIDs = selection
+            selectionBeforeArchive = nil
+        }
         pendingDeletion = nil
         confirmsBatch = false
         archivingProject = nil
@@ -521,6 +541,7 @@ struct MenuView: View {
             canSelectSafe: !model.isScanning && model.safeBytes > 0,
             onSelectSafe: { model.selectAllSafe() },
             onPlan: { model.planSpace(freeing: $0) },
+            canPlan: !model.isScanning,
             justFreed: freedFlash,
             trend: model.keepsHistory ? model.history.scans.suffix(30).map(\.totalBytes) : []
         )
@@ -710,6 +731,7 @@ struct MenuView: View {
 
     private func archive(_ project: ProjectFootprint) {
         pendingDeletion = nil
+        selectionBeforeArchive = model.selectedIDs
         model.selectedIDs = Set(project.archivableItems.map(\.id))
         archivingProject = project.name
         confirmsBatch = true

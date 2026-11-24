@@ -99,6 +99,14 @@ final class MainWindow: NSObject, NSWindowDelegate {
         }
         let window = self.window ?? make(for: model)
         self.window = window
+        // A closed window is kept for its frame, not its contents: a
+        // confirmation card left open would come back holding a snapshot of
+        // an item from before the next scan, and settings toggled in the menu
+        // bar panel since would read stale.
+        if closedSinceShown {
+            window.contentView = Self.content(for: model)
+            closedSinceShown = false
+        }
         syncActivationPolicy(windowIsOpen: true)
         NSApplication.shared.activate()
         window.makeKeyAndOrderFront(nil)
@@ -151,6 +159,13 @@ final class MainWindow: NSObject, NSWindowDelegate {
         MenuBarIcon.apply(model?.showsMenuBarIcon ?? true)
     }
 
+    private static func content(for model: ScanModel) -> NSView {
+        NSHostingView(rootView: MenuView(presentation: .window).environment(model))
+    }
+
+    /// Set when the list window closes, so the next show starts it afresh.
+    private var closedSinceShown = false
+
     func windowWillClose(_ notification: Notification) {
         let closing = notification.object as AnyObject?
         if closing === prompt {
@@ -159,6 +174,7 @@ final class MainWindow: NSObject, NSWindowDelegate {
             Self.hasChosenPresentation = true
             prompt = nil
         }
+        if closing === window { closedSinceShown = true }
         let windowStaysOpen = closing !== window && (window?.isVisible ?? false)
         syncActivationPolicy(windowIsOpen: windowStaysOpen)
     }
@@ -184,9 +200,7 @@ final class MainWindow: NSObject, NSWindowDelegate {
             ?? "System Data Unpacked"
         window.titleVisibility = .hidden
         window.titlebarAppearsTransparent = true
-        window.contentView = NSHostingView(
-            rootView: MenuView(presentation: .window).environment(model)
-        )
+        window.contentView = Self.content(for: model)
         window.minSize = Self.minimumSize
         window.delegate = self
         // Closing the window must not deallocate it: the menu bar item and the
