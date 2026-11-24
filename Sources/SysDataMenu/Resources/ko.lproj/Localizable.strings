@@ -2,8 +2,11 @@
 "%1$@ now takes %2$@ instead of %3$@. Nothing was deleted." = "%1$@의 크기가 %3$@에서 %2$@(으)로 줄었습니다. 삭제된 것은 없습니다.";
 "%@ System Data · %@ free" = "시스템 데이터 %@ · 여유 공간 %@";
 "%@ System Data · %@ free · %@ this week" = "시스템 데이터 %@ · 여유 공간 %@ · 이번 주 %@";
+"%@ System Data, %@ free" = "시스템 데이터 %1$@, 여유 %2$@";
 "%@ changed while it was being shrunk, so it was left as it was." = "%@이(가) 압축 중에 변경되어 그대로 두었습니다.";
+"%@ disk" = "디스크 %@";
 "%@ does not come back on its own." = "%@은(는) 자동으로 복구되지 않습니다.";
+"%@ free" = "%@ 여유";
 "%@ free on disk" = "디스크에 %@ 여유 공간";
 "%@ free · %@ of safe items can go now" = "%@ 여유 공간 · 안전 항목 %@ 삭제 가능";
 "%@ grew %@ beyond its recent size." = "%@이(가) 최근 크기보다 %@ 늘었습니다.";
@@ -11,6 +14,7 @@
 "%@ needs an internet connection to come back." = "%@은(는) 복구하려면 인터넷 연결이 필요합니다.";
 "%@ of it belongs to projects nobody has touched in %lld+ days." = "그중 %1$@는 %2$lld일 넘게 아무도 건드리지 않은 프로젝트입니다.";
 "%@ purgeable" = "%@ 제거 가능";
+"%@ safe to free" = "안전하게 비울 수 있음: %@";
 "%@ safe to free now · %@ free on disk · %@ purgeable" = "지금 안전하게 확보할 수 있는 %@ · 디스크 여유 공간 %@ · 제거 가능한 공간 %@";
 "%@ safe · %@ to review · %@ manual" = "안전 %@ · 검토 필요 %@ · 수동 %@";
 "%@ shares files with other folders, so compressing it could take more space. It was left as it was." = "%@은(는) 다른 폴더와 파일을 공유하므로 압축하면 오히려 공간을 더 차지할 수 있습니다. 그대로 두었습니다.";
@@ -87,6 +91,7 @@
 "Deselect" = "선택 해제";
 "Deselect safe" = "안전 항목 선택 해제";
 "Developer tool data" = "개발자 도구 데이터";
+"Disk" = "디스크";
 "Dismiss" = "닫기";
 "Docker" = "Docker";
 "Doesn't come back" = "자동으로 복구되지 않음";
@@ -118,6 +123,7 @@
 "Hide breakdown" = "세부 정보 숨기기";
 "History" = "기록";
 "History and settings" = "기록 및 설정";
+"How much System Data there is, and how much of it is safe to free." = "시스템 데이터가 얼마나 있고, 그중 얼마를 안전하게 비울 수 있는지 보여 줍니다.";
 "How to remove %@" = "%@ 제거 방법";
 "How to remove this item" = "이 항목을 제거하는 방법";
 "Icon only" = "아이콘만";
@@ -162,6 +168,7 @@
 "One grant covers everything. Until then this scan leaves the protected places alone — app containers, Desktop, Documents, Music, Photos — rather than asking about them one app at a time, so what you see below is incomplete. Add System Data Unpacked in the settings pane, then reopen the app." = "한 번만 허용하면 모든 항목에 적용됩니다. 허용하기 전까지 이 검사는 앱 컨테이너, 데스크탑, 문서, 음악, 사진 같은 보호된 위치는 앱마다 개별적으로 묻는 대신 그대로 건너뛰므로, 아래 목록은 완전하지 않습니다. 설정 화면에서 System Data Unpacked를 추가한 다음 앱을 다시 여세요.";
 "Only the safe items are selected; the rest is yours to choose." = "안전한 항목만 선택했습니다. 나머지는 직접 고르세요.";
 "Open Settings" = "설정 열기";
+"Open System Data Unpacked once to see the numbers here." = "여기에 수치를 표시하려면 Unpacked를 한 번 여세요.";
 "Open Unpacked to see what grew." = "Unpacked를 열어 무엇이 늘었는지 확인하세요.";
 "Open Unpacked to see what is taking up room." = "Unpacked를 열어 공간을 차지하는 항목을 확인하세요.";
 "Open in a window" = "창에서 열기";
@@ -188,6 +195,7 @@
 "Safe" = "안전";
 "Safe items are deleted outright because they regenerate. Turn this on to send them to the Trash instead, so a delete can be undone — until you empty it, it frees no space." = "안전 항목은 다시 생성되므로 바로 삭제됩니다. 이 옵션을 켜면 대신 휴지통으로 이동하여 삭제를 취소할 수 있지만, 휴지통을 비우기 전까지는 공간이 확보되지 않습니다.";
 "Safety: %@" = "안전 등급: %@";
+"Scanned %@ ago" = "%@ 전에 검사함";
 "Scanning" = "검사 중";
 "Searches the Developer, Projects, Projeler, Code and dev folders of drives that are plugged in. Time Machine disks and network shares are never searched." = "연결된 드라이브의 Developer, Projects, Projeler, Code, dev 폴더를 검색합니다. Time Machine 디스크와 네트워크 공유는 검색하지 않습니다.";
 "Select %@" = "%@ 선택";

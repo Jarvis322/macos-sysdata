@@ -2,8 +2,11 @@
 "%1$@ now takes %2$@ instead of %3$@. Nothing was deleted." = "%1$@ 现在占用 %2$@，而不是 %3$@。没有删除任何内容。";
 "%@ System Data · %@ free" = "%@ 系统数据 · %@ 可用";
 "%@ System Data · %@ free · %@ this week" = "%@ 系统数据 · %@ 可用 · 本周 %@";
+"%@ System Data, %@ free" = "系统数据 %1$@，可用 %2$@";
 "%@ changed while it was being shrunk, so it was left as it was." = "%@ 在压缩过程中发生了变化，因此已保持原样。";
+"%@ disk" = "磁盘 %@";
 "%@ does not come back on its own." = "其中 %@ 不会自动恢复。";
+"%@ free" = "可用 %@";
 "%@ free on disk" = "磁盘可用空间：%@";
 "%@ free · %@ of safe items can go now" = "%@ 可用 · 现在可清理 %@ 可安全清理的项目";
 "%@ grew %@ beyond its recent size." = "%@ 比近期大小增加了 %@。";
@@ -11,6 +14,7 @@
 "%@ needs an internet connection to come back." = "其中 %@ 需要联网才能恢复。";
 "%@ of it belongs to projects nobody has touched in %lld+ days." = "其中 %1$@ 属于 %2$lld 天以上无人改动的项目。";
 "%@ purgeable" = "%@ 可清除";
+"%@ safe to free" = "可安全释放 %@";
 "%@ safe to free now · %@ free on disk · %@ purgeable" = "当前可安全释放 %@ · 磁盘可用空间 %@ · 可清除空间 %@";
 "%@ safe · %@ to review · %@ manual" = "%@ 可安全清理 · %@ 需检查 · %@ 需手动处理";
 "%@ shares files with other folders, so compressing it could take more space. It was left as it was." = "%@ 与其他文件夹共享文件，压缩反而可能占用更多空间。已保持原样。";
@@ -87,6 +91,7 @@
 "Deselect" = "取消选择";
 "Deselect safe" = "取消选择可安全清理的项目";
 "Developer tool data" = "开发者工具数据";
+"Disk" = "磁盘";
 "Dismiss" = "关闭";
 "Docker" = "Docker";
 "Doesn't come back" = "不会自动恢复";
@@ -118,6 +123,7 @@
 "Hide breakdown" = "隐藏明细";
 "History" = "历史记录";
 "History and settings" = "历史记录与设置";
+"How much System Data there is, and how much of it is safe to free." = "系统数据有多少，以及其中有多少可以安全释放。";
 "How to remove %@" = "如何移除%@";
 "How to remove this item" = "如何移除此项目";
 "Icon only" = "仅图标";
@@ -162,6 +168,7 @@
 "One grant covers everything. Until then this scan leaves the protected places alone — app containers, Desktop, Documents, Music, Photos — rather than asking about them one app at a time, so what you see below is incomplete. Add System Data Unpacked in the settings pane, then reopen the app." = "一次授权即可涵盖所有位置。在授权前，扫描会跳过受保护的位置（应用容器、桌面、文稿、音乐、照片），而不会逐个应用请求权限，因此下方结果并不完整。请在“完全磁盘访问权限”设置中添加“System Data Unpacked”，然后重新打开应用。";
 "Only the safe items are selected; the rest is yours to choose." = "仅选中了安全项目，其余由你自己决定。";
 "Open Settings" = "打开设置";
+"Open System Data Unpacked once to see the numbers here." = "打开一次 Unpacked，即可在此查看数据。";
 "Open Unpacked to see what grew." = "打开 Unpacked 查看增长了什么。";
 "Open Unpacked to see what is taking up room." = "打开 Unpacked 以查看哪些内容占用了空间。";
 "Open in a window" = "在窗口中打开";
@@ -188,6 +195,7 @@
 "Safe" = "可安全清理";
 "Safe items are deleted outright because they regenerate. Turn this on to send them to the Trash instead, so a delete can be undone — until you empty it, it frees no space." = "可安全清理的项目会自动重建，因此会被直接删除。开启此项可改为移到废纸篓，从而能撤销删除——但在你清空废纸篓之前不会释放空间。";
 "Safety: %@" = "安全性：%@";
+"Scanned %@ ago" = "%@前扫描";
 "Scanning" = "正在扫描";
 "Searches the Developer, Projects, Projeler, Code and dev folders of drives that are plugged in. Time Machine disks and network shares are never searched." = "搜索已连接驱动器上的 Developer、Projects、Projeler、Code 和 dev 文件夹。不会搜索 Time Machine 磁盘和网络共享。";
 "Select %@" = "选择%@";

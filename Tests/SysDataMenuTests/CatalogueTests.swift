@@ -27,7 +27,20 @@ import Testing
             code += (try? String(contentsOf: file, encoding: .utf8)) ?? ""
         }
 
-        let orphans = keys.filter { !code.contains("\"\($0)\"") }.sorted()
+        let orphans = keys.filter { !code.contains("\"\($0)\"") && !Self.isInterpolated($0, in: code) }.sorted()
         #expect(orphans.isEmpty, "in the catalogue but not in the interface: \(orphans)")
+    }
+
+    /// SwiftUI's `Text("\\(size) free")` looks up "%@ free": the key never
+    /// appears in the code as written, so match each placeholder against an
+    /// interpolation instead.
+    private static func isInterpolated(_ key: String, in code: String) -> Bool {
+        guard key.contains("%") else { return false }
+        let placeholder = #/%(\d+\$)?(@|lld|d)/#
+        let pieces = key.split(separator: placeholder, omittingEmptySubsequences: false)
+        guard pieces.count > 1 else { return false }
+        let pattern = "\"" + pieces.map { NSRegularExpression.escapedPattern(for: String($0)) }
+            .joined(separator: #"\\\([^"]*?\)"#) + "\""
+        return code.range(of: pattern, options: .regularExpression) != nil
     }
 }

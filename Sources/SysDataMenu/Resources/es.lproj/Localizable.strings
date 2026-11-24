@@ -2,8 +2,11 @@
 "%1$@ now takes %2$@ instead of %3$@. Nothing was deleted." = "%1$@ ahora ocupa %2$@ en lugar de %3$@. No se borró nada.";
 "%@ System Data · %@ free" = "%@ de datos del sistema · %@ libres";
 "%@ System Data · %@ free · %@ this week" = "%@ de datos del sistema · %@ libres · %@ esta semana";
+"%@ System Data, %@ free" = "%1$@ de datos del sistema, %2$@ libres";
 "%@ changed while it was being shrunk, so it was left as it was." = "%@ cambió mientras se reducía, así que se dejó como estaba.";
+"%@ disk" = "Disco de %@";
 "%@ does not come back on its own." = "%@ no vuelve por sí solo.";
+"%@ free" = "%@ libres";
 "%@ free on disk" = "%@ libres en el disco";
 "%@ free · %@ of safe items can go now" = "%@ libres · %@ de elementos seguros se pueden liberar ahora";
 "%@ grew %@ beyond its recent size." = "%@ creció %@ por encima de su tamaño reciente.";
@@ -11,6 +14,7 @@
 "%@ needs an internet connection to come back." = "%@ necesita conexión a internet para volver.";
 "%@ of it belongs to projects nobody has touched in %lld+ days." = "%@ pertenecen a proyectos que nadie ha tocado en %lld+ días.";
 "%@ purgeable" = "%@ purgable";
+"%@ safe to free" = "%@ se pueden liberar";
 "%@ safe to free now · %@ free on disk · %@ purgeable" = "%@ seguro para liberar ahora · %@ libres en el disco · %@ purgable";
 "%@ safe · %@ to review · %@ manual" = "%@ seguro · %@ por revisar · %@ manual";
 "%@ shares files with other folders, so compressing it could take more space. It was left as it was." = "%@ comparte archivos con otras carpetas, así que comprimirla podría ocupar más espacio. Se dejó como estaba.";
@@ -87,6 +91,7 @@
 "Deselect" = "Deseleccionar";
 "Deselect safe" = "Deseleccionar seguros";
 "Developer tool data" = "Datos de herramientas de desarrollo";
+"Disk" = "Disco";
 "Dismiss" = "Descartar";
 "Docker" = "Docker";
 "Doesn't come back" = "No vuelve por sí solo";
@@ -118,6 +123,7 @@
 "Hide breakdown" = "Ocultar desglose";
 "History" = "Historial";
 "History and settings" = "Historial y ajustes";
+"How much System Data there is, and how much of it is safe to free." = "Cuántos datos del sistema hay y cuántos se pueden liberar con seguridad.";
 "How to remove %@" = "Cómo eliminar %@";
 "How to remove this item" = "Cómo eliminar este elemento";
 "Icon only" = "Solo icono";
@@ -162,6 +168,7 @@
 "One grant covers everything. Until then this scan leaves the protected places alone — app containers, Desktop, Documents, Music, Photos — rather than asking about them one app at a time, so what you see below is incomplete. Add System Data Unpacked in the settings pane, then reopen the app." = "Un solo permiso lo cubre todo. Hasta entonces, este análisis no toca los lugares protegidos —contenedores de apps, Escritorio, Documentos, Música, Fotos— en lugar de preguntar por cada app una por una, así que lo que ves a continuación está incompleto. Añade System Data Unpacked en el panel de ajustes y vuelve a abrir la app.";
 "Only the safe items are selected; the rest is yours to choose." = "Solo se seleccionan los elementos seguros; el resto lo eliges tú.";
 "Open Settings" = "Abrir Ajustes";
+"Open System Data Unpacked once to see the numbers here." = "Abre Unpacked una vez para ver aquí las cifras.";
 "Open Unpacked to see what grew." = "Abre Unpacked para ver qué creció.";
 "Open Unpacked to see what is taking up room." = "Abre Unpacked para ver qué ocupa espacio.";
 "Open in a window" = "Abrir en una ventana";
@@ -188,6 +195,7 @@
 "Safe" = "Seguro";
 "Safe items are deleted outright because they regenerate. Turn this on to send them to the Trash instead, so a delete can be undone — until you empty it, it frees no space." = "Los elementos seguros se eliminan directamente porque se regeneran. Activa esta opción para enviarlos a la Papelera en su lugar, de forma que la eliminación se pueda deshacer; hasta que la vacíes, no se libera espacio.";
 "Safety: %@" = "Seguridad: %@";
+"Scanned %@ ago" = "Analizado hace %@";
 "Scanning" = "Analizando";
 "Searches the Developer, Projects, Projeler, Code and dev folders of drives that are plugged in. Time Machine disks and network shares are never searched." = "Busca en las carpetas Developer, Projects, Projeler, Code y dev de los discos conectados. Los discos de Time Machine y los recursos de red nunca se recorren.";
 "Select %@" = "Seleccionar %@";

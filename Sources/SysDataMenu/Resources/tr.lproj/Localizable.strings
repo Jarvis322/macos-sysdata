@@ -2,8 +2,11 @@
 "%1$@ now takes %2$@ instead of %3$@. Nothing was deleted." = "%1$@ artık %3$@ yerine %2$@ yer kaplıyor. Hiçbir şey silinmedi.";
 "%@ System Data · %@ free" = "%@ Sistem Verileri · %@ boş";
 "%@ System Data · %@ free · %@ this week" = "%@ Sistem Verileri · %@ boş · bu hafta %@";
+"%@ System Data, %@ free" = "%1$@ Sistem Verisi, %2$@ boş";
 "%@ changed while it was being shrunk, so it was left as it was." = "%@ küçültülürken değişti, bu yüzden olduğu gibi bırakıldı.";
+"%@ disk" = "%@ disk";
 "%@ does not come back on its own." = "%@ kendiliğinden geri gelmez.";
+"%@ free" = "%@ boş";
 "%@ free on disk" = "diskte %@ boş";
 "%@ free · %@ of safe items can go now" = "%@ boş · %@ güvenli öğe şimdi silinebilir";
 "%@ grew %@ beyond its recent size." = "%@ son dönem boyutunun %@ üstüne çıktı.";
@@ -11,6 +14,7 @@
 "%@ needs an internet connection to come back." = "%@ geri gelmek için internet bağlantısı gerektirir.";
 "%@ of it belongs to projects nobody has touched in %lld+ days." = "Bunun %1$@ kadarı %2$lld+ gündür dokunulmamış projelere ait.";
 "%@ purgeable" = "%@ temizlenebilir";
+"%@ safe to free" = "%@ güvenle boşaltılabilir";
 "%@ safe to free now · %@ free on disk · %@ purgeable" = "%@ güvenle boşaltılabilir · diskte %@ boş · %@ temizlenebilir";
 "%@ safe · %@ to review · %@ manual" = "%@ güvenli · %@ incelenecek · %@ manuel";
 "%@ shares files with other folders, so compressing it could take more space. It was left as it was." = "%@ dosyalarını başka klasörlerle paylaşıyor; sıkıştırmak daha fazla yer kaplatabilir. Olduğu gibi bırakıldı.";
@@ -87,6 +91,7 @@
 "Deselect" = "Seçimi kaldır";
 "Deselect safe" = "Güvenlileri bırak";
 "Developer tool data" = "Geliştirici araç verileri";
+"Disk" = "Disk";
 "Dismiss" = "Kapat";
 "Docker" = "Docker";
 "Doesn't come back" = "Kendiliğinden geri gelmez";
@@ -118,6 +123,7 @@
 "Hide breakdown" = "Kırılımı gizle";
 "History" = "Geçmiş";
 "History and settings" = "Geçmiş ve ayarlar";
+"How much System Data there is, and how much of it is safe to free." = "Ne kadar Sistem Verisi olduğu ve bunun ne kadarının güvenle boşaltılabileceği.";
 "How to remove %@" = "%@ nasıl kaldırılır";
 "How to remove this item" = "Bu öğe nasıl kaldırılır";
 "Icon only" = "Yalnızca simge";
@@ -162,6 +168,7 @@
 "One grant covers everything. Until then this scan leaves the protected places alone — app containers, Desktop, Documents, Music, Photos — rather than asking about them one app at a time, so what you see below is incomplete. Add System Data Unpacked in the settings pane, then reopen the app." = "Tek izin hepsini kapsar. O zamana kadar bu tarama korumalı yerlere dokunmuyor — uygulama konteynerleri, Masaüstü, Belgeler, Müzik, Fotoğraflar — tek tek izin sormaktansa; yani aşağıda gördüğün eksik. Ayarlar bölmesinden System Data Unpacked'ı ekle, sonra uygulamayı yeniden aç.";
 "Only the safe items are selected; the rest is yours to choose." = "Yalnızca güvenli öğeler seçildi; geri kalanı senin seçimin.";
 "Open Settings" = "Ayarları Aç";
+"Open System Data Unpacked once to see the numbers here." = "Rakamları burada görmek için Unpacked'ı bir kez aç.";
 "Open Unpacked to see what grew." = "Neyin büyüdüğünü görmek için Unpacked'ı aç.";
 "Open Unpacked to see what is taking up room." = "Neyin yer kapladığını görmek için Unpacked'ı aç.";
 "Open in a window" = "Pencerede aç";
@@ -188,6 +195,7 @@
 "Safe" = "Güvenli";
 "Safe items are deleted outright because they regenerate. Turn this on to send them to the Trash instead, so a delete can be undone — until you empty it, it frees no space." = "Güvenli öğeler yeniden oluştuğu için doğrudan silinir. Bunu açarsan onun yerine Çöp Sepeti'ne gönderilir ve silme geri alınabilir — ama Çöp Sepeti boşaltılana kadar yer açılmaz.";
 "Safety: %@" = "Güvenlik: %@";
+"Scanned %@ ago" = "%@ önce tarandı";
 "Scanning" = "Taranıyor";
 "Searches the Developer, Projects, Projeler, Code and dev folders of drives that are plugged in. Time Machine disks and network shares are never searched." = "Takılı disklerdeki Developer, Projects, Projeler, Code ve dev klasörlerinde arar. Time Machine diskleri ve ağ paylaşımları hiçbir zaman taranmaz.";
 "Select %@" = "%@ öğesini seç";

@@ -2,8 +2,11 @@
 "%1$@ now takes %2$@ instead of %3$@. Nothing was deleted." = "%1$@ occupe maintenant %2$@ au lieu de %3$@. Rien n'a été supprimé.";
 "%@ System Data · %@ free" = "%@ de données système · %@ libres";
 "%@ System Data · %@ free · %@ this week" = "%@ de données système · %@ libres · %@ cette semaine";
+"%@ System Data, %@ free" = "%1$@ de données système, %2$@ disponibles";
 "%@ changed while it was being shrunk, so it was left as it was." = "%@ a changé pendant la réduction, il a donc été laissé tel quel.";
+"%@ disk" = "Disque de %@";
 "%@ does not come back on its own." = "%@ ne revient pas de lui-même.";
+"%@ free" = "%@ disponibles";
 "%@ free on disk" = "%@ disponible sur le disque";
 "%@ free · %@ of safe items can go now" = "%@ de libre · %@ d'éléments sûrs peuvent être supprimés maintenant";
 "%@ grew %@ beyond its recent size." = "%@ a augmenté de %@ au-delà de sa taille récente.";
@@ -11,6 +14,7 @@
 "%@ needs an internet connection to come back." = "%@ a besoin d'une connexion Internet pour revenir.";
 "%@ of it belongs to projects nobody has touched in %lld+ days." = "%@ appartiennent à des projets que personne n’a touchés depuis %lld+ jours.";
 "%@ purgeable" = "%@ purgeable";
+"%@ safe to free" = "%@ libérables sans risque";
 "%@ safe to free now · %@ free on disk · %@ purgeable" = "%@ à libérer sans risque · %@ disponible sur le disque · %@ purgeable";
 "%@ safe · %@ to review · %@ manual" = "%@ sûr · %@ à vérifier · %@ manuel";
 "%@ shares files with other folders, so compressing it could take more space. It was left as it was." = "%@ partage des fichiers avec d'autres dossiers ; le compresser pourrait prendre plus de place. Il a été laissé tel quel.";
@@ -87,6 +91,7 @@
 "Deselect" = "Désélectionner";
 "Deselect safe" = "Désélectionner Sûr";
 "Developer tool data" = "Données des outils de développement";
+"Disk" = "Disque";
 "Dismiss" = "Ignorer";
 "Docker" = "Docker";
 "Doesn't come back" = "Ne revient pas de lui-même";
@@ -118,6 +123,7 @@
 "Hide breakdown" = "Masquer le détail";
 "History" = "Historique";
 "History and settings" = "Historique et réglages";
+"How much System Data there is, and how much of it is safe to free." = "La quantité de données système et la part que l’on peut libérer sans risque.";
 "How to remove %@" = "Comment supprimer %@";
 "How to remove this item" = "Comment supprimer cet élément";
 "Icon only" = "Icône seule";
@@ -162,6 +168,7 @@
 "One grant covers everything. Until then this scan leaves the protected places alone — app containers, Desktop, Documents, Music, Photos — rather than asking about them one app at a time, so what you see below is incomplete. Add System Data Unpacked in the settings pane, then reopen the app." = "Une seule autorisation suffit pour tout. En attendant, cette analyse laisse les emplacements protégés de côté — conteneurs d'apps, Bureau, Documents, Musique, Photos — plutôt que de vous les demander un par un ; ce que vous voyez ci-dessous est donc incomplet. Ajoutez System Data Unpacked dans le volet des réglages, puis rouvrez l'app.";
 "Only the safe items are selected; the rest is yours to choose." = "Seuls les éléments sûrs sont sélectionnés ; le reste, c'est à vous de choisir.";
 "Open Settings" = "Ouvrir les réglages";
+"Open System Data Unpacked once to see the numbers here." = "Ouvrez Unpacked une fois pour voir les chiffres ici.";
 "Open Unpacked to see what grew." = "Ouvrez Unpacked pour voir ce qui a augmenté.";
 "Open Unpacked to see what is taking up room." = "Ouvrez Unpacked pour voir ce qui prend de la place.";
 "Open in a window" = "Ouvrir dans une fenêtre";
@@ -188,6 +195,7 @@
 "Safe" = "Sûr";
 "Safe items are deleted outright because they regenerate. Turn this on to send them to the Trash instead, so a delete can be undone — until you empty it, it frees no space." = "Les éléments sûrs sont supprimés directement car ils se régénèrent. Activez cette option pour les envoyer à la Corbeille à la place, afin qu'une suppression puisse être annulée — tant que vous ne la videz pas, aucun espace n'est libéré.";
 "Safety: %@" = "Sécurité : %@";
+"Scanned %@ ago" = "Analysé il y a %@";
 "Scanning" = "Analyse en cours";
 "Searches the Developer, Projects, Projeler, Code and dev folders of drives that are plugged in. Time Machine disks and network shares are never searched." = "Cherche dans les dossiers Developer, Projects, Projeler, Code et dev des disques branchés. Les disques Time Machine et les partages réseau ne sont jamais explorés.";
 "Select %@" = "Sélectionner %@";

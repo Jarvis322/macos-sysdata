@@ -2,8 +2,11 @@
 "%1$@ now takes %2$@ instead of %3$@. Nothing was deleted." = "%1$@ は %3$@ から %2$@ になりました。何も削除されていません。";
 "%@ System Data · %@ free" = "システムデータ %@ · 空き %@";
 "%@ System Data · %@ free · %@ this week" = "システムデータ %@ · 空き %@ · 今週 %@";
+"%@ System Data, %@ free" = "システムデータ %1$@、空き %2$@";
 "%@ changed while it was being shrunk, so it was left as it was." = "%@ は圧縮中に変更されたため、そのままにしました。";
+"%@ disk" = "ディスク %@";
 "%@ does not come back on its own." = "%@ は自動では戻りません。";
+"%@ free" = "空き %@";
 "%@ free on disk" = "ディスクの空き容量：%@";
 "%@ free · %@ of safe items can go now" = "%@ の空き · 安全な項目 %@ を今すぐ削除できます";
 "%@ grew %@ beyond its recent size." = "%@ は最近のサイズより %@ 増えました。";
@@ -11,6 +14,7 @@
 "%@ needs an internet connection to come back." = "%@ は戻すのにインターネット接続が必要です。";
 "%@ of it belongs to projects nobody has touched in %lld+ days." = "そのうち %1$@ は %2$lld 日以上誰も触っていないプロジェクトのものです。";
 "%@ purgeable" = "%@ パージ可能";
+"%@ safe to free" = "安全に解放可能：%@";
 "%@ safe to free now · %@ free on disk · %@ purgeable" = "今すぐ安全に解放：%@ · ディスクの空き：%@ · パージ可能：%@";
 "%@ safe · %@ to review · %@ manual" = "安全 %@ · 要確認 %@ · 手動 %@";
 "%@ shares files with other folders, so compressing it could take more space. It was left as it was." = "%@ は他のフォルダとファイルを共有しているため、圧縮すると逆に容量が増える可能性があります。そのままにしました。";
@@ -87,6 +91,7 @@
 "Deselect" = "選択を解除";
 "Deselect safe" = "安全な項目の選択を解除";
 "Developer tool data" = "開発ツールのデータ";
+"Disk" = "ディスク";
 "Dismiss" = "閉じる";
 "Docker" = "Docker";
 "Doesn't come back" = "自動では戻りません";
@@ -118,6 +123,7 @@
 "Hide breakdown" = "内訳を隠す";
 "History" = "履歴";
 "History and settings" = "履歴と設定";
+"How much System Data there is, and how much of it is safe to free." = "システムデータの量と、そのうち安全に解放できる量。";
 "How to remove %@" = "%@ の削除方法";
 "How to remove this item" = "この項目を削除する方法";
 "Icon only" = "アイコンのみ";
@@ -162,6 +168,7 @@
 "One grant covers everything. Until then this scan leaves the protected places alone — app containers, Desktop, Documents, Music, Photos — rather than asking about them one app at a time, so what you see below is incomplete. Add System Data Unpacked in the settings pane, then reopen the app." = "1 回の許可ですべてに対応できます。それまでこのスキャンは保護された場所——Appコンテナ、デスクトップ、書類、ミュージック、写真——には触れず、Appごとに個別に確認を求めることもしません。そのため下に表示される内容は不完全です。設定パネルで「System Data Unpacked」を追加してから、Appを開き直してください。";
 "Only the safe items are selected; the rest is yours to choose." = "安全な項目だけを選択しました。残りはご自身で選んでください。";
 "Open Settings" = "設定を開く";
+"Open System Data Unpacked once to see the numbers here." = "ここに数値を表示するには、Unpacked を一度開いてください。";
 "Open Unpacked to see what grew." = "何が増えたかを確認するには Unpacked を開いてください。";
 "Open Unpacked to see what is taking up room." = "何が容量を使っているかを見るには、Unpacked を開いてください。";
 "Open in a window" = "ウインドウで開く";
@@ -188,6 +195,7 @@
 "Safe" = "安全";
 "Safe items are deleted outright because they regenerate. Turn this on to send them to the Trash instead, so a delete can be undone — until you empty it, it frees no space." = "安全な項目は再生成されるため、そのまま削除されます。これをオンにするとゴミ箱に入れられ、削除を取り消せます — ただしゴミ箱を空にするまで容量は解放されません。";
 "Safety: %@" = "安全度：%@";
+"Scanned %@ ago" = "%@前にスキャン";
 "Scanning" = "スキャン中";
 "Searches the Developer, Projects, Projeler, Code and dev folders of drives that are plugged in. Time Machine disks and network shares are never searched." = "接続中のドライブの Developer、Projects、Projeler、Code、dev フォルダを検索します。Time Machine ディスクとネットワーク共有は検索されません。";
 "Select %@" = "%@ を選択";

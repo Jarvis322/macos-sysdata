@@ -159,6 +159,18 @@ for localization in "$bundle/Contents/Resources/${name}_${name}.bundle/Contents/
   /usr/libexec/PlistBuddy -c "Add :CFBundleLocalizations: string $language" "$plist"
 done
 
+# The widget runs as its own bundle and looks its strings up there, not in the
+# app's; without its own tables every language read English.
+widget_plist="$widget/Contents/Info.plist"
+/usr/libexec/PlistBuddy -c "Add :CFBundleDevelopmentRegion string en" "$widget_plist"
+/usr/libexec/PlistBuddy -c "Add :CFBundleLocalizations array" "$widget_plist"
+mkdir -p "$widget/Contents/Resources"
+for localization in "$bundle/Contents/Resources/${name}_${name}.bundle/Contents/Resources/"*.lproj; do
+  language=$(basename "$localization" .lproj)
+  cp -R "$localization" "$widget/Contents/Resources/"
+  /usr/libexec/PlistBuddy -c "Add :CFBundleLocalizations: string $language" "$widget_plist"
+done
+
 # macOS remembers privacy grants (Full Disk Access, folder access) by the
 # app's designated requirement. An ad-hoc signature is a cdhash that changes
 # on every build, so grants would be forgotten each time. A real certificate

@@ -2,8 +2,11 @@
 "%1$@ now takes %2$@ instead of %3$@. Nothing was deleted." = "%1$@ now takes %2$@ instead of %3$@. Nothing was deleted.";
 "%@ System Data · %@ free" = "%@ System Data · %@ free";
 "%@ System Data · %@ free · %@ this week" = "%@ System Data · %@ free · %@ this week";
+"%@ System Data, %@ free" = "%@ System Data, %@ free";
 "%@ changed while it was being shrunk, so it was left as it was." = "%@ changed while it was being shrunk, so it was left as it was.";
+"%@ disk" = "%@ disk";
 "%@ does not come back on its own." = "%@ does not come back on its own.";
+"%@ free" = "%@ free";
 "%@ free on disk" = "%@ free on disk";
 "%@ free · %@ of safe items can go now" = "%@ free · %@ of safe items can go now";
 "%@ grew %@ beyond its recent size." = "%@ grew %@ beyond its recent size.";
@@ -11,6 +14,7 @@
 "%@ needs an internet connection to come back." = "%@ needs an internet connection to come back.";
 "%@ of it belongs to projects nobody has touched in %lld+ days." = "%@ of it belongs to projects nobody has touched in %lld+ days.";
 "%@ purgeable" = "%@ purgeable";
+"%@ safe to free" = "%@ safe to free";
 "%@ safe to free now · %@ free on disk · %@ purgeable" = "%@ safe to free now · %@ free on disk · %@ purgeable";
 "%@ safe · %@ to review · %@ manual" = "%@ safe · %@ to review · %@ manual";
 "%@ shares files with other folders, so compressing it could take more space. It was left as it was." = "%@ shares files with other folders, so compressing it could take more space. It was left as it was.";
@@ -87,6 +91,7 @@
 "Deselect" = "Deselect";
 "Deselect safe" = "Deselect safe";
 "Developer tool data" = "Developer tool data";
+"Disk" = "Disk";
 "Dismiss" = "Dismiss";
 "Docker" = "Docker";
 "Doesn't come back" = "Doesn't come back";
@@ -118,6 +123,7 @@
 "Hide breakdown" = "Hide breakdown";
 "History" = "History";
 "History and settings" = "History and settings";
+"How much System Data there is, and how much of it is safe to free." = "How much System Data there is, and how much of it is safe to free.";
 "How to remove %@" = "How to remove %@";
 "How to remove this item" = "How to remove this item";
 "Icon only" = "Icon only";
@@ -162,6 +168,7 @@
 "One grant covers everything. Until then this scan leaves the protected places alone — app containers, Desktop, Documents, Music, Photos — rather than asking about them one app at a time, so what you see below is incomplete. Add System Data Unpacked in the settings pane, then reopen the app." = "One grant covers everything. Until then this scan leaves the protected places alone — app containers, Desktop, Documents, Music, Photos — rather than asking about them one app at a time, so what you see below is incomplete. Add System Data Unpacked in the settings pane, then reopen the app.";
 "Only the safe items are selected; the rest is yours to choose." = "Only the safe items are selected; the rest is yours to choose.";
 "Open Settings" = "Open Settings";
+"Open System Data Unpacked once to see the numbers here." = "Open System Data Unpacked once to see the numbers here.";
 "Open Unpacked to see what grew." = "Open Unpacked to see what grew.";
 "Open Unpacked to see what is taking up room." = "Open Unpacked to see what is taking up room.";
 "Open in a window" = "Open in a window";
@@ -188,6 +195,7 @@
 "Safe" = "Safe";
 "Safe items are deleted outright because they regenerate. Turn this on to send them to the Trash instead, so a delete can be undone — until you empty it, it frees no space." = "Safe items are deleted outright because they regenerate. Turn this on to send them to the Trash instead, so a delete can be undone — until you empty it, it frees no space.";
 "Safety: %@" = "Safety: %@";
+"Scanned %@ ago" = "Scanned %@ ago";
 "Scanning" = "Scanning";
 "Searches the Developer, Projects, Projeler, Code and dev folders of drives that are plugged in. Time Machine disks and network shares are never searched." = "Searches the Developer, Projects, Projeler, Code and dev folders of drives that are plugged in. Time Machine disks and network shares are never searched.";
 "Select %@" = "Select %@";

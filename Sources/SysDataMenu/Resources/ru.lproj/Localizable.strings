@@ -2,8 +2,11 @@
 "%1$@ now takes %2$@ instead of %3$@. Nothing was deleted." = "%1$@ теперь занимает %2$@ вместо %3$@. Ничего не удалено.";
 "%@ System Data · %@ free" = "Данные системы: %@ · свободно %@";
 "%@ System Data · %@ free · %@ this week" = "Данные системы: %@ · свободно %@ · за неделю %@";
+"%@ System Data, %@ free" = "Данные системы: %1$@, свободно: %2$@";
 "%@ changed while it was being shrunk, so it was left as it was." = "%@ изменилась во время сжатия, поэтому оставлена как есть.";
+"%@ disk" = "Диск %@";
 "%@ does not come back on its own." = "%@ само не вернётся.";
+"%@ free" = "%@ свободно";
 "%@ free on disk" = "%@ свободно на диске";
 "%@ free · %@ of safe items can go now" = "%@ свободно · %@ безопасных элементов можно освободить прямо сейчас";
 "%@ grew %@ beyond its recent size." = "%@ вырос на %@ по сравнению с недавним размером.";
@@ -11,6 +14,7 @@
 "%@ needs an internet connection to come back." = "Для восстановления %@ нужно подключение к интернету.";
 "%@ of it belongs to projects nobody has touched in %lld+ days." = "Из них %@ — проекты, к которым никто не прикасался %lld+ дней.";
 "%@ purgeable" = "%@ очищаемое";
+"%@ safe to free" = "%@ можно безопасно освободить";
 "%@ safe to free now · %@ free on disk · %@ purgeable" = "%@ можно безопасно освободить сейчас · %@ свободно на диске · %@ вытесняемых данных";
 "%@ safe · %@ to review · %@ manual" = "безопасно: %@ · проверить: %@ · вручную: %@";
 "%@ shares files with other folders, so compressing it could take more space. It was left as it was." = "%@ делит файлы с другими папками, поэтому сжатие может занять больше места. Папка оставлена как есть.";
@@ -87,6 +91,7 @@
 "Deselect" = "Снять выделение";
 "Deselect safe" = "Снять выделение с безопасных";
 "Developer tool data" = "Данные инструментов разработчика";
+"Disk" = "Диск";
 "Dismiss" = "Скрыть";
 "Docker" = "Docker";
 "Doesn't come back" = "Само не вернётся";
@@ -118,6 +123,7 @@
 "Hide breakdown" = "Скрыть детализацию";
 "History" = "История";
 "History and settings" = "История и настройки";
+"How much System Data there is, and how much of it is safe to free." = "Сколько места занимают данные системы и сколько из них можно безопасно освободить.";
 "How to remove %@" = "Как удалить %@";
 "How to remove this item" = "Как удалить этот объект";
 "Icon only" = "Только значок";
@@ -162,6 +168,7 @@
 "One grant covers everything. Until then this scan leaves the protected places alone — app containers, Desktop, Documents, Music, Photos — rather than asking about them one app at a time, so what you see below is incomplete. Add System Data Unpacked in the settings pane, then reopen the app." = "Одного разрешения достаточно для всего. До этого момента сканирование не затрагивает защищённые места — контейнеры приложений, Рабочий стол, Документы, Музыку, Фото, — вместо того чтобы запрашивать доступ для каждого приложения по отдельности, поэтому список ниже неполон. Добавьте «System Data Unpacked» в настройках, затем откройте приложение заново.";
 "Only the safe items are selected; the rest is yours to choose." = "Выбраны только безопасные элементы; остальное выбираете вы.";
 "Open Settings" = "Открыть настройки";
+"Open System Data Unpacked once to see the numbers here." = "Откройте Unpacked один раз, чтобы здесь появились цифры.";
 "Open Unpacked to see what grew." = "Откройте Unpacked, чтобы увидеть, что выросло.";
 "Open Unpacked to see what is taking up room." = "Откройте Unpacked, чтобы увидеть, что занимает место.";
 "Open in a window" = "Открыть в окне";
@@ -188,6 +195,7 @@
 "Safe" = "Безопасно";
 "Safe items are deleted outright because they regenerate. Turn this on to send them to the Trash instead, so a delete can be undone — until you empty it, it frees no space." = "Безопасные элементы удаляются сразу, так как они восстанавливаются заново. Включите этот параметр, чтобы вместо этого перемещать их в Корзину — тогда удаление можно отменить, но место на диске не освобождается, пока вы не очистите Корзину.";
 "Safety: %@" = "Безопасность: %@";
+"Scanned %@ ago" = "Проверено %@ назад";
 "Scanning" = "Сканирование";
 "Searches the Developer, Projects, Projeler, Code and dev folders of drives that are plugged in. Time Machine disks and network shares are never searched." = "Ищет в папках Developer, Projects, Projeler, Code и dev подключённых дисков. Диски Time Machine и сетевые папки не просматриваются.";
 "Select %@" = "Выбрать %@";
